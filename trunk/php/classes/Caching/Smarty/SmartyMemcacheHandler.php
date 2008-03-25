@@ -1,6 +1,6 @@
 <?php
 /**
- * Smarty Memcache Handler
+ * Smarty Memcache Handler Function Definition File
  *
  * This file contains the function definition for the Smarty Memcache Handler.
  * 
