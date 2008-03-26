@@ -3,7 +3,7 @@
  * TemplateEngine Class File
  *
  * Contains the class definition for the TemplateEngine, a subclass of 
- * the Smarty engine template class.
+ * the Smarty template engine class.
  * 
  * Copyright 2008 eGloo, LLC
  * 
