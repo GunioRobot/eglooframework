@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="com.egloo.www/Requests"
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="com.egloo.www/Requests">
+
+
+
+	<complexType name="Request">
+		<sequence>
+			<element name="Requirement" type="string"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="BoolArgument" type="tns:BoolArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="SelectArgument" type="tns:SelectArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="VariableArgument" type="tns:VariableArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="Depend" type="tns:Depend"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="Decorator" type="tns:Decorator"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="processorID" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="RequestClass">
+		<sequence>
+			<element name="Request" type="tns:Request"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+		<attribute name="id" type="string" use="required"></attribute>
+	</complexType>
+
+
+
+	<complexType name="Depend">
+		<sequence>
+			<element name="Child" type="tns:Child" maxOccurs="unbounded"
+				minOccurs="1">
+			</element>
+
+		</sequence>
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="type" type="string" use="required"></attribute>
+	</complexType>
+
+
+	<complexType name="SelectArgument">
+		<sequence maxOccurs="unbounded" minOccurs="0">
+			<element name="value" type="tns:value" maxOccurs="unbounded"
+				minOccurs="0">
+			</element>
+		</sequence>
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="type" type="string" use="required"></attribute>
+		<attribute name="required" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="VariableArgument">
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="regex" type="string" use="required"></attribute>
+		<attribute name="type" type="string" use="required"></attribute>
+		<attribute name="required" type="string" use="required"></attribute>
+	</complexType>
+
+	<complexType name="BoolArgument">
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="type" type="string" use="required"></attribute>
+		<attribute name="required" type="string" use="required"></attribute>
+	</complexType>
+
+
+
+	<complexType name="Child">
+		<attribute name="id" type="string" use="required"></attribute>
+		<attribute name="type" type="string" use="required"></attribute>
+	</complexType>
+
+
+
+	<element name="Requests" type="tns:Requests"></element>
+
+	<complexType name="Requests">
+		<sequence>
+			<element name="RequestClass" type="tns:RequestClass"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+	</complexType>
+
+
+
+
+	<simpleType name="value">
+		<restriction base="string"></restriction>
+	</simpleType>
+
+	<complexType name="Decorator">
+		<attribute name="decoratorID" type="string" use="required"></attribute>
+		<attribute name="order" type="int" use="required"></attribute>
+	</complexType>
+</schema>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="com.egloo.eGloo.Cube.db.queries"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:cubeDBQueries="com.egloo.eGloo.Cube.db.queries">
+
+
+	<xs:element name="Queries" type="cubeDBQueries:Queries"></xs:element>
+
+	<xs:complexType name="Queries">
+		<xs:sequence>
+			<xs:element name="Select" type="cubeDBQueries:Select"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="Insert" type="cubeDBQueries:Insert"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="Update" type="cubeDBQueries:Update"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="Delete" type="cubeDBQueries:Delete"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="PLSelect" type="cubeDBQueries:PLSelect" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Select">
+		<xs:sequence>
+			<xs:element name="Column" type="cubeDBQueries:Column" maxOccurs="unbounded" minOccurs="1"></xs:element>
+			<xs:element name="WhereReference" type="cubeDBQueries:WhereReference" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="WhereConstant" type="cubeDBQueries:WhereConstant" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="multipleResults" type="xs:boolean" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Column">
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="table" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="as" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="WhereConstant">
+		<xs:attribute name="table" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="column" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="inputParam" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="WhereReference">
+		<xs:attribute name="localTable" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="localColumn" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="remoteTable" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="remoteColumn" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+
+	<xs:complexType name="Insert">
+		<xs:sequence>
+			<xs:element name="Column" type="cubeDBQueries:InsertColumn" maxOccurs="unbounded" minOccurs="1"></xs:element> </xs:sequence> <xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="tableName" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="InsertColumn">
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="required" type="xs:boolean" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Update">
+		<xs:sequence>
+			<xs:element name="Column" type="xs:string" maxOccurs="unbounded" minOccurs="1"></xs:element>
+			<xs:element name="WhereReference" type="cubeDBQueries:WhereReference" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="WhereConstant" type="cubeDBQueries:WhereConstant" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="tableName" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Delete">
+		<xs:sequence>
+			<xs:element name="WhereColumn" type="cubeDBQueries:DeleteWhere" maxOccurs="unbounded" minOccurs="0"> </xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="tableName" type="xs:string" use="required">
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="DeleteWhere">
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="inputParam" type="xs:string" use="required"> </xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="PLSelect">
+		<xs:sequence>
+			<xs:element name="PLInputVariable" type="cubeDBQueries:PLInputVariable" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="PLOutputVariable" type="cubeDBQueries:PLOutputVariable" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="multipleResults" type="xs:boolean" use="required"></xs:attribute>
+		<xs:attribute name="functionName" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="PLInputVariable">
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="order" type="xs:int" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="PLOutputVariable">
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="type" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+</xs:schema>
