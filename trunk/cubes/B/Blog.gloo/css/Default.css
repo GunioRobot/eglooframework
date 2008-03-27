@@ -1,0 +1,13 @@
+#BlogList {
+	padding:6px 12px;
+}
+
+a { 
+	color:#0099E5;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#f96;
+	text-decoration:underline;
+}

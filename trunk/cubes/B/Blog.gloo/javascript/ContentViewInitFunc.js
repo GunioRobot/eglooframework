@@ -1,0 +1,1 @@
+function(cube,params) { TB_init(); }

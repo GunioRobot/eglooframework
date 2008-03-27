@@ -1,0 +1,97 @@
+<div class="userProfileCubeDragDropSort" id="profileEdit">
+
+	<div class="dragDropHandle" style="padding:8px 0 8px 8px;">Personal Profile (Edit)</div>
+
+	<div class="userProfileCubeContent">
+
+		<form method="post" action="/profile/setUserProfileData/">
+
+			<fieldset id="bioFieldset">
+            	<div id="bioFieldset_Gender">Gender: </div>
+            	<div id="bioFieldset_GenderSelect">  	
+	            	<select id="gender" name="gender" >
+                		<option value="Male"<!--{ if $gender eq 'Male'}--> selected="selected"<!--{/if}-->>Male&nbsp;</option>
+                		<option value="Female"<!--{ if $gender eq 'Female'}--> selected="selected"<!--{/if}-->>Female&nbsp;</option>
+	                </select>
+	            </div>
+	            <div id="bioFieldset_InterestedIn">Interested In: </div>
+	            <div id="bioFieldset_InterestedInMenCheckBox">
+	                <input type="checkbox" name="interestedInMen" value="interestedInMen" <!--{ if $interestedInMen }-->checked="checked"<!--{/if}-->/>
+                </div>
+	            <div id="bioFieldset_InterestedInMenCheckBoxLabel">Men</div>
+	            <div id="bioFieldset_InterestedInWomenCheckBox">
+	                <input type="checkbox" name="interestedInWomen" value="interestedInWomen" <!--{ if $interestedInWomen }-->checked="checked"<!--{/if}-->/>
+                </div>
+	            <div id="bioFieldset_InterestedInWomenCheckBoxLabel">Women</div>
+            	<div id="bioFieldset_Birthday">Birthday: </div>
+            	<div id="bioFieldset_BirthdaySelect">
+                    <!--{html_select_date day_value_format="%02d" day_format="%02d" 
+						prefix="userBirth" start_year="-13" end_year="-106" reverse_years=true
+                    	time="$birthDate" 
+                        month_extra="style=\"width:100px;margin-right:10px;\"" 
+    					day_extra="style=\"width:45px;margin-right:10px;\"" year_extra="style=\"width:60px;\""}-->
+                </div>
+            </fieldset>
+            
+            <fieldset id="relationshipFieldset">
+	            <div id="relationshipFieldset_RelationshipStatus">
+	            	<div id="relationshipFieldset_RelationshipStatusLabel">Relationship Status:</div>
+	            	<select id="relationshipFieldset_RelationshipStatusSelect" name="relationshipStatus" disabled>
+                    		<option value="" >Coming Soon&nbsp;</option>
+	                </select>
+				</div>
+	            <div id="relationshipFieldset_LookingFor">Looking For: </div>
+	            <div id="relationshipFieldset_LookingForOptions">
+
+	            	<div id="relationshipFieldset_LookingForFriendship">
+            	        <input id="relationshipFieldset_LookingForFriendshipInput" type="checkbox" 
+							name="lookingForFriendship" value="lookingForFriendship" <!--{ if $lookingForFriendship }-->checked="checked"<!--{/if}-->/>
+	            	    <label for="relationshipFieldset_LookingForFriendshipInput">Friendship</label>
+                    </div>
+
+	            	<div id="relationshipFieldset_LookingForRelationship">
+            	        <input id="relationshipFieldset_LookingForRelationshipInput" type="checkbox" 
+                            name="lookingForRelationship" value="lookingForRelationship" <!--{ if $lookingForRelationship }-->checked="checked"<!--{/if}-->/>
+                	    <label for="relationshipFieldset_LookingForRelationshipInput">A Relationship</label>
+	                </div>
+
+	            	<div id="relationshipFieldset_LookingForRandomPlay">
+	            	    <input id="relationshipFieldset_LookingForRandomPlayInput" type="checkbox" 
+                            name="lookingForRandomPlay" value="lookingForRandomPlay" <!--{ if $lookingForRandomPlay }-->checked="checked"<!--{/if}-->/>
+	            	    <label for="relationshipFieldset_LookingForRandomPlayInput">Random Play</label>
+                    </div>
+                    
+	            	<div id="relationshipFieldset_LookingForDating">
+	            	    <input id="relationshipFieldset_LookingForDatingInput" type="checkbox" 
+                            name="lookingForDating" value="lookingForDating" <!--{ if $lookingForDating }-->checked="checked"<!--{/if}-->/>
+	            	    <label for="relationshipFieldset_LookingForDatingInput">Dating</label>
+                    </div>
+                    
+	            	<div id="relationshipFieldset_LookingForWhateverICanGet">
+	            	    <input id="relationshipFieldset_LookingForWhateverICanGetInput" type="checkbox" 
+                            name="lookingForWhateverICanGet" value="lookingForWhateverICanGet" <!--{ if $lookingForDatingWhateverICanGet }-->checked="checked"<!--{/if}-->/>
+	            	    <label for="relationshipFieldset_LookingForWhateverICanGetInput">Whatever I Can Get</label>
+                    </div>
+                     
+	            </div>
+	        </fieldset>
+
+            <div id="profileManagerHometownLabel">Hometown: </div>
+            <div id="profileManagerHometownInput">
+                <input type="text" name="hometown" value="<!--{$hometown}-->" />
+            </div>
+
+            <div id="profileManagerResidenceLabel">Residence: </div>
+            <div id="profileManagerResidenceInput">
+                <input type="text" name="residence" value="Coming Soon" disabled/>
+            </div>
+
+			<div id="profileManagerButtons">
+		    	<input id="cancelUserProfileDataEdit" type="button" name="cancelUserProfileDataEdit" value="Cancel" />
+		    	<input id="updateUserProfileDataSubmit" type="submit" name="updateUserProfileDataSubmit" value="Update" />
+		    </div>
+		</form>
+
+	</div>
+
+</div>

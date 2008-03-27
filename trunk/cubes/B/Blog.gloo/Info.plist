@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eglooCube:Cube xmlns:eglooCube="com.egloo.eGloo.Cube"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="com.egloo.eGloo.Cube ../../../xml/schemas/CubeFresh.xsd "
+    CubeID="com.egloo.eGlooCubes.Blog" CubeName="Blog" Version="1.0.0">
+    <Resources>
+        <ContentViewResource resourceID="contentView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <ContentViewMaxResource resourceID="contentViewMax"
+            resourcePath="xhtml/contentView.xhtml" />
+        <ContentViewMinResource resourceID="contentViewMin"
+            resourcePath="xhtml/contentView.xhtml" />
+        <ContentDraggingViewResource resourceID="contentDraggingView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <PreferencesViewResource resourceID="preferencesView"
+            resourcePath="xhtml/preferencesView.xhtml" />
+        <PermissionsViewResource resourceID="permissionsView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <ContentLoadingViewResource resourceID="contentLoadingView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <CubeCreateViewResource resourceID="cubeCreateView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <CubeDestroyViewResource resourceID="cubeDestroyView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <ContentDropViewResource resourceID="contentDropView"
+            resourcePath="xhtml/contentView.xhtml" />
+        <CubeInitTrigger resourceID="cubeInitTrigger"
+            resourcePath="javascript/contentView.js" />
+    </Resources>
+    <Triggers>
+        <CubeInitTrigger triggerSource="" triggerAction="init" triggerType="javascript"
+            triggerTag="div" triggerID="init" />
+    </Triggers>
+</eglooCube:Cube>

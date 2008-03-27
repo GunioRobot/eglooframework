@@ -1,0 +1,198 @@
+div#profileEdit {
+	border:none;
+}
+
+/* Content */
+
+div.userProfileCubeContentGender div.userProfileCubeContentGenderLabel,
+div.userProfileCubeContentBirthDate div.userProfileCubeContentBirthDateLabel,
+div.userProfileCubeContentInterestedIn div.userProfileCubeContentInterestedInLabel,
+div.userProfileCubeContentLookingFor div.userProfileCubeContentLookingForLabel,
+div.userProfileCubeContentHometown div.userProfileCubeContentHometownLabel {
+	clear:left;
+	float:left;
+    margin:8px 0 0 4px;
+    width:85px;
+}
+
+div.userProfileCubeContentGender div.userProfileCubeContentGenderInfo,
+div.userProfileCubeContentBirthDate div.userProfileCubeContentBirthDateInfo,
+div.userProfileCubeContentInterestedIn div.userProfileCubeContentInterestedInInfo,
+div.userProfileCubeContentLookingFor div.userProfileCubeContentLookingForInfo,
+div.userProfileCubeContentHometown div.userProfileCubeContentHometownInfo {
+	float:left;
+	font:normal 10px verdana;
+    margin:8px 0 0 4px;
+    padding-top:2px;
+	width:105px;
+}
+
+div.userProfileCubeContentLookingForLabel {
+    clear:left;    
+}
+
+div.userProfileCubeContentHometownLabel {
+	clear:left;
+}
+
+/* Preferences View Content */
+
+fieldset#bioFieldset {
+    margin:8px 8px 8px 8px;
+    padding:0 0 8px 0;
+}
+
+fieldset#bioFieldset #bioFieldset_Gender {
+    clear:both;
+    float:left;
+    margin:12px 0 8px 4px;
+}
+
+fieldset#bioFieldset #bioFieldset_GenderSelect {
+    float:left;
+    margin:8px 20px 8px 8px;
+}
+
+fieldset#bioFieldset #bioFieldset_InterestedIn {
+    float:left;
+    padding:12px 0px 8px 0px;
+    width:95px;
+}
+
+fieldset#bioFieldset #bioFieldset_InterestedInMenCheckBox {
+    float:left;
+    padding:10px 0px 8px 0px;
+}
+
+fieldset#bioFieldset #bioFieldset_InterestedInMenCheckBoxLabel {
+    float:left;
+    padding:12px 0px 8px 4px;
+}
+
+fieldset#bioFieldset #bioFieldset_InterestedInWomenCheckBox {
+    float:left;
+    padding:10px 0px 8px 8px;
+}
+
+fieldset#bioFieldset #bioFieldset_InterestedInWomenCheckBoxLabel {
+    float:left;
+    padding:12px 0px 8px 4px;
+}
+
+fieldset#bioFieldset #bioFieldset_Birthday {
+    clear:both;
+    float:left;
+    padding:8px 0 0 4px;
+    width:60px;
+}
+
+fieldset#bioFieldset #bioFieldset_BirthdaySelect {
+    float:left;
+    padding:8px 0 0 5px;
+}
+
+fieldset#relationshipFieldset {
+    margin:12px 8px 8px 8px;
+    padding:0 0 8px 0;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_RelationshipStatus {
+    clear:both;
+    float:left;
+    padding:8px 0 0 4px;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_RelationshipStatusLabel {
+    float:left;
+    padding:0 8px 0 0;
+    width:120px
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_RelationshipStatusSelect {
+    width:120px;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingFor {
+    clear:both;
+    float:left;
+    padding:16px 0 0 4px;
+    width:85px;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForOptions {
+    float:left;
+    padding:8px 0 0 5px;
+    width:300px;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForFriendship {
+    width:150px;
+    float:left;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForRelationship {
+    width:150px;
+    float:left;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForRandomPlay {
+    width:150px;
+    clear:both;
+    float:left;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForDating {
+    width:150px;
+    float:left;
+}
+
+fieldset#relationshipFieldset #relationshipFieldset_LookingForWhateverICanGet {
+    width:150px;
+    clear:both;
+    float:left;
+}
+
+#profileManagerHometownLabel {
+    clear:both;
+    float:left;
+    padding:8px 3px 0 8px;
+    width:65px;
+}
+
+#profileManagerHometownInput {
+    float:left;
+    padding:8px 0 0 5px;
+    width:115px;
+}
+
+#profileManagerResidenceLabel {
+    clear:left;
+    float:left;
+    padding:8px 3px 0 8px;
+    width:65px;
+}
+
+#profileManagerResidenceInput {
+    float:left;
+    padding:8px 0 0 5px;
+    width:115px;
+}
+
+div#profileManagerButtons {
+	clear:both;
+	margin-top:8px;
+	padding-top:8px;
+	text-align:center;
+}
+
+div.userProfileCubeContent input#cancelUserProfileDataEdit,
+div.userProfileCubeContent input#updateUserProfileDataSubmit {
+	margin:0 4px;
+	padding:0;
+    position:static;
+}
+
+
+
+
+

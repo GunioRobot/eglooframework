@@ -1,0 +1,9 @@
+<div id="ControlCenterCube_Relationships_FriendList">
+
+<!--{foreach name=Friends from=$beanArray item=currentEntry}-->
+	<div class="friendItemContainer <!--{if $smarty.foreach.Friends.index % 2 == 0}-->gray<!--{/if}-->">
+		<a href="/internalMainPage/getInternalMainPage/&profileID=<!--{$currentEntry->get_profile_id()}-->" class="friendItemName clickable"><!--{$currentEntry->get_profilename()}--></a>
+	</div>
+<!--{/foreach}-->
+
+</div>

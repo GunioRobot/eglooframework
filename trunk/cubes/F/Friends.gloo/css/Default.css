@@ -1,0 +1,220 @@
+/* Content */
+
+div.userProfileCubeContentGenderLabel {
+    float:left;
+    margin:8px 0 0 4px;
+    width:75px;
+}
+
+div.userProfileCubeContentGenderInfo {
+    float:left;
+    margin:8px 0 0 4px;
+    width:125px;
+}
+
+div.userProfileCubeContentBirthDateLabel {
+    float:left;
+    margin:8px 0 0 4px;
+    width:75px;
+}
+
+div.userProfileCubeContentBirthDateInfo {
+    float:left;
+    margin:8px 0 0 4px;
+    width:125px;
+}
+
+div.userProfileCubeContentInterestedInLabel {
+    float:left;
+    margin:8px 0 0 4px;
+    width:75px;
+}
+
+div.userProfileCubeContentInterestedInInfo {
+    float:left;
+    margin:8px 0 0 4px;
+    width:125px;
+}
+
+div.userProfileCubeContentLookingForLabel {
+    float:left;
+    margin:8px 0 0 4px;
+    width:75px;
+}
+
+div.userProfileCubeContentLookingForInfo {
+    float:left;
+    margin:8px 0 0 4px;
+    width:125px;
+}
+
+div.userProfileCubeContentHometownLabel {
+    float:left;
+    margin:8px 0 0 4px;
+    width:75px;
+}
+
+div.userProfileCubeContentHometownInfo {
+    float:left;
+    margin:8px 0 0 4px;
+    width:125px;
+}
+
+/* Preferences View Content */
+
+#bioFieldset {
+    margin:8px 8px 8px 8px;
+    padding:0 0 8px 0;
+}
+
+#bioFieldset_Gender {
+    clear:both;
+    float:left;
+    margin:12px 0 8px 4px;
+}
+
+#bioFieldset_GenderSelect {
+    float:left;
+    margin:8px 34px 8px 8px;
+}
+
+#bioFieldset_InterestedIn {
+    float:left;
+    padding:12px 0px 8px 0px;
+    width:75px;
+}
+
+#bioFieldset_InterestedInMenCheckBox {
+    float:left;
+    padding:10px 0px 8px 0px;
+}
+
+#bioFieldset_InterestedInMenCheckBoxLabel {
+    float:left;
+    padding:12px 8px 8px 4px;
+}
+
+#bioFieldset_InterestedInWomenCheckBox {
+    float:left;
+    padding:10px 0px 8px 0px;
+}
+
+#bioFieldset_InterestedInWomenCheckBoxLabel {
+    float:left;
+    padding:12px 8px 8px 4px;
+}
+
+#bioFieldset_Birthday {
+    clear:both;
+    float:left;
+    padding:8px 0 0 4px;
+    width:60px;
+}
+
+#bioFieldset_BirthdaySelect {
+    float:left;
+    padding:8px 0 0 5px;
+}
+
+#relationshipFieldset {
+    margin:12px 8px 8px 8px;
+    padding:0 0 8px 0;
+}
+
+#relationshipFieldset_RelationshipStatus {
+    clear:both;
+    float:left;
+    padding:8px 0 0 4px;
+}
+
+#relationshipFieldset_RelationshipStatusLabel {
+    float:left;
+    width:120px
+}
+
+#relationshipFieldset_RelationshipStatusSelect {
+    width:120px;
+}
+
+#relationshipFieldset_LookingFor {
+    clear:both;
+    float:left;
+    padding:16px 0 0 4px;
+    width:70px;
+}
+
+#relationshipFieldset_LookingForOptions {
+    float:left;
+    padding:16px 0 0 5px;
+    width:300px;
+}
+
+#relationshipFieldset_LookingForFriendship {
+    width:150px;
+    float:left;
+}
+
+#relationshipFieldset_LookingForRelationship {
+    width:150px;
+    float:left;
+}
+
+#relationshipFieldset_LookingForRandomPlay {
+    width:150px;
+    clear:both;
+    float:left;
+}
+
+#relationshipFieldset_LookingForDating {
+    width:150px;
+    float:left;
+}
+
+#relationshipFieldset_LookingForWhateverICanGet {
+    width:150px;
+    clear:both;
+    float:left;
+}
+
+#profileManagerHometownLabel {
+    clear:both;
+    float:left;
+    padding:8px 0 0 8px;
+    width:65px;
+}
+
+#profileManagerHometownInput {
+    float:left;
+    padding:8px 0 0 5px;
+    width:115px;
+}
+
+#profileManagerResidenceLabel {
+    float:left;
+    padding:8px 0 0 8px;
+    width:65px;
+}
+
+#profileManagerResidenceInput {
+    float:left;
+    padding:8px 0 0 5px;
+    width:115px;
+}
+
+#cancelUserProfileDataEdit {
+    position:absolute;
+    bottom:10px;
+    right:100px;
+}
+
+#updateUserProfileDataSubmit {
+    position:absolute;
+    bottom:10px;
+    right:10px;
+}
+
+
+
+
+
+

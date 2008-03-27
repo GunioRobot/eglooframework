@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mappings>
+	<Request name="ContentViewInit">
+		<Query name="ProfileCubeContentStrategy" type="System"/>
+	</Request>
+	<Request name="PreferencesViewInit">
+		<Query name="ProfileCubeContentStrategy" type="System"/>
+	</Request>
+</Mappings>

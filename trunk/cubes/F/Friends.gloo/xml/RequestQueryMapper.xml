@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mappings>
+	<Request name="ContentViewInit">
+		<Query name="getProfileRelationships" type="PLSelect"/>
+	</Request>
+</Mappings>
