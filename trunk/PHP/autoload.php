@@ -35,7 +35,7 @@
  * loading the requested class or interface, the runtime will abort with an error.
  * 
  * The only permitted class or interface filename format is {CLASS_OR_INTERFACE_NAME}.php and is
- * case sensitive.  The only classpath checked is "../php/classes", relative to the project root
+ * case sensitive.  The only classpath checked is "../PHP/Classes", relative to the project root
  * and inclusive of all subdirectories.
  *
  * @param string $class_name class or interface to load
@@ -43,7 +43,7 @@
 function __autoload($class_name) {
 
     if ( !class_exists( 'CacheGateway', false ) ) {
-        include( '../php/classes/Caching/CacheGateway.php' );
+        include( '../PHP/Classes/Caching/CacheGateway.php' );
     }
 
     $cacheGateway = CacheGateway::getCacheGateway();
@@ -67,7 +67,7 @@ function __autoload($class_name) {
     // Set the first time autoload is called
     if ( NULL === $possible_path ) {
         // These are the default paths for this application
-        $possible_path = array_flip( array( "../php/classes" ) );
+        $possible_path = array_flip( array( "../PHP/Classes" ) );
         // Customize this yourself, but leave the array_flip alone. We will use this to
         // get rid of duplicate entries from the include_path .ini list.
 
