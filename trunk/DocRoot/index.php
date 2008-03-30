@@ -27,8 +27,8 @@
 
     //apd_set_pprof_trace();
     
-    include( '../php/autoload.php' );
-    include( '../php/error_handlers.php' );
+    include( '../PHP/autoload.php' );
+    include( '../PHP/error_handlers.php' );
     
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
