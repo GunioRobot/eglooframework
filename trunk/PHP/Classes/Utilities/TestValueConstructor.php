@@ -295,7 +295,7 @@ class TestValueConstructor {
 		$cubeDTO = new CubeDTO();
 		$cubeDTO->setPermissionLevel(6);
 		$cubeDTO->setID("1123");
-		$cubeDTO->setDirectoryLocation("../cubes/F/Friends.gloo");
+		$cubeDTO->setDirectoryLocation("../Cubes/F/Friends.gloo");
 		return $cubeDTO;
     }
 

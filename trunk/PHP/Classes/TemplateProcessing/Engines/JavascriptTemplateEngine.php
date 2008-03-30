@@ -41,7 +41,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
         $this->left_delimiter = '/*<!--{'; 
         $this->right_delimiter = '}-->*/'; 
         
-        $this->template_dir = '../templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/Javascript/';
+        $this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/Javascript/';
         $this->config_dir   = '../config/smarty';
         $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
                                 $local . '/cache/compiled_templates';

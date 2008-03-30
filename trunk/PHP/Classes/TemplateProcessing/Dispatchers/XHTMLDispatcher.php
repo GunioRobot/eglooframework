@@ -44,7 +44,7 @@ final class XHTMLDispatcher {
     /**
      * XML Variables
      */
-    private $DISPATCH_XML_LOCATION = "../templates/Applications/";
+    private $DISPATCH_XML_LOCATION = "../Templates/Applications/";
     private $dispatchNodes = array();
 
 

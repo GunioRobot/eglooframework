@@ -44,8 +44,8 @@ final class StyleSheetDispatcher {
     /**
      * XML Variables
      */
-//    private $DISPATCH_XML_LOCATION = "../templates/Applications/eGloo/InterfaceBundles/Default/CSS/Dispatch.xml";
-    private $DISPATCH_XML_LOCATION = "../templates/Applications/";
+//    private $DISPATCH_XML_LOCATION = "../Templates/Applications/eGloo/InterfaceBundles/Default/CSS/Dispatch.xml";
+    private $DISPATCH_XML_LOCATION = "../Templates/Applications/";
     private $dispatchNodes = array();
 
     private $application = null;

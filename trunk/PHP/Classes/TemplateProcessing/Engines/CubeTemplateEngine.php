@@ -41,7 +41,7 @@ class CubeTemplateEngine extends TemplateEngine {
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
         
-        $this->template_dir = '../cubes/';
+        $this->template_dir = '../Cubes/';
         $this->config_dir   = '../config/smarty';
         $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
                                 $local . '/cache/compiled_templates';

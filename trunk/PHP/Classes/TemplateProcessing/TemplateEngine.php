@@ -44,9 +44,9 @@ class TemplateEngine extends Smarty {
         $this->right_delimiter = '}-->'; 
         
         
-        $this->plugins_dir = array( 'plugins', '../php/classes/components' );
+        $this->plugins_dir = array( 'plugins', '../PHP/Classes/components' );
         
-        $this->template_dir = '../templates';
+        $this->template_dir = '../Templates';
         $this->config_dir   = '../config/smarty';
         $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
                                 $local . '/cache/compiled_templates';

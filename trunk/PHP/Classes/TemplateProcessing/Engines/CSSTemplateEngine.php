@@ -42,7 +42,7 @@ class CSSTemplateEngine extends TemplateEngine {
         $this->right_delimiter = '}-->*/'; 
         
         
-        $this->template_dir = '../templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/CSS/';
+        $this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/CSS/';
         $this->config_dir   = '../config/smarty';
         $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
                                 $local . '/cache/compiled_templates';

@@ -26,7 +26,7 @@
  * @version 1.0
  */
 
-require( '../php/classes/Caching/Smarty/SmartyMemcacheHandler.php' );
+require( '../PHP/Classes/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * CSSBuilder

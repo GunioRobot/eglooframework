@@ -59,7 +59,7 @@ final class RequestValidator {
 	/**
 	 * XML Variables
 	 */
-	private $REQUESTS_XML_LOCATION = "../xml/Requests/eGloo/OverlayInterface/Requests.xml";
+	private $REQUESTS_XML_LOCATION = "../XML/Requests/eGloo/OverlayInterface/Requests.xml";
 	private $requestNodes = array();
 
 
