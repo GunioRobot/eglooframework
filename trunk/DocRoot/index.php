@@ -1,8 +1,8 @@
 <?php
 /**
- * AP Bootstrap File 
+ * eGloo Framework Bootstrap File 
  *
- * This file contains the bootstrap for the AP framework
+ * This file contains the bootstrap for the eGloo framework
  * 
  * Copyright 2008 eGloo, LLC
  * 
@@ -21,7 +21,7 @@
  * @author George Cooper
  * @copyright 2008 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package AP Bootstrap
+ * @package Bootstrap
  * @version 1.0
  */
 
@@ -31,8 +31,8 @@
     include( '../php/error_handlers.php' );
     
     // Setup the logger
-    APLogger::setLoggingLevel( APLogger::$DEVELOPMENT );
-    APLogger::setLoggingType( APLogger::$LOG_LOG );
+    eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
+    eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
     
     // we need to make sure we can id a particular request path in the logs since
     // multiple instances can be run out of order
@@ -73,7 +73,7 @@
 	   $requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
        $requestProcessor->processRequest();
     } else {
-	   APLogger::writeLog( APLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+	   eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
     }
 
 ?>
