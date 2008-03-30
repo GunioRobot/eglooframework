@@ -1,0 +1,27 @@
+<Categories>
+	<Category name="Music">
+		<Category name="Classical"/>
+		<Category name="Metal"/>
+		<Category name="Punk"/>
+		<Category name="Reggae"/>
+		<Category name="Rock"/>
+		<Category name="Techno">
+			<Category name="Drum 'n' Bass"/>
+			<Category name="Trance"/>
+			<Category name="Trip Hop"/>
+		</Category>
+	</Category>
+	<Category name="Vids">
+		<Category name="Comedy"/>
+		<Category name="Inter-species Erotica"/>
+		<Category name="Music"/>
+		<Category name="Porn"/>
+	</Category>
+	<Category name="Pics">
+		<Category name="Art"/>
+		<Category name="Cars"/>
+		<Category name="Funny"/>
+		<Category name="Inter-species Erotica"/>
+		<Category name="Porn"/>
+	</Category>
+</Categories>

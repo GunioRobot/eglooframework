@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DBQueries:Queries xmlns:DBQueries="com.egloo.db.queries"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="com.egloo.db.queries schemas/DBQueries.xsd ">
+	<PLSelect name="rankElement" functionName="rankelement"
+		multipleResults="false">
+		<PLInputVariable order="0" name="profileID" />
+		<PLInputVariable order="1" name="elementID" />
+		<PLInputVariable order="2" name="rank" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+		<PLOutputVariable name="output_dateranked" type="string" />
+		<!--This function ranks an element-->
+	</PLSelect>
+	<PLSelect name="getProfileElementRanking"
+		functionName="getprofileelementranking" multipleResults="false">
+		<PLInputVariable order="0" name="elementID" />
+		<PLInputVariable order="1" name="profileID" />
+		<PLOutputVariable name="output_rank" type="string" />
+		<PLOutputVariable name="output_dateranked" type="string" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="getElementRanking" functionName="getelementranking"
+		multipleResults="false">
+		<PLInputVariable order="0" name="elementID" />
+		<PLOutputVariable name="output_rank" type="string" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="getElementInstance"
+		functionName="getelementinstance" multipleResults="false">
+		<PLInputVariable order="0" name="elementID" />
+		<PLInputVariable order="1" name="profileID" />
+		<PLOutputVariable name="output_elementtype_id" type="string" />
+		<PLOutputVariable name="output_creator_id" type="string" />
+		<PLOutputVariable name="output_elementpackagepath" type="string" />
+		<PLOutputVariable name="output_datecreated" type="string" />
+		<PLOutputVariable name="output_rankable" type="boolean" />
+		<PLOutputVariable name="output_elementrank" type="string" />
+		<PLOutputVariable name="output_profileelementrank" type="string" />
+		<PLOutputVariable name="output_dateprofileranked" type="string" />
+	</PLSelect>
+	<PLSelect name="getCubeSingletonID"
+		functionName="getcubesingletonid" multipleResults="false">
+		<PLInputVariable order="0" name="elementTypeID" />
+		<PLInputVariable order="1" name="creatorID" />
+		<PLOutputVariable name="output_element_id" type="string" />
+	</PLSelect>
+	<PLSelect name="createNewCubeInstance"
+		functionName="createnewcubeinstance" multipleResults="false">
+		<PLInputVariable order="0" name="elementtypeID" />
+		<PLInputVariable order="1" name="creatorID" />
+		<PLOutputVariable name="output_element_id" type="string" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+		<PLOutputVariable name="output_elementpackagepath" type="string" />
+		<PLOutputVariable name="output_datecreated" type="string" />
+		<PLOutputVariable name="output_rankable" type="boolean" />
+		<PLOutputVariable name="output_elementrank" type="string" />
+		<PLOutputVariable name="output_profileelementrank" type="string" />
+		<PLOutputVariable name="output_dateprofileranked" type="string" />
+		<PLOutputVariable name="output_rankable" type="boolean" />		
+	</PLSelect>
+	<PLSelect name="requestRelationship"
+		functionName="requestRelationship" multipleResults="false">
+		<PLInputVariable order="0" name="accepterProfileID" />
+		<PLInputVariable order="1" name="requesterProfileID" />
+		<PLInputVariable order="2" name="relationshipType" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="actOnRelationship" functionName="actOnRelationship"
+		multipleResults="false">
+		<PLInputVariable order="0" name="requesterProfileID" />
+		<PLInputVariable order="1" name="accepterProfileID" />
+		<PLInputVariable order="2" name="relationshipType" />
+		<PLInputVariable order="3" name="acceptRelationship" />
+		<PLOutputVariable name="output_Successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="getProfileRelationshipRequests"
+		functionName="getProfileRelationshipRequests" multipleResults="true">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="profile_id" type="string" />
+		<PLOutputVariable name="profilename" type="string" />
+		<PLOutputVariable name="relationshiptype" type="string" />
+		<PLOutputVariable name="daterequested" type="string" />
+	</PLSelect>
+	<PLSelect name="getProfileRelationships"
+		functionName="getProfileRelationships" multipleResults="true">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="profile_id" type="string" />
+		<PLOutputVariable name="profilename" type="string" />
+		<PLOutputVariable name="relationshiptype" type="string" />
+	</PLSelect>
+	<PLSelect name="endRelationship" functionName="endRelationship"
+		multipleResults="false">
+		<PLInputVariable order="0" name="requesterProfileID" />
+		<PLInputVariable order="1" name="accepterProfileID" />
+		<PLInputVariable order="2" name="relationshipType" />
+		<PLOutputVariable name="output_Successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="getProfileRelationshipTypes"
+		functionName="getProfileRelationshipTypes" multipleResults="true">
+		<PLInputVariable order="0" name="requesterProfileID" />
+		<PLInputVariable order="1" name="accepterProfileID" />
+		<PLOutputVariable name="relationshiptype" type="string" />
+	</PLSelect>
+	<PLSelect name="getProfileName"
+		functionName="getProfileName" multipleResults="false">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="output_profile_name" type="string" />
+	</PLSelect>
+	<PLSelect name="getLatestBlog" functionName="getLatestBlog"
+		multipleResults="false">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="output_blogid" type="string" />
+		<PLOutputVariable name="output_dateblogcreated" type="string" />
+		<PLOutputVariable name="output_dateedited" type="string" />
+		<PLOutputVariable name="output_blogtitle" type="string" />
+		<PLOutputVariable name="output_blogcontent" type="string" />
+	</PLSelect>
+	<PLSelect name="getBlogList" functionName="getBlogList"
+		multipleResults="true">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="blog_id" type="string" />
+		<PLOutputVariable name="dateblogcreated" type="string" />
+		<PLOutputVariable name="blogtitle" type="string" />
+	</PLSelect>
+	<PLSelect name="getBlog" functionName="viewBlog"
+		multipleResults="false">
+		<PLInputVariable order="0" name="inputBlogID" />
+		<PLOutputVariable name="output_blogwriter" type="string" />
+		<PLOutputVariable name="output_dateblogcreated" type="string" />
+		<PLOutputVariable name="output_dateedited" type="string" />
+		<PLOutputVariable name="output_blogtitle" type="string" />
+		<PLOutputVariable name="output_blogcontent" type="string" />
+	</PLSelect>
+	<PLSelect name="createBlog" functionName="createNewBlog"
+		multipleResults="false">
+		<PLInputVariable order="0" name="profileID" />
+		<PLInputVariable order="1" name="blogTitle" />
+		<PLInputVariable order="2" name="blogContent" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="editBlog" functionName="editBlog"
+		multipleResults="false">
+		<PLInputVariable order="0" name="inputBlogId" />
+		<PLInputVariable order="1" name="inputBlogTitle" />
+		<PLInputVariable order="2" name="inputBlogContent" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="deleteBlog" functionName="deleteBlog"
+		multipleResults="false">
+		<PLInputVariable order="0" name="inputBlogId" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<PLSelect name="createNewImageFile" functionName="createNewImageFile"
+		multipleResults="false">
+		<PLInputVariable order="0" name="filehash" />
+		<PLInputVariable order="1" name="file" />
+		<PLInputVariable order="2" name="mimetype" />
+		<PLInputVariable order="3" name="filesize" />
+		<PLInputVariable order="4" name="profileID" />
+		<PLInputVariable order="5" name="filename" />
+		<PLInputVariable order="6" name="imagedimensionx" />
+		<PLInputVariable order="7" name="imagedimensiony" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+		<PLOutputVariable name="output_dateuploaded" type="string" />
+	</PLSelect>
+	<PLSelect name="getProfileImage" functionName="getProfileImageElement"
+		multipleResults="false">
+		<PLInputVariable order="0" name="profileID" />
+		<PLOutputVariable name="output_element_id" type="string" />
+		<PLOutputVariable name="output_elementtype_id" type="string" />
+		<PLOutputVariable name="output_elementtype" type="string" />
+		<PLOutputVariable name="output_elementpackagepath" type="string" />
+		<PLOutputVariable name="output_creator_id" type="string" />
+		<PLOutputVariable name="output_datecreated" type="string" />
+		<PLOutputVariable name="output_imagefilehash" type="string" />
+		<PLOutputVariable name="output_mimetype" type="string" />
+		<PLOutputVariable name="output_file" type="string" />
+		<PLOutputVariable name="output_filesize" type="string" />
+		<PLOutputVariable name="output_dateuploaded" type="string" />
+		<PLOutputVariable name="output_uploader" type="string" />
+		<PLOutputVariable name="output_filename" type="string" />
+		<PLOutputVariable name="output_imagedimensionx" type="string" />
+		<PLOutputVariable name="output_imagedimensiony" type="string" />
+	</PLSelect>
+	<PLSelect name="setProfileImage" functionName="setprofileimage"
+		multipleResults="false">
+		<PLInputVariable order="0" name="userID" />
+		<PLInputVariable order="1" name="profileID" />
+		<PLInputVariable order="2" name="imagefilehash" />
+		<PLInputVariable order="3" name="mimetype" />
+		<PLOutputVariable name="output_successful" type="boolean" />
+		<PLOutputVariable name="output_element_id" type="string" />
+		<PLOutputVariable name="output_elementtype_id" type="string" />
+		<PLOutputVariable name="output_elementtype" type="string" />
+		<PLOutputVariable name="output_elementpackagepath" type="string" />
+	</PLSelect>
+	
+	<PLSelect name="createBlogComment" functionName="createBlogComment" multipleResults="false">
+		<PLInputVariable order="0" name="blog_id"/>
+		<PLInputVariable order="1" name="blogCommentWriter"/>
+		<PLInputVariable order="2" name="blogCommentParent"/>
+		<PLInputVariable order="3" name="blogCommentContent"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="deleteBlogComment" functionName="deleteBlogComment" multipleResults="false">
+		<PLInputVariable order="0" name="blogComment_id"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="updateBlogComment" functionName="updateBlogComment" multipleResults="false">
+		<PLInputVariable order="0" name="blogComment_id"/>
+		<PLInputVariable order="1" name="blogCommentContent"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="getRootBlogCommentList" functionName="getRootBlogCommentList" multipleResults="true">
+		<PLInputVariable order="0" name="blog_id"/>
+		<PLOutputVariable name="childcommentcount" type="string"/>
+		<PLOutputVariable name="blogcomment_id" type="string"/>
+		<PLOutputVariable name="blog_id" type="string"/>
+		<PLOutputVariable name="blogcommentwriter" type="string"/>
+		<PLOutputVariable name="blogcommentparent" type="string"/>
+		<PLOutputVariable name="dateblogcommentcreated" type="string"/>
+		<PLOutputVariable name="blogcommentcontent" type="string"/>
+		<PLOutputVariable name="profilename" type="string"/>
+	</PLSelect>
+	<PLSelect name="getBlogCommentList" functionName="getBlogCommentList" multipleResults="true">
+		<PLInputVariable order="0" name="blogcomment_id"/>
+		<PLOutputVariable name="childcommentcount" type="string"/>
+		<PLOutputVariable name="blogcomment_id" type="string"/>
+		<PLOutputVariable name="blog_id" type="string"/>
+		<PLOutputVariable name="blogcommentwriter" type="string"/>
+		<PLOutputVariable name="blogcommentparent" type="string"/>
+		<PLOutputVariable name="dateblogcommentcreated" type="string"/>
+		<PLOutputVariable name="blogcommentcontent" type="string"/>
+		<PLOutputVariable name="profilename" type="string"/>
+	</PLSelect>
+	<PLSelect name="getBlogComment" functionName="getBlogComment" multipleResults="false">
+		<PLInputVariable order="0" name="blogComment_id"/>
+		<PLOutputVariable name="output_blogcomment_id" type="string"/>
+		<PLOutputVariable name="output_blog_id" type="string"/>
+		<PLOutputVariable name="output_blogcommentwriter" type="string"/>
+		<PLOutputVariable name="output_blogcommentparent" type="string"/>
+		<PLOutputVariable name="output_dateblogcommentcreated" type="string"/>
+		<PLOutputVariable name="output_blogcommentcontent" type="string"/>
+		<PLOutputVariable name="output_profilename" type="string"/>
+	</PLSelect>
+	<PLSelect name="getRecentUpdateBlogProfiles" functionName="getRecentUpdateBlogProfiles" multipleResults="true">
+		<PLInputVariable order="0" name="profile_count"/>
+		<PLInputVariable order="1" name="start_index"/>
+		<PLOutputVariable name="blogwriter" type="string"/>
+		<PLOutputVariable name="blog_id" type="string"/>
+		<PLOutputVariable name="dateblogcreated" type="string"/>
+		<PLOutputVariable name="profilename" type="string"/>
+	</PLSelect>
+	<PLSelect name="getBlogProfilesMostReply" functionName="getBlogProfilesMostReply" multipleResults="true">
+		<PLInputVariable order="0" name="profile_count"/>
+		<PLOutputVariable name="blog_id" type="string"/>
+		<PLOutputVariable name="counter" type="string"/>
+		<PLOutputVariable name="blogwriter" type="string"/>
+		<PLOutputVariable name="dateblogcreated" type="string"/>
+		<PLOutputVariable name="profilename" type="string"/>
+	</PLSelect>
+	<PLSelect name="isReferralIdUnique" functionName="isreferral_idunique" multipleResults="false">
+		<PLInputVariable order="0" name="referral_id"/>
+		<PLOutputVariable name="output_referralunique" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="getNumberOfInvitesLeft" functionName="getnumberofinvitesleft"
+			multipleResults="false">
+		<PLInputVariable order="0" name="user_id"/>
+		<PLOutputVariable name="output_numberofinvites" type="string"/>
+	</PLSelect>
+	<PLSelect name="addUserInvite" functionName="adduserinvite"
+			multipleResults="false">
+		<PLInputVariable order="0" name="user_id"/>
+		<PLInputVariable order="1" name="email_address"/>
+		<PLInputVariable order="2" name="referral_id"/>
+		<PLOutputVariable name="output_invitesuccessful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="setUserInvitationConfirmation" functionName="setUserInvitationConfirmation" multipleResults="false">
+		<PLInputVariable order="0" name="referral_id"/>
+		<PLInputVariable order="1" name="inviteduser_id"/>
+		<PLInputVariable order="2" name="confirmation_id"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="activateUserAccount" functionName="activateUserAccount" multipleResults="false">
+		<PLInputVariable order="0" name="confirmation_id"/>
+		<PLInputVariable order="1" name="inviteduser_id"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="isConfirmationIDUnique" functionName="isConfirmation_IDUnique" multipleResults="false">
+		<PLInputVariable order="0" name="confirmation_id"/>
+		<PLOutputVariable name="output_confirmationunique" type="boolean"/>
+	</PLSelect>	
+	<PLSelect name="setPasswordResetConfirmation" functionName="setPasswordResetConfirmation" multipleResults="false">
+		<PLInputVariable order="0" name="emailaddress"/>
+		<PLInputVariable order="1" name="passwordresetref"/>
+		<PLOutputVariable name="output_user_id" type="string"/>
+	</PLSelect>
+	<PLSelect name="updateForgottenPassword" functionName="updateForgottenPassword" multipleResults="false">
+		<PLInputVariable order="0" name="user_id"/>
+		<PLInputVariable order="1" name="passwordresetref"/>
+		<PLInputVariable order="2" name="newuserpasswordhash"/>
+		<PLOutputVariable name="output_successful" type="boolean"/>
+	</PLSelect>
+	<PLSelect name="getSearchProfiles" functionName="getSearchProfiles" multipleResults="true">
+		<PLInputVariable order="0" name="name"/>
+		<PLInputVariable order="1" name="profile_count"/>
+		<PLInputVariable order="2" name="start_index"/>
+		<PLOutputVariable name="first" type="string"/>
+		<PLOutputVariable name="last" type="string"/>
+		<PLOutputVariable name="profile_id" type="string"/>
+		<PLOutputVariable name="profilename" type="string"/>
+	</PLSelect>
+</DBQueries:Queries>
