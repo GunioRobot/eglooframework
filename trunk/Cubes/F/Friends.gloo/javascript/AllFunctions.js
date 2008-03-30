@@ -1,4 +1,4 @@
 {
-initFunc: <!--{include file="../cubes/F/Friends.gloo/javascript/ContentViewInitFunc.js"}-->,
-contViewUpFunc: <!--{include file="../cubes/F/Friends.gloo/javascript/ContentViewUpdateFunc.js"}-->
+initFunc: <!--{include file="../Cubes/F/Friends.gloo/javascript/ContentViewInitFunc.js"}-->,
+contViewUpFunc: <!--{include file="../Cubes/F/Friends.gloo/javascript/ContentViewUpdateFunc.js"}-->
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eglooCube:Cube xmlns:eglooCube="com.egloo.eGloo.Cube"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="com.egloo.eGloo.Cube ../../../xml/schemas/CubeFresh.xsd "
+    xsi:schemaLocation="com.egloo.eGloo.Cube ../../../XML/Schemas/CubeFresh.xsd "
     CubeID="com.egloo.eGlooCubes.Blog" CubeName="Blog" Version="1.0.0">
     <Resources>
         <ContentViewResource resourceID="contentView"
