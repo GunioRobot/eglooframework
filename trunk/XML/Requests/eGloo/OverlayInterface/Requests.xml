@@ -43,7 +43,7 @@
 		<Request id="sendPasswordResetConfirmation" processorID="SendPasswordResetConfRequestProcessor">
 			<VariableArgument type="post" id="emailAddress" regex="/^\w+?(\.\w+?|)@\w+?.(biz|com|edu|gov|info|net|org)$/" required="true" />
 		</Request>
-		<Request id="viewForgotAccountPasswordResetForm" processorID="ViewForgotAcctPwdResetFormRequestProcessor">
+		<Request id="viewForgotAccountPasswordResetForm" processorID="ViewForgotAccountPasswordResetFormRequestProcessor">
 			<VariableArgument id="uID" regex="/^-?\d{1,19}$/" required="true" type="get" />
 			<VariableArgument id="confirmationID" regex="/^\w{20}$/" required="true" type="get" />
 		</Request>
