@@ -62,7 +62,7 @@ class CacheGateway {
             $this->_memcache->addServer( self::MEMCACHE_ADDR, 11219, true);
             $this->_memcache->addServer( self::MEMCACHE_ADDR, 11220, true);
         } catch ( Exception $exception ) {
-            APLogger::writeLog( APLogger::$ERROR, 
+            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
                            'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );    
         }
         
@@ -73,7 +73,7 @@ class CacheGateway {
         try {
             $retVal = $this->_memcache->delete( $id );
         } catch ( Exception $exception ) {
-            APLogger::writeLog( APLogger::$ERROR, 
+            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
                            'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
         }
         
@@ -86,7 +86,7 @@ class CacheGateway {
         try {
             $retVal = $this->_memcache->get( $id );
         } catch ( Exception $exception ) {
-            APLogger::writeLog( APLogger::$ERROR, 
+            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
                            'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
         }
         
@@ -104,7 +104,7 @@ class CacheGateway {
         try {
             $retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
         } catch ( Exception $exception ) {
-            APLogger::writeLog( APLogger::$ERROR, 
+            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
                            'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                            
         }
         

@@ -35,8 +35,8 @@
  * @todo Finish commenting
  */
 function default_exception_handler( $exception ) {
-    if ( class_exists( 'APLogger' ) ) {
-        APLogger::writeLog( APLogger::$EMERGENCY, 
+    if ( class_exists( 'eGlooLogger' ) ) {
+        eGlooLogger::writeLog( eGlooLogger::$EMERGENCY, 
                            '[File: ' . $_SERVER['SCRIPT_NAME'] . 
                            ' Line: ' . __LINE__ . '] Programmer ' .
                            'Error: Request Handler Threw Unknown Exception' .
@@ -90,13 +90,13 @@ function default_error_handler( $severity, $message, $filename, $linenum, $errco
             break;
     }
     
-    if ( class_exists( 'APLogger' ) ) {
+    if ( class_exists( 'eGlooLogger' ) ) {
         // TODO this should go to a dispatch function of some kind
         if ( strpos( $message, 'Memcache' ) !== false ) {
-            APLogger::writeLog( APLogger::$EMERGENCY, $levelString . ' ' . 
+            eGlooLogger::writeLog( eGlooLogger::$EMERGENCY, $levelString . ' ' . 
                                           $message . ' ' . $filename . ' ' . $linenum, 'Memcache' );
         } else {
-            APLogger::writeLog( APLogger::$EMERGENCY, $levelString . ' ' . 
+            eGlooLogger::writeLog( eGlooLogger::$EMERGENCY, $levelString . ' ' . 
                                           $message . ' ' . $filename . ' ' . $linenum );            
         }
         if ( $killRequest === true ) {
