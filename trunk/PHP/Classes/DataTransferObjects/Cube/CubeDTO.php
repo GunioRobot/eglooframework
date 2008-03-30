@@ -136,7 +136,7 @@ class CubeDTO extends DataTransferObject implements ElementInterface {
     }
 
     public function getCubeElementXMLHTTPRequest() {
-        return '../Templates/Frameworks/Common/XMLHTTPResponse/Element/CubeElementXMLHTTPResponse.tpl';
+        return '../Templates/Frameworks/Common/XMLHTTPResponse/Element/CubeElementXMLHTTPResponse.xmltpl';
     }
 
     public function getCubeElementAllFunctions() {

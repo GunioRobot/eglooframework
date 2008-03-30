@@ -39,7 +39,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
     
     const STRONG_HASH = 'sha256';
     
-    private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Account/RegisterNewAccountXMLHTTPResponse.tpl';
+    private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Account/RegisterNewAccountXMLHTTPResponse.xmltpl';
     
     public function processRequest() {
         $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
