@@ -1,0 +1,86 @@
+Oracle:
+    -> Guide for Oracle 9i: http://www.utexas.edu/its/unix/reference/oracledocs/v92/B10501_01/network.920/a96580/advcfg.htm#475650
+    -> Using Oracle RAC in Oracle 10g: http://www.datadirect.com/developer/odbc/odbc_oracle_rac/index.ssp
+    There are two setups for servers in Oracle: 
+     - Dedicated - each client connection uses one server.
+     - Shared - a server can serve multiple client connections.  
+     We will be using Shared.
+     Connection set up
+     1. Listener process running on a server listens for incoming connections.
+     2. Listener passes off connection to a dispatcher process
+    to set up load balancing using Oracle RAC (Real Application Clusters) you first set up a list of listener protocal addresses.  Listener is the program that listens for incoming database connections.  
+
+PostgreSQL:
+
+    -> Software: http://pgcluster.projects.postgresql.org/feature.html
+        "PGCluster is the synchronous replication system of the multi-master composition for PostgreSQL."
+            - Since a replication system is a synchronous replication, delay does not occur with the data 
+              duplicate between the Cluster DBs.
+            - Since a server is multi-master composition, two or more the Cluster DBs can receive access from 
+              a user simultaneously.
+        Functions:
+            PGCluster has two functions.
+            - A load sharing function
+                - The session load of a reference request is distributed. It is effective at the Web application
+                  with which a reference request pours in. 
+                - A replication object can be specified per table. When the tables which receive an updating request
+                  and a reference request differ, the PGCluster can distribute the table which receives an updating 
+                  request and can reproduce only the table which receives a reference request.
+            - A high availability function
+                - When failure occurs in Cluster DB, a load balancer and a replication server separate Failure DB 
+                  from a system, and continue service using the remaining DB. Since separation of Failure DB and 
+                  continuation of service are performed simultaneously, most service stop time is made to 0. 
+                - The Cluster DB which repair finished can be dynamically restored to a system, without stopping 
+                  service. 
+                - Data is automatically copied to DB restored or added from other DB. The query which received during
+                  restoration isexecuted from the replication server after restoration.
+
+            - Cluster server can be set up three or more machines. When a problem occurs in Cluster DB, loader 
+              balancer and a replication server will be separated from that machine, and continues service using the 
+              other Cluster DBs.
+            - Several replication server can be set up. When an problem occurs at the replication server, Cluster DB
+              automatically changes connection to the standing-by replication server.
+            - Since PGCluster is the synchronous replication of a multi-master, it can acquire the same value even if it refers
+              to different Cluster DB. It is very suitable for load balancing for reference system.
+            - When the load of an updating process is high, you may use partial replication feature to decentralize the load.
+            - When all replication servers stop, Cluster DB operates in stand-alone mode. There are two modes for stand-alone
+              mode: read only mode which only permits references, and read write mode, which permits updating.
+            - Several loader balancer can be set up, however, they will not have the problem detection and switching over
+              functions that the loader balancer itself has.
+            - When the Cluster DBs were started with a recovery option, it will come back to a replication system after taking
+              the synchronization to master DB's data. If there are three or more Cluster DBs, a query can be processed without
+              stopping service during recovery.
+            - The replication is done in query-based method.
+            - Since data read from the COPY (FROM) command are also replicated, the backup files which were created by pg_dump
+              can also be replicated.
+            - When inserting the present time data with a NOW function (ex. the NOW function is contained in the query, or the
+              default value of a table is being set to 'NOW'), that values will also be replicated. The time will be the time
+              of a replication server.
+            - The sequence operation function (nextval, setval) will be replicated.
+            - Since the order of INSERT processing is controlled to become the same in each Cluster DB, serial type data is
+              synchronized as well.
+            - The stored procedure accompanied by data update is replicated.
+            - The data of large object is replicated.
+            - The OID is replicated only the large object.
+        
+        Restrictions:
+            When replicating a large object, it needs to be placed on the directory which the file of a large 
+            object can read from all the clusters DB.
+
+        TODO:
+            These functions are scheduled to be added to "1.3."
+                - The life check between the servers by a watch dog .
+                - Cascade connection of the replication server with Cluster DBs .
+                - Add a group attribute to Cluster DB. 
+                  (The table specified by the partial replication is not replicated between different groups) .
+                
+        Links:
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-1_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-2_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-3_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-4_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-5_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-6_e.pdf
+            http://www.ipa.go.jp/software/open/forum/north_asia/download/3-051dbmsc-7_e.pdf
+
+MySQL:
