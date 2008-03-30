@@ -1,0 +1,156 @@
+/* Microsoft Internet Explorer Default */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#footer {
+	bottom: 0;
+	color: #999;
+	font-size: 10px;
+	height: 20px;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	left: 0;
+	right: 0;
+}
+
+#logo {
+	left: 0;
+	position: absolute;
+}
+
+#form {
+	left: 315px;
+	padding-bottom: 0;
+	padding-left: 5px;
+	padding-top: 0;
+	position: absolute;
+	top: 47px;
+}
+
+div.halo {
+	color: #CCC;
+	padding-left: 5px;
+	position: absolute;
+	top: 150px;
+	width: 100px;
+	z-index: 5;
+}
+
+input.field {
+	border: solid #999 1px;
+	clear: both;
+	color: gray;
+	margin: 0 0 4px 0;
+	padding-left: 2px;
+	position: relative;
+}
+
+input.field:disabled {
+	background-color: #FFF;
+	clear: both;
+	color: #CCC;
+	margin: 0 0 4px 0;
+	position: relative;
+}
+
+#container {
+	top: 0;
+	left: 50%;
+	margin-left: -400px;
+	overflow: hidden;
+	position: absolute;
+	height: 100%;
+	width: 800px;
+}
+
+#shell {
+	bottom: 0;
+	clear: both;
+	height: 300px;
+	left: 0;
+	margin: 0 auto 0 auto;
+	overflow: hidden;
+	position: relative;
+	width: 660px;
+}
+
+#top {
+	height: 170px;
+	left: 50%;
+	margin: 220px 0 0 -225.5px;
+	position: absolute;
+	top: -27%;
+	width: 470px;
+}
+
+#content {
+	background-color: #FFF;
+	border-bottom: solid #9CF 1px;
+	border-top: solid #9CF 1px;
+	color: #FFF;
+	display: none;
+	/*<!--{"height: expression(((ignoreMe = document.documentElement.clientHeight) - 215) + 'px');"}-->*/
+	left: 50%;
+	margin: 0 0 0 -405px;
+	overflow: auto;
+	padding: 0 0 0 0;
+	position: absolute;
+	top: 180px;
+	width: 810px;
+	z-index: 7;
+}
+
+#content_text {
+	background-color: #FFF;
+	bottom: 3px;
+	color: #666;
+	left: 50%;
+	margin: 0 0 0 -400px;
+	overflow: auto;
+	padding: 0 0 0 0;
+	position: absolute;
+	height: 99%;
+	top: 3px;
+	width: 800px;
+}
+
+#about, #join, #login {
+	float: right;
+	padding: 4px 3px 3px 0;
+	position: relative;
+}
+
+#about, #join {
+	color: #0099E5;
+}
+
+#about:hover, #join:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#login {
+	color: #CCC;
+}
+
+span.spantext {
+	color: #CCC;
+	float: right;
+	padding: 4px 3px 0 0;
+}
+
+#loginFailed {
+	color: red;
+	margin: 0 auto 0 auto;
+	padding-top: 0;
+	position: absolute;
+	right: 15px;
+	text-align: center;
+	top: 140px;
+	width: 80px;
+}
