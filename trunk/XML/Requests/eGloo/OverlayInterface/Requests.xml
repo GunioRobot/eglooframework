@@ -39,7 +39,7 @@
 			<VariableArgument type="post" id="userReferralCode" regex="/^\w{20}$/" required="true" />
 			<!--	<Decorator order="0" decoratorID="RequireSSLDecorator" /> -->
 		</Request>
-		<Request id="viewForgotAccountPasswordForm" processorID="NOOPRequestProcessor" />
+		<Request id="viewForgotAccountPasswordForm" processorID="ViewForgotAccountPasswordFormRequestProcessor" />
 		<Request id="sendPasswordResetConfirmation" processorID="SendPasswordResetConfRequestProcessor">
 			<VariableArgument type="post" id="emailAddress" regex="/^\w+?(\.\w+?|)@\w+?.(biz|com|edu|gov|info|net|org)$/" required="true" />
 		</Request>
