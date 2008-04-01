@@ -1,0 +1,5 @@
+<!--{if $profileRanked }-->
+div.ratetip<!--{$cubeElementInstanceID}--> table.ranking td { margin:-2px 0 0 -2px; padding:0; position:absolute; width:<!--{$profileRank}-->px; height:20px; background:url(/images/ranking/stars-on.gif) top left no-repeat;  }
+<!--{else}-->
+div.ratetip<!--{$cubeElementInstanceID}--> table.ranking td { margin:-2px 0 0 -2px; padding:0; position:absolute; width:<!--{$elementRank}-->px; height:20px; background:url(/images/ranking/stars-rated.gif) top left no-repeat;  }
+<!--{/if}-->
