@@ -1,4 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Image Hosting Request Dispatch File
+ *
+ * Dispatches HTTP requests to the image hosting service application
+ *
+ * HTTP requests are mapped via request class and request ID to an
+ * appropriate RequestProcessor subclass.  Arguments allowed and
+ * decorators applied are specified within the request ID.  The
+ * three argument types allowed are variable arguments, boolean
+ * arguments and select arguments.  Decorators are applied in a
+ * layered fashion according to their order number. 
+ * 
+ * Copyright 2008 eGloo, LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *  
+ * @author George Cooper
+ * @copyright 2008 eGloo, LLC
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @package XMLHTTPResponse
+ * @version 1.0
+ -->
 <tns:Requests xmlns:tns="com.egloo.www/Requests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="com.egloo.www/Requests schemas/Requests.xsd">
 	<RequestClass id="account">
@@ -54,38 +86,6 @@
 			<VariableArgument id="confirmationID" regex="/^\w{20}$/" required="true" type="post" />
 		</Request>
 	</RequestClass>
-	<RequestClass id="alert">
-		<Request id="createAlert" processorID="CreateAlertRequestProcessor"></Request>
-		<Request id="getAlertList" processorID="AlertListRequestProcessor"></Request>
-		<Request id="viewAlert" processorID="ViewAlertRequestProcessor">
-			<VariableArgument type="get" id="alertID" regex="/^.*$/" required="true" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="auction">
-		<Request id="auctionCalendar" processorID="ShowAuctionCalendarRequestProcessor">
-			<SelectArgument type="post" required="false" id="timeOfDay">
-				<value>am</value>
-				<value>pm</value>
-			</SelectArgument>
-			<VariableArgument type="post" id="calendarDate" regex="/^.*$/" required="false" />
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-		<Request id="makeBid" processorID="ShowBidBoxRequestProcessor">
-			<VariableArgument type="get" id="cubeID" regex="/^.*$/" required="true" />
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-		<Request id="postBid" processorID="PostBidRequestProcessor">
-			<VariableArgument type="post" id="slotID" regex="/^.*$/" required="true" />
-			<VariableArgument type="post" id="userBid" regex="/^.*$/" required="true" />
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-		<Request id="loadCategoryMap" processorID="CategoryMapRequestProcessor">
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-		<Request id="currentBids" processorID="CurrentBidsRequestProcessor">
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-	</RequestClass>
 	<RequestClass id="blog">
 		<Request id="viewBlog" processorID="ViewBlogRequestProcessor">
 			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="false" />
@@ -137,61 +137,8 @@
 			<VariableArgument type="get" id="blogCommentID" regex="/^-?\d{1,19}$/" required="true" />
 		</Request>
 	</RequestClass>
-	<RequestClass id="flash">
-		<Request id="getVideo" processorID="FlashVideoDispatcherRequestProcessor">
-			<VariableArgument type="get" id="flv" regex="/^.*$/" required="true" />
-		</Request>
-	</RequestClass>
 	<RequestClass id="css">
-		<Request id="colorPicker" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
 		<Request id="extMainBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="extMainJoin" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="extMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="global" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="globalMenuBar" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="infoBoardBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="infoBoardIcing" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="intMainBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="intMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="blogMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="thickbox" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userCommCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userControlCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userFridge" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userProfileCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="fridgeStyles" processorID="StyleSheetRequestProcessor">
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
@@ -231,11 +178,7 @@
 		</Request>
 	</RequestClass>
 	<RequestClass id="externalMainPage">
-		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor" />
 		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor" />
-	</RequestClass>
-	<RequestClass id="fridge">
-		<Request id="showFridge" processorID="FridgeBaseRequestProcessor"></Request>
 	</RequestClass>
 	<RequestClass id="image">
 		<Request id="createImageElement" processorID="CreateImageElementRequestProcessor">
@@ -281,30 +224,6 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
-	<RequestClass id="infoBoard">
-		<Request id="Blogs" processorID="ViewInformationBoardBlogsBaseRequestProcessor">
-			<VariableArgument type="get" id="startIndex" regex="/^\d{1,4}$/" required="false" />
-			<VariableArgument type="get" id="length" regex="/^\d{1,3}$/" required="false" />
-		</Request>
-		<Request id="Fridge" processorID="FridgeBaseInfoBoardRequestProcessor" />
-		<Request id="FridgePics" processorID="FridgePicsInfoBoardRequestProcessor" />
-		<Request id="searchPeople" processorID="SearchPeopleBaseRequestProcessor">
-			<VariableArgument type="get" id="name" regex="/^\w{1,64}$/" required="true" />
-		</Request>
-		<Request id="viewInfoBoard" processorID="ViewInformationBoardRequestProcessor">
-			<SelectArgument type="get" required="true" id="gMBID">
-				<value>gMBFridge</value>
-				<value>gMBIcing</value>
-				<value>gMBMusic</value>
-				<value>gMBPeople</value>
-				<value>gMBPictures</value>
-				<value>gMBVideo</value>
-			</SelectArgument>
-		</Request>
-		<Request id="viewPeopleUserProfile" processorID="ViewUserProfileInformationBoardPeopleRequestProcessor">
-			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
-		</Request>
-	</RequestClass>
 	<RequestClass id="internalMainPage">
 		<Request id="getInternalMainPage" processorID="InternalMainPageBaseRequestProcessor">
 			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="false" />
@@ -345,78 +264,6 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 		<Request id="internalMainInit" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="eGlooUtil" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="eGlooUtil_Extras" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ajaxfileupload" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="BlogMainInit" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="CreateEditBlog" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="cookie" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="form" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="idrag" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="idrop" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifx" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxPackRoot" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxscale" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxslide" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxtransfer" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="isortables" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="iutil" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery.dom" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery.easing.1.1" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="mousewheel" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="tabs" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ranking" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="require" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="thickbox" processorID="JavascriptRequestProcessor">
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
@@ -526,16 +373,6 @@
 	<RequestClass id="search">
 		<Request id="searchByName" processorID="NameSearchRequestProcessor">
 			<VariableArgument type="get" id="nameSearchParam" regex="/^\w{1,64}$/" required="true" />
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="video">
-		<Request id="uploadVideo" processorID="UploadVideoRequestProcessor">
-			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="util">
-		<Request id="fileUpload" processorID="IFrameFormFileUploadRequestProcessor">
 			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
 		</Request>
 	</RequestClass>
