@@ -46,6 +46,9 @@ class RequestInfoBean {
     
     private $decoratorArray = array();
 
+    private $application = null;
+	private $interfaceBundle = null;
+    
     public function __construct() {
         $this->COOKIES = array();
         $this->FILES = array();
@@ -193,8 +196,24 @@ class RequestInfoBean {
  	public function getDecoratorArray() {
         return $this->decoratorArray;
     } 	
- 	
- }
+
+    public function getApplication() {
+		return $this->application;
+	}
+
+	public function setApplication( $application ) {
+		$this->application = $application;
+	}
+	
+	public function getInterfaceBundle() {
+		return $this->interfaceBundle;
+	}
+
+	public function setInterfaceBundle( $interfaceBundle ) {
+		$this->interfaceBundle = $interfaceBundle;
+	}
+	
+}
  
 
 ?>
