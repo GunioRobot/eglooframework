@@ -40,6 +40,16 @@ abstract class TemplateBuilder {
 	protected $application = 'eGloo';
 	protected $interfaceBundle = 'OverlayInterface';
 //	protected $interfaceBundle = 'Default';
+
+	public function setApplication( $application ) {
+		$this->application = $application;
+	}
+	
+	public function setInterfaceBundle( $interfaceBundle ) {
+		$this->interfaceBundle = $interfaceBundle;
+	}
+	
+	abstract public function setDispatchPath();
 	
 }
  

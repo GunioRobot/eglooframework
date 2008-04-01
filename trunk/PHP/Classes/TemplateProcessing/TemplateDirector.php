@@ -35,7 +35,16 @@
  * @package Template
  */
 abstract class TemplateDirector {
+    protected $application = null;
+    protected $interfaceBundle = null;
     
+	public function setApplication( $application ) {
+		$this->application = $application;
+	}
+	
+	public function setInterfaceBundle( $interfaceBundle ) {
+		$this->interfaceBundle = $interfaceBundle;
+	}
 }
 
 ?>
