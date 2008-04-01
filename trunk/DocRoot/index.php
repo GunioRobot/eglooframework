@@ -57,8 +57,8 @@
      * 4) process the request
      */
 
-    $webapp = 'Default';
-    $uibundle = 'Default';
+    $webapp = 'eGloo';
+    $uibundle = 'OverlayInterface';
 
 //    if ( !isset($_ENV['EG_DEPLOY']) || ( $_ENV['EG_DEPLOY'] !== 'Prod' && 
 //		$_ENV['EG_DEPLOY'] !== 'Test' && $_ENV['EG_DEPLOY'] !== 'DevFast' && $_ENV['EG_DEPLOY'] !== 'Dev' ) ) {
@@ -66,7 +66,7 @@
 //    }
     
     $requestInfoBean = new RequestInfoBean();
-    $requestValidator = RequestValidator::getInstance();
+    $requestValidator = RequestValidator::getInstance( $webapp, $uibundle );
     $isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
     	
     if ( $isValidRequest ) {

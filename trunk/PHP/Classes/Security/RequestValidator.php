@@ -66,19 +66,21 @@ final class RequestValidator {
 	/**
 	 * Private constructor because this class is a singleton
 	 */
-	private function __construct() {
-		$this->loadRequestNodes();	
+	private function __construct( $webapp, $uibundle ) {
+		$this->loadRequestNodes( $webapp, $uibundle );	
 	}
 	
 	/**
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
-	private function loadRequestNodes(){
+	private function loadRequestNodes( $webapp, $uibundle ){
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Processing XML", 'Security' );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
-        $requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
+		$this->REQUESTS_XML_LOCATION = "../XML/Requests/" . $webapp . "/" . $uibundle . "/Requests.xml";
+
+		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
         foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
             
             foreach( $requestClass->xpath( 'child::Request' ) as $request ){
@@ -95,13 +97,13 @@ final class RequestValidator {
 	/**
 	 * returns the singleton of this class
 	 */
-    public static function getInstance() {
+    public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
         if ( !isset(self::$singletonRequestValidator) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
             if ( (self::$singletonRequestValidator = $cacheGateway->getObject( 'requestValidatorNodes', '<type>' ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Building Singleton", 'Security' );
-                self::$singletonRequestValidator = new RequestValidator();
+                self::$singletonRequestValidator = new RequestValidator( $webapp, $uibundle );
                 $cacheGateway->storeObject( 'requestValidatorNodes', self::$singletonRequestValidator, '<type>' );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Singleton pulled from cache", 'Security' );
