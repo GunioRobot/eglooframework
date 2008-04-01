@@ -95,7 +95,8 @@ class XHTMLBuilder extends TemplateBuilder {
     
     public function setDispatchPath() {
        // $templateDispatcher = XHTMLDispatcher::getInstance( 'eGloo', 'Default' );
-        $templateDispatcher = XHTMLDispatcher::getInstance( $this->application, $this->interfaceBundle );
+        $templateDispatcher = XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), 
+        	$this->requestInfoBean->getInterfaceBundle() );
         
         // TODO this should be moved to setTemplateEngine as part of the director's work
         $this->templateEngine = new TemplateEngine( $this->deployment, 'us' );
