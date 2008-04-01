@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * RequestProcessor Abstract Class File
+ * Generic XMLHTTPResponse File
  *
- * Needs to be commented
+ * This is a generic XMLHTTPResponse 
  * 
  * Copyright 2008 eGloo, LLC
  * 
