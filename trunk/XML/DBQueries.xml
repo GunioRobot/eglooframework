@@ -310,4 +310,20 @@
 		<PLOutputVariable name="profile_id" type="string"/>
 		<PLOutputVariable name="profilename" type="string"/>
 	</PLSelect>
+	<!-- Needs to be added to SQL build scripts -->
+	<PLSelect name="getProfileID" functionName="getProfileID" multipleResults="false">
+		<PLInputVariable order="0" name="input_profilename"/>
+		<PLOutputVariable name="output_profile_id" type="string"/>
+	</PLSelect>
+	<!-- Needs to be added to SQL build scripts -->
+	<PLSelect name="increaseNumberInvites" functionName="increaseNumberInvites" multipleResults="false">
+		<PLInputVariable order="0" name="input_user_id"/>
+		<PLInputVariable order="1" name="input_number_additional"/>
+		<PLOutputVariable name="output_successful" type="boolean" />
+	</PLSelect>
+	<!-- Needs to be added to SQL build scripts -->
+	<PLSelect name="getUserID" functionName="getUserID" multipleResults="false">
+		<PLInputVariable order="0" name="input_username"/>
+		<PLOutputVariable name="output_user_id" type="string"/>
+	</PLSelect>
 </DBQueries:Queries>
