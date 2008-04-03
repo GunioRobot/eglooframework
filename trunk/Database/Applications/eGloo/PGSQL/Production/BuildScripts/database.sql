@@ -156,24 +156,24 @@ CONSTRAINT fk_UserEmailAddresses_EmailAddress FOREIGN KEY (EmailAddress)
 -- Need to make a trigger on this table to make verification stuff.
 
 --Not being used right now . . .
-CREATE TABLE VerifyEmailAddress (
-	EmailAddress														BIGINT NOT NULL,
-	User_ID																BIGINT NOT NULL,
-	EmailVerificationHex												VARCHAR(10) NOT NULL UNIQUE, -- might need to be longer
-	EmailVerificationTimeStamp											TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	EmailVerificationValidTill											TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '3 hours'), -- Might want to use a trigger for this. . . to get proper timestamp.
-CONSTRAINT pk_VerifyEmailAddress PRIMARY KEY (EmailAddress,User_ID,EmailVerificationHex),
-CONSTRAINT fk_VerifyEmailAddress_EmailAddress FOREIGN KEY (EmailAddress)
-	REFERENCES EmailAddresses(EmailAddress)
-	MATCH FULL
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE,
-CONSTRAINT fk_VerifyEmailAddress_User_ID FOREIGN KEY (User_ID)
-	REFERENCES Users(User_ID)
-	MATCH FULL
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE
-);
+-- CREATE TABLE VerifyEmailAddress (
+-- 	EmailAddress														BIGINT NOT NULL,
+-- 	User_ID																BIGINT NOT NULL,
+-- 	EmailVerificationHex												VARCHAR(10) NOT NULL UNIQUE, -- might need to be longer
+-- 	EmailVerificationTimeStamp											TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- 	EmailVerificationValidTill											TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '3 hours'), -- Might want to use a trigger for this. . . to get proper timestamp.
+-- CONSTRAINT pk_VerifyEmailAddress PRIMARY KEY (EmailAddress,User_ID,EmailVerificationHex),
+-- CONSTRAINT fk_VerifyEmailAddress_EmailAddress FOREIGN KEY (EmailAddress)
+-- 	REFERENCES EmailAddresses(EmailAddress)
+-- 	MATCH FULL
+-- 	ON DELETE NO ACTION
+-- 	ON UPDATE CASCADE,
+-- CONSTRAINT fk_VerifyEmailAddress_User_ID FOREIGN KEY (User_ID)
+-- 	REFERENCES Users(User_ID)
+-- 	MATCH FULL
+-- 	ON DELETE NO ACTION
+-- 	ON UPDATE CASCADE
+-- );
 
 -- Next point
 -- Might want to have this in user?
@@ -1773,7 +1773,7 @@ GRANT SELECT, UPDATE ON seq_Users_User_ID TO WebServer;
 GRANT SELECT, INSERT, UPDATE ON TABLE Users TO WebServer;
 GRANT SELECT, INSERT, UPDATE ON TABLE EmailAddresses TO WebServer;
 GRANT SELECT, INSERT, UPDATE ON TABLE UserEmailAddresses TO WebServer;
-GRANT SELECT, INSERT, UPDATE ON TABLE VerifyEmailAddress TO WebServer;
+-- GRANT SELECT, INSERT, UPDATE ON TABLE VerifyEmailAddress TO WebServer;
 GRANT SELECT, INSERT, UPDATE ON TABLE UserInvitations TO WebServer;
 GRANT SELECT, INSERT, UPDATE ON TABLE UserReferences TO WebServer;
 
