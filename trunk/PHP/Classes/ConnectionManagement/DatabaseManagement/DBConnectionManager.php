@@ -41,9 +41,9 @@
 final class DBConnectionManager {
 	
     private static $host        = "localhost";
-    private static $user        = "egloodev";
-    private static $password    = "blah";
-    private static $dbname      = "eGlooDev";
+    private static $user        = "webserver";
+    private static $password    = "test";
+    private static $dbname      = "eGlooFramework";
     private static $port        = "5432";
 	
 	public static function getConnection() {
