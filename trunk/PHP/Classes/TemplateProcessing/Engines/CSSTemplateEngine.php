@@ -43,7 +43,7 @@ class CSSTemplateEngine extends TemplateEngine {
         
         
         $this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/CSS/';
-        $this->config_dir   = '../config/smarty';
+        $this->config_dir   = '../Configuration/Smarty';
         $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
                                 $local . '/cache/compiled_templates';
         $this->cache_dir    = '/data/eGloo/' . $install . '/' .
