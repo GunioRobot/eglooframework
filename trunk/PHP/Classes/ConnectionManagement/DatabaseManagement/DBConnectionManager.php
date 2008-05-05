@@ -33,7 +33,7 @@
  * 
  * This class can now interface with PGPOOL (postgresql pool) a connection
  * pool daemon, but simply specifying the port of the PGPOOL daemon.
- * This obviously needs to be different than 5432 (postgreys port) 
+ * This obviously needs to be different than 5432 (postgresql port) 
  * 
  * @package Database
  * @subpackage Management
