@@ -1,0 +1,40 @@
+# .htaccess file for eGloo applications
+ 
+# mod_rewrite
+<IfModule rewrite_module> 
+RewriteEngine on 
+
+# Modify the RewriteBase if you are using eGloo in a subdirectory
+RewriteBase /egloo
+
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.php/$1 [L,QSA]
+
+#no rule for images
+RewriteRule ^(.*\.gif)$ $1
+
+# Load 'static' css as dynamic css
+RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?class=css&id=$1
+
+# Load 'static' javascript as dynamic javascript
+RewriteRule ^javascript/(.+)\.js$ index.php?class=javascript&id=$1
+
+# Redirect all attempts at injecting GET requests into the URL
+# Should redirect to 404.  Currently redirects to /
+RewriteRule ^.*\?.*$ /
+
+# Redirect anything two level deep to a class & id query
+# Pass the remainder as the arguments to that RequestClass / RequestID Pair
+# Make sure the argument list is clean -- allow alphanumerics, dot (.), dash (-)
+# underscore (_) and ampersand (&).  Anything else should cascade down to the
+# last rule
+RewriteRule ^/profileID=(-{0,1}[0-9]*)$ index.php?class=internalMainPage&id=getInternalMainPage&profileID=$1
+RewriteRule ^/home$ /index.php?class=internalMainPage&id=getInternalMainPage
+RewriteRule ^/browse$ /index.php?class=publicBrowse&id=viewUpdatedBlogProfiles
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?class=$1&id=$2&$3
+
+# Catch anything that doesn't fit one of the preceding patterns
+# Should redirect to 404.  Currently redirects to /
+#RewriteRule ^/.*$ /
+</IfModule>
