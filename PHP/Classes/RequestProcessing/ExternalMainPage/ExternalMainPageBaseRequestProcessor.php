@@ -68,21 +68,21 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 	
 	        $templateDirector->preProcessTemplate();
 	        
-			$lines = file('.svn/entries');
-			$version = "";
-			foreach( $lines as $line ) {
-				if ( preg_match("/revision=\"(\d+)\"/", $line, $revision ) ){
-					$version = $revision[1];
-					break;	
-				}
-			}
+			// $lines = file('.svn/entries');
+			// $version = "";
+			// foreach( $lines as $line ) {
+			// 	if ( preg_match("/revision=\"(\d+)\"/", $line, $revision ) ){
+			// 		$version = $revision[1];
+			// 		break;	
+			// 	}
+			// }
+			// 
+			// //svn version 1.4 fix
+			// if( $version === "" ){
+			// 	$version = $lines[3];
+			// }
 			
-			//svn version 1.4 fix
-			if( $version === "" ){
-				$version = $lines[3];
-			}
-			
-	        $templateVariables['svnVersion'] = $version;
+	        $templateVariables['svnVersion'] = '∞';
 	        $templateDirector->setTemplateVariables( $templateVariables );            
 	        
 	                
