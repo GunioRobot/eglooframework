@@ -62,23 +62,28 @@ final class RequestValidator {
 	private $REQUESTS_XML_LOCATION = "../XML/Requests/eGloo/OverlayInterface/Requests.xml";
 	private $requestNodes = array();
 
+	private $webapp = null;
+	private $uibundle = null;
 
 	/**
 	 * Private constructor because this class is a singleton
 	 */
 	private function __construct( $webapp, $uibundle ) {
-		$this->loadRequestNodes( $webapp, $uibundle );	
+		$this->webapp = $webapp;
+		$this->uibundle = $uibundle;
+
+		$this->loadRequestNodes();	
 	}
 	
 	/**
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
-	private function loadRequestNodes( $webapp, $uibundle ){
+	private function loadRequestNodes(){
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Processing XML", 'Security' );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
-		$this->REQUESTS_XML_LOCATION = "../XML/Requests/" . $webapp . "/" . $uibundle . "/Requests.xml";
+		$this->REQUESTS_XML_LOCATION = "../XML/Requests/" . $this->webapp . "/" . $this->uibundle . "/Requests.xml";
 		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Loading " . $this->REQUESTS_XML_LOCATION, 'Security' );
 		
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
@@ -129,9 +134,13 @@ final class RequestValidator {
 		 * TODO: figure out what really should be done if a request ID or 
 		 * request Class is not set
 		 */
-		 
-		 
-		 		
+
+		/**
+		 * Set the web application and UI bundle
+		 */
+		$requestInfoBean->setApplication($this->webapp);
+		$requestInfoBean->setInterfaceBundle($this->uibundle);
+
 		/**
 		 * Check if there is a request class.  If there isn't, return not setting
 		 * any request processor... this is ok, must be the main page.
