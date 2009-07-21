@@ -39,7 +39,7 @@
     set_error_handler( 'default_error_handler' );
     set_exception_handler( 'default_exception_handler' );
 	header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
-	
+
     /*
      * Initialize the session object
      */
