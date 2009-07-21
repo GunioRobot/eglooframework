@@ -72,7 +72,7 @@
 
     $requestValidator = RequestValidator::getInstance( $webapp, $uibundle );
     $isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
-    	
+
     if ( $isValidRequest ) {
 	   $requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
        $requestProcessor->processRequest();
