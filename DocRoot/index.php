@@ -45,7 +45,7 @@
      */
     $sessionHandler = new SessionHandler();
     session_start();
-    
+
     //This is to get IE to accept cookies with its new security model
     //TODO move session management to a decorator so javascript/css calls don't have sessions...
 	setcookie(session_name(), session_id(), time()+60*60*24*30, '/');
