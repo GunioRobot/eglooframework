@@ -3,7 +3,7 @@
  * eGloo Framework Bootstrap File 
  *
  * This file contains the bootstrap for the eGloo framework
- * 
+ *
  * Copyright 2008 eGloo, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
