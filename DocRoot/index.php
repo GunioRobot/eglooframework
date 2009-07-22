@@ -60,13 +60,13 @@
     $webapp = 'eGloo';
     $uibundle = 'OverlayInterface';
 
-    // $webapp = 'Demos/BookResale';
-    // $uibundle = 'Default';
+	// $webapp = 'Demos/BookResale';
+	// $uibundle = 'Default';
 
-//    if ( !isset($_ENV['EG_DEPLOY']) || ( $_ENV['EG_DEPLOY'] !== 'Prod' && 
-//		$_ENV['EG_DEPLOY'] !== 'Test' && $_ENV['EG_DEPLOY'] !== 'DevFast' && $_ENV['EG_DEPLOY'] !== 'Dev' ) ) {
-//    	$_ENV['EG_DEPLOY'] = 'Dev';
-//    }
+	// if ( !isset($_ENV['EG_DEPLOY']) || ( $_ENV['EG_DEPLOY'] !== 'Prod' && 
+	// 	$_ENV['EG_DEPLOY'] !== 'Test' && $_ENV['EG_DEPLOY'] !== 'DevFast' && $_ENV['EG_DEPLOY'] !== 'Dev' ) ) {
+	// 		$_ENV['EG_DEPLOY'] = 'Dev';
+	// }
 
     $requestInfoBean = new RequestInfoBean();
 
