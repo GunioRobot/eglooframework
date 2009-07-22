@@ -33,7 +33,7 @@
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
     eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
-    
+
     // we need to make sure we can id a particular request path in the logs since
     // multiple instances can be run out of order
     set_error_handler( 'default_error_handler' );
