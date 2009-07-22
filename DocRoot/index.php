@@ -80,4 +80,3 @@
 	   eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
     }
 
-?>
