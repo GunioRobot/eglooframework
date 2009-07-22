@@ -29,7 +29,7 @@
 
     include( '../PHP/autoload.php' );
     include( '../PHP/error_handlers.php' );
-    
+
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
     eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
