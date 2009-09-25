@@ -1,0 +1,69 @@
+#Menu_1_Header12 {
+	border-bottom: 1px solid #99CCFF;
+}
+
+#Center_Sub_Column1 {
+	color: #000000;
+}
+
+#DropDownBottomNavJoinRankedButton {
+	text-align: left;
+	float: left;
+}
+
+#DropDownContentSummary {
+	border-top: 1px solid #99CCFF;
+	clear: both;
+	margin: 0px auto 0px auto;
+	overflow: hidden;
+	padding: 15px 0px 15px 0px;
+	position: relative;
+	width: 835px;
+}
+
+#DropDownBottomNavigation {
+	border-top: 1px solid #99CCFF;
+	bottom: 5px;
+	color: #FFFFFF;
+	left: 5px;
+	padding: 5px 0px 5px 0px;
+	position: absolute;
+	right: 5px;
+	text-align: right;
+}
+
+#DropDownBottomNavHelpButton {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}
+
+#DropDownBottomNavPrivacyButton {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}
+
+#DropDownBottomNavLegalButton {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}
+
+#DropDownBottomNavArrowLeft {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}
+
+#DropDownBottomNavResultBounds {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}
+
+#DropDownBottomNavArrowRight {
+	height: 20px;
+	margin: 0px 15px 0px 15px;
+	display: inline;
+}

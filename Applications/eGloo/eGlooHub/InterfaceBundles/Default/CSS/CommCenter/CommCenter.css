@@ -1,0 +1,192 @@
+Right_Block_3 {
+	margin: 0;
+	padding: 0;
+	color: #FFF;
+	position: absolute;
+	bottom: 0px;
+	top: 0px;
+}
+
+#Right_Column_Top {
+	top: 0px;
+	left: 0px;
+	width: 179px;
+	height: 46px;
+	position: absolute;
+	background-color: #FFFFFF;
+}
+
+#Right_Column_Below_Top {
+	top: 47px;
+	left: 0px;
+	width: 179px;
+	height: 40px;
+	position: absolute;
+	background-color: #0D65AD;
+}
+
+#Right_Column_Main {
+	background-color: #0D65AD;
+	bottom: 55px;
+	left: 0px;
+	overflow: hidden;
+	position: absolute;
+	top: 87px;
+	right: 0px;
+	width: 179px;
+}
+
+#CommCenterContent {
+	background-color: #FFF;
+	bottom: 2px;
+	left: 2px;
+	right: 2px;
+	overflow: hidden;
+	position: absolute;
+	top: 2px;
+}
+
+#Right_Column_Below_Me {
+	background-color: #0D65AD;
+	bottom: 0px;
+	font-size: 14pt;
+	height: 55px;
+	left: 0px;
+	overflow: hidden;
+	position: absolute;
+	text-align: center;
+	width: 179px;
+}
+
+#messageCenterNavBar {
+	background-color: #0D65AD;
+	left: 0px;
+	position: absolute;
+	text-align: center;
+	top: 2px;
+	right: 0px;
+}
+
+#resize {
+	cursor: pointer;
+	height: 5px;
+	width: 5px;
+	background-color: #333333;
+}
+
+#box {
+	padding: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100px;
+	height: 100px;
+	background-color: #000000;
+	z-index: 10000;
+}
+
+#MessageList {
+	margin: 0 auto 0 auto;
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+	color: #000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+div.messageListTitle {
+	background-color: transparent;
+	float: left;
+	height: 18px;
+	overflow: hidden;
+	padding: 0 4px 0 4px;
+}
+
+div.messageListSummary {
+	clear: both;
+	display: none;
+	visibility: hidden;
+	overflow: hidden;
+	background-color: transparent;
+	padding: 0 4px 0 4px;
+}
+
+div.messageListEdit {
+	float: right;
+	display: inline;
+	text-align: right;
+	overflow: hidden;
+	height: 18px;
+	padding: 0 4px 0 4px;
+	background-color: transparent;
+	border-left: #DDD 1px solid;
+}
+
+div.messageItemContainer {
+	height: 18px;
+	position: relative;
+}
+
+.gray {
+	background-color: #F1F5FA;
+}
+
+#newBlogPostLink {
+	color: #FFF;
+	text-decoration: none;
+	font-size: 11pt;
+}
+
+div.friendshipRequestItemContainer {
+	height: 18px;
+	position: relative;
+}
+
+div.friendshipRequestListTitle {
+	background-color: transparent;
+	float: left;
+	height: 18px;
+	overflow: hidden;
+	padding: 0 4px 0 4px;
+}
+
+div.friendshipRequestAccept {
+	float: right;
+	display: inline;
+	text-align: right;
+	overflow: hidden;
+	height: 18px;
+	padding: 0 4px 0 4px;
+	background-color: transparent;
+	border-left: #DDD 1px solid;
+}
+
+div.friendshipRequestReject {
+	float: right;
+	display: inline;
+	text-align: right;
+	overflow: hidden;
+	height: 18px;
+	padding: 0 4px 0 4px;
+	background-color: transparent;
+	border-left: #DDD 1px solid;
+}
+
+div.RightBottomControlInnerTop {
+	height: 23px;
+	padding: 0px 0px 0px 0px;
+}
+
+div.BottomControlInner {
+	height: 24px;
+	padding: 6px 0 0 0;
+}
+
+div.RightBottomControlInner {
+	height: 23px;
+	border-top: 1px solid #99CCFF;
+	padding: 5px 0 0 0;
+}

@@ -1,0 +1,484 @@
+/* Frame */
+div.childComment {
+	margin-left: 30px;
+}
+
+div.userProfileCubeDragDropSort {
+	border: 1px solid #D8DFEA;
+}
+
+div.dragDropHandle {
+	height: 20px;
+	position: relative;
+}
+
+div.userProfileCubeTitle {
+	background: transparent;
+	float: left;
+	margin: 3px 0 0 5px;
+	position: relative;
+}
+
+div.userProfileCubeCloseTrigger {
+	background: transparent;
+	float: right;
+	margin: 2px 5px 0 5px;
+	position: relative;
+}
+
+div.userProfileCubeMinimizeTrigger {
+	background: transparent;
+	float: right;
+	margin: 2px 5px 0 5px;
+	position: relative;
+}
+
+div.userProfileCubeEditTrigger {
+	background: transparent;
+	float: right;
+	margin: 3px 5px 0 5px;
+	position: relative;
+}
+
+div.userProfileCubeContent {
+	clear: both;
+	height: 280px;
+	position: relative;
+	background-position: right;
+}
+
+body {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	overflow: auto;
+}
+
+#logo {
+	font-size: 24pt;
+	font-weight: bold;
+	height: 39px;
+	letter-spacing: -3px;
+	margin: 0 0 0 0;
+	padding-left: 22px;
+	padding-right: 8px;
+	position: absolute;
+	text-shadow: 0 0 0.15em #FFFFFF;
+	top: 20px;
+	width: 100px;
+}
+
+div.globalMenuButton {
+	color: #FFFFFF;
+	float: left;
+	font-size: 15pt;
+	height: 34px;
+	margin: 0 0px 0 0px;
+	padding: 0 0px 0 0px;
+	position: relative;
+	top: 0px;
+	z-index: 22;
+}
+
+div.globalMenuButton:hover {
+	cursor: pointer;
+	text-shadow: 0 0 0.25em #FFFFFF;
+}
+
+#content {
+	background-color: #FFFFFF;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+	margin: 0 0 0 0;
+	padding: 0;
+}
+
+#dropdown {
+	background-color: #181F17;
+	color: #FFFFFF;
+	cursor: default;
+	height: 500px;
+	display: none;
+	left: 50%;
+	margin: 0px auto auto -475px; /* standard centering method */
+	width: 950px;
+	overflow: hidden;
+	position: absolute;
+	top: 50px;
+	z-index: 10;
+}
+
+#informationBoardForeground {
+	background-color: transparent;
+	color: #FFFFFF;
+	cursor: default;
+	height: 500px;
+	display: none;
+	left: 50%;
+	margin: 0px auto auto -450px; /* standard centering method */
+	width: 900px;
+	overflow: hidden;
+	position: absolute;
+	top: 50px;
+	z-index: 11;
+}
+
+div.globalMenu {
+	background-color: #181F17;
+	width: 100%;
+	height: 50px;
+	position: absolute;
+	overflow: hidden;
+	z-index: 10;
+	display: block;
+	padding: 0px;
+	margin: 0 0 0 0;
+	border-width: 0;
+}
+
+#globalMenuMiddle {
+	position: absolute;
+	top: 0px;
+	right: 50%;
+	margin: 0 -370px 0 0px;
+	width: 120px;
+	z-index: 10;
+}
+
+span.oo {
+	letter-spacing: -11px;
+}
+
+#globalMenuLeft {
+	position: absolute;
+	top: 0px;
+	right: 50%;
+	margin: 0px -250px 0px 0px;
+	width: 750px;
+	z-index: 10;
+	float: left;
+}
+
+#globalMenuRight {
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	margin: 0px 0px 0px 20px;
+	width: 480px;
+	z-index: 10;
+}
+
+div.menuSearchItem {
+	position: absolute;
+	top: 30px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 15pt;
+	float: left;
+	right: 0%;
+	color: #FFFFFF;
+}
+
+#UserProfile {
+	background-color: #FFFFFF;
+	position: absolute;
+	top: 50px;
+	bottom: 0px;
+	left: 50%;
+	margin: 0px 0px 0px -333px;
+	margin-left: -500px;
+	width: 1000px;
+	z-index: 0;
+	overflow: auto; /* should be auto, hidden for testing */
+	overflow-x: hidden;
+	background-image: url("/images/eGlooSnowBackground.jpg")
+}
+
+#eGlooApplicationState {
+	display: none;
+}
+
+div.footer {
+	margin: 55px auto 0 auto;
+	left: 0%;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #999999;
+	position: relative;
+	width: 250px;
+	height: 20px;
+	padding-top: 20px;
+	clear: both;
+	z-index: 50;
+}
+
+div.menuLeftNavBar {
+	background-color: #DDDDDD;
+	min-width: 120px;
+	width: 120px;
+	height: 200px;
+	float: left;
+	position: relative;
+	z-index: 1000000;
+	overflow: hidden;
+	display: block;
+}
+
+div.button {
+	position: relative;
+	float: right;
+	padding: 0px 0px 0px 0px;
+	color: #FFFFFF;
+}
+
+span.button {
+	color: #FFF;
+}
+
+div.button:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+div.nohover:hover {
+	cursor: default;
+	text-decoration: none;
+}
+
+span.spantext {
+	float: right;
+	padding: 0px 0px 0px 0px;
+	color: #FFFFFF;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.moveable {
+	cursor: move;
+}
+/* Props */
+.fs12 {
+	font-size: 12pt;
+}
+
+.fs11 {
+	font-size: 11pt;
+}
+
+p.date {
+	margin: 0;
+	padding: 6px 0;
+}
+
+#right ul {
+	margin: 0;
+	padding: 0;
+}
+
+#right ul li {
+	list-style-type: disc;
+}
+/* View Blog Styles */
+#center h1#blogTitle {
+	color: #FF9966;
+	font: bold 16px verdana;
+	margin: 4px 0 10px 0;
+	padding: 0;
+}
+
+#blogContentBackground {
+	background-color: #fff;
+	border: solid 1px #f96;
+	color: #fff;
+	margin-bottom: 20px;
+	padding: 10px;
+	/*<!--{"filter:alpha(opacity=20);"}-->*/
+	/*<!--{"-moz-opacity:.20;"}-->*/
+	opacity: .20;
+}
+
+#blogContent {
+	border: solid 1px #f96;
+	padding: 10px;
+	position: absolute;
+	text-align: justify;
+	width: 568px;
+}
+
+div#blogManagement {
+	background-color: #CBC8FA;
+	border: solid 1px #00f;
+	margin: 0 0 20px 0;
+	padding: 0 10px;
+	width: 260px;
+}
+
+p#commentBlog {
+	float: right;
+}
+
+p.end {
+	clear: both;
+	margin: 0;
+	padding: 0;
+}
+
+div#blogManagement a {
+	color: #000;
+	text-decoration: none;
+}
+
+div#blogManagement a:hover {
+	text-decoration: underline;
+}
+/* Blog Comments */
+div.blogCommentsBackground {
+	margin-bottom: 6px;
+	padding: 0 0 12px 12px;
+}
+
+div.blogComments {
+	background-color: #fff;
+	border: solid 1px #000;
+	margin: 0 0 6px 0;
+	padding: 12px 0 12px 12px;
+	position: static;
+	text-align: justify;
+	width: 576px;
+	z-index: 2;
+}
+/* Blog Archive */
+p.date {
+	color: #999;
+	font: normal 10px verdana;
+}
+
+p {
+	color: #000;
+	font: normal 11px verdana;
+}
+
+h4 {
+	background-color: #000;
+	color: #fff;
+	font: bold 12px verdana;
+	margin: 0;
+	padding: 3px;
+	text-align: center;
+}
+
+#blogNavBackground {
+	background-color: #000;
+	border: dashed 1px #000;
+	color: #000;
+	margin: 0;
+	padding: 0;
+	/*<!--{"filter:alpha(opacity=30);"}-->*/
+	/*<!--{"-moz-opacity:.30;"}-->*/
+	opacity: .30;
+}
+
+#blogNav {
+	border: solid 1px #000;
+	margin: 0;
+	padding: 6px 0 0 0;
+	position: absolute;
+	text-align: justify;
+	width: 198px;
+}
+
+#blogNav a {
+	margin: 0;
+	padding: 6px 0 0 6px;
+}
+/* Comments of Comments */
+.commentLine {
+	display: inline;
+}
+
+.blogComments .childComment {
+	border: none;
+	border-top: dashed 1px #999;
+	margin: 10px 0 0 -12px;
+	position: relative;
+}
+
+.commentsOfComments {
+	margin: 0 0 0 -12px;
+	padding: 0 0 0 12px;
+}
+
+.minusText {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+/* Blog Archive */
+div#left {
+	float: left;
+	font: normal 11px verdana;
+	padding: 20px 0 0 0;
+	width: 150px;
+}
+
+div#center {
+	float: left;
+	font: normal 11px verdana;
+	padding: 0 20px;
+	width: 590px;
+}
+
+div#right {
+	float: left;
+	font: normal 11px verdana;
+	padding: 20px 0 0 0;
+	width: 200px;
+}
+
+div#right ul {
+	color: #fff;
+	margin: 20px inherit;
+	padding-left: 20px;
+	font: normal 11px verdana;
+}
+
+div#right ul ul {
+	display: none;
+}
+
+div#right li {
+	list-style: url(arrow-right.gif);
+	cursor: pointer;
+}
+
+div#right ul ul ul li {
+	margin-right: 8px;
+}
+
+div#right li a {
+	color: #47a;
+	text-decoration: none;
+}
+
+div#right li a:hover {
+	color: #f96;
+}
+
+div#right a#blog {
+	color: #fff;
+	text-decoration: none;
+}
+
+div#right a#blog:hover {
+	text-decoration: underline;
+}
+
+#newBlogTitle {
+	width: 510px;
+}
+

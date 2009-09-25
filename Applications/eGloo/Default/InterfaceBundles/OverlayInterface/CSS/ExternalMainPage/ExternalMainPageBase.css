@@ -1,0 +1,221 @@
+body {
+	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#copyright {
+	bottom: 0;
+	color: #999;
+	font-size: 10px;
+	height: 15px;
+	left: 50%;
+	/*    margin:55px 0 0 -114px;*/
+	margin: 50px 0 0 -125px;
+	position: relative;
+	text-align: center;
+	width: 250px;
+}
+
+#footer {
+	bottom: 0;
+	height: 15px;
+	left: 50%;
+	font-size: 11px;
+	margin: 0px 0 0 -275px;
+	position: relative;
+	text-align: center;
+	width: 550px;
+}
+
+#container {
+	bottom: 28px;
+	left: 50%;
+	margin-left: -400px;
+	overflow: hidden;
+	position: relative;
+	top: 0;
+	width: 800px;
+}
+
+#logo {
+	left: 0;
+	position: absolute;
+}
+
+#form {
+	left: 315px;
+	padding-bottom: 0;
+	padding-left: 5px;
+	padding-top: 0;
+	position: absolute;
+	top: 47px;
+}
+
+#loadingImage {
+	top: 53px;
+	left: 520px;
+	position: absolute;
+	display: none;
+}
+
+div.halo {
+	color: #CCC;
+	padding-left: 5px;
+	position: absolute;
+	top: 150px;
+	width: 300px;
+	z-index: 5;
+}
+
+#updates {
+	position: absolute;
+	top: 145px;
+	z-index: 5;
+	right: 0px;
+}
+
+input.field {
+	border: solid #999 1px;
+	clear: both;
+	color: gray;
+	margin: 0 0 4px 0;
+	padding-left: 2px;
+	position: relative;
+	float: right;
+}
+
+input.field:disabled {
+	background-color: #FFF;
+	clear: both;
+	color: #CCC;
+	margin: 0 0 4px 0;
+	position: relative;
+	float: right;
+}
+
+#shell {
+	bottom: 0;
+	clear: both;
+	height: 310px;
+	left: 0;
+	margin: 0 auto 0 auto;
+	overflow: hidden;
+	position: relative;
+	width: 800px;
+}
+
+#top {
+	height: 170px;
+	left: 50%;
+	/*    margin:220px 0 0 -225.5px; */
+	margin: 220px 0 0 -265px;
+	position: absolute;
+	top: -27%;
+	/*    width:480px; */
+	width: 520px;
+}
+
+#content {
+	background-color: #FFF;
+	border-bottom: solid #9CF 1px;
+	border-top: solid #9CF 1px;
+	bottom: 25px;
+	color: #FFF;
+	display: none;
+	height: 600px;
+	left: 50%;
+	margin: 0 0 0 -405px;
+	overflow: auto;
+	padding: 0 0 0 0;
+	position: absolute;
+	top: 180px;
+	width: 810px;
+	z-index: 7;
+}
+
+#content_text {
+	background-color: #FFF;
+	bottom: 3px;
+	color: #666;
+	height: 580px;
+	left: 50%;
+	margin: 0 0 0 -400px;
+	overflow: auto;
+	padding: 0 0 0 0;
+	position: absolute;
+	top: 3px;
+	width: 790px;
+}
+
+#elements {
+	clear: both;
+}
+
+#browse, #tour, #join, #login {
+	float: right;
+	padding: 4px 3px 3px 0;
+	position: relative;
+	text-decoration: none;
+}
+
+#browse, #join, #tour {
+	color: #0099E5;
+}
+
+#browse:hover, #join:hover, #tour:hover, #forgotPassword:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#login {
+	clear: both;
+	padding: 4px 0px 3px 0;
+	color: #CCC;
+}
+
+#login:hover {
+	cursor: default;
+}
+
+span.spantext {
+	color: #CCC;
+	float: right;
+	padding: 4px 3px 0px 0px;
+}
+
+span.spantext2 {
+	color: #CCC;
+	padding: 0px 3px 0px 3px;
+}
+
+.footer_option {
+	color: #0099E5;
+}
+
+#loginFailed {
+	color: red;
+	margin: 0 auto 0 auto;
+	padding-top: 0;
+	position: absolute;
+	text-align: left;
+	width: 120px;
+	top: 51px;
+	left: 525px;
+}
+
+#forgotPassword {
+	color: #0099E5;
+	text-align: left;
+	position: absolute;
+	width: 120px;
+	left: 525px;
+	top: 75px;
+}
+
+.link:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}

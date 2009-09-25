@@ -27,11 +27,11 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	    <title>eGloo | Welcome</title>
 	    
-	    <link href="css/extMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
+	    <link href="/css/extMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
 	    
-	    <script type="text/javascript" src="javascript/jquery.js"></script>
-		<script type="text/javascript" src="javascript/form.js"></script>
-	    <script type="text/javascript" src="javascript/externalMainInit.js"></script>
+	    <script type="text/javascript" src="/javascript/jquery.js"></script>
+		<script type="text/javascript" src="/javascript/form.js"></script>
+	    <script type="text/javascript" src="/javascript/externalMainInit.js"></script>
 	</head>
     <body>
 		<div style="position:relative;width:100%;height:100%;">
@@ -40,7 +40,7 @@
 	                <div id="top">
 	                    <div id="logo"><img src="images/logo.gif" alt="eGloo" width="304" height="138" /></div>
 	                    <div id="form">
-	                        <form name="login" action="account/processLogin/" method="get" style="overflow:hidden;">
+	                        <form name="login" action="/account/processLogin/" method="post" style="overflow:hidden;">
                                 <input id="username" type="text" name="username" size="17" class="field" value="username"/>
                                 <br />
                                 <input id="password" type="text" name="password" size="17" class="field" value="password"/>	                         
@@ -49,7 +49,7 @@
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="join">join</div>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
-		                            <a href="browse" id="browse">browse</a>
+		                            <a href="/browse" id="browse">browse</a>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="tour">tour</div>
 		                      	</div>

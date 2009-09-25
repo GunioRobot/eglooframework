@@ -1,0 +1,82 @@
+#GlobalMenuBar_User_Fullname {
+	color: #99CCFF;
+	margin: 2px 5px 0px 0px;
+	float: right;
+	display: inline;
+	text-decoration: none
+}
+
+#GlobalMenuBar_Options_Button {
+	color: #FFF;
+	margin: 2px 7px 0px 7px;
+	float: right;
+	display: inline
+}
+
+#GlobalMenuBar_Account_Button {
+	color: #FFF;
+	margin: 2px 7px 0px 7px;
+	float: right;
+	display: inline
+}
+
+#GlobalMenuBar_Logout_Button {
+	color: #FFF;
+	margin: 2px 5px 0px 7px;
+	clear: both;
+	float: right;
+	display: inline;
+}
+
+#GlobalMenuBar_Image_Button {
+	color: #FFF;
+	margin: 2px 7px 0px 7px;
+	float: right;
+	display: inline
+}
+
+#profileImage {
+	background-color: #fff;
+	border: solid 1px #000;
+	display: none;
+	padding: 8px;
+	position: absolute;
+	top: 300px;
+	width: 300px;
+	z-index: 20;
+}
+
+#profileImage #profileImageTitle {
+	font: bold 13px verdana;
+	margin: 0;
+	padding: 20px 0px;
+	text-align: center;
+}
+
+#profileImage #fileField {
+	display: block;
+	margin: 12px auto 0 auto;
+	padding: 0;
+}
+
+#profileImage #updateButton {
+	display: block;
+	margin: 0px auto;
+	float: right;
+	/*	padding:6px;*/
+}
+
+#profileImage #cancelButton {
+	display: block;
+	margin: 0px auto;
+	float: left;
+	/*	padding:6px;*/
+}
+
+img.png {
+	/*<!--{"background-image: expression(
+	 this.runtimeStyle.backgroundImage = "none",
+	 this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='scale')",
+	 this.src = "/images/overlay/menubar/transparent.gif"
+	 );"}-->*/
+}

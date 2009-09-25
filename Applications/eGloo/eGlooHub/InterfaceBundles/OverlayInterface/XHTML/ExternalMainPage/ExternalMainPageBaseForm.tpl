@@ -40,7 +40,7 @@
 	                <div id="top">
 	                    <div id="logo"><img src="images/logo.gif" alt="eGloo" width="304" height="138" /></div>
 	                    <div id="form">
-	                        <form name="login" action="account/processLogin/" method="get" style="overflow:hidden;">
+	                        <form name="login" action="/account/processLogin/" method="get" style="overflow:hidden;">
                                 <input id="username" type="text" name="username" size="17" class="field" value="username"/>
                                 <br />
                                 <input id="password" type="text" name="password" size="17" class="field" value="password"/>	                         
@@ -49,7 +49,7 @@
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="join">join</div>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
-		                            <a href="browse" id="browse">browse</a>
+		                            <a href="/browse" id="browse">browse</a>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="tour">tour</div>
 		                      	</div>

@@ -1,0 +1,219 @@
+#UserProfileContent {
+	top: 0px;
+	left: 0px;
+	bottom: 20px;
+	position: relative;
+	height: 0px;
+	top: 0px;
+	width: 1000px;
+	clear: both;
+}
+
+#UserProfileControlStrip {
+	position: relative;
+	height: 48px;
+	width: 985px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	clear: both;
+	margin: 0px 0px 0px 0px;
+}
+
+#UserProfileControlStrip > .clickable:hover {
+	text-decoration: underline;
+}
+
+div.defaultProfileColumn {
+	position: relative;
+	float: left;
+	width: 315px;
+	margin: 0px 0px 0px 9px;
+	padding: 0px 0px 0px 0px;
+	min-height: 500px;
+	top: 0px;
+	background-color: transparent;
+}
+
+#UserProfileControlStripUserName {
+	float: left;
+	margin: 22px 10px 0 5px;
+	color: #0099E5;
+	font-size: 14pt;
+}
+/* new */
+#UserProfileControlStripBlogs {
+	float: right;
+	margin: 27px 10px 0 10px;
+	color: #0099E5;
+}
+
+#UserProfileControlStripPictures {
+	float: right;
+	margin: 27px 10px 0 10px;
+	color: #0099E5;
+}
+
+#UserProfileControlStripVideos {
+	float: right;
+	margin: 27px 10px 0 10px;
+	color: #0099E5;
+}
+
+#UserProfileControlStripMusic {
+	float: right;
+	margin: 27px 10px 0 10px;
+	color: #0099E5;
+}
+
+#UserProfileControlStripProfile {
+	float: right;
+	margin: 27px 10px 0 10px;
+	color: #0099E5;
+}
+/* end new */
+#unmov {
+	float: left;
+	position: relative;
+	margin: 0px 0px 10px 0px;
+	padding: 0 0 0px 0;
+	border-bottom: 1px solid #D8DFEA;
+	border-top: 1px solid #D8DFEA;
+	border-right: 1px solid #D8DFEA;
+	border-left: 1px solid #D8DFEA;
+	width: 315px;
+	overflow: hidden;
+	text-align: center;
+	background-color: transparent;
+	/*border: 1px solid transparent; */
+}
+
+#center0 {
+	background-color: transparent;
+	clear: both;
+	position: relative;
+	top: 0px;
+	width: 315px;
+	min-height: 350px;
+}
+
+#center0 li {
+	background-color: transparent;
+	position: relative;
+	overflow: hidden;
+	padding: 0px 0px 10px 0px;
+}
+
+#center1 {
+	background-color: transparent;
+	position: relative;
+	top: 0px;
+	width: 315px;
+	min-height: 350px;
+}
+
+#center1 li {
+	background-color: transparent;
+	position: relative;
+	overflow: hidden;
+	width: 315px;
+	padding: 0px 0px 10px 0px;
+}
+
+#center2 {
+	background-color: transparent;
+	position: relative;
+	top: 0px;
+	width: 315px;
+	min-height: 350px;
+}
+
+#center2 li {
+	background-color: transparent;
+	overflow: hidden;
+	position: relative;
+	width: 315px;
+	padding: 0px 0px 10px 0px;
+}
+
+.liclass {
+	background-color: transparent;
+	overflow: hidden;
+	width: 206px;
+	position: relative;
+	padding: 0 0 0 12px;
+}
+
+.zerotop {
+	top: 0px;
+	position: relative;
+}
+
+.cubeContent {
+	margin: 0 auto 0 auto;
+	width: 206px;
+	position: absolute;
+	top: 30px;
+	left: 0px;
+	right: 0px;
+	/*height:160px;*/
+	overflow: hidden;
+	background-color: #FFF;
+	bottom: 10px;
+}
+
+.cubeCloseWidget {
+	display: inline;
+	width: 10px;
+	right: 0px;
+	position: relative;
+}
+
+.cubeCloseWidget:hover {
+	cursor: pointer;
+}
+
+.blhelper {
+	border: 1px dashed #AAA;
+	width: 100%;
+}
+
+.handleActive {
+	background-color: #D8DFEA;
+}
+
+.handleInactive {
+	background-color: #EEEEEE;
+}
+
+.userProfileCubeCloseTrigger {
+	cursor: pointer;
+}
+
+.userProfileCubeMinimizeTrigger {
+	cursor: pointer;
+}
+
+.userProfileCubeEditTrigger {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.transferer1 {
+	border: 1px solid #000;
+}
+
+.transferer2 {
+	border: 1px solid #000;
+	background-color: #fff;
+}
+
+.transferer3 {
+	border-top: 2px solid #6CAF00;
+	border-bottom: 2px solid #6CAF00;
+	border-left: 5px dashed #6CAF00;
+	border-right: 5px dashed #6CAF00;
+}

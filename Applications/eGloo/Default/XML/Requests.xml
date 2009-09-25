@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * eGloo Social Hub Default Request Dispatch File
+ *
+ * Dispatches HTTP requests to the eGloo Social Hub application
+ *
+ * HTTP requests are mapped via request class and request ID to an
+ * appropriate RequestProcessor subclass.  Arguments allowed and
+ * decorators applied are specified within the request ID.  The
+ * three argument types allowed are variable arguments, boolean
+ * arguments and select arguments.  Decorators are applied in a
+ * layered fashion according to their order number. 
+ * 
+ * Copyright 2008 eGloo, LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *  
+ * @author George Cooper
+ * @copyright 2008 eGloo, LLC
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @package XMLHTTPResponse
+ * @version 1.0
+ -->
+<tns:Requests xmlns:tns="com.egloo.www/Requests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="com.egloo.www/Requests schemas/Requests.xsd">
+	<RequestClass id="account">
+		<Request id="changeAccountPassword" processorID="ChangeAccountPasswordRequestProcessor">
+			<VariableArgument id="password" regex="/^.*$/" required="true" type="post" />
+		</Request>
+		<Request id="processLogin" processorID="ProcessLoginRequestProcessor">
+			<VariableArgument id="username" regex="/^.*$/" required="true" type="post" />
+			<VariableArgument id="password" regex="/^.*$/" required="true" type="post" />
+		</Request>
+		<Request id="processLogout" processorID="ProcessLogoutRequestProcessor"></Request>
+		<Request id="registerNewAccount" processorID="RegisterNewAccountRequestProcessor">
+			<BoolArgument type="post" required="false" id="userAcceptsLicense" />
+			<SelectArgument type="post" required="true" id="userGender">
+				<value>Male</value>
+				<value>Female</value>
+			</SelectArgument>
+			<VariableArgument type="post" id="userBirthMonth" regex="/^(0[1-9]|1[0-2])$/" required="true" />
+			<VariableArgument type="post" id="firstNameInput" regex="/^.*$/" required="true" />
+			<VariableArgument type="post" id="lastNameInput" regex="/^.*$/" required="true" />
+			<VariableArgument type="post" id="userBirthDay" regex="/^(0[1-9]|[1-2][0-9]|3[0-1])$/" required="true" />
+			<VariableArgument type="post" id="userBirthYear" regex="/^(19[0-9]{2})$/" required="true" />
+			<VariableArgument type="post" id="userEmail" regex="/^\w+?(\.\w+?|)@\w+?.(biz|com|edu|gov|info|net|org)$/" required="true" />
+			<VariableArgument type="post" id="userPreferredAccountName" regex="/^\w{5,24}$/" required="true" />
+			<VariableArgument type="post" id="userRequestedAccountPassword" regex="/^.{8,24}$/" required="true" />
+			<VariableArgument type="post" id="userConfirmedAccountPassword" regex="/^.{8,24}$/" required="true" />
+			<VariableArgument type="post" id="userReferralCode" regex="/^\w{20}$/" required="true" />
+		</Request>
+		<Request id="viewChangeAccountPasswordForm" processorID="ViewChangeAccountPasswordFormRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="alert">
+		<Request id="createAlert" processorID="CreateAlertRequestProcessor"></Request>
+		<Request id="getAlertList" processorID="AlertListRequestProcessor"></Request>
+		<Request id="viewAlert" processorID="ViewAlertRequestProcessor">
+			<VariableArgument type="get" id="alertID" regex="/^.*$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="auction">
+		<Request id="auctionCalendar" processorID="ShowAuctionCalendarRequestProcessor">
+			<SelectArgument type="post" required="false" id="timeOfDay">
+				<value>am</value>
+				<value>pm</value>
+			</SelectArgument>
+			<VariableArgument type="post" id="calendarDate" regex="/^.*$/" required="false" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="makeBid" processorID="ShowBidBoxRequestProcessor">
+			<VariableArgument type="get" id="cubeID" regex="/^.*$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="postBid" processorID="PostBidRequestProcessor">
+			<VariableArgument type="post" id="slotID" regex="/^.*$/" required="true" />
+			<VariableArgument type="post" id="userBid" regex="/^.*$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="loadCategoryMap" processorID="CategoryMapRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="currentBids" processorID="CurrentBidsRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="blog">
+		<Request id="editBlogEntry" processorID="EditBlogEntryRequestProcessor">
+			<!--TODO These regular expressions need to be changed for UTF-8 later -->
+			<SelectArgument id="editBlogEntrySubmit" type="post" required="false">
+				<value>Submit</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="blogID" regex="/^.*$/" required="true" />
+			<VariableArgument type="post" id="newBlogEntryTitle" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="newBlogEntryContent" regex="/.*/" required="false" />
+			<Depend id="editBlogEntrySubmit" type="post">
+				<Child id="newBlogEntryTitle" type="post" />
+				<Child id="newBlogEntryContent" type="post" />
+			</Depend>
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="newBlogEntry" processorID="CreateBlogEntryRequestProcessor">
+			<!--TODO These regular expressions need to be changed for UTF-8 later -->
+			<SelectArgument id="newBlogEntrySubmit" type="post" required="false">
+				<value>Submit</value>
+			</SelectArgument>
+			<VariableArgument type="post" id="newBlogEntryTitle" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="newBlogEntryContent" regex="/^.*/" required="false" />
+			<Depend id="newBlogEntrySubmit" type="post">
+				<Child id="newBlogEntryTitle" type="post" />
+				<Child id="newBlogEntryContent" type="post" />
+			</Depend>
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewBlogEntryList" processorID="ViewBlogEntryListRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewBlogEntryListEditable" processorID="ViewBlogEntryListEditableRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewBlogEntry" processorID="ViewBlogEntryRequestProcessor">
+			<VariableArgument type="get" id="blogID" regex="/^.*$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="flash">
+		<Request id="getVideo" processorID="FlashVideoDispatcherRequestProcessor">
+			<VariableArgument type="get" id="flv" regex="/^.*$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="TestArea">
+		<Request id="test1" processorID="TestArea"></Request>
+	</RequestClass>
+	<RequestClass id="css">
+		<Request id="extMainBase" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="extMainJoin" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="extMainRoot" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="global" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="globalMenuBar" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="infoBoardBase" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="infoBoardIcing" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="intMainBase" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="intMainRoot" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="thickbox" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="userCommCenter" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="userControlCenter" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="userFridge" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="userProfileCenter" processorID="StyleSheetRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="cube">
+		<Request id="deleteCubeElementInstance" processorID="DeleteCubeElementInstanceRequestProcessor">
+			<VariableArgument type="get" id="cubeID" regex="/^.*$/" required="true" />
+		</Request>
+		<Request id="getNewCubeElementInstance" processorID="GetNewCubeElementInstanceRequestProcessor">
+			<VariableArgument type="get" id="cubeID" regex="/^.*$/" required="true" />
+		</Request>
+		<Request id="getCubeElementInstance" processorID="GetCubeElementInstanceRequestProcessor">
+			<SelectArgument id="view" type="get" required="false">
+				<value>preferences</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="cubeID" regex="/^.*$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="dynamicContent">
+		<Request processorID="DynamicCubeContentRequestProcessor" id="getCubeContent">
+			<SelectArgument type="get" required="true" id="contentType">
+				<value>css</value>
+				<value>js</value>
+				<value>xhtml</value>
+			</SelectArgument>
+			<VariableArgument type="get" regex="/^.*$/" required="true" id="cubeID" />
+			<VariableArgument type="get" regex="/^.*$/" required="true" id="contentID" />
+			<VariableArgument type="get" regex="/^.*$/" required="false" id="contentVariant" />
+		</Request>
+		<Request processorID="DynamicImageManagerContentRequestProcessor" id="getImageManagerContent">
+			<SelectArgument type="get" required="true" id="contentType">
+				<value>css</value>
+				<value>js</value>
+				<value>xhtml</value>
+			</SelectArgument>
+			<VariableArgument type="get" regex="/^.*$/" required="true" id="contentID" />
+			<VariableArgument type="get" regex="/^.*$/" required="false" id="contentVariant" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="externalMainPage">
+		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor">
+			<BoolArgument id="boolArg1" required="true" type="get" />
+			<BoolArgument id="boolDep" required="false" type="get"></BoolArgument>
+			<SelectArgument id="selectArg1" required="false" type="get">
+				<value>kVal</value>
+				<value>kVal22</value>
+			</SelectArgument>
+			<VariableArgument id="variableArg1" regex="/^.*$/" required="true" type="get"></VariableArgument>
+			<Depend id="boolDep" type="get">
+				<Child id="child1" type="get" />
+			</Depend>
+		</Request>
+		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor" />
+	</RequestClass>
+	<RequestClass id="fridge">
+		<Request id="showFridge" processorID="FridgeBaseRequestProcessor"></Request>
+	</RequestClass>
+	<RequestClass id="image">
+		<Request id="createImageElement" processorID="CreateImageElementRequestProcessor">
+			<VariableArgument type="post" required="true" id="imageID" regex="/^.*$/" />
+			<VariableArgument type="post" required="true" id="imageMIMEType" regex="/^.*$/" />
+			<VariableArgument type="post" required="true" id="imageElementTitle" regex="/^.*$/" />
+			<VariableArgument type="post" required="true" id="imageElementSummary" regex="/^.*$/" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="getUserImageList" processorID="GetUserImageListRequestProcessor">
+			<VariableArgument type="get" required="false" id="profileID" regex="/^.*$/" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="setProfileImage" processorID="SetProfileImageRequestProcessor">
+			<VariableArgument type="get" required="true" id="imageID" regex="/^.*$/" />
+			<VariableArgument type="get" required="true" id="imageMIMEType" regex="/^.*$/" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="uploadImage" processorID="UploadImageRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewImage" processorID="ViewImageRequestProcessor">
+			<VariableArgument type="get" required="true" id="imageID" regex="/^.*$/" />
+			<VariableArgument type="get" required="true" id="imageMIMEType" regex="/^.*$/" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="ViewImageThumbnail" processorID="ViewImageThumbnailRequestProcessor">
+			<VariableArgument type="get" required="true" id="imageID" regex="/^.*$/" />
+			<VariableArgument type="get" required="true" id="imageMIMEType" regex="/^.*$/" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewImageManager" processorID="ViewImageManagerRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewProfileImage" processorID="ViewProfileImageRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="infoBoard">
+		<Request id="viewInfoBoard" processorID="ViewInformationBoardRequestProcessor">
+			<SelectArgument type="get" required="true" id="gMBID">
+				<value>gMBPeople</value>
+				<value>gMBMusic</value>
+				<value>gMBVideo</value>
+				<value>gMBPictures</value>
+				<value>gMBIcing</value>
+			</SelectArgument>
+		</Request>
+		<Request id="viewPeopleUserProfile" processorID="ViewUserProfileInformationBoardPeopleRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="internalMainPage">
+		<Request id="getInternalMainPage" processorID="InternalMainPageBaseRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="false" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="imp">
+		<Request id="viewProfile" processorID="InternalMainPageBaseRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="invite">
+		<Request id="inviteFriend" processorID="InviteFriendRequestProcessor">
+			<VariableArgument type="post" id="friendEmail" regex="/^\w+?(\.\w+?|)@\w+?.(biz|com|edu|gov|info|net|org)$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewUserInviteForm" processorID="ViewUserInviteFormRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="javascript">
+		<Request id="externalMainInit" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="internalMainInit" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="cookie" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="form" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="idrag" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="idrop" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ifx" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ifxPackRoot" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ifxscale" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ifxslide" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ifxtransfer" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="isortables" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="iutil" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="jquery" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="jquery.dom" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="jquery.easing.1.1" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="mousewheel" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="tabs" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="ranking" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="require" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+		<Request id="thickbox" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="message">
+		<Request id="createNewMessage" processorID="CreateNewMessageRequestProcessor"></Request>
+		<Request id="getMessageList" processorID="GetMessageListRequestProcessor"></Request>
+		<Request id="viewMessage" processorID="ViewMessageRequestProcessor">
+			<VariableArgument type="get" id="messageID" regex="/^\w{1,64}$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="profile">
+		<Request id="getUserProfileData" processorID="GetUserProfileDataRequestProcessor">
+			<SelectArgument type="get" required="true" id="format">
+				<value>json</value>
+				<value>xml</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="getUserProfileDataEditable" processorID="GetUserProfileDataEditableRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="getUserProfilePageElements" processorID="GetUserProfilePageElementsRequestProcessor">
+			<SelectArgument type="get" required="true" id="format">
+				<value>json</value>
+				<value>raw</value>
+				<value>xml</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+			<Decorator order="1" decoratorID="GenericCacheNoneDecorator" />
+		</Request>
+		<Request id="setUserProfileData" processorID="SetUserProfileDataRequestProcessor">
+			<SelectArgument id="updateUserProfileDataSubmit" type="post" required="true">
+				<value>Update</value>
+			</SelectArgument>
+			<SelectArgument id="gender" type="post" required="true">
+				<value>Male</value>
+				<value>Female</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="profileID" regex="/^-?\w{1,64}$/" required="true" />
+			<VariableArgument type="post" id="interestedInMen" regex="/^interestedInMen$/" required="false" />
+			<VariableArgument type="post" id="interestedInWomen" regex="/^interestedInWomen$/" required="false" />
+			<VariableArgument type="post" id="userBirthDay" regex="/^(0[1-9]|[1-2][0-9]|3[0-1])$/" required="true" />
+			<VariableArgument type="post" id="userBirthMonth" regex="/^(0[1-9]|1[0-2])$/" required="true" />
+			<VariableArgument type="post" id="userBirthYear" regex="/^(19[0-9]{2}|20[0-9]{2})$/" required="true" />
+			<VariableArgument type="post" id="lookingForFriendship" regex="/^lookingForFriendship$/" required="false" />
+			<VariableArgument type="post" id="lookingForRelationship" regex="/^lookingForRelationship$/" required="false" />
+			<VariableArgument type="post" id="lookingForRandomPlay" regex="/^lookingForRandomPlay$/" required="false" />
+			<VariableArgument type="post" id="lookingForDating" regex="/^lookingForDating$/" required="false" />
+			<VariableArgument type="post" id="lookingForWhateverICanGet" regex="/^lookingForWhateverICanGet$/" required="false" />
+			<VariableArgument type="post" id="hometown" regex="/^[a-zA-Z0-9 ]{0,64}$/" required="true" />
+			<VariableArgument type="post" id="residence" regex="/^\w{0,64}$/" required="false" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="updateUserProfilePage" processorID="UpdateUserProfilePageRequestProcessor">
+			<VariableArgument type="post" id="pageLayout" regex="/^.*$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewUserProfilePage" processorID="ViewUserProfilePageRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="ranking">
+		<Request processorID="RankElementInstanceRequestProcessor" id="rankInstance">
+			<VariableArgument type="get" id="elmInstance" regex="/^-\d{1,19}$/" required="true" />
+			<VariableArgument type="get" id="rank" regex="/^\d$/" required="true" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="relationship">
+		<Request id="acceptRelationship" processorID="AcceptRelationshipRequestProcessor">
+			<VariableArgument type="get" id="requesterProfileID" regex="/^-\d{1,19}$/" required="true" />
+			<VariableArgument type="get" id="relationshipType" regex="/^\w+$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="declineRelationship" processorID="DeclineRelationshipRequestProcessor">
+			<VariableArgument type="get" id="requesterProfileID" regex="/^-\d{1,19}$/" required="true" />
+			<VariableArgument type="get" id="relationshipType" regex="/^\w+$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="getAllRelationshipRequests" processorID="GetAllRelationshipRequestsRequestProcessor">
+			<SelectArgument id="retVal" type="get" required="false">
+				<value>count</value>
+			</SelectArgument>
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="getAllRelationships" processorID="GetAllRelationshipsRequestProcessor">
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="false" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="removeRelationship" processorID="RemoveRelationshipRequestProcessor">
+			<VariableArgument type="get" id="relationshipID" regex="/^-\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="requestBiDirectionalRelationship" processorID="RequestBiDirectionalRelationshipRequestProcessor">
+			<SelectArgument type="get" required="true" id="relationshipType">
+				<value>Friends</value>
+			</SelectArgument>
+			<VariableArgument type="get" id="profileID" regex="/^-?\d{1,19}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="viewRelationshipManager" processorID="ViewRelationshipManagerRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="search">
+		<Request id="searchByName" processorID="NameSearchRequestProcessor">
+			<VariableArgument type="get" id="nameSearchParam" regex="/^\w{1,64}$/" required="true" />
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="video">
+		<Request id="uploadVideo" processorID="UploadVideoRequestProcessor">
+			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+	</RequestClass>
+</tns:Requests>
