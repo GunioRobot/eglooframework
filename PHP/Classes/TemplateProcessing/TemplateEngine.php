@@ -27,6 +27,7 @@
  */
 
 include( 'Smarty/Smarty.class.php' );
+include( 'smarty/Smarty.class.php' );
 
 /**
  * TemplateEngine
