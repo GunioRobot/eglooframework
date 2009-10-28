@@ -152,7 +152,7 @@ esac
 echo "Building configuration files..."
 echo "\"$CONFIG_PATH\""
 
-if [$USE_SYMLINKS]
+if [ $USE_SYMLINKS ]
 then
 	mkdir -p "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
