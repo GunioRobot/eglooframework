@@ -557,7 +557,7 @@ echo "\"$APPLICATIONS_PATH\""
 if [$USE_SYMLINKS]
 then
 	mkdir -p "$APPLICATIONS_PATH"
-	ln -s ../Applications/eGloo "$APPLICATIONS_PATH/eGloo3"
+	ln -s ../Applications/eGloo "$APPLICATIONS_PATH/eGloo"
 else
 	mkdir -p "$APPLICATIONS_PATH"
 	cp -R ../Applications/* "$APPLICATIONS_PATH"
