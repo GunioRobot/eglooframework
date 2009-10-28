@@ -319,6 +319,7 @@ echo "Building log path..."
 echo "\"$LOGPATH\""
 
 mkdir -p "$LOGPATH"
+chmod 777 "$LOGPATH"
 
 echo
 echo "*****************************"
