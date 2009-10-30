@@ -1,4 +1,5 @@
-#! /bin/bash
+#! /usr/bin/env bash
+##! /bin/bash
 #
 # eGloo Framework Installation Script (OS X)
 #
@@ -505,7 +506,7 @@ exit
 
 echo
 echo "*******************************"
-echo "* eGloo Web Applications Root *"
+echo "* eGloo Web Applications Path *"
 echo "*******************************"
 echo
 echo -n "Default Location: "
@@ -565,7 +566,7 @@ fi
 
 echo
 echo "********************"
-echo "* eGloo Cubes Root *"
+echo "* eGloo Cubes Path *"
 echo "********************"
 echo
 echo -n "Default Location: "
@@ -677,9 +678,15 @@ fi
 # echo "\"$CUBES_PATH\""
 # 
 # mkdir -p "$CUBES_PATH"
+./Configure.php \
+	--ApplicationsPath=$APPLICATIONS_PATH \
+	--CachePath=$CACHE_PATH \
+	--CompiledTemplatesPath=blah \
+	--ConfigurationPath=$CONFIG_PATH \
+	--CubesPath=$CUBES_PATH \
+	--DocumentationPath=$DOCUMENTATION_PATH \
+	--DocumentRoot=$DOCUMENT_PATH \
+	--FrameworkRootPath=$FRAMEWORK_PATH \
+	--LoggingPath=$LOGPATH
 
-
-# Clean exit
 exit
-
-
