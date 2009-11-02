@@ -42,17 +42,6 @@
     set_exception_handler( 'default_exception_handler' );
 	header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
-    /*
-     * Initialize the session object
-     */
-
-    $sessionHandler = new SessionHandler();
-    session_start();
-
-    //This is to get IE to accept cookies with its new security model
-    //TODO move session management to a decorator so javascript/css calls don't have sessions...
-	setcookie(session_name(), session_id(), time()+60*60*24*30, '/');
-
     /**
      * 1) create a request info bean to be filled by the request validator,
      * 	  if the request is valid

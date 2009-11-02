@@ -263,8 +263,12 @@
 		</Request>
 	</RequestClass>
 	<RequestClass id="externalMainPage">
-		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor" />
-		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor" />
+		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
+		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
 	</RequestClass>
 	<RequestClass id="fridge">
 		<Request id="showFridge" processorID="FridgeBaseRequestProcessor"></Request>
