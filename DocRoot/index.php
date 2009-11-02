@@ -31,7 +31,7 @@
     include( '../PHP/error_handlers.php' );
 
 	// Load the configuration
-	eGlooConfiguration::loadConfigurationOptions( './ConfigCache.php');
+	eGlooConfiguration::loadConfigurationOptions();
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
     eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
@@ -45,6 +45,7 @@
     /*
      * Initialize the session object
      */
+
     $sessionHandler = new SessionHandler();
     session_start();
 
@@ -70,7 +71,6 @@
 	// 	$_ENV['EG_DEPLOY'] !== 'Test' && $_ENV['EG_DEPLOY'] !== 'DevFast' && $_ENV['EG_DEPLOY'] !== 'Dev' ) ) {
 	// 		$_ENV['EG_DEPLOY'] = 'Dev';
 	// }
-
     $requestInfoBean = new RequestInfoBean();
 
     $requestValidator = RequestValidator::getInstance( $webapp, $uibundle );
@@ -82,4 +82,3 @@
     } else {
 	   eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
     }
-

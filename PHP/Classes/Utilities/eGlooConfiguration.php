@@ -13,19 +13,22 @@ final class eGlooConfiguration {
 			'DocumentationPath'		=> '',
 			'DocumentRoot'			=> '',
 			'FrameworkRootPath'		=> '',
-			'LoggingPath'			=> ''
+			'LoggingPath'			=> '',
+			'SmartyPath'			=> ''
 			);
 
-	public static function loadConfigurationOptions() {
-		self::$configuration_options = eval('return ' . file_get_contents('ConfigCache.php') .';');
-		echo "<pre>";
-		print_r(self::$configuration_options);
-		echo "</pre>";
+	public static function loadConfigurationOptions($config_cache_path = '../Build/ConfigCache.php') {
+		self::$configuration_options = eval('return ' . file_get_contents($config_cache_path) .';');
+		// self::$configuration_options['SmartyPath'] = 'Smarty/Smarty.class.php';
+		// echo "<pre>";
+		// print_r(self::$configuration_options);
+		// echo "</pre>";
+		// die;
 	}
 
     public static function getApplicationsPath() {
 	}
-	
+
     public static function getCachePath() {
 	}
 
@@ -46,6 +49,10 @@ final class eGlooConfiguration {
 
     public static function getLoggingPath() {
 		return self::$configuration_options['LoggingPath'];
+	}
+
+	public static function getSmartyIncludePath() {
+		return self::$configuration_options['SmartyPath'];
 	}
 
 }

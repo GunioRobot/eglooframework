@@ -26,8 +26,7 @@
  * @version 1.0
  */
 
-include( 'Smarty/Smarty.class.php' );
-include( 'smarty/Smarty.class.php' );
+include( eGlooConfiguration::getSmartyIncludePath() );
 
 /**
  * TemplateEngine

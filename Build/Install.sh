@@ -42,15 +42,16 @@ E_NOTROOT=02   # Script not run as root
 # Script Constants
 ROOT_UID=0     # Only users with $UID 0 have root privileges.
 
-# Default Configuration Parameters (OS X)
-DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
-DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
-DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
-DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
-DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
-DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
-DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
-DEFAULT_LOGPATH="/Library/Logs/eGloo"
+# OS Constants
+OS_UBUNTU=0
+OS_MACOSX=1
+OS_WINDOWS=2
+
+# Current platform
+# Default to Debian
+DETECTED_PLATFORM=0
+
+# Get our parent directory
 PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 
 # Check for root
@@ -62,6 +63,51 @@ then
 	echo
 	exit $E_NOTROOT
 fi
+
+PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
+
+case "$PLATFORM" in
+	"4.4BSD/Mach3.0 (iX86) Apple Darwin 9.8.0 (i386) Apple Mac OS X 10.5.8 (iX86)" | "kj" )
+		echo "Detected Apple Mac OS X"
+		DETECTED_PLATFORM=$OS_MACOSX
+
+		# Default Configuration Parameters (OS X)
+		DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
+		DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
+		DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
+		DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+		DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
+		DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
+		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
+		DEFAULT_LOGPATH="/Library/Logs/eGloo"
+		DEFAULT_SMARTY="/opt/local/lib/php/Smarty/Smarty.class.php"
+	;;
+	
+	"LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.04 (AMD64)" | "lkjadsf" )
+		echo "Detected Ubuntu Linux"
+		DETECTED_PLATFORM=$OS_UBUNTU
+
+		# Default Configuration Parameters (Ubuntu)
+		DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
+		DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
+		DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
+		DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
+		DEFAULT_DOCUMENTROOT="/var/www/egloo"
+		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
+		DEFAULT_LOGPATH="/var/logs/egloo"
+		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+	;;
+	
+	* )
+	;;
+esac
+
+# if [ "$DETECTED_PLATFORM" -eq "$OS_MACOSX" ]
+# then
+# 	echo "blah"
+# 	exit
+# fi
 
 # Give the user an explanation of the build process
 echo "********************************"
@@ -677,6 +723,116 @@ echo "\"$CUBES_PATH\""
 # echo "\"$CUBES_PATH\""
 # 
 # mkdir -p "$CUBES_PATH"
+
+echo
+echo "***********************"
+echo "* Supporting Software *"
+echo "***********************"
+echo
+echo "eGloo relies on several supporting software packages to be installed to run."
+echo "For each supporting software package, the installer can offer the option to"
+echo "install the required package from the eGloo distribution or prompt for a path"
+echo "where the relevant software package can be found.  The installer will attempt"
+echo "to make smart guesses about locations of software already installed."
+echo
+
+echo
+echo "**************************"
+echo "* Smarty Template Engine *"
+echo "**************************"
+echo
+
+if [ -f "$DEFAULT_SMARTY" ]
+then
+	echo "Smarty was found at the following location."
+	echo "\"$DEFAULT_SMARTY\""
+	echo 
+	echo -n "Use this Smarty package? [Y/n]: "
+	read -e CONFIRM_CONTINUE
+
+	# Check if the user wants to use the default or specify their own Smarty path
+	case "$CONFIRM_CONTINUE" in
+		# User chose to specify own Smarty path
+		"N" | "n" | "No" | "NO" | "no" )
+			NEW_PATH_SET=0
+
+			# Loop until we have a new path and the user has confirmed the location
+			while [ "$NEW_PATH_SET" -ne 1 ]
+			do
+				echo -n "Enter New Location: "
+				read -e SMARTY_PATH
+				echo
+				echo "Location: \"$SMARTY_PATH\""
+				echo
+
+				echo -n "Use this location? [y/N]: "
+				read -e CONFIRM_CONTINUE
+
+				# Make sure user entered right path
+				case "$CONFIRM_CONTINUE" in
+					# New path is good, break the loop
+					"Y" | "y" | "Yes" | "YES" | "yes" )
+						NEW_PATH_SET=1
+					;;
+					# New path is no good, loop back
+					* )
+					;;
+				esac
+			done		
+		;;
+
+		# User chose the default path
+		* ) SMARTY_PATH=$DEFAULT_SMARTY
+		;;
+	esac
+else
+	echo "Smarty was not found at the default location."
+	echo 
+	echo -n "Install Smarty? (If no, you will be prompted for an existing Smarty install) [Y/n]: "
+	read -e CONFIRM_CONTINUE
+	
+	# Check if the user wants to use the default or specify their own Smarty path
+	case "$CONFIRM_CONTINUE" in
+		# User chose to specify own Smarty path
+		"N" | "n" | "No" | "NO" | "no" )
+			NEW_PATH_SET=0
+
+			# Loop until we have a new path and the user has confirmed the location
+			while [ "$NEW_PATH_SET" -ne 1 ]
+			do
+				echo -n "Enter New Location: "
+				read -e SMARTY_PATH
+				echo
+				echo "Location: \"$SMARTY_PATH\""
+				echo
+
+				echo -n "Use this location? [y/N]: "
+				read -e CONFIRM_CONTINUE
+
+				# Make sure user entered right path
+				case "$CONFIRM_CONTINUE" in
+					# New path is good, break the loop
+					"Y" | "y" | "Yes" | "YES" | "yes" )
+						NEW_PATH_SET=1
+					;;
+					# New path is no good, loop back
+					* )
+					;;
+				esac
+			done		
+		;;
+
+		# User chose the default path
+		* )
+			# TODO install Smarty
+			SMARTY_PATH=$DEFAULT_SMARTY
+		;;
+	esac
+
+fi
+
+echo 
+echo "Writing configuration files... "
 ./Configure.php \
 	--ApplicationsPath="$APPLICATIONS_PATH" \
 	--CachePath="$CACHE_PATH" \
@@ -686,6 +842,9 @@ echo "\"$CUBES_PATH\""
 	--DocumentationPath="$DOCUMENTATION_PATH" \
 	--DocumentRoot="$DOCUMENT_PATH" \
 	--FrameworkRootPath="$FRAMEWORK_PATH" \
-	--LoggingPath="$LOGPATH"
+	--LoggingPath="$LOGPATH" \
+	--SmartyPath="$SMARTY_PATH"
+echo
+echo "Done"
 
 exit

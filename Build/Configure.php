@@ -34,10 +34,10 @@
 
 //print_r($argv);
 
-$config_options_array = eval('return ' . file_get_contents('ConfigCache.php') .';');
-
-print_r($config_options_array);
-die;
+// $config_options_array = eval('return ' . file_get_contents('ConfigCache.php') .';');
+// 
+// print_r($config_options_array);
+// die;
 
 $value_pairs = array();
 $configuration_options = array(
@@ -49,12 +49,13 @@ $configuration_options = array(
 		'DocumentationPath'		=> '',
 		'DocumentRoot'			=> '',
 		'FrameworkRootPath'		=> '',
-		'LoggingPath'			=> ''
+		'LoggingPath'			=> '',
+		'SmartyPath'			=> ''
 		);
 
 foreach($argv as $argument) {
 	$matches = array();
-	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_ ]+)/', $argument, $matches);
+	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_. ]+)/', $argument, $matches);
 
 	if (!empty($matches) && isset($matches[1]) && isset($matches[2])) {
 		$value_pairs[$matches[1]] = $matches[2];
@@ -67,11 +68,7 @@ foreach($configuration_options as $option_name => $option_value) {
 	}
 }
 
-print_r($configuration_options);
-
-echo $argc;
-
 $config_dump = var_export($configuration_options, TRUE);
 file_put_contents('ConfigCache.php', $config_dump);
 
-die;
+exit;
