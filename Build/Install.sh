@@ -60,7 +60,7 @@ then
 	echo "* Must be root to run this script *"
 	echo "***********************************"
 	echo
-	#exit $E_NOTROOT
+	exit $E_NOTROOT
 fi
 
 # Give the user an explanation of the build process
@@ -503,8 +503,6 @@ else
 
 fi
 
-exit
-
 echo
 echo "*******************************"
 echo "* eGloo Web Applications Path *"
@@ -556,14 +554,14 @@ esac
 echo "Building web applications path..."
 echo "\"$APPLICATIONS_PATH\""
 
-if [$USE_SYMLINKS]
-then
-	mkdir -p "$APPLICATIONS_PATH"
-	ln -s ../Applications/eGloo "$APPLICATIONS_PATH/eGloo"
-else
-	mkdir -p "$APPLICATIONS_PATH"
-	cp -R ../Applications/* "$APPLICATIONS_PATH"
-fi
+# if [ $USE_SYMLINKS ]
+# then
+# 	mkdir -p "$APPLICATIONS_PATH"
+# 	ln -s ../Applications/eGloo "$APPLICATIONS_PATH/eGloo"
+# else
+# 	mkdir -p "$APPLICATIONS_PATH"
+# 	cp -R ../Applications/* "$APPLICATIONS_PATH"
+# fi
 
 echo
 echo "********************"
@@ -616,16 +614,16 @@ esac
 echo "Building cubes path..."
 echo "\"$CUBES_PATH\""
 
-if [$USE_SYMLINKS]
-then
-	mkdir -p "$CUBES_PATH"
-	ln -s ../Cubes/B "$CUBES_PATH/B"
-	ln -s ../Cubes/F "$CUBES_PATH/F"
-	ln -s ../Cubes/P "$CUBES_PATH/P"
-else
-	mkdir -p "$CUBES_PATH"
-	cp -R ../Cubes/* "$CUBES_PATH"
-fi
+# if [ $USE_SYMLINKS ]
+# then
+# 	mkdir -p "$CUBES_PATH"
+# 	ln -s ../Cubes/B "$CUBES_PATH/B"
+# 	ln -s ../Cubes/F "$CUBES_PATH/F"
+# 	ln -s ../Cubes/P "$CUBES_PATH/P"
+# else
+# 	mkdir -p "$CUBES_PATH"
+# 	cp -R ../Cubes/* "$CUBES_PATH"
+# fi
 
 # echo
 # echo "********************"
@@ -680,14 +678,14 @@ fi
 # 
 # mkdir -p "$CUBES_PATH"
 ./Configure.php \
-	--ApplicationsPath=$APPLICATIONS_PATH \
-	--CachePath=$CACHE_PATH \
+	--ApplicationsPath="$APPLICATIONS_PATH" \
+	--CachePath="$CACHE_PATH" \
 	--CompiledTemplatesPath=blah \
-	--ConfigurationPath=$CONFIG_PATH \
-	--CubesPath=$CUBES_PATH \
-	--DocumentationPath=$DOCUMENTATION_PATH \
-	--DocumentRoot=$DOCUMENT_PATH \
-	--FrameworkRootPath=$FRAMEWORK_PATH \
-	--LoggingPath=$LOGPATH
+	--ConfigurationPath="$CONFIG_PATH" \
+	--CubesPath="$CUBES_PATH" \
+	--DocumentationPath="$DOCUMENTATION_PATH" \
+	--DocumentRoot="$DOCUMENT_PATH" \
+	--FrameworkRootPath="$FRAMEWORK_PATH" \
+	--LoggingPath="$LOGPATH"
 
 exit

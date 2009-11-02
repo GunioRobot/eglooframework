@@ -35,13 +35,13 @@
  * output required based on the notice level of the message and any additional
  * information passed in via an array.  
  * 
- * All messages are written to /var/log/eGloo/error.log - the directory /var/log/eGloo
- * and the log file, "error.log", must both be writable by either the user or the group
- * which the apache (httpd) daemon belongs to.  The eGloo directory must also already 
- * exist; the logger will not create the required path.
+ * All messages are written to the log path defined in eGlooConfiguration::getLoggingPath().
+ * The logging path and the log file, "error.log", must both be writable by either the user
+ * or the group which the apache (httpd) daemon belongs to.  The eGloo directory must also
+ * already exist; the logger will not create the required path.
  *
  * @author George Cooper
- * @author Thomas Patrick Read I		(loggingType)
+ * @author Thomas Patrick Read I
  */
 final class eGlooLogger {
     // Class Constants
@@ -69,8 +69,8 @@ final class eGlooLogger {
 	public static $LOG_XML = "xml";		// write to error.xml
 
     // Attributes
-    private static $logFilePath = '/var/log/eGloo/error.log';
-    private static $htmlFilePath = '/var/log/eGloo/error.html';
+    // private static $logFilePath = eGlooConfiguration::getLoggingPath() . '/error.log';
+    // private static $htmlFilePath = eGlooConfiguration::getLoggingPath() . '/error.html';
     private static $loggingLevel;
 	private static $loggingType = "log";	//set to log by default
     private static $requestID = '';
@@ -146,8 +146,8 @@ final class eGlooLogger {
             
             $dateDir = date( 'Y-m-d' );
             
-            if ( !is_writable( '/var/log/eGloo/' . $dateDir ) ) {
-                mkdir( '/var/log/eGloo/' . $dateDir );
+            if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . $dateDir ) ) {
+                mkdir( eGlooConfiguration::getLoggingPath() . '/' . $dateDir );
             }
             
             //Default, write to error.log
@@ -155,7 +155,7 @@ final class eGlooLogger {
 //            	if ( (file_put_contents( self::$logFilePath, $message . "\n", FILE_APPEND ) ) === false ) {
 //               		throw new eGlooLoggerException( 'Error writing to log' );
 //            	}
-                if ( (file_put_contents( '/var/log/eGloo/' . $dateDir . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
+                if ( (file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . $dateDir . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
                     throw new eGlooLoggerException( 'Error writing to log' );
                 }
             }

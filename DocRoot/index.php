@@ -30,6 +30,8 @@
     include( '../PHP/autoload.php' );
     include( '../PHP/error_handlers.php' );
 
+	// Load the configuration
+	eGlooConfiguration::loadConfigurationOptions( './ConfigCache.php');
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
     eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
