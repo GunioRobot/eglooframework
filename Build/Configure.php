@@ -27,18 +27,6 @@
  * @version 1.0
  */
 
-// $vardump = var_export($unserialized_array, TRUE);
-// $str = file_get_contents('vardump');
-// $var = eval('return ' . $str .';');
-// $var = include();
-
-//print_r($argv);
-
-// $config_options_array = eval('return ' . file_get_contents('ConfigCache.php') .';');
-// 
-// print_r($config_options_array);
-// die;
-
 $value_pairs = array();
 $configuration_options = array(
 		'ApplicationsPath'		=> '',
