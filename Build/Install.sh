@@ -81,6 +81,8 @@ case "$PLATFORM" in
 		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
 		DEFAULT_LOGPATH="/Library/Logs/eGloo"
 		DEFAULT_SMARTY="/opt/local/lib/php/Smarty/Smarty.class.php"
+		DEFAULT_WEBUSER="_www"
+		DEFAULT_WEBGROUP="admin"
 	;;
 	
 	"LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.04 (AMD64)" | "lkjadsf" )
@@ -97,11 +99,29 @@ case "$PLATFORM" in
 		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
 		DEFAULT_LOGPATH="/var/logs/egloo"
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+		DEFAULT_WEBUSER="www-data"
+		DEFAULT_WEBGROUP="www-data"
 	;;
 	
 	* )
 	;;
 esac
+
+# Temporarily disable errexit check because grep returns non-true on a result we need
+set +o errexit
+id "$DEFAULT_WEBUSER" &> id.out
+WEBUSER_NOT_FOUND=`grep -i -c "no such user" id.out`
+rm id.out
+set -o errexit
+
+if [ "$WEBUSER_NOT_FOUND" -eq 1 ]
+then
+	echo "Error: Web user not found"
+	exit
+else
+	WEB_USER=$DEFAULT_WEBUSER
+	WEB_GROUP=$DEFAULT_WEBGROUP
+fi
 
 # if [ "$DETECTED_PLATFORM" -eq "$OS_MACOSX" ]
 # then
@@ -201,10 +221,13 @@ echo "\"$CONFIG_PATH\""
 
 if [ $USE_SYMLINKS ]
 then
-	mkdir -p "$CONFIG_PATH"
-	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
+	echo
+	# mkdir -p "$CONFIG_PATH"
+	# cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 else
 	mkdir -p "$CONFIG_PATH"
+	chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
+	chmod 755 "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 fi
 
@@ -260,6 +283,8 @@ echo "Building cache path..."
 echo "\"$CACHE_PATH\""
 
 mkdir -p "$CACHE_PATH"
+chown $WEB_USER:$WEB_GROUP "$CACHE_PATH"
+chmod 755 "$CACHE_PATH"
 
 echo
 echo "****************************"
@@ -366,7 +391,8 @@ echo "Building log path..."
 echo "\"$LOGPATH\""
 
 mkdir -p "$LOGPATH"
-chmod 777 "$LOGPATH"
+chown $WEB_USER:$WEB_GROUP "$LOGPATH"
+chmod 755 "$LOGPATH"
 
 echo
 echo "*****************************"
@@ -549,6 +575,9 @@ else
 
 fi
 
+chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH"
+chmod -R 755 "$DOCUMENT_PATH"
+
 echo
 echo "*******************************"
 echo "* eGloo Web Applications Path *"
@@ -599,6 +628,9 @@ esac
 
 echo "Building web applications path..."
 echo "\"$APPLICATIONS_PATH\""
+
+chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
+chmod -R 755 "$APPLICATIONS_PATH"
 
 # if [ $USE_SYMLINKS ]
 # then
@@ -659,6 +691,9 @@ esac
 
 echo "Building cubes path..."
 echo "\"$CUBES_PATH\""
+
+chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
+chmod -R 755 "$CUBES_PATH"
 
 # if [ $USE_SYMLINKS ]
 # then
@@ -831,6 +866,9 @@ else
 
 fi
 
+chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
+chmod -R 755 "$SMARTY_PATH"
+
 echo 
 echo "Writing configuration files... "
 ./Configure.php \
@@ -844,6 +882,10 @@ echo "Writing configuration files... "
 	--FrameworkRootPath="$FRAMEWORK_PATH" \
 	--LoggingPath="$LOGPATH" \
 	--SmartyPath="$SMARTY_PATH"
+
+chown -R $WEB_USER:$WEB_GROUP "ConfigCache.php"
+chmod -R 755 "$SMARTY_PATH"
+
 echo
 echo "Done"
 

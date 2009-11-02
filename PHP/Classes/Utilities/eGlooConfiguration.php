@@ -27,24 +27,35 @@ final class eGlooConfiguration {
 	}
 
     public static function getApplicationsPath() {
+		return self::$configuration_options['ApplicationsPath'];
 	}
 
     public static function getCachePath() {
+		return self::$configuration_options['CachePath'];
+	}
+
+    public static function getCompiledTemplatesPath() {
+		return self::$configuration_options['CompiledTemplatesPath'];
 	}
 
     public static function getConfigurationPath() {
+		return self::$configuration_options['ConfigurationPath'];
 	}
 
     public static function getCubesPath() {
+		return self::$configuration_options['CubesPath'];
 	}
 
     public static function getDocumentationPath() {
+		return self::$configuration_options['DocumentationPath'];
 	}
-	
+
     public static function getDocumentRoot() {
+		return self::$configuration_options['DocumentRoot'];
 	}
 
     public static function getFrameworkRootPath() {
+		return self::$configuration_options['FrameworkRootPath'];
 	}
 
     public static function getLoggingPath() {
