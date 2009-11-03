@@ -63,20 +63,20 @@ if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocaliza
 	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
 
 	foreach($countries as $country) {
+		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
+			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755);
+		}
+
+		if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
+			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755);
+		}
+
 		foreach($languages as $language) {
-			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
-				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755);
-
-				if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
-					mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755);
-				}
+			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
+				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755);
 			}
-			if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
-				mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755);
-
-				if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
-					mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755);
-				}
+			if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
+				mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755);
 			}
 		}
 	}
