@@ -6,7 +6,6 @@
 # Script should be chmod 700 and run as root from the working directory
 # using the command ./Install.sh
 #
-#
 # Copyright 2008 eGloo, LLC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -283,8 +282,10 @@ echo "Building cache path..."
 echo "\"$CACHE_PATH\""
 
 mkdir -p "$CACHE_PATH"
-chown $WEB_USER:$WEB_GROUP "$CACHE_PATH"
-chmod 755 "$CACHE_PATH"
+mkdir -p "$CACHE_PATH/CompiledTemplates"
+mkdir -p "$CACHE_PATH/SmartyCache"
+chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
+chmod -R 755 "$CACHE_PATH"
 
 echo
 echo "****************************"
