@@ -39,12 +39,12 @@ class SessionDecorator extends RequestProcessorDecorator {
     * do any pre processing here
     */
 	protected function requestPreProcessing(){
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionDecorator::requestPreProcessing - Starting session", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::$DEBUG,
+			"SessionDecorator::requestPreProcessing - Starting session", 'Decorators' );
 
 	    /*
 	     * Initialize the session object
 	     */
-
 	    $sessionHandler = new SessionHandler();
 	    session_start();
 
@@ -62,9 +62,7 @@ class SessionDecorator extends RequestProcessorDecorator {
 	protected function requestPostProcessing(){
 		
 	}
-   
-    
+
   }
- 
- 
+
 ?>
