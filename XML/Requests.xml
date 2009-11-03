@@ -204,7 +204,9 @@
 	       <Depend id="boolDep" type="get">
 				<Child id="child1" type="get" />
 			</Depend></Request>
-		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor"/>
+		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
 	</RequestClass>
     <RequestClass id="fridge">
         <Request id="showFridge" processorID="FridgeBaseRequestProcessor"></Request>
