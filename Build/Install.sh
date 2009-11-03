@@ -882,8 +882,13 @@ echo "Writing configuration files... "
 	--DocumentRoot="$DOCUMENT_PATH" \
 	--FrameworkRootPath="$FRAMEWORK_PATH" \
 	--LoggingPath="$LOGPATH" \
-	--SmartyPath="$SMARTY_PATH"
+	--SmartyPath="$SMARTY_PATH" \
+	--WriteLocalizationPaths="true"
 
+# Configure script will make ownership of the child cache directories root so switch it back
+chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
+
+# Set ownership on the config dump created
 chown -R $WEB_USER:$WEB_GROUP "ConfigCache.php"
 chmod -R 755 "$SMARTY_PATH"
 

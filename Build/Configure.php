@@ -57,6 +57,31 @@ foreach($configuration_options as $option_name => $option_value) {
 	}
 }
 
+if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
+	echo "Writing localization paths in cache path...\n";
+	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
+	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
+
+	foreach($countries as $country) {
+		foreach($languages as $language) {
+			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
+				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755);
+
+				if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
+					mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755);
+				}
+			}
+			if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
+				mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755);
+
+				if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
+					mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755);
+				}
+			}
+		}
+	}
+}
+
 $config_dump = var_export($configuration_options, TRUE);
 file_put_contents('ConfigCache.php', $config_dump);
 
