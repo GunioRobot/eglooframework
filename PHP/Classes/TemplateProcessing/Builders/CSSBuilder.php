@@ -84,13 +84,13 @@ class CSSBuilder extends TemplateBuilder {
         $templateDispatcher = StyleSheetDispatcher::getInstance( $this->application, $this->interfaceBundle );
 
 		// TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new CSSTemplateEngine( $this->deployment, 'us', $this->interfaceBundle );
+        $this->templateEngine = new CSSTemplateEngine( $this->interfaceBundle, 'US', 'en' );
         
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
     public function setTemplateEngine() {
-		$this->templateEngine = new CSSTemplateEngine( $this->deployment, 'us', $this->interfaceBundle );
+		$this->templateEngine = new CSSTemplateEngine( $this->interfaceBundle, 'US', 'en' );
     }
     
     public function run() {

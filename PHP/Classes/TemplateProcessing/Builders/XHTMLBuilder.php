@@ -99,13 +99,13 @@ class XHTMLBuilder extends TemplateBuilder {
         	$this->requestInfoBean->getInterfaceBundle() );
         
         // TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new TemplateEngine( $this->deployment, 'us' );
+        $this->templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );
         
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
     public function setTemplateEngine() {
-        $this->templateEngine = new TemplateEngine( $this->deployment, 'us' );    
+        $this->templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );    
     }
     
     public function run() {

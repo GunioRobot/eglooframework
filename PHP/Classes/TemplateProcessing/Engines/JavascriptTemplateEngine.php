@@ -36,16 +36,16 @@
  */
 class JavascriptTemplateEngine extends TemplateEngine {
 
-    public function __construct( $install, $local, $interfaceBundle ) {
+    public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
         $this->Smarty();
         $this->left_delimiter = '/*<!--{'; 
         $this->right_delimiter = '}-->*/'; 
         
-        $this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfaceBundle . '/Javascript/';
+        $this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfacebundle . '/Javascript/';
         $this->config_dir   = '../Configuration/Smarty';
 
-		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates';
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache';
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
 
         // $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
         //                         $local . '/cache/compiled_templates';

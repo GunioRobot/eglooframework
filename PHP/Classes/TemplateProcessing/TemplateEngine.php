@@ -38,7 +38,7 @@ include( eGlooConfiguration::getSmartyIncludePath() );
  */
 class TemplateEngine extends Smarty {
 
-    public function __construct( $install, $local ) {
+    public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
         $this->Smarty();
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
@@ -47,8 +47,8 @@ class TemplateEngine extends Smarty {
 
         $this->template_dir = '../Templates';
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
-		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates';
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache';
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
 
         // $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
         //                         $local . '/cache/compiled_templates';

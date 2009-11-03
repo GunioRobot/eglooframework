@@ -56,7 +56,7 @@ class XMLBuilder extends TemplateBuilder {
         $templateDispatcher = XHTMLDispatcher::getInstance( 'eGloo', 'Default' );
         
 //        $templateDispatcher = XHTMLDispatcher::getInstance( $this->application, $this->interfaceBundle );
-        $templateEngine = new TemplateEngine( $this->deployment, 'us' );
+        $templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );
         
         $dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
         

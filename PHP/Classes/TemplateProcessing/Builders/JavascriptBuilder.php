@@ -84,7 +84,7 @@ class JavascriptBuilder extends TemplateBuilder {
         $templateDispatcher = JavascriptDispatcher::getInstance( $this->application, $this->interfaceBundle );
 
         // TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new JavascriptTemplateEngine( $this->deployment, 'us', $this->interfaceBundle );
+        $this->templateEngine = new JavascriptTemplateEngine( $this->interfaceBundle, 'US', 'en' );
         
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
