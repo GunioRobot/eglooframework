@@ -40,13 +40,17 @@ class CubeTemplateEngine extends TemplateEngine {
         $this->Smarty();
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
-        
+
         $this->template_dir = '../Cubes/';
         $this->config_dir   = '../Configuration/Smarty';
-        $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
-                                $local . '/cache/compiled_templates';
-        $this->cache_dir    = '/data/eGloo/' . $install . '/' .
-                                $local . '/cache/smarty_cache';
+
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates';
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache';
+
+        // $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
+        //                         $local . '/cache/compiled_templates';
+        // $this->cache_dir    = '/data/eGloo/' . $install . '/' .
+        //                         $local . '/cache/smarty_cache';
         $this->caching      = false;
     }
 

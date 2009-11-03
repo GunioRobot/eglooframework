@@ -42,21 +42,23 @@ class TemplateEngine extends Smarty {
         $this->Smarty();
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
-        
-        
+
         $this->plugins_dir = array( 'plugins', '../PHP/Classes/components' );
-        
+
         $this->template_dir = '../Templates';
-        $this->config_dir   = '../Configuration/Smarty';
-        $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
-                                $local . '/cache/compiled_templates';
-        $this->cache_dir    = '/data/eGloo/' . $install . '/' .
-                                $local . '/cache/smarty_cache';
+        $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates';
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache';
+
+        // $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
+        //                         $local . '/cache/compiled_templates';
+        // $this->cache_dir    = '/data/eGloo/' . $install . '/' .
+        //                         $local . '/cache/smarty_cache';
         //$this->cache_handler_func = 'smarty_cache_memcache';
         //$this->caching      = true;
         $this->caching = false;
     }
-    
+
 }
 
 ?>
