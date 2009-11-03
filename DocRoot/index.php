@@ -49,7 +49,6 @@
      * 3) if the request is valid, obtain the appropriate request processor
      * 4) process the request
      */
-
     $webapp = 'eGloo';
     $uibundle = 'OverlayInterface';
 
