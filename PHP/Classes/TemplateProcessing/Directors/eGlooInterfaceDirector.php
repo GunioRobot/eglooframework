@@ -46,6 +46,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
     public function preProcessTemplate() {
         $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
+		$this->templateBuilder->setTemplateEngine();
         $this->templateBuilder->setDispatchPath();
         
         if ( $this->cacheID !== null ) {
