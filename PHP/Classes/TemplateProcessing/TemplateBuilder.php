@@ -37,9 +37,8 @@
  */
 abstract class TemplateBuilder {
 	
-	protected $application = 'eGloo';
-	protected $interfaceBundle = 'OverlayInterface';
-//	protected $interfaceBundle = 'Default';
+	protected $application = '';
+	protected $interfaceBundle = '';
 
 	public function setApplication( $application ) {
 		$this->application = $application;
