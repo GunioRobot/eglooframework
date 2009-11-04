@@ -53,10 +53,10 @@ class XMLBuilder extends TemplateBuilder {
     }
     
     public function run() {
-        $templateDispatcher = XHTMLDispatcher::getInstance( 'eGloo', 'Default' );
-        
-//        $templateDispatcher = XHTMLDispatcher::getInstance( $this->application, $this->interfaceBundle );
-        $templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );
+        $templateDispatcher =
+			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
+
+        $templateEngine = new TemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
         
         $dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
         

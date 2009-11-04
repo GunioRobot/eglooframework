@@ -80,29 +80,22 @@ class CSSBuilder extends TemplateBuilder {
     }
 
     public function setDispatchPath() {
-//        $templateDispatcher = StyleSheetDispatcher::getInstance( 'eGloo', 'Default' );
-        $templateDispatcher = StyleSheetDispatcher::getInstance( $this->application, $this->interfaceBundle );
-
-		// TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new CSSTemplateEngine( $this->interfaceBundle, 'US', 'en' );
+        $templateDispatcher =
+			StyleSheetDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
         
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
     public function setTemplateEngine() {
-		$this->templateEngine = new CSSTemplateEngine( $this->interfaceBundle, 'US', 'en' );
+		$this->templateEngine = new CSSTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {
-        
-        // assign variables
-        
-        // output        
         $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
-        
-        return $output;        
+
+        return $output;
     }
-    
+
 }
 
 ?>

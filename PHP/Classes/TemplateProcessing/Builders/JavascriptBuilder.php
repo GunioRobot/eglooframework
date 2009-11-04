@@ -80,30 +80,22 @@ class JavascriptBuilder extends TemplateBuilder {
     }
     
     public function setDispatchPath() {
-//      $templateDispatcher = JavascriptDispatcher::getInstance( 'eGloo', 'Default' );
-        $templateDispatcher = JavascriptDispatcher::getInstance( $this->application, $this->interfaceBundle );
+        $templateDispatcher =
+			JavascriptDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        // TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new JavascriptTemplateEngine( $this->interfaceBundle, 'US', 'en' );
-        
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
     public function setTemplateEngine() {
-    	$this->templateEngine = new JavascriptTemplateEngine( $this->deployment, 'us', $this->interfaceBundle );
+    	$this->templateEngine = new JavascriptTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {
-        
-        // assign variables
-        
-        // output        
-//        $output = $this->templateEngine->fetch( $this->dispatchPath );
         $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
-        
-        return $output;        
+
+        return $output;
     }
-        
+
 }
 
 ?>

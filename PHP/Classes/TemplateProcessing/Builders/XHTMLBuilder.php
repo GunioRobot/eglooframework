@@ -94,18 +94,14 @@ class XHTMLBuilder extends TemplateBuilder {
     }
     
     public function setDispatchPath() {
-       // $templateDispatcher = XHTMLDispatcher::getInstance( 'eGloo', 'Default' );
-        $templateDispatcher = XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), 
-        	$this->requestInfoBean->getInterfaceBundle() );
-        
-        // TODO this should be moved to setTemplateEngine as part of the director's work
-        $this->templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );
+        $templateDispatcher =
+			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
         
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
     public function setTemplateEngine() {
-        $this->templateEngine = new TemplateEngine( $this->interfaceBundle, 'US', 'en' );    
+        $this->templateEngine = new TemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
     
     public function run() {
