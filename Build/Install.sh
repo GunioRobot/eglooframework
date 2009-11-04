@@ -630,6 +630,26 @@ esac
 echo "Building web applications path..."
 echo "\"$APPLICATIONS_PATH\""
 
+if [ $USE_SYMLINKS ]
+then
+	if [ ! -e "$APPLICATIONS_PATH" ]
+	then
+		mkdir -p "$APPLICATIONS_PATH"
+		for filename in ../Applications/*
+		do
+		  ln -s "$PARENT_DIRECTORY/Applications/$filename" "$APPLICATIONS_PATH/$filename"
+		done;
+		
+#		ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
+	else
+		echo "Applications path exists"
+	fi
+else
+	mkdir -p "$APPLICATIONS_PATH"
+	cp -R ../Applications/* "$APPLICATIONS_PATH/"
+#	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
+fi
+
 chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
 chmod -R 755 "$APPLICATIONS_PATH"
 
@@ -692,6 +712,26 @@ esac
 
 echo "Building cubes path..."
 echo "\"$CUBES_PATH\""
+
+if [ $USE_SYMLINKS ]
+then
+	if [ ! -e "$CUBES_PATH" ]
+	then
+		mkdir -p "$CUBES_PATH"
+		for filename in ../Cubes/*
+		do
+		  ln -s "$PARENT_DIRECTORY/Cubes/$filename" "$CUBES_PATH/$filename"
+		done;
+		
+#		ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
+	else
+		echo "Cubes path exists"
+	fi
+else
+	mkdir -p "$CUBES_PATH"
+	cp -R ../Cubes/* "$CUBES_PATH/"
+#	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
+fi
 
 chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
 chmod -R 755 "$CUBES_PATH"
