@@ -83,8 +83,11 @@ final class RequestValidator {
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Processing XML", 'Security' );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
-		$this->REQUESTS_XML_LOCATION = "../XML/Requests/" . $this->webapp . "/" . $this->uibundle . "/Requests.xml";
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Loading " . $this->REQUESTS_XML_LOCATION, 'Security' );
+		$this->REQUESTS_XML_LOCATION =
+			eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
+
+		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Loading "
+			. $this->REQUESTS_XML_LOCATION, 'Security' );
 		
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
         foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
