@@ -57,7 +57,8 @@ final class StyleSheetDispatcher {
     private function __construct( $application, $interfaceBundle ) {
         $this->application = $application;
         $this->interfaceBundle = $interfaceBundle;
-        
+
+		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';        
         $this->loadDispatchNodes();  
     }
     
@@ -71,7 +72,6 @@ final class StyleSheetDispatcher {
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
 //        $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION );
-
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
             $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSS/Dispatch.xml'  );
 

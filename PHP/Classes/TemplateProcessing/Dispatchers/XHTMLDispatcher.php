@@ -58,6 +58,7 @@ final class XHTMLDispatcher {
         $this->application = $application;
         $this->interfaceBundle = $interfaceBundle;
         
+		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
         $this->loadDispatchNodes();  
     }
     

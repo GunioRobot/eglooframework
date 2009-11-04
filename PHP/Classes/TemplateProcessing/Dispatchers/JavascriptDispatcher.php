@@ -57,7 +57,8 @@ final class JavascriptDispatcher {
     private function __construct( $application, $interfaceBundle ) {
         $this->application = $application;
         $this->interfaceBundle = $interfaceBundle;
-        
+
+        $this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
         $this->loadDispatchNodes();  
     }
     
@@ -70,10 +71,11 @@ final class JavascriptDispatcher {
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
 //        $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION );
-
+// echo $this->DISPATCH_XML_LOCATION . 
+//     $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml';
+// die;
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
             $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml'  );
-
 
         foreach( $requestXMLObject->xpath( '/eGlooJavascript:Clients' ) as $javascriptClients ) {
                 $uniqueKey = ( 'JavascriptDispatcher' );
