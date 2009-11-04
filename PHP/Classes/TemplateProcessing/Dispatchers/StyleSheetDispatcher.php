@@ -44,8 +44,7 @@ final class StyleSheetDispatcher {
     /**
      * XML Variables
      */
-//    private $DISPATCH_XML_LOCATION = "../Templates/Applications/eGloo/InterfaceBundles/Default/CSS/Dispatch.xml";
-    private $DISPATCH_XML_LOCATION = "../Templates/Applications/";
+    private $DISPATCH_XML_LOCATION = '';
     private $dispatchNodes = array();
 
     private $application = null;
@@ -71,7 +70,6 @@ final class StyleSheetDispatcher {
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
-//        $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION );
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
             $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSS/Dispatch.xml'  );
 

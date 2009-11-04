@@ -44,8 +44,7 @@ final class JavascriptDispatcher {
     /**
      * XML Variables
      */
-//    private $DISPATCH_XML_LOCATION = "../Templates/Applications/eGloo/InterfaceBundles/Default/Javascript/Dispatch.xml";
-    private $DISPATCH_XML_LOCATION = "../Templates/Applications/";
+    private $DISPATCH_XML_LOCATION = '';
     private $dispatchNodes = array();
 
     private $application = null;
@@ -70,10 +69,6 @@ final class JavascriptDispatcher {
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
-//        $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION );
-// echo $this->DISPATCH_XML_LOCATION . 
-//     $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml';
-// die;
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
             $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml'  );
 
