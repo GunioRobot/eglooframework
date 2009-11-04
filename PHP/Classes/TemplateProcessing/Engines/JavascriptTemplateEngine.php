@@ -47,13 +47,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
 		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
 
-        // $this->compile_dir  = '/data/eGloo/' . $install . '/' . 
-        //                         $local . '/cache/compiled_templates';
-        // $this->cache_dir    = '/data/eGloo/' . $install . '/' .
-        //                         $local . '/cache/smarty_cache';
         //$this->cache_handler_func = 'smarty_cache_memcache';
-        //$this->cache_handler_func = 'smarty_cache_memcache';
-        //$this->caching      = true;
         $this->caching = false;
     }
 

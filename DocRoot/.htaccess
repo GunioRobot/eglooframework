@@ -1,5 +1,8 @@
 # .htaccess file for eGloo applications
- 
+SetEnv EG_ENV development
+SetEnv EG_APP eGloo
+SetEnv EG_UI  OverlayInterface
+
 # mod_rewrite
 <IfModule rewrite_module> 
 RewriteEngine on 

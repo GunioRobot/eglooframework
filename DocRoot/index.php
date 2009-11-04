@@ -24,23 +24,26 @@
  * @package Bootstrap
  * @version 1.0
  */
-
-    //apd_set_pprof_trace();
-
     include( '../PHP/autoload.php' );
     include( '../PHP/error_handlers.php' );
 
-	// Load the configuration
+	// Load the install configuration
 	eGlooConfiguration::loadConfigurationOptions();
+
     // Setup the logger
     eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
     eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
 
-    // we need to make sure we can id a particular request path in the logs since
+    // We need to make sure we can id a particular request path in the logs since
     // multiple instances can be run out of order
     set_error_handler( 'default_error_handler' );
     set_exception_handler( 'default_exception_handler' );
 	header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
+	// Grab our environment variables to determine which application and deployment to run
+	$webapp = $_SERVER['EG_APP'];
+	$uibundle = $_SERVER['EG_UI'];
+	$environment = $_SERVER['EG_ENV'];
 
     /**
      * 1) create a request info bean to be filled by the request validator,
@@ -49,24 +52,14 @@
      * 3) if the request is valid, obtain the appropriate request processor
      * 4) process the request
      */
-    $webapp = 'eGloo';
-    $uibundle = 'OverlayInterface';
-
-	// $webapp = 'Demos/BookResale';
-	// $uibundle = 'Default';
-
-	// if ( !isset($_ENV['EG_DEPLOY']) || ( $_ENV['EG_DEPLOY'] !== 'Prod' && 
-	// 	$_ENV['EG_DEPLOY'] !== 'Test' && $_ENV['EG_DEPLOY'] !== 'DevFast' && $_ENV['EG_DEPLOY'] !== 'Dev' ) ) {
-	// 		$_ENV['EG_DEPLOY'] = 'Dev';
-	// }
     $requestInfoBean = new RequestInfoBean();
 
     $requestValidator = RequestValidator::getInstance( $webapp, $uibundle );
     $isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
 
     if ( $isValidRequest ) {
-	   $requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
-       $requestProcessor->processRequest();
+		$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
+		$requestProcessor->processRequest();
     } else {
-	   eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+		eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
     }
