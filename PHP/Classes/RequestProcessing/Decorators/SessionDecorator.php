@@ -42,14 +42,16 @@ class SessionDecorator extends RequestProcessorDecorator {
 		eGlooLogger::writeLog( eGlooLogger::$DEBUG,
 			"SessionDecorator::requestPreProcessing - Starting session", 'Decorators' );
 
-	    /*
-	     * Initialize the session object
-	     */
+	    // Initialize the session object
 	    $sessionHandler = new SessionHandler();
+
+		// Start the session
 	    session_start();
 
 	    //This is to get IE to accept cookies with its new security model
-	    //TODO move session management to a decorator so javascript/css calls don't have sessions...
+		header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
+		// Set the cookie
 		setcookie(session_name(), session_id(), time()+60*60*24*30, '/');
 
 		// No problems...
