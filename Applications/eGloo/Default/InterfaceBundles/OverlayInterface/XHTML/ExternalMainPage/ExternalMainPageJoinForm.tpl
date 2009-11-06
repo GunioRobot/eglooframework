@@ -104,7 +104,7 @@
             <LEGEND ACCESSKEY=I>Beta License Agreement</LEGEND>
             <div id="licenseTextWrapper" class="licenseText">&nbsp;
 	            <div id="licenseText">
-					<!--{include file="Frameworks/Common/XHTML/License/Registration/Beta_Version_1.0.tpl"}-->
+					<!--{include file="Core/eGloo/XHTML/License/Registration/Beta_Version_1.0.tpl"}-->
 	            </div>
             </div>
         </fieldset>
