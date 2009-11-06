@@ -2,6 +2,14 @@
 SetEnv EG_ENV development
 SetEnv EG_APP eGloo/Default
 SetEnv EG_UI  OverlayInterface
+# SetEnv EG_APP Demos/PetFood
+# SetEnv EG_UI Default
+# SetEnv EG_APP Demos/BookResale
+# SetEnv EG_UI Default
+# SetEnv EG_APP Demos/DogOwners
+# SetEnv EG_UI Default
+# SetEnv EG_APP Demos/ImageHosting
+# SetEnv EG_UI Default
 SetEnv EG_LOG_LEVEL DEVELOPMENT
 SetEnv EG_LOG_FORMAT LOG
 
@@ -38,6 +46,7 @@ RewriteRule ^/profileID=(-{0,1}[0-9]*)$ index.php?class=internalMainPage&id=getI
 RewriteRule ^/home$ /index.php?class=internalMainPage&id=getInternalMainPage
 RewriteRule ^/browse$ /index.php?class=publicBrowse&id=viewUpdatedBlogProfiles
 RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?class=$1&id=$2&$3
+RewriteRule ^$ index.php?class=externalMainPage&id=extMainViewBase
 
 # Catch anything that doesn't fit one of the preceding patterns
 # Should redirect to 404.  Currently redirects to /

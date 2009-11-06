@@ -199,7 +199,16 @@
 		</Request>
 	</RequestClass>
 	<RequestClass id="externalMainPage">
-		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor" />
+		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+<!--			<Decorator order="1" decoratorID="Redirect2ProfileOnLoggedInDecorator" /> -->
+		</Request>
+		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
+		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
 	</RequestClass>
 	<RequestClass id="image">
 		<Request id="createImageElement" processorID="CreateImageElementRequestProcessor">

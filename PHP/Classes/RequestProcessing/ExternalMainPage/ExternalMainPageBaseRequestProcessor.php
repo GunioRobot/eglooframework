@@ -37,7 +37,7 @@
  * @subpackage RequestProcessors
  */
 class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
-    
+
     /**
      * Concrete implementation of the abstract RequestProcessor method
      * processRequest().
@@ -51,44 +51,33 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
      * @access public
      */
     public function processRequest() {
-    	
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Entered processRequest()" );
 
-        // TODO In terms of a framework, we probably don't want to force logged in users
-        // to do a hard redirect for every web application this might host; We should look
-        // into abstracting both this and forcing SSL.  But for eGloo's purposes, this is
-        // fine for now
-        if ( isset( $_SESSION['LOGGED_IN'] ) && $_SESSION['LOGGED_IN'] === true ) {
-			header( 'Location: /profileID=' . $_SESSION['MAIN_PROFILE_ID'] );
-        } else {
-	        $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
-	        $templateBuilder = new XHTMLBuilder();
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
+		$templateBuilder = new XHTMLBuilder();
 
-	        $templateDirector->setTemplateBuilder( $templateBuilder );
+		$templateDirector->setTemplateBuilder( $templateBuilder );
 
-	        $templateDirector->preProcessTemplate();
+		$templateDirector->preProcessTemplate();
 
-	        $templateVariables['svnVersion'] = '∞';
-			$templateVariables['app'] = eGlooConfiguration::getApplicationName();
-			$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
+		$templateVariables['svnVersion'] = '∞';
+		$templateVariables['app'] = eGlooConfiguration::getApplicationName();
+		$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
 
-	        $templateDirector->setTemplateVariables( $templateVariables );            
-	        
-	                
-	        $output = $templateDirector->processTemplate();
-	
-	        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Echoing Response" );
-	        
-			// TODO move header declarations to a decorator
-			header("Content-type: text/html; charset=UTF-8");
-			
-			// TODO buffer output
-			echo $output;        
-        }
-        
+		$templateDirector->setTemplateVariables( $templateVariables );            
+
+		$output = $templateDirector->processTemplate();
+
+		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Echoing Response" );
+
+		// TODO move header declarations to a decorator
+		header("Content-type: text/html; charset=UTF-8");
+
+		// TODO buffer output
+		echo $output;        
+
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Exiting processRequest()" );
-
     }
-    
+
 }
 ?>

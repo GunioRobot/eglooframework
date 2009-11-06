@@ -40,25 +40,21 @@ final class RequestProcessorFactory {
         $requestProcessor = null;
 
         $cacheGateway = CacheGateway::getCacheGateway();
-        
-        if ( ( $requestProcessor = $cacheGateway->getObject( (string) $requestProcessorID, '<type>' ) ) == null ) {
 
+        if ( ( $requestProcessor = $cacheGateway->getObject( (string) $requestProcessorID, '<type>' ) ) == null ) {
             if ( $requestProcessorID !== null ) {
-            	
 				//first make the concrete request processor
             	$requestProcessor = eval( "return new $requestProcessorID();" );
 
 				//now add the decorators
 				foreach( $requestInfoBean->getDecoratorArray() as $decoratorID ){
-					
 					$requestDecorator = eval( "return new $decoratorID();" );
+
 					$requestDecorator->setChildRequestProcessor( $requestProcessor );
-					
+
 					//now set this decorator as the request processor
 					$requestProcessor = $requestDecorator;
-					
-				}            	
-            	
+				}
             } else {
                 // TODO This shouldn't blindly return the main page because of our use of Ajax
                 // We'll have to do extensive checking on the referral.  If it's a failure
@@ -73,9 +69,8 @@ final class RequestProcessorFactory {
 
             $cacheGateway->storeObject( (string) $requestProcessorID, $requestProcessor, '<type>' );
         }
-        
-        $requestProcessor->setRequestInfoBean( $requestInfoBean );
 
+        $requestProcessor->setRequestInfoBean( $requestInfoBean );
         return $requestProcessor;
     }
 

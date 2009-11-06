@@ -211,7 +211,7 @@ final class RequestValidator {
 
 		//build decorator array and set it in the requestInfoBean
 		$this->buildDecoratorArray( $requestNode, $requestInfoBean);
-		
+
 		/**
 		 * If have gotten here with out returning... we're golden.
 		 * unset post and get and return

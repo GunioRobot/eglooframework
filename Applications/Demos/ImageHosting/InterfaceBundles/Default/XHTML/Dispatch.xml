@@ -33,7 +33,7 @@
  -->
 <eGlooXHTML:Requests xmlns:eGlooXHTML="com.egloo.www/XHTML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<RequestClass id="externalMainPage">
-		<Request id="" path="ExternalMainPage">
+		<Request id="extMainViewBase" path="ExternalMainPage">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
 				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
 					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ExternalMainPageBaseForm.tpl</DefaultDispatchMap>
