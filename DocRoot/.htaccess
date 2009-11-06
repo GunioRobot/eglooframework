@@ -2,6 +2,8 @@
 SetEnv EG_ENV development
 SetEnv EG_APP eGloo/Default
 SetEnv EG_UI  OverlayInterface
+SetEnv EG_LOG_LEVEL DEVELOPMENT
+SetEnv EG_LOG_FORMAT LOG
 
 # mod_rewrite
 <IfModule rewrite_module> 
