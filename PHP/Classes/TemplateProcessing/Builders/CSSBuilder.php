@@ -42,11 +42,9 @@ class CSSBuilder extends TemplateBuilder {
     private $cacheID = null;
     private $hardCacheID = null;
     private $deployment = 'dev';
-    private $dispatchPath = null;
     private $requestInfoBean = null;
-    private $templateEngine = null;
     private $templateVariables = null;
-        
+
     public function setRequestInfoBean( $requestInfoBean ) {
         $this->requestInfoBean = $requestInfoBean;
     }

@@ -41,7 +41,6 @@ class XMLBuilder extends TemplateBuilder {
     
     private $deployment = 'dev';
     private $requestInfoBean = null;
-    private $templateEngine = null;
     private $templateVariables = null;
         
     public function setRequestInfoBean( $requestInfoBean ) {

@@ -43,9 +43,7 @@ class XHTMLBuilder extends TemplateBuilder {
     private $hardCacheID = null;
     private $contentProcessors = null;
     private $deployment = 'dev';
-    private $dispatchPath = null;
     private $requestInfoBean = null;
-    private $templateEngine = null;
     private $templateVariables = null;
         
     public function setRequestInfoBean( $requestInfoBean ) {
@@ -96,7 +94,7 @@ class XHTMLBuilder extends TemplateBuilder {
     public function setDispatchPath() {
         $templateDispatcher =
 			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
-        
+
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
     
