@@ -5,13 +5,13 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	    <title>eGloo | Welcome</title>
 	    <!--{* Import statements for the CSS Styling *}-->
-	    <link href="/css/intMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
-	    <link href="/css/fridgeStyles.css" rel="stylesheet" type="text/css" media="screen" />
+	    <link href="css/intMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
+	    <link href="css/fridgeStyles.css" rel="stylesheet" type="text/css" media="screen" />
 	    
-    	<script type="text/javascript" src="/javascript/eGlooUtil.js"></script>
+    	<script type="text/javascript" src="javascript/eGlooUtil.js"></script>
     	 
 <!--{*    	<script type="text/javascript" src="/javascript/ifxPackRoot.js"></script> *}-->
-    	<script type="text/javascript" src="/javascript/internalMainInit.js"></script>
+    	<script type="text/javascript" src="javascript/internalMainInit.js"></script>
     	
     	
     </head>
@@ -21,9 +21,9 @@
     		<div id="eas_ActiveViewedProfileID"><!--{$eas_ViewingProfileID}--></div>
     	</div>
 
-	   <!--{include file='../Templates/Applications/eGloo/InterfaceBundles/OverlayInterface/XHTML/GlobalMenuBar/GlobalMenuBarContainer.tpl'}-->
-	   <!--{include file='../Templates/Applications/eGloo/InterfaceBundles/OverlayInterface/XHTML/InformationBoard/InformationBoardContainer.tpl'}-->
-	   <!--{include file='../Templates/Applications/eGloo/InterfaceBundles/OverlayInterface/XHTML/ProfileCenter/ProfileCenterContainer.tpl'}-->
+	   <!--{include file='XHTML/GlobalMenuBar/GlobalMenuBarContainer.tpl'}-->
+	   <!--{include file='XHTML/InformationBoard/InformationBoardContainer.tpl'}-->
+	   <!--{include file='XHTML/ProfileCenter/ProfileCenterContainer.tpl'}-->
  
 	    <div id="cubeEditZone"></div>
 	    <div id="ajaxUploadFrameContainer">

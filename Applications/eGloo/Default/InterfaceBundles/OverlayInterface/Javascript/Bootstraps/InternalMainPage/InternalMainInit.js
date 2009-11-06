@@ -15,15 +15,15 @@ function requestFriendship(profileID) {
 }
 
 function acceptFriendship(otherProfileID, relationshipType) {
-    $.ajax({type:'GET',url:( '/relationship/acceptRelationship/&requesterProfileID='+otherProfileID + '&relationshipType=' + relationshipType)});
+    $.ajax({type:'GET',url:( 'relationship/acceptRelationship/&requesterProfileID='+otherProfileID + '&relationshipType=' + relationshipType)});
 }
 
 function rejectFriendship(otherProfileID, relationshipType) {
-    $.ajax({type:'GET',url:( '/relationship/declineRelationship/&requesterProfileID='+otherProfileID + '&relationshipType=' + relationshipType)});
+    $.ajax({type:'GET',url:( 'relationship/declineRelationship/&requesterProfileID='+otherProfileID + '&relationshipType=' + relationshipType)});
 }
 
 function removeFriendship(relationshipID) {
-    $.ajax({type:'GET',url:( '/relationship/removeRelationship/&relationshipID='+relationshipID)});
+    $.ajax({type:'GET',url:( 'relationship/removeRelationship/&relationshipID='+relationshipID)});
 }
 
 function listFriendRequests(profileID) {
@@ -31,11 +31,11 @@ function listFriendRequests(profileID) {
 }
 
 function listFriends(profileID) {
-    $('#controlCenterModule_FriendsCubeContent').load('/relationship/getAllRelationships/', function() {});
+    $('#controlCenterModule_FriendsCubeContent').load('relationship/getAllRelationships/', function() {});
 }
 
 function getFriendRequestCount(profileID) {
-    $.getJSON('/relationship/getAllRelationshipRequests/&retVal=count',
+    $.getJSON('relationship/getAllRelationshipRequests/&retVal=count',
         function(json){
             appState['numberAlerts'] = json.relationshipRequestsCount;
             $('#alertButton').html('Alerts ('+appState['numberAlerts']+')');        }
@@ -50,7 +50,7 @@ function cssLoad(params) {
 }
 
 function htmlLoad(params) {
-	var url = "/dynamicContent/getCubeContent/contentType=xhtml&cubeID=" + params['cubeID'] + "&contentID=" + params['contentID'];
+	var url = "dynamicContent/getCubeContent/contentType=xhtml&cubeID=" + params['cubeID'] + "&contentID=" + params['contentID'];
 	$(params['target']).load(url,params['onComplete']);
 }
 
@@ -162,7 +162,7 @@ function buildProfilePageElements(profileID,xmlDef,done) {
 	$("div.userProfileCubeDragDropSort").each(function(){
 	
 		var cubeID = this.id.substring(16);
-		var url = "/dynamicContent/getCubeContent/contentType=js&cubeID=" + cubeID + "&contentID=AllFunc";
+		var url = "dynamicContent/getCubeContent/contentType=js&cubeID=" + cubeID + "&contentID=AllFunc";
 		var elementID = "ElementContainer_" + cubeID;
 
 		//get the javascript for the cubes that have been loaded.
@@ -185,7 +185,7 @@ function buildProfilePage(profileID,done) {
     if (done == false || done == null) {
         $('#eas_ActiveViewedProfileID').html( profileID );
         appState['VIEWING_PROFILE_ID'] = profileID;
-        $('#UserProfile').load('/profile/viewUserProfilePage/&profileID=' + profileID, function() {
+        $('#UserProfile').load('profile/viewUserProfilePage/&profileID=' + profileID, function() {
             buildProfilePage(profileID,true);
         }); 
     } else {
@@ -205,8 +205,8 @@ function parseProfileDOM() {
 	}
    // $.cookie('userProfileCookie', profileDOMString, {expires: 7,path:'/'});
     /*<!--{* FIX Possible Security Hole *}-->*/
-	$.post("/profile/updateUserProfilePage/", { pageLayout: profileDOMString } );
-   // $.ajax({type:'POST',url:( '/profile/updateUserProfilePage/&pageLayout='+profileDOMString ),dataType:'xml'});    
+	$.post("profile/updateUserProfilePage/", { pageLayout: profileDOMString } );
+   // $.ajax({type:'POST',url:( 'profile/updateUserProfilePage/&pageLayout='+profileDOMString ),dataType:'xml'});    
 }
 
 /*<!--{* TODO change this to use the current viewed profile ID, not the main profile ID *}-->*/
@@ -293,18 +293,18 @@ function invokeOverlay( keyword, myCaller, args ) {
 $(document).ready(function() {
 	
     $('#alertButton').click( function() {
-        $('#CommCenterContent').load('/relationship/getAllRelationshipRequests/', function() {
+        $('#CommCenterContent').load('relationship/getAllRelationshipRequests/', function() {
             $(this).fadeIn(500);
         });
     });
     $('#blogButton').click( function() {
-        $('#CommCenterContent').load('/blog/viewBlogEntryListEditable/', function() {
+        $('#CommCenterContent').load('blog/viewBlogEntryListEditable/', function() {
             TB_init();
             $(this).fadeIn(500);
         });
     });
     $('#messageButton').click( function() {
-        $('#CommCenterContent').load('/message/getMessageList/', function() {
+        $('#CommCenterContent').load('message/getMessageList/', function() {
             $(this).fadeIn(500);
         });
     });
@@ -333,5 +333,5 @@ $(document).ready(function() {
 });
 
 function grabProfileSummary(el,profileID) {
-    $(el).load('/infoBoard/viewPeopleUserProfile/&profileID='+profileID);
+    $(el).load('infoBoard/viewPeopleUserProfile/&profileID='+profileID);
 }

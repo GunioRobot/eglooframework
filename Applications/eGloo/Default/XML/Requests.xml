@@ -580,6 +580,8 @@
 		</Request>
 	</RequestClass>
 	<RequestClass id="publicBrowse">
-		<Request id="viewUpdatedBlogProfiles" processorID="ViewUpdatedBlogProfilesRequestProcessor"></Request>
+		<Request id="viewUpdatedBlogProfiles" processorID="ViewUpdatedBlogProfilesRequestProcessor">
+			<Decorator order="0" decoratorID="SessionDecorator" />
+		</Request>
 	</RequestClass>
 </tns:Requests>

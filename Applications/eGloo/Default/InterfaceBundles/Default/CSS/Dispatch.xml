@@ -71,7 +71,7 @@
 	<Client id="Default" matches="/^.*$/">
 		<DefaultDispatchMap>
 			<DispatchMap id="datePicker">
-				<![CDATA[../../../../../Frameworks/Common/CSS/3rd_Party_Support/com.kelvinluck/datePicker.css]]>
+				<![CDATA[Core/eGloo/CSS/3rd_Party_Support/com.kelvinluck/datePicker.css]]>
 			</DispatchMap>
 			<DispatchMap id="extMainBase">
 				<![CDATA[ExternalMainPage/ExternalMainPageBase.css]]>
@@ -95,7 +95,7 @@
 				<![CDATA[InformationBoard/Base/InformationBoardBase.css]]>
 			</DispatchMap>
 			<DispatchMap id="thickbox">
-				<![CDATA[../../../../../Frameworks/Common/CSS/3rd_Party_Support/thickbox.css]]>
+				<![CDATA[Core/eGloo/CSS/3rd_Party_Support/thickbox.css]]>
 			</DispatchMap>
 			<DispatchMap id="globalMenuBar">
 				<![CDATA[MenuBar/GlobalMenuBar.css]]>

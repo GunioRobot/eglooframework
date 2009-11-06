@@ -10,43 +10,43 @@
 
 			<div id="gMBFridge" onclick="invokeOverlay( 'Fridge', this )" class = "globalMenuButton clickable" >	
 				<a href="#" class="fisheyeItem">
-				<img class="png" src="/images/overlay/menubar/fridge.png" />
+				<img class="png" src="images/overlay/menubar/fridge.png" />
 				<span>Fridge</span></a>
 			 </div>
 			  
 			<div id="gMBBlogs" onclick="invokeOverlay( 'Blogs', this )" class = "globalMenuButton clickable "  >
 		  		<a href="#" class="fisheyeItem">
-		  		<img class="png" src="/images/overlay/menubar/messaging.png" />
+		  		<img class="png" src="images/overlay/menubar/messaging.png" />
 		  		<span>Blogs</span></a>
 			</div> 
 
 			<div id="gMBPeople" class = "globalMenuButton clickable " >
 			    <a href="#" class="fisheyeItem">
-			    <img class="png" src="/images/overlay/menubar/mypeople.png"  />
+			    <img class="png" src="images/overlay/menubar/mypeople.png"  />
 			    <span>People</span></a>
 			</div>
 			
 			<div id="gMBRatings" class = "globalMenuButton clickable " >
 	 			<a href="#" class="fisheyeItem">
-	 			<img class="png" src="/images/overlay/menubar/ratings.png" />
+	 			<img class="png" src="images/overlay/menubar/ratings.png" />
 	 			<span>Ratings</span></a>
 			</div>
 
 			<div id="gMBRewards" class = "globalMenuButton clickable "> 
 				<a href="#" class="fisheyeItem">
-				<img class="png" src="/images/overlay/menubar/rewards.png" />
+				<img class="png" src="images/overlay/menubar/rewards.png" />
 				<span>Rewards</span></a>
 			</div>
 			
 			<div id="gMBMusic"  class = "globalMenuButton clickable">
 				<a href="#" class="fisheyeItem">
-				<img class="png" src="/images/overlay/menubar/favorites.png" />
+				<img class="png" src="images/overlay/menubar/favorites.png" />
 				<span>Favorites</span></a>
 			</div>
 			
 			<div id="gMBIcing"  class = "globalMenuButton clickable">	
 				<a href="#" class="fisheyeItem">
-				<img class="png" src="/images/overlay/menubar/network.png" />
+				<img class="png" src="images/overlay/menubar/network.png" />
 				<span>Network</span></a>
 			</div>
 		</div>
@@ -60,14 +60,14 @@
 
 <!--	    <div id="GlobalMenuBar_User_Fullname" class="divAction"> -->
 			<!--{if isset($loggedInUserName) }-->
-		    	<a href="/profileID=<!--{$mainProfileID}-->" id="GlobalMenuBar_User_Fullname" class="divAction clickable" ><!--{$loggedInUserName}--></a>
+		    	<a href="profileID=<!--{$mainProfileID}-->" id="GlobalMenuBar_User_Fullname" class="divAction clickable" ><!--{$loggedInUserName}--></a>
 		    <!--{else}-->
 		    	<div id="GlobalMenuBar_User_Fullname" class="divAction clickable" >test&nbsp;</div>
 		    <!--{/if}-->
 <!--	   </div> -->
 
 		<div id="group">
-	    	<a id="GlobalMenuBar_Logout_Button" href="/account/processLogout/" class="divAction">Logout</a>
+	    	<a id="GlobalMenuBar_Logout_Button" href="account/processLogout/" class="divAction">Logout</a>
 <!--{*
 	   		<div id="GlobalMenuBar_Options_Button" class="divAction clickable">Options</div>
 	    	<div id="GlobalMenuBar_Account_Button" class="divAction clickable">Account</div>

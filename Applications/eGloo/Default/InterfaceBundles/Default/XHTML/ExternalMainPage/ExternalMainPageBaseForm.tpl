@@ -29,12 +29,12 @@
 	    
 <!--	    <link href="/css/extMainBase.css" rel="stylesheet" type="text/css" media="screen" />
 	    <link href="/css/extMainJoin.css" rel="stylesheet" type="text/css" media="screen" /> -->
-	    <link href="/css/extMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
+	    <link href="css/extMainRoot.css" rel="stylesheet" type="text/css" media="screen" />
 	    
-	    <script type="text/javascript" src="/javascript/jquery.js"></script>
-		<script type="text/javascript" src="/javascript/form.js"></script>
-	    <script type="text/javascript" src="/javascript/mousewheel.js"></script>
-	    <script type="text/javascript" src="/javascript/externalMainInit.js"></script>
+	    <script type="text/javascript" src="javascript/jquery.js"></script>
+		<script type="text/javascript" src="javascript/form.js"></script>
+	    <script type="text/javascript" src="javascript/mousewheel.js"></script>
+	    <script type="text/javascript" src="javascript/externalMainInit.js"></script>
 	</head>
     <body>
         <div id="container" class="container">

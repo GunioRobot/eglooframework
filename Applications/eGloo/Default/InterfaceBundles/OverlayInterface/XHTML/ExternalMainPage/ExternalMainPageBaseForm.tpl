@@ -49,7 +49,7 @@
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="join">join</div>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
-		                            <a href="/browse" id="browse">browse</a>
+		                            <a href="browse" id="browse">browse</a>
 		                            <span class="spantext">&nbsp;|&nbsp;</span>
 		                            <div id="tour">tour</div>
 		                      	</div>

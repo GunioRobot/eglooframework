@@ -52,11 +52,11 @@
     
      <div id="UserProfileControlStrip">
      	<div id="UserProfileControlStripUserName" class=""><!--{$username}--></div>
-     	<div id="UserProfileControlStripBlogs" class="clickable" onclick="window.location = '/blog/viewBlog/&profileID=<!--{$profileID}-->'">Blogs</div>
+     	<div id="UserProfileControlStripBlogs" class="clickable" onclick="window.location = 'blog/viewBlog/&profileID=<!--{$profileID}-->'">Blogs</div>
 <!--{*  <div id="UserProfileControlStripPictures" class="clickable">Pictures</div>
      	<div id="UserProfileControlStripVideos" class="clickable">Videos</div>
      	<div id="UserProfileControlStripMusic" class="clickable">Music</div>*}-->
-     	<div id="UserProfileControlStripProfile" class="clickable" onclick="window.location = '/profileID=<!--{$eas_ViewingProfileID}-->'">Profile</div>
+     	<div id="UserProfileControlStripProfile" class="clickable" onclick="window.location = 'profileID=<!--{$eas_ViewingProfileID}-->'">Profile</div>
      </div>
     
     <!--{* @id: UserProfileContent
@@ -68,7 +68,7 @@
     	<!--{* Left Column *}-->
         <div class="defaultProfileColumn">
             <div id="unmov">
-                <img id="UserProfileImage_IMG" src="/image/viewProfileImage/&profileID=<!--{$profileID}-->&profileImageHash=<!--{$profileImageHash}-->" border="0" height="300px"  alt="profile picture" style="margin:0 auto 0 auto;" />
+                <img id="UserProfileImage_IMG" src="image/viewProfileImage/&profileID=<!--{$profileID}-->&profileImageHash=<!--{$profileImageHash}-->" border="0" height="300px"  alt="profile picture" style="margin:0 auto 0 auto;" />
             </div>
 			
             <ul id="center0" class="sortable boxy">

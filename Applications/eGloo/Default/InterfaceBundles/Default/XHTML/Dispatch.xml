@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eGlooXHTML:Requests xmlns:eGlooXHTML="com.egloo.www/XHTML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<RequestClass id="blog">
-		<Request id="viewBlogEntryListEditable" path="../../../../../Frameworks/Common/XHTML/Blog/Lists">
+		<Request id="viewBlogEntryListEditable" path="Core/eGloo/XHTML/Blog/Lists">
 			<Localization countryCode="" languageCode="">BlogEntryListContainer.tpl</Localization>
 		</Request>
 	</RequestClass>
 	<RequestClass id="externalMainPage">
-		<Request id="" path="ExternalMainPage">
+		<Request id="extMainViewBase" path="ExternalMainPage">
 			<Localization countryCode="" languageCode="">ExternalMainPageBaseForm.tpl</Localization>
 			<Localization countryCode="us" languageCode="">ExternalMainPageBaseForm.tpl</Localization>
 			<Localization countryCode="us" languageCode="en">ExternalMainPageBaseForm.tpl</Localization>

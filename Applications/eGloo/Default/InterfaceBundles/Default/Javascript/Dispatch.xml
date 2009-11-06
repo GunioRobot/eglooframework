@@ -43,46 +43,46 @@
 	<Client id="Default" matches="/^.*$/">
 		<DefaultDispatchMap>
 			<DispatchMap id="datePicker">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.kelvinluck/datePicker.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.kelvinluck/datePicker.js]]>
 			</DispatchMap>
 			<DispatchMap id="jquery">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/jquery.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/jquery.js]]>
 			</DispatchMap>
 			<DispatchMap id="idrag">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/idrag.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/idrag.js]]>
 			</DispatchMap>
 			<DispatchMap id="idrop">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/idrop.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/idrop.js]]>
 			</DispatchMap>
 			<DispatchMap id="ifx">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Debug/Plugins/ro.eyecon.interface/ifx.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Debug/Plugins/ro.eyecon.interface/ifx.js]]>
 			</DispatchMap>
 			<DispatchMap id="ifxPackRoot">
 				<![CDATA[Packages/ifxPackRoot.js]]>
 			</DispatchMap>
 			<DispatchMap id="ifxscale">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxscale.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxscale.js]]>
 			</DispatchMap>
 			<DispatchMap id="ifxslide">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxslide.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxslide.js]]>
 			</DispatchMap>
 			<DispatchMap id="ifxtransfer">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxtransfer.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/ifxtransfer.js]]>
 			</DispatchMap>
 			<DispatchMap id="isortables">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/isortables.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/isortables.js]]>
 			</DispatchMap>
 			<DispatchMap id="iutil">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/iutil.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/iutil.js]]>
 			</DispatchMap>
 			<DispatchMap id="jquery.dom">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/to.mg/jquery.dom.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/to.mg/jquery.dom.js]]>
 			</DispatchMap>
 			<DispatchMap id="jquery.easing.1.1">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/uk.co.gsgd/jquery.easing.1.1.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/uk.co.gsgd/jquery.easing.1.1.js]]>
 			</DispatchMap>
 			<DispatchMap id="mousewheel">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/net.BrandonAaron/mousewheel.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/net.BrandonAaron/mousewheel.js]]>
 			</DispatchMap>
 			<DispatchMap id="externalMainInit">
 				<![CDATA[Bootstraps/ExternalMainPage/ExternalMainInit.js]]>
@@ -91,22 +91,22 @@
 				<![CDATA[Bootstraps/InternalMainPage/InternalMainInit.js]]>
 			</DispatchMap>
 			<DispatchMap id="tabs">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.jquery/tabs.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.jquery/tabs.js]]>
 			</DispatchMap>
 			<DispatchMap id="require">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.jquery/require.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.jquery/require.js]]>
 			</DispatchMap>
 			<DispatchMap id="thickbox">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.jquery/thickbox.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.jquery/thickbox.js]]>
 			</DispatchMap>
 			<DispatchMap id="cookie">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.jquery/cookie.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.jquery/cookie.js]]>
 			</DispatchMap>
 			<DispatchMap id="form">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/com.jquery/form.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/Plugins/com.jquery/form.js]]>
 			</DispatchMap>
 			<DispatchMap id="tweenbox">
-				<![CDATA[../../../../../Frameworks/Common/Javascript/jQuery/Plugins/com.willjessup.www/tweenbox.js]]>
+				<![CDATA[Core/eGloo/Javascript/jQuery/Plugins/com.willjessup.www/tweenbox.js]]>
 			</DispatchMap>
 			<DispatchMap id="ranking">
 				<![CDATA[Ranking/ranking.js]]>
