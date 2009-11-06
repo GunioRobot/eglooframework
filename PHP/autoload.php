@@ -43,7 +43,7 @@
 function __autoload($class_name) {
 
     if ( !class_exists( 'CacheGateway', false ) ) {
-        include( '../PHP/Classes/Caching/CacheGateway.php' );
+        include( 'PHP/Classes/Caching/CacheGateway.php' );
     }
 
     $cacheGateway = CacheGateway::getCacheGateway();
@@ -67,7 +67,7 @@ function __autoload($class_name) {
     // Set the first time autoload is called
     if ( NULL === $possible_path ) {
         // These are the default paths for this application
-        $possible_path = array_flip( array( "../PHP/Classes" ) );
+        $possible_path = array_flip( array( "PHP/Classes" ) );
         // Customize this yourself, but leave the array_flip alone. We will use this to
         // get rid of duplicate entries from the include_path .ini list.
 
