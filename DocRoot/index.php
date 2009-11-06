@@ -24,42 +24,31 @@
  * @package Bootstrap
  * @version 1.0
  */
-    include( '../PHP/autoload.php' );
-    include( '../PHP/error_handlers.php' );
 
-	// Load the install configuration
-	eGlooConfiguration::loadConfigurationOptions();
+// Setup the OOP autoloader and include the error handlers
+include( 'PHP/autoload.php' );
+include( 'PHP/error_handlers.php' );
 
-    // Setup the logger
-    eGlooLogger::setLoggingLevel( eGlooLogger::$DEVELOPMENT );
-    eGlooLogger::setLoggingType( eGlooLogger::$LOG_LOG );
+// Load the install configuration
+eGlooConfiguration::loadConfigurationOptions();
 
-    // We need to make sure we can id a particular request path in the logs since
-    // multiple instances can be run out of order
-    set_error_handler( 'default_error_handler' );
-    set_exception_handler( 'default_exception_handler' );
-	header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+// Setup the logger
+eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
 
-	// Grab our environment variables to determine which application and deployment to run
-	$webapp = $_SERVER['EG_APP'];
-	$uibundle = $_SERVER['EG_UI'];
-	$environment = $_SERVER['EG_ENV'];
+// Build a request info bean
+$requestInfoBean = new RequestInfoBean();
 
-    /**
-     * 1) create a request info bean to be filled by the request validator,
-     * 	  if the request is valid
-     * 2) make a new request validator, and then validate the request
-     * 3) if the request is valid, obtain the appropriate request processor
-     * 4) process the request
-     */
-    $requestInfoBean = new RequestInfoBean();
+// Get a request validator based on the current application and UI bundle
+$requestValidator =
+	RequestValidator::getInstance( eGlooConfiguration::getApplicationName(), eGlooConfiguration::getUIBundleName() );
 
-    $requestValidator = RequestValidator::getInstance( $webapp, $uibundle );
-    $isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
+// Validate this request and update the info bean accordingly
+$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
 
-    if ( $isValidRequest ) {
-		$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
-		$requestProcessor->processRequest();
-    } else {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
-    }
+// If the request is valid, process it.  Otherwise, log it and die
+if ( $isValidRequest ) {
+	$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
+	$requestProcessor->processRequest();
+} else {
+	eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+}
