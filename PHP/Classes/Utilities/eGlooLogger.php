@@ -55,8 +55,8 @@ final class eGlooLogger {
     public static $DEBUG = 0x1;          // 0000 0001
 
     public static $LOG_OFF = 0x0;        // Do Not Log
-    public static $DEPLOYMENT = 0xf8;    // Warning or higher
-    public static $TESTING = 0xfe;       // Info or higher
+    public static $PRODUCTION = 0xf8;    // Warning or higher
+    public static $STAGING = 0xfe;       // Info or higher
     public static $DEVELOPMENT = 0xff;   // Log all
 
     // Packages
@@ -69,14 +69,22 @@ final class eGlooLogger {
 	public static $LOG_XML = "xml";		// write to error.xml
 
     // Attributes
-    // private static $logFilePath = eGlooConfiguration::getLoggingPath() . '/error.log';
-    // private static $htmlFilePath = eGlooConfiguration::getLoggingPath() . '/error.html';
     private static $loggingLevel;
 	private static $loggingType = "log";	//set to log by default
     private static $requestID = '';
 
     // Maps log level bitmasks to the appropriate strings
     private static $logLevelStrings = null;
+
+	public static function initialize( $level, $format ) {
+		self::setLoggingLevel( $level );
+		self::setLoggingType( $format );
+
+		set_error_handler( 'default_error_handler' );
+		set_exception_handler( 'default_exception_handler' );
+
+        self::writeLog( self::$INFO, 'Logger Started [Mode: DEVELOPMENT]', 'Logger' );
+	}
 
     public static function setLoggingLevel( $level ) {
         self::$loggingLevel = $level;
@@ -88,10 +96,8 @@ final class eGlooLogger {
                                         self::$CRITICAL => "CRITICAL",   self::$ERROR => "ERROR",
                                         self::$WARN => "WARNING",        self::$NOTICE => "NOTICE",
                                         self::$INFO => "INFO",           self::$DEBUG => "DEBUG",
-                                        self::$LOG_OFF => "OFF",         self::$DEPLOYMENT => "DEPLOYMENT",
-                                        self::$TESTING => "TESTING",     self::$DEVELOPMENT => "DEVELOPMENT" );
-
-        self::writeLog( self::$INFO, 'Logger Started [Mode: DEVELOPMENT]', 'Logger' );
+                                        self::$LOG_OFF => "OFF",         self::$PRODUCTION => "DEPLOYMENT",
+                                        self::$STAGING => "TESTING",     self::$DEVELOPMENT => "DEVELOPMENT" );
     }
     
     
@@ -114,13 +120,13 @@ final class eGlooLogger {
            		throw new eGlooLoggerException( 'Error writing to log' );
            	}
      	}
-     	
+
      	//TODO make an XML schema for this thang
      	//DO NOT use yet. in fact, I'll just go ahead and comment it out...
      	/*if($type == self::$LOG_XML){
      		self::$logFilePath = 'error.xml';
      	}*/
-     	
+
      }
 
     /**
