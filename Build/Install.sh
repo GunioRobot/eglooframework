@@ -455,6 +455,15 @@ then
 	else
 		echo "Symlink exists"
 	fi
+
+	if [ ! -e "$FRAMEWORK_PATH/Templates" ] && [  ! -L "$FRAMEWORK_PATH/Templates" ]
+	then
+		mkdir -p "$FRAMEWORK_PATH"
+		ln -s "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/Templates"
+	else
+		echo "Symlink exists"
+	fi
+
 else
 	mkdir -p "$FRAMEWORK_PATH"
 	cp -R ../PHP "$FRAMEWORK_PATH/PHP"
