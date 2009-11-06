@@ -106,6 +106,3 @@ function default_error_handler( $severity, $message, $filename, $linenum, $errco
         
     }
 }
-
-
-?>
