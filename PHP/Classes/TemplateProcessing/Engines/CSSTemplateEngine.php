@@ -36,6 +36,8 @@
  */
 class CSSTemplateEngine extends TemplateEngine {
 
+	protected $packagePrefix = 'CSS';
+
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		$this->Smarty();
 		$this->left_delimiter = '/*<!--{';
@@ -43,9 +45,9 @@ class CSSTemplateEngine extends TemplateEngine {
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
+			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
-		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . $interfacebundle . '/CSS/';
+		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)

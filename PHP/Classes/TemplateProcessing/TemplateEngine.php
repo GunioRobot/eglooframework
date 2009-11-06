@@ -38,6 +38,9 @@ include( eGlooConfiguration::getSmartyIncludePath() );
  */
 class TemplateEngine extends Smarty {
 
+	protected $templateRoots = null;
+	protected $packagePrefix = '';
+
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
         $this->Smarty();
         $this->left_delimiter = '<!--{'; 
@@ -51,9 +54,11 @@ class TemplateEngine extends Smarty {
 
 		$framework_template_path = 'Templates';
 
+		$this->templateRoots = array('Application' => $application_template_path, 'Framework' => $framework_template_path);
+
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-        $this->template_dir = array($application_template_path, $framework_template_path);
+        $this->template_dir = $this->templateRoots;
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -64,6 +69,30 @@ class TemplateEngine extends Smarty {
         //$this->cache_handler_func = 'smarty_cache_memcache';
         $this->caching = false;
     }
+
+	public function useApplicationTemplates( $useFrameworkTemplates = true, $interfaceBundle = null ) {
+		if (!$useFrameworkTemplates) {
+			unset($this->templateRoots['Application']);
+			$this->config_dir = $this->templateRoots;
+		} else {
+			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+				eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
+			$this->templateRoots['Application'] = $application_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
+
+	}
+
+	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null ) {
+		if (!$useFrameworkTemplates) {
+			unset($this->templateRoots['Framework']);
+			$this->template_dir = $this->templateRoots;
+		} else {
+			$framework_template_path = 'Templates/' . $scope . '/' . $package . '/';
+			$this->templateRoots['Framework'] = $framework_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
+	}
 
 }
 

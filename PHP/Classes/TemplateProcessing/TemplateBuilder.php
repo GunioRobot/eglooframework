@@ -36,9 +36,11 @@
  * @subpackage Template Building
  */
 abstract class TemplateBuilder {
-	
+
 	protected $application = '';
+	protected $dispatchPath = null;
 	protected $interfaceBundle = '';
+	protected $templateEngine = null;
 
 	public function setApplication( $application ) {
 		$this->application = $application;
@@ -47,9 +49,33 @@ abstract class TemplateBuilder {
 	public function setInterfaceBundle( $interfaceBundle ) {
 		$this->interfaceBundle = $interfaceBundle;
 	}
-	
+
 	abstract public function setDispatchPath();
 	
+	abstract public function setTemplateEngine();
+
+	public function resolveTemplateRoot() {
+		$matches = array();
+
+		if (preg_match('~^Core/([a-zA-Z0-9]+)/~', $this->dispatchPath, $matches)) {
+			$this->templateEngine->useApplicationTemplates(false);
+			$this->templateEngine->useFrameworkTemplates(true, 'Core', $matches[1]);
+			$this->dispatchPath = preg_replace('~^Core/([a-zA-Z0-9]+)/~', '', $this->dispatchPath);
+		} else if (preg_match('~^Common/([a-zA-Z0-9]+)/~', $this->dispatchPath, $matches)) {
+			$this->templateEngine->useApplicationTemplates(false);
+			$this->templateEngine->useFrameworkTemplates(true, 'Common', $matches[1]);
+			$this->dispatchPath = preg_replace('~^Common/([a-zA-Z0-9]+)/~', '', $this->dispatchPath);
+		} else if (preg_match('~^Local/([a-zA-Z0-9]+)/~', $this->dispatchPath, $matches)) {
+			$this->templateEngine->useApplicationTemplates(false);
+			$this->templateEngine->useFrameworkTemplates(true, 'Local', $matches[1]);
+			$this->dispatchPath = preg_replace('~^Local/([a-zA-Z0-9]+)/~', '', $this->dispatchPath);
+		} else {
+			$this->templateEngine->useApplicationTemplates(true, eGlooConfiguration::getUIBundleName());
+			$this->templateEngine->useFrameworkTemplates(true);
+		}
+
+	}
+
 }
  
 ?>
