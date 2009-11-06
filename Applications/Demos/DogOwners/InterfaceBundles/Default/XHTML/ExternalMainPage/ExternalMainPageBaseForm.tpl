@@ -36,6 +36,7 @@
 *}-->
 	</head>
     <body>
+		<!-- <!--{$app}--> <!--{$bundle}--> -->
 		Welcome to the eGloo Dog Owners Demo Service<br />
 		<br />
 		<form name="login" action="/account/processLogin/" method="post">

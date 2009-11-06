@@ -59,30 +59,19 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
         // into abstracting both this and forcing SSL.  But for eGloo's purposes, this is
         // fine for now
         if ( isset( $_SESSION['LOGGED_IN'] ) && $_SESSION['LOGGED_IN'] === true ) {
-	   		header( 'Location: /profileID=' . $_SESSION['MAIN_PROFILE_ID'] );
+			header( 'Location: /profileID=' . $_SESSION['MAIN_PROFILE_ID'] );
         } else {
 	        $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
 	        $templateBuilder = new XHTMLBuilder();
-	
+
 	        $templateDirector->setTemplateBuilder( $templateBuilder );
-	
+
 	        $templateDirector->preProcessTemplate();
-	        
-			// $lines = file('.svn/entries');
-			// $version = "";
-			// foreach( $lines as $line ) {
-			// 	if ( preg_match("/revision=\"(\d+)\"/", $line, $revision ) ){
-			// 		$version = $revision[1];
-			// 		break;	
-			// 	}
-			// }
-			// 
-			// //svn version 1.4 fix
-			// if( $version === "" ){
-			// 	$version = $lines[3];
-			// }
-			
+
 	        $templateVariables['svnVersion'] = '∞';
+			$templateVariables['app'] = eGlooConfiguration::getApplicationName();
+			$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
+
 	        $templateDirector->setTemplateVariables( $templateVariables );            
 	        
 	                
@@ -90,11 +79,11 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 	
 	        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Echoing Response" );
 	        
-	        // TODO move header declarations to a decorator
-	        header("Content-type: text/html; charset=UTF-8");
-	        
-	        // TODO buffer output
-	        echo $output;        
+			// TODO move header declarations to a decorator
+			header("Content-type: text/html; charset=UTF-8");
+			
+			// TODO buffer output
+			echo $output;        
         }
         
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageBaseRequestProcessor: Exiting processRequest()" );
