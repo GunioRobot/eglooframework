@@ -1,4 +1,0 @@
-<Interface>
-    <RequestClass id="externalMainPage">
-        <Request id="extMainViewAbout"></Request>
-        <Request id="extMainJoinForm"></Request></RequestClass></Interface>
