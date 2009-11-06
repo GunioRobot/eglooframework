@@ -41,8 +41,19 @@ class CSSTemplateEngine extends TemplateEngine {
 		$this->left_delimiter = '/*<!--{';
 		$this->right_delimiter = '}-->*/';
 
-		$this->template_dir = '../Templates/Applications/eGloo/InterfaceBundles/' . $interfacebundle . '/CSS/';
-		$this->config_dir   = '../Configuration/Smarty';
+        // Get the template paths for the application and the framework
+		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
+
+		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . $interfacebundle . '/CSS/';
+
+		// We look in all template directories
+		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
+        $this->template_dir = array($application_template_path, $framework_template_path);
+
+		// Set the configuration directory
+        $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
+
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
 		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
 
