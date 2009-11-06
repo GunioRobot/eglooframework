@@ -520,7 +520,7 @@ then
 	# else
 	# 	echo ".htaccess Symlink exists"
 	# fi
-	# 
+
 	# if [ ! -e "$DOCUMENT_PATH/DocRoot/index.php" ] && [  ! -L "$DOCUMENT_PATH/DocRoot/index.php" ]
 	# then
 	# 	mkdir -p "$DOCUMENT_PATH/DocRoot"
@@ -529,13 +529,13 @@ then
 	# 	echo "index.php Symlink exists"
 	# fi
 
-	if [ ! -e "$DOCUMENT_PATH/DocRoot" ] && [  ! -L "$DOCUMENT_PATH/DocRoot" ]
-	then
-		mkdir -p "$DOCUMENT_PATH"
-		ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
-	else
-		echo "DocRoot Symlink exists"
-	fi
+	# if [ ! -e "$DOCUMENT_PATH/DocRoot" ] && [  ! -L "$DOCUMENT_PATH/DocRoot" ]
+	# then
+	# 	mkdir -p "$DOCUMENT_PATH"
+	# 	ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
+	# else
+	# 	echo "DocRoot Symlink exists"
+	# fi
 
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
