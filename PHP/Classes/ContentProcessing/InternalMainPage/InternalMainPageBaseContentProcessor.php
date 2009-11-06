@@ -34,7 +34,7 @@
  */
 class InternalMainPageBaseContentProcessor extends ContentProcessor {
     
-    private $_templateDefault = '../Templates/Applications/eGloo/InterfaceBundles/Default/XHTML/InternalMainPage/InternalMainPageContainer.tpl';
+    // private $_templateDefault = '../Templates/Apfffffffffffplications/eGloo/InterfaceBundles/Default/XHTML/InternalMainPage/InternalMainPageContainer.tpl';
     private $_bid = null;
     
     public function __construct() {

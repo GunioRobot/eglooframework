@@ -49,7 +49,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
 			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
-		// $framework_template_path = 'Templates/Frameworks/Common/Javascript/';
+		$framework_template_path = 'Templates/Frameworks/Common/Javascript/';
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)

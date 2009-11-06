@@ -23,6 +23,7 @@ final class eGlooConfiguration {
 		self::$configuration_options['ApplicationName'] = $_SERVER['EG_APP'];
 		self::$configuration_options['UIBundleName'] = $_SERVER['EG_UI'];
 		self::$configuration_options['Deployment'] = $_SERVER['EG_ENV'];
+		self::$configuration_options['MemcacheActive'] = $_SERVER['EG_MEMCACHE'];
 
 		switch( $_SERVER['EG_LOG_LEVEL'] ) {
 			case 'LOG_OFF' : 
@@ -119,6 +120,10 @@ final class eGlooConfiguration {
 
 	public static function getSmartyIncludePath() {
 		return self::$configuration_options['SmartyPath'];
+	}
+
+	public static function memcacheActive() {
+		return self::$configuration_options['MemcacheActive'];
 	}
 
 }

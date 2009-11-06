@@ -89,7 +89,7 @@ function smarty_function_blogNavList($params, &$smarty)
 	$templateEngine->assign( 'eas_ViewingProfileID', $params[ 'profileID' ] );
 	$templateEngine->assign( 'eas_MainProfileID', $_SESSION['MAIN_PROFILE_ID'] );
 		
-	return $templateEngine->fetch( "../Templates/Frameworks/Common/XHTML/Blog/Lists/BlogNavList.tpl" );
+	return $templateEngine->fetch( "Core/eGloo/XHTML/Blog/Lists/BlogNavList.tpl" );
 	
 }
 

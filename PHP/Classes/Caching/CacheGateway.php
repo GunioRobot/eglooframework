@@ -39,7 +39,10 @@
  */
 class CacheGateway {
 
+	private $_active = false;
     private $_memcache = null;
+
+
     private static $_singleton;
 
     const MEMCACHE_ADDR = '127.0.0.1';
@@ -48,34 +51,40 @@ class CacheGateway {
     private function __construct() {}
 
     private function loadMemCache() {
-        $this->_memcache = new Memcache();
+		if ($this->_active) {
+	        $this->_memcache = new Memcache();
 
-        try {
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, self::MEMCACHE_PORT, true );
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11212, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11213, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11214, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11215, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11216, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11217, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11218, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11219, true);
-            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11220, true);
-        } catch ( Exception $exception ) {
-            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
-                           'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );    
-        }
-        
+	        try {
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, self::MEMCACHE_PORT, true );
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11212, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11213, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11214, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11215, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11216, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11217, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11218, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11219, true);
+	            $this->_memcache->addServer( self::MEMCACHE_ADDR, 11220, true);
+	        } catch ( Exception $exception ) {
+	            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+	                           'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );    
+	        }
+		} else {
+			
+		}
     }
 
     public function deleteObject( $id ) {
         $retVal = null;
-        try {
-            $retVal = $this->_memcache->delete( $id );
-        } catch ( Exception $exception ) {
-            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
-                           'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
-        }
+
+		if ($this->_active) {
+	        try {
+	            $retVal = $this->_memcache->delete( $id );
+	        } catch ( Exception $exception ) {
+	            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+	                           'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
+	        }
+		}
         
         return $retVal;        
     }
@@ -83,12 +92,15 @@ class CacheGateway {
     public function getObject( $id, $type ) {
         // TODO extensive error checking and input validation
         $retVal = null;
-        try {
-            $retVal = $this->_memcache->get( $id );
-        } catch ( Exception $exception ) {
-            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
-                           'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
-        }
+
+		if ($this->_active) {
+	        try {
+	            $retVal = $this->_memcache->get( $id );
+	        } catch ( Exception $exception ) {
+	            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+	                           'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                
+	        }
+		}
         
         return $retVal;
     } 
@@ -100,24 +112,33 @@ class CacheGateway {
     public function storeObject( $id, $obj, $type, $ttl = 0 ) {
         // TODO extensive error checking and input validation
         $retVal = null;
-        
-        try {
-            $retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
-        } catch ( Exception $exception ) {
-            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
-                           'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                            
-        }
-        
+
+		if ($this->_active) {
+	        try {
+	            $retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
+	        } catch ( Exception $exception ) {
+	            eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+	                           'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );                            
+	        }
+		}        
+
         return $retVal; 
     }
 
     public static function getCacheGateway() {
-        if ( !isset(self::$_singleton) ) {
-            self::$_singleton = new CacheGateway();
-            self::$_singleton->loadMemCache();
-        }
-        
-        return self::$_singleton; 
+		if ( !isset(self::$_singleton) ) {
+			self::$_singleton = new CacheGateway();
+
+			if ($_SERVER['EG_MEMCACHE'] === 'on') {
+				self::$_singleton->_active = true;
+			} else {
+				self::$_singleton->_active = false;
+			}
+
+			self::$_singleton->loadMemCache();
+		}
+		
+		return self::$_singleton; 
     }
 
 }
