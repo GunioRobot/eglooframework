@@ -76,8 +76,10 @@ function __autoload($class_name) {
 			eGlooConfiguration::getApplicationName() . '/PHP';
 
         // Customize this yourself, but leave the array_flip alone. We will use this to
-        // get rid of duplicate entries from the include_path .ini list.
-		$possible_path = array_flip( array( $framework_classes, $application_classes ) );
+        // get rid of duplicate entries from the include_path .ini list.  By default,
+		// this is ordered to prefer application classes over framework classes of the same
+		// name.
+		$possible_path = array_flip( array( $application_classes, $framework_classes ) );
 
         // Merge the flipped arrays to get rid of duplicate "keys" (which are really the
         // valid include paths) then strip out the keys leaving only uniques. This is 
@@ -118,7 +120,7 @@ function __autoload($class_name) {
             }
         }
     }
-    
+
 }
 
 ?>
