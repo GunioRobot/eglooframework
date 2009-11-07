@@ -25,6 +25,15 @@
  * @version 1.0
  */
 
+// Autoloader utilizes CacheGateway and eGlooConfiguration
+if ( !class_exists( 'eGlooConfiguration', false ) ) {
+    include( 'PHP/Classes/Utilities/eGlooConfiguration.php' );
+}
+
+if ( !class_exists( 'CacheGateway', false ) ) {
+    include( 'PHP/Classes/Caching/CacheGateway.php' );
+}
+
 /**
  * Defines the class and interface autoload runtime handler.
  * 
@@ -41,11 +50,6 @@
  * @param string $class_name class or interface to load
  */
 function __autoload($class_name) {
-
-    if ( !class_exists( 'CacheGateway', false ) ) {
-        include( 'PHP/Classes/Caching/CacheGateway.php' );
-    }
-
     $cacheGateway = CacheGateway::getCacheGateway();
 
     if ( ( $autoload_hash = $cacheGateway->getObject( 'autoload_hash', 'array' ) ) != null ) {
@@ -67,9 +71,13 @@ function __autoload($class_name) {
     // Set the first time autoload is called
     if ( NULL === $possible_path ) {
         // These are the default paths for this application
-        $possible_path = array_flip( array( "PHP/Classes" ) );
+		$framework_classes = eGlooConfiguration::getFrameworkRootPath() . '/PHP';
+		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' . 
+			eGlooConfiguration::getApplicationName() . '/PHP';
+
         // Customize this yourself, but leave the array_flip alone. We will use this to
         // get rid of duplicate entries from the include_path .ini list.
+		$possible_path = array_flip( array( $framework_classes, $application_classes ) );
 
         // Merge the flipped arrays to get rid of duplicate "keys" (which are really the
         // valid include paths) then strip out the keys leaving only uniques. This is 
