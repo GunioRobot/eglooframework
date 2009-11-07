@@ -23,7 +23,9 @@ final class eGlooConfiguration {
 		self::$configuration_options['ApplicationName'] = $_SERVER['EG_APP'];
 		self::$configuration_options['UIBundleName'] = $_SERVER['EG_UI'];
 		self::$configuration_options['Deployment'] = $_SERVER['EG_ENV'];
-		self::$configuration_options['MemcacheActive'] = $_SERVER['EG_MEMCACHE'];
+		self::$configuration_options['Cache'] = $_SERVER['EG_CACHE'];
+		self::$configuration_options['FileCache'] = $_SERVER['EG_CACHE_FILE'];
+		self::$configuration_options['MemcacheCache'] = $_SERVER['EG_CACHE_MEMCACHE'];
 
 		switch( $_SERVER['EG_LOG_LEVEL'] ) {
 			case 'LOG_OFF' : 
@@ -122,8 +124,16 @@ final class eGlooConfiguration {
 		return self::$configuration_options['SmartyPath'];
 	}
 
-	public static function memcacheActive() {
-		return self::$configuration_options['MemcacheActive'];
+	public static function getCacheStatus() {
+		return self::$configuration_options['Cache'];
+	}
+
+	public static function getFileCacheStatus() {
+		return self::$configuration_options['FileCache'];
+	}
+
+	public static function getMemcacheCacheStatus() {
+		return self::$configuration_options['MemcacheCache'];
 	}
 
 }
