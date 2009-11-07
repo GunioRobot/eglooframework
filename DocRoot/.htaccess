@@ -1,5 +1,9 @@
 # .htaccess file for eGloo applications
+
+# Deployment Type
 SetEnv EG_ENV development
+
+# Application / Bundle Selection
 SetEnv EG_APP eGloo/Default
 SetEnv EG_UI  OverlayInterface
 # SetEnv EG_UI  Default
@@ -11,12 +15,17 @@ SetEnv EG_UI  OverlayInterface
 # SetEnv EG_UI Default
 # SetEnv EG_APP Demos/ImageHosting
 # SetEnv EG_UI Default
+
+# Logging
 SetEnv EG_LOG_LEVEL DEVELOPMENT
 SetEnv EG_LOG_FORMAT LOG
-# SetEnv EG_MEMCACHE on
-SetEnv EG_MEMCACHE off
 
-# mod_rewrite
+# Caching
+SetEnv EG_CACHE on
+SetEnv EG_CACHE_FILE off
+SetEnv EG_CACHE_MEMCACHE on
+
+# Rewrite Rules
 <IfModule rewrite_module> 
 RewriteEngine on 
 
