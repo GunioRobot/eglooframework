@@ -7,7 +7,7 @@ $(document).ready(function(){
 		$('#shell').animate({
 			height: 800
 		}, null, function(){
-			$('#content_text').load("/externalMainPage/extMainViewAbout/", function(){
+			$('#content_text').load("externalMainPage/extMainViewAbout/", function(){
 				$('#content').fadeIn(200);
 				$('#loadingImage').hide();
 				$('#forgotPassword').show();
@@ -24,7 +24,7 @@ $(document).ready(function(){
 		$('#shell').animate({
 			height: 800
 		}, null, function(){
-			$('#content_text').load("/externalMainPage/extMainJoinForm/", function(){
+			$('#content_text').load("externalMainPage/extMainJoinForm/", function(){
 				$('#content').fadeIn(500);
 				$('#loadingImage').hide();
 				$('#forgotPassword').show();
