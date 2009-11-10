@@ -16,7 +16,7 @@ final class eGlooConfiguration {
 			'SmartyPath'			=> ''
 			);
 
-	public static function loadConfigurationOptions( $config_cache_path = '../Build/ConfigCache.php' ) {
+	public static function loadConfigurationOptions( $config_cache_path = 'ConfigCache.php' ) {
 		self::$configuration_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
 
 		// Grab our environment variables to determine which application and deployment to run
