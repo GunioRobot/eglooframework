@@ -34,6 +34,9 @@ if ( !class_exists( 'CacheGateway', false ) ) {
     include( 'PHP/Classes/Caching/CacheGateway.php' );
 }
 
+// Register the autoloader
+spl_autoload_register('eglooAutoload');
+
 /**
  * Defines the class and interface autoload runtime handler.
  * 
@@ -49,7 +52,7 @@ if ( !class_exists( 'CacheGateway', false ) ) {
  *
  * @param string $class_name class or interface to load
  */
-function __autoload($class_name) {
+function eglooAutoload($class_name) {
     $cacheGateway = CacheGateway::getCacheGateway();
 
     if ( ( $autoload_hash = $cacheGateway->getObject( 'autoload_hash', 'array' ) ) != null ) {
