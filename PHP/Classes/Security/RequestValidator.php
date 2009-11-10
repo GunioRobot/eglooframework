@@ -146,25 +146,25 @@ final class RequestValidator {
 
 		/**
 		 * Check if there is a request class.  If there isn't, return not setting
-		 * any request processor... this is ok, must be the main page.
+		 * any request processor...
 		 */
 		 if( !isset( $_GET[ self::$class] )){
 			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "request class not set in request", 'Security' );
             // TODO Should we set this here?
-            $requestInfoBean->setRequestClass( 'externalMainPage' );
-			return true;
+            // $requestInfoBean->setRequestClass( 'externalMainPage' );
+			return false;
 		 }
 		 
 		
 		/**
 		 * Check if there is a request id.  If there isn't, return not setting
-		 * any request processor... this is ok, must be the main page.
+		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::$id ] ) ){
 			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "id not set in request", 'Security' );
             // TODO Should we set this here?
-            $requestInfoBean->setRequestClass( 'externalMainPage' );
-			return true;
+            // $requestInfoBean->setRequestClass( 'externalMainPage' );
+			return false;
 		}
 		
 		$requestClass = $_GET[ self::$class];
