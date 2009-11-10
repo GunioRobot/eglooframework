@@ -646,7 +646,7 @@ then
 	if [ ! -e "$APPLICATIONS_PATH" ]
 	then
 		mkdir -p "$APPLICATIONS_PATH"
-		for filename in ../Applications/*
+		for filename in "$PARENT_DIRECTORY/Applications/*"
 		do
 		  ln -s "$PARENT_DIRECTORY/Applications/$filename" "$APPLICATIONS_PATH/$filename"
 		done;
@@ -657,7 +657,7 @@ then
 	fi
 else
 	mkdir -p "$APPLICATIONS_PATH"
-	cp -R ../Applications/* "$APPLICATIONS_PATH/"
+	cp -R "$PARENT_DIRECTORY/Applications/*" "$APPLICATIONS_PATH/"
 #	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
 fi
 
