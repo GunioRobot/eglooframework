@@ -546,6 +546,8 @@ then
 	then
 		mkdir -p "$DOCUMENT_PATH"
 		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_PATH/PHP"
+		# Only do this next bit on Ubuntu... getcwd() is broken
+		ln -s "$PARENT_DIRECTORY/PHP" "$PARENT_DIRECTORY/DocRoot/PHP"
 	else
 		echo "PHP Symlink exists"
 	fi
@@ -554,6 +556,8 @@ then
 	then
 		mkdir -p "$DOCUMENT_PATH"
 		ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_PATH/Templates"
+		# Only do this next bit on Ubuntu... getcwd() is broken
+		ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
 	else
 		echo "Templates Symlink exists"
 	fi
@@ -562,6 +566,8 @@ then
 	then
 		mkdir -p "$DOCUMENT_PATH"
 		ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_PATH/XML"
+		# Only do this next bit on Ubuntu... getcwd() is broken
+		ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
 	else
 		echo "XML Symlink exists"
 	fi
