@@ -43,7 +43,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
         // $this->Smarty();
 
 		// This is pretty hackish and dumb, but we can change it later
-		if (self::$_version == 'Smarty-3.0b1') {
+		if (isset(self::$_version) && self::$_version == 'Smarty-3.0b1') {
 			$this->left_delimiter = '{';
 			$this->right_delimiter = '}';
 		} else {

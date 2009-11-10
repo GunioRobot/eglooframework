@@ -42,7 +42,7 @@ class CSSTemplateEngine extends TemplateEngine {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
 		// $this->Smarty();
 
-		if (self::$_version == 'Smarty-3.0b1') {
+		if (isset(self::$_version) && self::$_version == 'Smarty-3.0b1') {
 			$this->left_delimiter = '{';
 			$this->right_delimiter = '}';
 		} else {
