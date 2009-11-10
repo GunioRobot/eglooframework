@@ -89,13 +89,13 @@ case "$PLATFORM" in
 		DETECTED_PLATFORM=$OS_UBUNTU
 
 		# Default Configuration Parameters (Ubuntu)
-		DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
-		DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
-		DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
-		DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
+		DEFAULT_CACHE_DIR="/var/cache/egloo"
+		DEFAULT_CONFIG="/etc/egloo/"
+		DEFAULT_CUBES="/usr/lib/egloo/cubes"
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
-		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
+		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
 		DEFAULT_LOGPATH="/var/logs/egloo"
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 		DEFAULT_WEBUSER="www-data"
@@ -103,6 +103,8 @@ case "$PLATFORM" in
 	;;
 	
 	* )
+		echo "No supported OS detected"
+		exit
 	;;
 esac
 
