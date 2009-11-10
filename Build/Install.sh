@@ -522,6 +522,8 @@ esac
 echo "Building web server document root path..."
 echo "\"$DOCUMENT_PATH\""
 
+mkdir -p "$DOCUMENT_PATH"
+
 if [ $USE_SYMLINKS ]
 then
 	if [ ! -e "$DOCUMENT_PATH/.htaccess" ] && [  ! -L "$DOCUMENT_PATH/.htaccess" ]
@@ -565,9 +567,8 @@ then
 	fi
 
 else
-	mkdir -p "$DOCUMENT_PATH"
-	cp ../DocRoot/.htaccess "$DOCUMENT_PATH/.htaccess"
-	cp ../DocRoot/index.php "$DOCUMENT_PATH/.index.php"
+	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
+	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/.index.php"
 
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
@@ -934,8 +935,22 @@ echo "Writing configuration files... "
 # Configure script will make ownership of the child cache directories root so switch it back
 chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
 
+if [ $USE_SYMLINKS ]
+then
+	mv "ConfigCache.php" "$PARENT_DIRECTORY/DocRoot/ConfigCache.php"
+
+	if [ ! -e "$DOCUMENT_PATH/ConfigCache.php" ] && [  ! -L "$DOCUMENT_PATH/ConfigCache.php" ]
+	then
+		ln -s "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+	else
+		echo "ConfigCache Symlink exists"
+	fi
+else
+	mv "ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+fi
+
+
 # Set ownership on the config dump created
-mv "ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
 chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
 chmod -R 755 "$SMARTY_PATH"
 
