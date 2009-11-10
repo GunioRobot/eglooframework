@@ -39,11 +39,17 @@ class JavascriptTemplateEngine extends TemplateEngine {
 	protected $packagePrefix = 'Javascript';
 	
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
-        $this->Smarty();
+		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
+        // $this->Smarty();
 
 		// This is pretty hackish and dumb, but we can change it later
-        $this->left_delimiter = '/*<!--{'; 
-        $this->right_delimiter = '}-->*/'; 
+		if (self::$_version == 'Smarty-3.0b1') {
+			$this->left_delimiter = '{';
+			$this->right_delimiter = '}';
+		} else {
+			$this->left_delimiter = '/*<!--{';
+			$this->right_delimiter = '}-->*/';
+		}
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 

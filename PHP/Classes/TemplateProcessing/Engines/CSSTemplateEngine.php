@@ -39,9 +39,16 @@ class CSSTemplateEngine extends TemplateEngine {
 	protected $packagePrefix = 'CSS';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
-		$this->Smarty();
-		$this->left_delimiter = '/*<!--{';
-		$this->right_delimiter = '}-->*/';
+		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
+		// $this->Smarty();
+
+		if (self::$_version == 'Smarty-3.0b1') {
+			$this->left_delimiter = '{';
+			$this->right_delimiter = '}';
+		} else {
+			$this->left_delimiter = '/*<!--{';
+			$this->right_delimiter = '}-->*/';
+		}
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 

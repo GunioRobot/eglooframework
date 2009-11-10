@@ -42,7 +42,8 @@ class TemplateEngine extends Smarty {
 	protected $packagePrefix = '';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
-        $this->Smarty();
+		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
+        // $this->Smarty();
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
 
