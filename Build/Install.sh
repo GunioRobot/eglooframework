@@ -646,7 +646,7 @@ then
 	if [ ! -e "$APPLICATIONS_PATH" ]
 	then
 		mkdir -p "$APPLICATIONS_PATH"
-		for filename in "$PARENT_DIRECTORY/Applications/*"
+		for filename in $PARENT_DIRECTORY/Applications/*
 		do
 		  ln -s "$PARENT_DIRECTORY/Applications/$filename" "$APPLICATIONS_PATH/$filename"
 		done;
@@ -729,7 +729,7 @@ then
 	if [ ! -e "$CUBES_PATH" ]
 	then
 		mkdir -p "$CUBES_PATH"
-		for filename in ../Cubes/*
+		for filename in $PARENT_DIRECTORY/Cubes/*
 		do
 		  ln -s "$PARENT_DIRECTORY/Cubes/$filename" "$CUBES_PATH/$filename"
 		done;
