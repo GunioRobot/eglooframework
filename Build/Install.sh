@@ -646,19 +646,25 @@ then
 	if [ ! -e "$APPLICATIONS_PATH" ]
 	then
 		mkdir -p "$APPLICATIONS_PATH"
-		for filename in $PARENT_DIRECTORY/Applications/*
+		for filename in "$PARENT_DIRECTORY"/Applications/*
 		do
-		  ln -s "$PARENT_DIRECTORY/Applications/$filename" "$APPLICATIONS_PATH/$filename"
+		  ln -s "$PARENT_DIRECTORY/Applications/${filename##*/}" "$APPLICATIONS_PATH/${filename##*/}"
 		done;
-		
-#		ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
 	else
 		echo "Applications path exists"
+		for filename in "$PARENT_DIRECTORY"/Applications/*
+		do
+			if [ ! -e "$APPLICATIONS_PATH/${filename##*/}" ] && [  ! -L "$APPLICATIONS_PATH/${filename##*/}" ]
+			then
+				ln -s "$PARENT_DIRECTORY/Applications/${filename##*/}" "$APPLICATIONS_PATH/${filename##*/}"
+			else
+				echo "Application ${filename##*/} Symlink exists"
+			fi
+		done;
 	fi
 else
 	mkdir -p "$APPLICATIONS_PATH"
 	cp -R "$PARENT_DIRECTORY/Applications/*" "$APPLICATIONS_PATH/"
-#	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
 fi
 
 chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
@@ -729,19 +735,25 @@ then
 	if [ ! -e "$CUBES_PATH" ]
 	then
 		mkdir -p "$CUBES_PATH"
-		for filename in $PARENT_DIRECTORY/Cubes/*
+		for filename in "$PARENT_DIRECTORY"/Cubes/*
 		do
-		  ln -s "$PARENT_DIRECTORY/Cubes/$filename" "$CUBES_PATH/$filename"
+		  ln -s "$PARENT_DIRECTORY/Cubes/${filename##*/}" "$CUBES_PATH/${filename##*/}"
 		done;
-		
-#		ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
 	else
 		echo "Cubes path exists"
+		for filename in "$PARENT_DIRECTORY"/Cubes/*
+		do
+			if [ ! -e "$CUBES_PATH/${filename##*/}" ] && [  ! -L "$CUBES_PATH/${filename##*/}" ]
+			then
+				ln -s "$PARENT_DIRECTORY/Cubes/${filename##*/}" "$CUBES_PATH/${filename##*/}"
+			else
+				echo "Cube ${filename##*/} Symlink exists"
+			fi
+		done;
 	fi
 else
 	mkdir -p "$CUBES_PATH"
-	cp -R ../Cubes/* "$CUBES_PATH/"
-#	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
+	cp -R "$PARENT_DIRECTORY/Cubes/*" "$CUBES_PATH/"
 fi
 
 chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
