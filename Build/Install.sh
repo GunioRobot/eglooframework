@@ -524,29 +524,21 @@ echo "\"$DOCUMENT_PATH\""
 
 if [ $USE_SYMLINKS ]
 then
-	# if [ ! -e "$DOCUMENT_PATH/DocRoot/.htaccess" ] && [  ! -L "$DOCUMENT_PATH/DocRoot/.htaccess" ]
-	# then
-	# 	mkdir -p "$DOCUMENT_PATH/DocRoot"
-	# 	ln -s "$PARENT_DIRECTORY/.htaccess" "$DOCUMENT_PATH/DocRoot/.htaccess"
-	# else
-	# 	echo ".htaccess Symlink exists"
-	# fi
+	if [ ! -e "$DOCUMENT_PATH/.htaccess" ] && [  ! -L "$DOCUMENT_PATH/.htaccess" ]
+	then
+		mkdir -p "$DOCUMENT_PATH/"
+		ln -s "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
+	else
+		echo ".htaccess Symlink exists"
+	fi
 
-	# if [ ! -e "$DOCUMENT_PATH/DocRoot/index.php" ] && [  ! -L "$DOCUMENT_PATH/DocRoot/index.php" ]
-	# then
-	# 	mkdir -p "$DOCUMENT_PATH/DocRoot"
-	# 	ln -s "$PARENT_DIRECTORY/index.php" "$DOCUMENT_PATH/DocRoot/index.php"
-	# else
-	# 	echo "index.php Symlink exists"
-	# fi
-
-	# if [ ! -e "$DOCUMENT_PATH/DocRoot" ] && [  ! -L "$DOCUMENT_PATH/DocRoot" ]
-	# then
-	# 	mkdir -p "$DOCUMENT_PATH"
-	# 	ln -s "$PARENT_DIRECTORY/DocRoot" "$DOCUMENT_PATH/DocRoot"
-	# else
-	# 	echo "DocRoot Symlink exists"
-	# fi
+	if [ ! -e "$DOCUMENT_PATH/index.php" ] && [  ! -L "$DOCUMENT_PATH/index.php" ]
+	then
+		mkdir -p "$DOCUMENT_PATH/"
+		ln -s "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/index.php"
+	else
+		echo "index.php Symlink exists"
+	fi
 
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
@@ -574,8 +566,8 @@ then
 
 else
 	mkdir -p "$DOCUMENT_PATH"
-	cp ../DocRoot/.htaccess "$DOCUMENT_PATH/DocRoot/.htaccess"
-	cp ../DocRoot/index.php "$DOCUMENT_PATH/DocRoot/.index.php"
+	cp ../DocRoot/.htaccess "$DOCUMENT_PATH/.htaccess"
+	cp ../DocRoot/index.php "$DOCUMENT_PATH/.index.php"
 
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
@@ -669,15 +661,6 @@ fi
 
 chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
 chmod -R 755 "$APPLICATIONS_PATH"
-
-# if [ $USE_SYMLINKS ]
-# then
-# 	mkdir -p "$APPLICATIONS_PATH"
-# 	ln -s ../Applications/eGloo "$APPLICATIONS_PATH/eGloo"
-# else
-# 	mkdir -p "$APPLICATIONS_PATH"
-# 	cp -R ../Applications/* "$APPLICATIONS_PATH"
-# fi
 
 echo
 echo "********************"
@@ -952,7 +935,8 @@ echo "Writing configuration files... "
 chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
 
 # Set ownership on the config dump created
-chown -R $WEB_USER:$WEB_GROUP "ConfigCache.php"
+mv "ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
 chmod -R 755 "$SMARTY_PATH"
 
 echo
