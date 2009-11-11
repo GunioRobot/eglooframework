@@ -25,6 +25,11 @@
  * @version 1.0
  */
 
+// Autoloader, CacheGateway and eGlooConfiguration utilize the eGlooLogger
+if ( !class_exists( 'eGlooLogger', false ) ) {
+    include( 'PHP/Classes/Utilities/eGlooLogger.php' );
+}
+
 // Autoloader utilizes CacheGateway and eGlooConfiguration
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
     include( 'PHP/Classes/Utilities/eGlooConfiguration.php' );
