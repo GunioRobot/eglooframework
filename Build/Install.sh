@@ -84,7 +84,7 @@ case "$PLATFORM" in
 		DEFAULT_WEBGROUP="admin"
 	;;
 	
-	"LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.04 (AMD64)" | "lkjadsf" )
+	"LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.04 (AMD64)" | "LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.10 (AMD64)" )
 		echo "Detected Ubuntu Linux"
 		DETECTED_PLATFORM=$OS_UBUNTU
 
