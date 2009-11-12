@@ -96,7 +96,7 @@ case "$PLATFORM" in
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
-		DEFAULT_LOGPATH="/var/logs/egloo"
+		DEFAULT_LOGPATH="/var/log/egloo"
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 		DEFAULT_WEBUSER="www-data"
 		DEFAULT_WEBGROUP="www-data"
