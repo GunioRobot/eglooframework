@@ -33,12 +33,9 @@
  * @package ContentProcessing
  */
 class GlobalMenuBarContentProcessor extends ContentProcessor {
-    
-   // private $_templateDefault = '../Templates/Applications/eGloo/InterfaceBundles/Default/XHTML/GlobalMenuBar/GlobalMenuBarContainer.tpl';
-    
-    public function __construct() {
-    }
-    
+
+    public function __construct() {}
+
     public function prepareContent() {
         // simulate DB connect
         
@@ -47,9 +44,12 @@ class GlobalMenuBarContentProcessor extends ContentProcessor {
        // $globalMenuBarDTO = $daoFactory->getGlobalMenuBarDAO()->getMenuButtons();
          
         //$this->_templateEngine->assign( 'globalMenuBarDTO', $globalMenuBarDTO );
-        $this->_templateEngine->assign( 'loggedInUserName', $_SESSION['USER_FIRST_NAME'] . ' ' . $_SESSION['USER_LAST_NAME'] );
-        $this->_templateEngine->assign( 'mainProfileID', $_SESSION['MAIN_PROFILE_ID'] );
+		$userFirstName = isset($_SESSION['USER_FIRST_NAME']) ? $_SESSION['USER_FIRST_NAME'] : 'Guest';
+		$userLastName = isset($_SESSION['USER_LAST_NAME']) ? $_SESSION['USER_LAST_NAME'] : '';
+		$mainProfileID = isset($_SESSION['MAIN_PROFILE_ID']) ? $_SESSION['MAIN_PROFILE_ID'] : 0;
+
+        $this->_templateEngine->assign( 'loggedInUserName', $userFirstName . ' ' . $userLastName );
+        $this->_templateEngine->assign( 'mainProfileID', $mainProfileID );
     }
 }
 
-?>

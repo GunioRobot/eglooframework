@@ -40,10 +40,11 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
         $templateBuilder = new XHTMLBuilder();
         $templateDirector->setTemplateBuilder( $templateBuilder );
         $templateDirector->preProcessTemplate();
-    			
-   		$mainProfileID = $_SESSION['MAIN_PROFILE_ID'];
-		$viewingProfileID = $_SESSION['MAIN_PROFILE_ID'];
-		$viewingUserProfileName = $_SESSION['USER_USERNAME'];
+    	
+
+   		$mainProfileID = isset($_SESSION['MAIN_PROFILE_ID']) ? $_SESSION['MAIN_PROFILE_ID'] : 0;
+		$viewingProfileID = isset($_SESSION['MAIN_PROFILE_ID']) ? $_SESSION['MAIN_PROFILE_ID'] : 0;
+		$viewingUserProfileName = isset($_SESSION['USER_USERNAME']) ? $_SESSION['USER_USERNAME'] : 'Guest';
 		$loggedInUser = false;
 
 		// TODO check constraints on these values (ranges and types)
