@@ -212,7 +212,7 @@ final class eGlooLoggerException extends Exception {
 
    /**
     * eGlooLoggerException constructor.  Takes a message and a code and invokes
-    * the parent (Exception) constructor.  May eventaully contain additional code,
+    * the parent (Exception) constructor.  May eventually contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *

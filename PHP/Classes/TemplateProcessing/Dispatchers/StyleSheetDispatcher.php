@@ -34,7 +34,7 @@
  *
  * @package Template
  */
-final class StyleSheetDispatcher {
+class StyleSheetDispatcher extends TemplateDispatcher {
 
     /**
      * Static Constants
@@ -66,7 +66,7 @@ final class StyleSheetDispatcher {
      * It then populates a hash of [StyleSheetDispatcher]->[StyleSheetDispatch
      * XML Object]
      */
-    private function loadDispatchNodes(){
+    protected function loadDispatchNodes(){
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
@@ -229,5 +229,3 @@ final class StyleSheetDispatcher {
     }
 
 }
-
-?>

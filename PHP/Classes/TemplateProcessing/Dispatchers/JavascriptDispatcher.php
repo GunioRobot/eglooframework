@@ -34,7 +34,7 @@
  *
  * @package Template
  */
-final class JavascriptDispatcher {
+class JavascriptDispatcher extends TemplateDispatcher {
 
     /**
      * Static Constants
@@ -65,7 +65,7 @@ final class JavascriptDispatcher {
      * This method reads the xml file from disk into a document object model.
      * It then populates a hash of [JavascriptDispatcher] -> [JavascriptDispatch XML Object]
      */
-    private function loadDispatchNodes(){
+    protected function loadDispatchNodes(){
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
@@ -227,5 +227,3 @@ final class JavascriptDispatcher {
     }
 
 }
-
-?>

@@ -80,25 +80,3 @@ class CSSTemplateEngine extends TemplateEngine {
     }
 
 }
-
-/**
- * Private exception subclass for use by TemplateEngine
- */
-final class CSSTemplateEngineException extends Exception {
-
-   /**
-    * CSSTemplateEngineException constructor.  Takes a message and a code and invokes
-    * the parent (Exception) constructor.  May eventaully contain additional code,
-    * but for now acts as a means of determining the exact type of exception thrown
-    * so it is possible to track down what threw it.
-    *
-    * @param $message   the message that this exception will contain
-    * @param $code      the optional code of this exception (unused)
-    * @returns          a CSSTemplateEngineException
-    */
-   public function __construct( $message, $code = 0 ) {
-       // Call parent constructor
-       parent::__construct( $message, $code );
-   }
-
-}
