@@ -30,7 +30,7 @@
 	     		<div id="UserProfileControlStripUserName" class="">Recent Blog Updates</div>
 			</div>
 <!--{*
-			<!--{foreach from=$recentBlogProfilesArray item=blogProfile }-->
+			<!--{foreach from=$recentBlogProfilesArray item=blogProfile}-->
 				<div id="userProfile">
 					<div style="height:100px;width:50px;">
 					<!--{assign var=blogWriterID value=$blogProfile->get_blogwriter()}-->
@@ -41,7 +41,7 @@
 				</div>
 			<!--{/foreach}-->
 *}-->
-			<!--{foreach from=$recentBlogProfilesArray item=blogProfile }-->
+			<!--{foreach from=$recentBlogProfilesArray item=blogProfile}-->
 				<div id="userBlog_<!--{$blogProfile->get_blog_id()}-->" style="clear:both;height:64px;width:250px;clear:both;position:relative:float:left;overflow:hidden;">
 					<div style="height:64px;width:64px;float:left;">
 						<!--{assign var=blogWriterID value=$blogProfile->get_blogwriter()}-->
@@ -50,9 +50,9 @@
 					<div style="height:64px;width:175px;float:left;">
 						<!--{*<a href="/blog/viewBlog/&blogID=<!--{$blogProfile->get_blog_id()}-->" ><!--{$blogProfile->get_profilename()}--></a>*}-->
 						<!--{assign var=blogProfileID value=$blogProfile->get_blog_id()}-->
-						<a href="/blog/viewBlog/&blogID=<!--{$blogProfile->get_blog_id()}-->" ><!--{ $blogInfoArray.$blogProfileID->get_output_blogtitle() }--></a>
+						<a href="/blog/viewBlog/&blogID=<!--{$blogProfile->get_blog_id()}-->" ><!--{$blogInfoArray.$blogProfileID->get_output_blogtitle()}--></a>
 						<br />
-						<span style="font-size:11px;"><!--{ $blogInfoArray.$blogProfileID->get_output_blogcontent()|strip_tags:false|truncate:200:"..."|strip }--></span>
+						<span style="font-size:11px;"><!--{$blogInfoArray.$blogProfileID->get_output_blogcontent()|strip_tags:false|truncate:200:"..."|strip}--></span>
 						<a href="/blog/viewBlog/&blogID=<!--{$blogProfile->get_blog_id()}-->" style="font-size:11px;">Continue Reading...</a>
 					</div>
 				</div>

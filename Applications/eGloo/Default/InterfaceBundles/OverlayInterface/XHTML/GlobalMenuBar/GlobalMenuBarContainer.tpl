@@ -59,7 +59,7 @@
 	<div id="globalMenuRight" class="globalMenu">
 
 <!--	    <div id="GlobalMenuBar_User_Fullname" class="divAction"> -->
-			<!--{if isset($loggedInUserName) }-->
+			<!--{if isset($loggedInUserName)}-->
 		    	<a href="profileID=<!--{$mainProfileID}-->" id="GlobalMenuBar_User_Fullname" class="divAction clickable" ><!--{$loggedInUserName}--></a>
 		    <!--{else}-->
 		    	<div id="GlobalMenuBar_User_Fullname" class="divAction clickable" >test&nbsp;</div>

@@ -56,7 +56,7 @@
 	                            <input type="submit" name="submit" style="display:none;" />
 	                        </form>
 	                    </div>
-	                    <div class="halo">halo one: beta | svn revision: <!--{ $svnVersion }--> </div>
+	                    <div class="halo">halo one: beta | svn revision: <!--{$svnVersion}--> </div>
 	                    <div id="updates">
 							<span class="footer_option link">eGloo Blog</span>
 							<span class="spantext2">&nbsp;|&nbsp;</span>
