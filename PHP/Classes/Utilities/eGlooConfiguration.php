@@ -1,7 +1,11 @@
 <?php
 
 final class eGlooConfiguration {
-	
+
+	const DEVELOPMENT	= 0x00;
+	const STAGING		= 0x01;
+	const PRODUCTION	= 0x01;
+
 	// Configuration Attributes
 	private static $configuration_options = array(
 			'ApplicationsPath'		=> '',
@@ -9,6 +13,7 @@ final class eGlooConfiguration {
 			'CompiledTemplatesPath'	=> '',
 			'ConfigurationPath'		=> '',
 			'CubesPath'				=> '',
+			'Deployment'			=> '',
 			'DocumentationPath'		=> '',
 			'DocumentRoot'			=> '',
 			'FrameworkRootPath'		=> '',
@@ -22,10 +27,21 @@ final class eGlooConfiguration {
 		// Grab our environment variables to determine which application and deployment to run
 		self::$configuration_options['ApplicationName'] = $_SERVER['EG_APP'];
 		self::$configuration_options['UIBundleName'] = $_SERVER['EG_UI'];
-		self::$configuration_options['Deployment'] = $_SERVER['EG_ENV'];
 		self::$configuration_options['Cache'] = $_SERVER['EG_CACHE'];
 		self::$configuration_options['FileCache'] = $_SERVER['EG_CACHE_FILE'];
 		self::$configuration_options['MemcacheCache'] = $_SERVER['EG_CACHE_MEMCACHE'];
+
+		switch( $_SERVER['EG_ENV'] ) {
+			case 'DEVELOPMENT' :
+				self::$configuration_options['Deployment'] = self::DEVELOPMENT;
+			case 'STAGING' :
+				self::$configuration_options['Deployment'] = self::STAGING;
+			case 'PRODUCTION' :
+				self::$configuration_options['Deployment'] = self::PRODUCTION;
+			default :
+				self::$configuration_options['Deployment'] = self::DEVELOPMENT;
+				break;
+		}
 
 		switch( $_SERVER['EG_LOG_LEVEL'] ) {
 			case 'LOG_OFF' : 
@@ -94,6 +110,10 @@ final class eGlooConfiguration {
 
     public static function getCubesPath() {
 		return self::$configuration_options['CubesPath'];
+	}
+
+    public static function getDeploymentType() {
+		return self::$configuration_options['Deployment'];
 	}
 
     public static function getDocumentationPath() {
