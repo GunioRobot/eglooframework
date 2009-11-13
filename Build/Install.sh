@@ -119,8 +119,6 @@ case "$PLATFORM" in
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 		DEFAULT_WEBUSER="www-data"
 		DEFAULT_WEBGROUP="www-data"
-
-		exit
 	;;
 esac
 
