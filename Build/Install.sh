@@ -103,7 +103,23 @@ case "$PLATFORM" in
 	;;
 	
 	* )
-		echo "No supported OS detected"
+		# Make this an override choice, and fix the linux checks
+		echo "No supported OS detected - Using Ubuntu Linux Defaults (Should be override option...)"
+		DETECTED_PLATFORM=$OS_UBUNTU
+
+		# Default Configuration Parameters (Ubuntu)
+		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
+		DEFAULT_CACHE_DIR="/var/cache/egloo"
+		DEFAULT_CONFIG="/etc/egloo/"
+		DEFAULT_CUBES="/usr/lib/egloo/cubes"
+		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
+		DEFAULT_DOCUMENTROOT="/var/www/egloo"
+		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
+		DEFAULT_LOGPATH="/var/log/egloo"
+		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+		DEFAULT_WEBUSER="www-data"
+		DEFAULT_WEBGROUP="www-data"
+
 		exit
 	;;
 esac
