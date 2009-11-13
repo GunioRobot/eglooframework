@@ -103,7 +103,7 @@ class XHTMLBuilder extends TemplateBuilder {
     }
     
     public function run() {
-        
+
         if ( $this->cacheID !== null ) {
             $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
         } else {
