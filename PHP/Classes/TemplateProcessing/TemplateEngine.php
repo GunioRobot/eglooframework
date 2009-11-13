@@ -47,7 +47,7 @@ class TemplateEngine extends Smarty {
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
 
-        $this->plugins_dir = array( 'plugins', 'PHP/Classes/components' );
+        $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
@@ -65,10 +65,26 @@ class TemplateEngine extends Smarty {
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
 
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
 
-        //$this->cache_handler_func = 'smarty_cache_memcache';
-        $this->caching = false;
+		// $this->cache_handler_func = 'smarty_cache_memcache';
+
+		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			$this->compile_check = false;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			$this->compile_check = true;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			$this->compile_check = true;
+			$this->force_compile = true;
+			$this->caching = false;
+		} else {
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
+		}
+
     }
 
 	public function useApplicationTemplates( $useFrameworkTemplates = true, $interfaceBundle = null ) {
@@ -97,4 +113,23 @@ class TemplateEngine extends Smarty {
 
 }
 
-?>
+/**
+ * Private exception subclass for use by TemplateEngine
+ */
+final class TemplateEngineException extends Exception {
+
+   /**
+    * TemplateEngineException constructor.  Takes a message and a code and invokes
+    * the parent (Exception) constructor.  May eventaully contain additional code,
+    * but for now acts as a means of determining the exact type of exception thrown
+    * so it is possible to track down what threw it.
+    *
+    * @param $message   the message that this exception will contain
+    * @param $code      the optional code of this exception (unused)
+    * @returns          a TemplateEngineException
+    */
+   public function __construct( $message, $code = 0 ) {
+       // Call parent constructor
+       parent::__construct( $message, $code );
+   }
+}

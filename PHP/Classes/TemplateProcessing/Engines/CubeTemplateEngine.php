@@ -38,7 +38,6 @@ class CubeTemplateEngine extends TemplateEngine {
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-		// $this->Smarty();
 
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
@@ -47,9 +46,27 @@ class CubeTemplateEngine extends TemplateEngine {
         $this->config_dir   = 'Configuration/Smarty';
 
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
 
-        $this->caching      = false;
+		$this->compile_check = false;
+		$this->force_compile = false;
+
+		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			$this->compile_check = false;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			$this->compile_check = true;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			$this->compile_check = true;
+			$this->force_compile = true;
+			$this->caching = false;
+		} else {
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
+		}
+
     }
 
 }

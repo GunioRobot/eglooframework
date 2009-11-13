@@ -40,16 +40,9 @@ class JavascriptTemplateEngine extends TemplateEngine {
 	
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-        // $this->Smarty();
 
-		// This is pretty hackish and dumb, but we can change it later
-		if (isset(self::$_version) && self::$_version == 'Smarty-3.0b1') {
-			$this->left_delimiter = '{';
-			$this->right_delimiter = '}';
-		} else {
-			$this->left_delimiter = '/*<!--{';
-			$this->right_delimiter = '}-->*/';
-		}
+		$this->left_delimiter = '/*<!--{';
+		$this->right_delimiter = '}-->*/';
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
@@ -65,10 +58,26 @@ class JavascriptTemplateEngine extends TemplateEngine {
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
 
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache' . $local . '/' . $language;
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
 
-        //$this->cache_handler_func = 'smarty_cache_memcache';
-        $this->caching = false;
+        // $this->cache_handler_func = 'smarty_cache_memcache';
+
+		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			$this->compile_check = false;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			$this->compile_check = true;
+			$this->force_compile = false;
+			$this->caching = true;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			$this->compile_check = true;
+			$this->force_compile = true;
+			$this->caching = false;
+		} else {
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
+		}
+
     }
 	// 
 	// public function setUseFrameworkTemplates( $useFrameworkTemplates = true ) {
