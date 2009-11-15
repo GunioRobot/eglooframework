@@ -69,28 +69,25 @@ class JavascriptRequestProcessor extends RequestProcessor {
 
         $templateDirector->setTemplateBuilder( $templateBuilder );
 
-        // TODO specify caching parameters for the smarty templates
-        // This needs to be base64_encoded because the cacheID is sued to create directories
-        $cacheID = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 ) . '|' . $this->requestInfoBean->getRequestID();        
-
         // TODO Mark a difference between hard caching and soft caching
         // Soft caching is basically caching the dispatch mappings, but still requiring traversal to pull the correct template
         // Hard caching takes as little information as is needed in one go and shoots straight to the template cache,
         // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
         // is better suited for production
         
-        $templateDirector->setCacheID( $cacheID );
-        $templateDirector->preProcessTemplate();
-
-        $output = $templateDirector->processTemplate();
+        // $templateDirector->setCacheID();
+		$templateDirector->setHardCacheID();
         
-//		if ( !$templateDirector->isHardCached( $this->requestInfoBean->getRequestID(), $cacheID ) ) {
-//	        $templateDirector->preProcessTemplate();
-//		} else {
-//			$templateDirector->setHardCacheID( $this->requestInfoBean->getRequestID(), $cacheID );
-//		}
-//		
-//		$output = $templateDirector->processTemplate();
+		$templateDirector->useSmartCaching();
+
+		// if ( !$templateDirector->isHardCached() ) {
+		// 	$templateDirector->setHardCacheID();
+			$templateDirector->preProcessTemplate();
+		// } else {
+		// 	$templateDirector->setHardCacheID();
+		// }
+
+		$output = $templateDirector->processTemplate();
 
         eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptRequestProcessor: Echoing Response" );
         
