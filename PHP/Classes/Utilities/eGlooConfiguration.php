@@ -4,7 +4,7 @@ final class eGlooConfiguration {
 
 	const DEVELOPMENT	= 0x00;
 	const STAGING		= 0x01;
-	const PRODUCTION	= 0x01;
+	const PRODUCTION	= 0x02;
 
 	// Configuration Attributes
 	private static $configuration_options = array(
@@ -34,10 +34,13 @@ final class eGlooConfiguration {
 		switch( $_SERVER['EG_ENV'] ) {
 			case 'DEVELOPMENT' :
 				self::$configuration_options['Deployment'] = self::DEVELOPMENT;
+				break;
 			case 'STAGING' :
 				self::$configuration_options['Deployment'] = self::STAGING;
+				break;
 			case 'PRODUCTION' :
 				self::$configuration_options['Deployment'] = self::PRODUCTION;
+				break;
 			default :
 				self::$configuration_options['Deployment'] = self::DEVELOPMENT;
 				break;
