@@ -44,7 +44,8 @@ final class DBConnectionManager {
     private static $user        = "webserver";
     private static $password    = "test";
     private static $dbname      = "eGlooFramework";
-    private static $port        = "5432";
+    // private static $port        = "5433"; // PGPOOL
+    private static $port        = "5432"; // PostgreSQL Daemon
 	
 	public static function getConnection() {
 		
