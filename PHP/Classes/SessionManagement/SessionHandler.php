@@ -211,7 +211,7 @@ class SessionHandler {
 		srand( (double) microtime() * 1000000 );
 		$randPercent = rand() % 100;
 		
-		if( $randPercent < 20 ){
+		if( $randPercent < 10 ){
 			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::RUNNING GC CLEAN UP, PERCENT: " . $randPercent, eGlooLogger::$SESSION  );
 			$daoFactory = DAOFactory::getInstance();
 			$sessionDAO = $daoFactory->getSessionDAO();
