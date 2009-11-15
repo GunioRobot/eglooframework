@@ -41,9 +41,11 @@ class JavascriptBuilder extends TemplateBuilder {
     
     private $cacheID = null;
     private $hardCacheID = null;
-    private $deployment = 'dev';
+    private $deployment = null;
     private $requestInfoBean = null;
     private $templateVariables = null;
+	private $output = null;
+	private $isHardCached = false;
         
     public function setRequestInfoBean( $requestInfoBean ) {
         $this->requestInfoBean = $requestInfoBean;
@@ -61,20 +63,44 @@ class JavascriptBuilder extends TemplateBuilder {
         $this->cacheID = $cacheID;
     }
 
-    public function setHardCacheID( $dispatchPath, $cacheID ) {
-        $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
-        $this->templateEngine->caching = true;
+	public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 ) {
+        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
+        // $this->templateEngine->caching = true;
         
-        $this->dispatchPath = $dispatchPath;
-        $this->hardCacheID = $cacheID;
+        // $this->dispatchPath = $dispatchPath;
+		$this->hardCacheID = '|' . $requestClass . '|' . $requestID . '|' . $cacheID . '|';
+		$this->ttl;
     }
     
     public function isCached() {
         return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
 
-    public function isHardCached( $dispatchPath, $cacheID ) {
-        return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
+	public function isHardCached( $requestClass, $requestID, $cacheID ) {
+    // public function isHardCached( $dispatchPath, $cacheID ) {
+		$retVal = false;
+
+		if ($this->isHardCached && $this->output != null) {
+			$retVal = true;
+		} else {
+			$cacheGateway = CacheGateway::getCacheGateway();
+
+			$retVal = $cacheGateway->getObject($this->hardCacheID, 'string');
+
+		    if ( $retVal != null ) {
+				$this->output = $retVal;
+				$this->isHardCached = true;
+
+				$retVal = $this->isHardCached;
+			} else {
+				$this->output = null;
+				$retVal = false;
+				$this->isHardCached = false;
+			}
+		}
+
+		return $retVal;
+        // return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
     
     public function setDispatchPath() {
@@ -89,9 +115,19 @@ class JavascriptBuilder extends TemplateBuilder {
     }
     
     public function run() {
-        $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+		$retVal = null;
 
-        return $output;
+		if (isset($this->hardCacheID) && $this->isHardCached) {
+			$retVal = $this->output;
+		} else if (isset($this->hardCacheID) && !$this->isHardCached){
+	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			$cacheGateway = CacheGateway::getCacheGateway();
+			$cacheGateway->storeObject($this->hardCacheID, $retVal, 'string', $this->ttl);
+		} else {
+	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+		}
+
+        return $retVal;
     }
 
 }

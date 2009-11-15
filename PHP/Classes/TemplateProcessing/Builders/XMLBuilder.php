@@ -50,6 +50,14 @@ class XMLBuilder extends TemplateBuilder {
     public function setTemplateVariables() {
         
     }
+
+	public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 ) {
+        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
+        // $this->templateEngine->caching = true;
+        
+        // $this->dispatchPath = $dispatchPath;
+        $this->hardCacheID = '|' . $requestClass . '|' . $requestID . '|' . $cacheID . '|';
+    }
     
     public function run() {
         $templateDispatcher =

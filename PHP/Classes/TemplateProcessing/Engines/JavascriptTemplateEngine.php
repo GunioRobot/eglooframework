@@ -69,7 +69,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
-			$this->caching = true;
+			$this->caching = false;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
@@ -79,13 +79,5 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		}
 
     }
-	// 
-	// public function setUseFrameworkTemplates( $useFrameworkTemplates = true ) {
-	// 	
-	// }
-	// 
-	// public function setUseApplicationTemplates( $useApplicationTemplates = true ) {
-	// 	
-	// }
 
 }

@@ -36,27 +36,85 @@
  */
 class eGlooInterfaceDirector extends TemplateDirector {
 
+	const NO_CACHE		= 0x00;
+	const HARD_CACHE 	= 0x01;
+	const SOFT_CACHE 	= 0x02;
+	const DYNAMIC_CACHE = 0x04;
+
+	const NO_MODIFIERS	= 0x00;
+
     private $cacheID = null;
     private $requestInfoBean = null;
     private $templateBuilder = null;
+	private $useSmartCaching = false;
 
     public function __construct( $requestInfoBean ) {
         $this->requestInfoBean = $requestInfoBean;
     }
 
-    public function preProcessTemplate() {
-        $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
-		$this->templateBuilder->setTemplateEngine();
-        $this->templateBuilder->setDispatchPath();
-		$this->templateBuilder->resolveTemplateRoot();
+	public function useSmartCaching( $useSmartCaching = true ) {
+		$this->useSmartCaching = $useSmartCaching;
+	}
 
-        if ( $this->cacheID !== null ) {
-            $this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
-        }
+	public function setCachePolicy( $level = self::SOFT_CACHE, $modifiers = self::NO_MODIFIERS ) {
+		$this->useSmartCaching = false;
+
+	}
+
+    public function preProcessTemplate() {
+		if ($this->useSmartCaching) {
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+				$requestClass = $this->requestInfoBean->getRequestClass();
+				$requestID = $this->requestInfoBean->getRequestID();
+				$cacheID = isset($this->cacheID) ? $this->cacheID : '';
+
+				$this->setHardCacheID($requestClass, $requestID, $cacheID);
+
+				if (!$this->isHardCached()) {
+			        $this->templateBuilder->setDispatchPath();
+					$this->templateBuilder->resolveTemplateRoot();
+
+			        if ( $this->cacheID !== null ) {
+			            $this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
+			        }
+				}
+			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+				$this->templateBuilder->setDispatchPath();
+				$this->templateBuilder->resolveTemplateRoot();
+
+				if ( $this->cacheID !== null ) {
+					$this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
+				}
+			}
+		} else {
+	        $this->templateBuilder->setDispatchPath();
+			$this->templateBuilder->resolveTemplateRoot();
+
+	        if ( $this->cacheID !== null ) {
+	            $this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
+	        }
+		}
     }
 
     public function processTemplate() {
-        return $this->templateBuilder->run();
+		$retVal = null;
+
+		if ($this->useSmartCaching) {
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+				$this->templateBuilder->setHardCacheID(
+					$this->requestInfoBean->getRequestClass(), $this->requestInfoBean->getRequestID(), $this->cacheID);
+				$retVal = $this->templateBuilder->run();
+			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+				// TODO
+			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+				$retVal = $this->templateBuilder->run();
+			}
+		} else {
+			$retVal = $this->templateBuilder->run();
+		}
+
+        return $retVal;
     }
 
     public function postProcessTemplate() {
@@ -79,23 +137,55 @@ class eGlooInterfaceDirector extends TemplateDirector {
         return $this->templateBuilder->isCached();
     }
 
-    public function isHardCached( $dispatchPath, $cacheID ) {
-        return $this->templateBuilder->isHardCached( $dispatchPath, $cacheID );
+    public function isHardCached( $requestClass = null, $requestID = null, $cacheID = null ) {
+		$requestClass = isset($requestClass) ? $requestClass : $this->requestInfoBean->getRequestClass();
+		$requestID = isset($requestID) ? $requestID : $this->requestInfoBean->getRequestID();
+
+		if (!isset($cacheID)) {
+			if (!isset($this->cacheID)) {
+				// TODO specify caching parameters for the smarty templates
+				// This needs to be base64_encoded because the cacheID is sued to create directories
+				$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
+				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();        
+			}
+
+			$cacheID = $this->cacheID;
+		}
+
+        return $this->templateBuilder->isHardCached( $requestClass, $requestID, $cacheID );
     }
     
-    public function setCacheID( $cacheID, $ttl = 3600 ) {
-        $this->cacheID = $cacheID;
+    public function setCacheID( $cacheID = null, $ttl = 3600 ) {
+		if ($cacheID === null) {
+			// TODO specify caching parameters for the smarty templates
+			// This needs to be base64_encoded because the cacheID is sued to create directories
+			$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
+			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();        
+		}
+
         $this->ttl = $ttl;
     }
     
-    public function setHardCacheID( $dispatchPath, $cacheID, $ttl = 3600 ) {
-        $this->templateBuilder->setHardCacheID( $dispatchPath, $cacheID, $ttl );
+    public function setHardCacheID( $requestClass = null, $requestID = null, $cacheID = null, $ttl = 3600 ) {
+		$requestClass = isset($requestClass) ? $requestClass : $this->requestInfoBean->getRequestClass();
+		$requestID = isset($requestID) ? $requestID : $this->requestInfoBean->getRequestID();
+
+		if (!isset($cacheID)) {
+			if (!isset($this->cacheID)) {
+				$this->setCacheID();
+			}
+
+			$cacheID = $this->cacheID;
+		}
+
+        $this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
     }
     
     public function setTemplateBuilder( TemplateBuilder $templateBuilder ) {
         $this->templateBuilder = $templateBuilder;
         // TODO uncomment this as part of refactoring for hard caching
-        //$this->templateBuilder->setTemplateEngine();
+        $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
+        $this->templateBuilder->setTemplateEngine();
     }
     
 }

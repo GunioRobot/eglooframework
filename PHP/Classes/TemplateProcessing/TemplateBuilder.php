@@ -41,6 +41,7 @@ abstract class TemplateBuilder {
 	protected $dispatchPath = null;
 	protected $interfaceBundle = '';
 	protected $templateEngine = null;
+	protected $ttl = null;
 
 	public function setApplication( $application ) {
 		$this->application = $application;
@@ -52,7 +53,15 @@ abstract class TemplateBuilder {
 
 	abstract public function setDispatchPath();
 	
+	public function getDispatchPath() {
+		return $this->dispatchPath;
+	}
+	
 	abstract public function setTemplateEngine();
+
+	abstract public function isHardCached( $requestClass, $requestID, $cacheID );
+
+	abstract public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 );
 
 	public function resolveTemplateRoot() {
 		$matches = array();
