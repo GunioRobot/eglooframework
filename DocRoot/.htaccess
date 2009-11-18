@@ -18,6 +18,7 @@ SetEnv EG_UI  OverlayInterface
 
 # Caching
 SetEnv EG_CACHE ON
+SetEnv EG_CACHE_APC ON
 SetEnv EG_CACHE_FILE OFF
 SetEnv EG_CACHE_MEMCACHE ON
 

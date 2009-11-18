@@ -45,8 +45,9 @@ class CacheGateway {
 	private $_cache_file_path = '';
 	private $_cache_tiers = 0x0;
 
-	public static $USE_FILECACHE = 0x2;		// 0000 0010
-	public static $USE_MEMCACHE = 0x1;		// 0000 0001
+	const USE_APCCACHE		= 0x1;		// 0000 0001
+	const USE_FILECACHE		= 0x2;		// 0000 0010
+	const USE_MEMCACHE		= 0x4;		// 0000 0100
 
 	private static $_singleton;
 
@@ -108,18 +109,29 @@ class CacheGateway {
 		}
 	}
 
+	private function loadAPCCache() {
+		// Do nothing
+	}
+
 	public function deleteObject( $id ) {
 		$retVal = null;
 
 		if ($this->_active) {
-			if ($this->_cache_tiers & self::$USE_MEMCACHE) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					apc_delete($id);
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->delete( $id );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-								   'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );				 
+						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );				 
 				}
-			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 				$retVal = $this->_filecache[$id];
 				unset($this->_filecache[$id]);
 			}
@@ -133,14 +145,21 @@ class CacheGateway {
 		$retVal = null;
 
 		if ($this->_active) {
-			if ($this->_cache_tiers & self::$USE_MEMCACHE) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					$retVal = apc_fetch($id);
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->get( $id );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-								   'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
+						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
-			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 				if (isset($this->_filecache[$id])) {
 					$cache_pack = $this->_filecache[$id];
 					$blob = $cache_pack['blob'];
@@ -168,9 +187,9 @@ class CacheGateway {
 	public function getStats() {
 		$retVal = null;
 		
-		if ($this->_cache_tiers & self::$USE_MEMCACHE) {
+		if ($this->_cache_tiers & self::USE_MEMCACHE) {
 			$retVal = $this->_memcache->getStats();
-		} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
+		} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 			
 		}
 		
@@ -182,14 +201,21 @@ class CacheGateway {
 		$retVal = null;
 
 		if ($this->_active) {
-			if ($this->_cache_tiers & self::$USE_MEMCACHE) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					$retVal = apc_store( $id, $obj, $ttl );
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );							
 				}
-			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 				$cache_pack = array();
 				
 				$blob = $obj;
@@ -233,18 +259,25 @@ class CacheGateway {
 				self::$_singleton->_active = false;
 			}
 
+			if ($_SERVER['EG_CACHE_APC'] === 'ON') {
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_APCCACHE;
+				self::$_singleton->loadAPCCache();
+			} else {
+				
+			}
+
 			if ($_SERVER['EG_CACHE_FILE'] === 'ON') {
-				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::$USE_FILECACHE;
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_FILECACHE;
 				self::$_singleton->loadFileCache();
 			} else {
-				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::$USE_FILECACHE;
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::USE_FILECACHE;
 			}
 
 			if ($_SERVER['EG_CACHE_MEMCACHE'] === 'ON') {
-				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::$USE_MEMCACHE;
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_MEMCACHE;
 				self::$_singleton->loadMemcache();
 			} else {
-				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::$USE_MEMCACHE;
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::USE_MEMCACHE;
 			}
 
 		}
@@ -253,7 +286,7 @@ class CacheGateway {
 	}
 
 	public function __destruct() {
-		if ($this->_cache_tiers & self::$USE_FILECACHE) {
+		if ($this->_cache_tiers & self::USE_FILECACHE) {
 			$cache_dump = var_export($this->_filecache, TRUE);
 			file_put_contents($this->_cache_file_path, $cache_dump);
 		}
