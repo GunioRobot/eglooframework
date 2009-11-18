@@ -203,7 +203,7 @@ class CacheGateway {
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
 				try {
-					$retVal = apc_store( $id, $obj, $ttl );
+					$retVal = apc_add( $id, $obj, $ttl );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
