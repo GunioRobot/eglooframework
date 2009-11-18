@@ -40,13 +40,13 @@ class RequireSSLDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
    	
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequireSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequireSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
 		
 		if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequireSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequireSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
 	   		return true;
         } else {
-        	eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequireSSLDecorator::requestPreProcessing - SSL Inactive", 'Decorators' );
+        	eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequireSSLDecorator::requestPreProcessing - SSL Inactive", 'Decorators' );
             return false;
         }
 		

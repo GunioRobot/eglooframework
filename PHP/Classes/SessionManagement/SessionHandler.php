@@ -73,7 +73,7 @@ class SessionHandler {
 	 * Function that is not needed but required by session_set_save_handler
 	 */
 	function open($path, $name) {
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::OPEN -- Path: $path, Name: $name", eGlooLogger::$SESSION );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::OPEN -- Path: $path, Name: $name", eGlooLogger::SESSION );
 		return true;
 	}
 
@@ -82,7 +82,7 @@ class SessionHandler {
 	 * @return boolean
 	 */
 	function close() {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::CLOSE", eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::CLOSE", eGlooLogger::SESSION );
 		$this->gc();
 		return true;
 	}
@@ -97,7 +97,7 @@ class SessionHandler {
 	 * @return string serialized array of session data
 	 */
 	function read($sessionID) {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::READ -- sessionid = $sessionID", eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ -- sessionid = $sessionID", eGlooLogger::SESSION );
 		
 		//TODO check cache
 		
@@ -105,9 +105,9 @@ class SessionHandler {
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDTO = $sessionDAO->getSessionData($sessionID);
 
-		//eGlooLogger::writeLog( eGlooLogger::$DEBUG, $_SERVER['HTTP_USER_AGENT'] );
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::READ: User ID returned from database is: ". $sessionDTO->getUserID(), eGlooLogger::$SESSION  );
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::READ: Session exists in database?: ". $sessionDTO->sessionExists(), eGlooLogger::$SESSION  );
+		//eGlooLogger::writeLog( eGlooLogger::DEBUG, $_SERVER['HTTP_USER_AGENT'] );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ: User ID returned from database is: ". $sessionDTO->getUserID(), eGlooLogger::SESSION  );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ: Session exists in database?: ". $sessionDTO->sessionExists(), eGlooLogger::SESSION  );
 		
 
 		$retval = '';
@@ -116,7 +116,7 @@ class SessionHandler {
 		 * if the session is not set
 		 */
 		if( ! $sessionDTO->sessionExists() ){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "NEW SESSION", eGlooLogger::$SESSION  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "NEW SESSION", eGlooLogger::SESSION  );
 			
 		} else {
 
@@ -130,7 +130,7 @@ class SessionHandler {
 	        		/**
 	        		 * TODO throw user agent doesn't match exception
 	        		 */
-					eGlooLogger::writeLog( eGlooLogger::$ALERT, "USER AGENT DOESN'T MATCH... FAIL NOW", eGlooLogger::$SESSION  );
+					eGlooLogger::writeLog( eGlooLogger::ALERT, "USER AGENT DOESN'T MATCH... FAIL NOW", eGlooLogger::SESSION  );
 					return '';
 	    		}
 	    		
@@ -141,12 +141,12 @@ class SessionHandler {
 	        		 * If this is happening, something is very wrong, either
 	        		 * from the DAO side or from the write side.
 	        		 */
-					eGlooLogger::writeLog( eGlooLogger::$ALERT, "USER AGENT NOT SET IN SESSIONDTO", eGlooLogger::$SESSION  );
+					eGlooLogger::writeLog( eGlooLogger::ALERT, "USER AGENT NOT SET IN SESSIONDTO", eGlooLogger::SESSION  );
 			} //end session verification
 
 
 
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::READ DATA: " . $sessionDTO->getSessionData(), eGlooLogger::$SESSION  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ DATA: " . $sessionDTO->getSessionData(), eGlooLogger::SESSION  );
 			$sessionData = $sessionDTO->getSessionData();
 			if( $sessionData !== null ){
 				$retval = $sessionData;
@@ -167,7 +167,7 @@ class SessionHandler {
 	 * @return boolean
 	 */
 	function write($sessionID, $sessionData) {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::write -- sessionid = $sessionID", eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::write -- sessionid = $sessionID", eGlooLogger::SESSION );
 
 		$sessionDTO = new SessionDTO();
 		$sessionDTO->setSessionID( $sessionID );
@@ -194,7 +194,7 @@ class SessionHandler {
 	 * @return boolean
 	 */
 	function destroy($sessionID) {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::DESTROY sessionid = $sessionID", eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::DESTROY sessionid = $sessionID", eGlooLogger::SESSION );
 		$daoFactory = DAOFactory::getInstance();
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDAO->deleteSession( $sessionID );
@@ -206,13 +206,13 @@ class SessionHandler {
 	 * @return boolean
 	 */
 	function gc() {
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::GC maxlife", eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::GC maxlife", eGlooLogger::SESSION );
 
 		srand( (double) microtime() * 1000000 );
 		$randPercent = rand() % 100;
 		
 		if( $randPercent < 10 ){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::RUNNING GC CLEAN UP, PERCENT: " . $randPercent, eGlooLogger::$SESSION  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::RUNNING GC CLEAN UP, PERCENT: " . $randPercent, eGlooLogger::SESSION  );
 			$daoFactory = DAOFactory::getInstance();
 			$sessionDAO = $daoFactory->getSessionDAO();
 			$sessionDAO->deleteOldSessions( self::$SESSION_LIFETIME );

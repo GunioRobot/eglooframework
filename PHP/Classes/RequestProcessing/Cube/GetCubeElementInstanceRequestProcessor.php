@@ -49,7 +49,7 @@ class GetCubeElementInstanceRequestProcessor extends RequestProcessor {
 
 //        //check cache first
 //        if( ($cubeDTO = $cacheGateway->getObject( $cubeID, '<type>' ) ) == null ) {            
-//            eGlooLogger::writeLog( eGlooLogger::$DEBUG, "building new cube "  . $cubeID );
+//            eGlooLogger::writeLog( eGlooLogger::DEBUG, "building new cube "  . $cubeID );
 //            /**
 //             * 1) get dto from database
 //             * 2) check permissions against userBean

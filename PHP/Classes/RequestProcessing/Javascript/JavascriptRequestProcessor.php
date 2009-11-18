@@ -62,7 +62,7 @@ class JavascriptRequestProcessor extends RequestProcessor {
      * @access public
      */
     public function processRequest() {
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptRequestProcessor: Entered processRequest()" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptRequestProcessor: Entered processRequest()" );
 
         $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
         $templateBuilder = new JavascriptBuilder();
@@ -80,16 +80,11 @@ class JavascriptRequestProcessor extends RequestProcessor {
         
 		$templateDirector->useSmartCaching();
 
-		// if ( !$templateDirector->isHardCached() ) {
-		// 	$templateDirector->setHardCacheID();
-			$templateDirector->preProcessTemplate();
-		// } else {
-		// 	$templateDirector->setHardCacheID();
-		// }
+		$templateDirector->preProcessTemplate();
 
 		$output = $templateDirector->processTemplate();
 
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptRequestProcessor: Echoing Response" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptRequestProcessor: Echoing Response" );
         
         // TODO move header declarations to a decorator
         // TODO find out if we need to set a charset here

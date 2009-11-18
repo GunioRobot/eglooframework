@@ -76,7 +76,7 @@ class CubeContentProcessor extends ContentProcessor {
  			
  		}
        	
-       	eGlooLogger::writeLog( eGlooLogger::$DEBUG, "k3b: " . $contentViewQueryNode['name']  );
+       	eGlooLogger::writeLog( eGlooLogger::DEBUG, "k3b: " . $contentViewQueryNode['name']  );
 	}
     
     
@@ -109,7 +109,7 @@ class CubeContentProcessor extends ContentProcessor {
         
         if ( ( $requestXMLObject = $cacheGateway->getObject( $path, '<type>' ) ) == null ) {
 
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "CubeContentProcessor::loadXML -  $path, has not been loaded yet, reading the xml" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "CubeContentProcessor::loadXML -  $path, has not been loaded yet, reading the xml" );
 
   			/**
 			 *  It's not in the cache... read in the file, asXML makes it cacheable
@@ -120,7 +120,7 @@ class CubeContentProcessor extends ContentProcessor {
 			$cacheGateway->storeObject( $path, $requestXMLObject, '<type>' );
 			
         } else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "CubeContentProcessor::loadXML - $path Grabbed from cache!" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "CubeContentProcessor::loadXML - $path Grabbed from cache!" );
         }	
     	
     	return simplexml_load_string( $requestXMLObject );

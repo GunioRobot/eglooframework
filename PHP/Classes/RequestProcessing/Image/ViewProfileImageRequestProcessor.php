@@ -55,9 +55,9 @@ class ViewProfileImageRequestProcessor extends RequestProcessor {
             $imageDTO = $imageDAO->getProfileImageElement( $requesterProfileID, $requestedProfileID );
             
 //            $cacheGateway->storeObject( $cacheID, $imageDTO, '<type>', 3600 );
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Profile Image Pulled from DB' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Pulled from DB' );
         } else {
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Profile Image Pulled from Cache' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Pulled from Cache' );
         }
         
         header( 'Content-type: ' . $imageDTO->getImageMIMEType() );

@@ -51,7 +51,7 @@ class PGSQLSessionDAO extends SessionDAO {
 		 * If sessionDTO does have a sessionID then update the session existing in the database.
 		 */
 
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSessionDAO::setSessionData: sessionid = " . $sessionDTO->getSessionID() . $sessionDTO->getUserAgent() . $sessionDTO->getUserID() . $sessionDTO->getSessionData(), eGlooLogger::$SESSION );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::setSessionData: sessionid = " . $sessionDTO->getSessionID() . $sessionDTO->getUserAgent() . $sessionDTO->getUserID() . $sessionDTO->getSessionData(), eGlooLogger::SESSION );
 		
         $db_handle = DBConnectionManager::getConnection();
 
@@ -77,7 +77,7 @@ class PGSQLSessionDAO extends SessionDAO {
 		 * TODO fill session dto with session data from databsae
 		 */
 
-		 eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSessionDAO::getSessionData: sessionid = " . $sessionID, eGlooLogger::$SESSION );
+		 eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::getSessionData: sessionid = " . $sessionID, eGlooLogger::SESSION );
 
         $db_handle = DBConnectionManager::getConnection();
 
@@ -113,7 +113,7 @@ class PGSQLSessionDAO extends SessionDAO {
      */
  	public function deleteSession( $sessionID ){
 
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSessionDAO::deleteSession: " . $sessionID, eGlooLogger::$SESSION );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::deleteSession: " . $sessionID, eGlooLogger::SESSION );
  		 
  		$db_handle = DBConnectionManager::getConnection();
 
@@ -137,7 +137,7 @@ class PGSQLSessionDAO extends SessionDAO {
      */
 	public function deleteOldSessions( $sessionLifeTime ){
 		
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSessionDAO::deleteOldSessions: " . $sessionLifeTime, eGlooLogger::$SESSION );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::deleteOldSessions: " . $sessionLifeTime, eGlooLogger::SESSION );
 		/**
 		 * TODO delete sessions that are older than the specified
 		 * amount of time.

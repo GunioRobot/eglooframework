@@ -72,7 +72,7 @@ class UploadVideoRequestProcessor extends RequestProcessor {
             //file_put_contents( '/tmp/blah.jpg', base64_decode(pg_unescape_bytea(pg_escape_bytea(base64_encode($imageDTO->getImageContent())))), FILE_APPEND );
         } else {
             print_r($_FILES);
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'UploadImageRequestProcessor: File not found' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'UploadImageRequestProcessor: File not found' );
         }
 
 //        header("Content-type: text/html; charset=UTF-8");

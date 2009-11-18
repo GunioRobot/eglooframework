@@ -40,7 +40,7 @@ class RequestProcessorTestDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
    	
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestProcessorTestDecorator: WORD... doing pre work", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequestProcessorTestDecorator: WORD... doing pre work", 'Decorators' );
    		return true;
    }
 

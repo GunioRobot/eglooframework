@@ -92,12 +92,12 @@ class SetProfileImageRequestProcessor extends RequestProcessor {
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$success = $gqDTO->get_output_successful();
 			if( $success ){
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SUCCESSFUL call to $daoFunction");
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "SUCCESSFUL call to $daoFunction");
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "FAILURE call to $daoFunction");
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "FAILURE call to $daoFunction");
 			}
         } else {
-        	eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ASDFASDF: 2. Something wrong " );
+        	eGlooLogger::writeLog( eGlooLogger::DEBUG, "ASDFASDF: 2. Something wrong " );
         }
     }
 }

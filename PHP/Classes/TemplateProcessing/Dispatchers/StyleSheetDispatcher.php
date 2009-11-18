@@ -67,7 +67,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
      * XML Object]
      */
     protected function loadDispatchNodes(){
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Processing XML" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
@@ -87,11 +87,11 @@ class StyleSheetDispatcher extends TemplateDispatcher {
             $cacheGateway = CacheGateway::getCacheGateway();
             
             if ( (self::$singletonDispatcher = $cacheGateway->getObject( 'StyleSheetDispatcherNodes', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Building Singleton" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new StyleSheetDispatcher( $application, $interfaceBundle );
                 $cacheGateway->storeObject( 'StyleSheetDispatcherNodes', self::$singletonDispatcher, '<type>' );
             } else {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Singleton pulled from cache" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Singleton pulled from cache" );
             }
         }
         
@@ -108,7 +108,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
          * and id, if not, return false.
          */
         if ( !isset( $this->dispatchNodes[ 'StyleSheetDispatcher' ]) ){
-           eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetDispatcher: Dispatch Nodes unset" );
+           eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Dispatch Nodes unset" );
            return false;
            // TODO throw exception
         }
@@ -224,7 +224,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
             // TODO throw exception
         }
 
-//		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "DISPATCH CSS PATH: " .  $dispatchPath );
+//		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DISPATCH CSS PATH: " .  $dispatchPath );
         return trim( $dispatchPath );
     }
 

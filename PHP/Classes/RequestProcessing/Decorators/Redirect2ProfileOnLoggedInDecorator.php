@@ -39,11 +39,11 @@ class Redirect2ProfileOnLoggedInDecorator extends RequestProcessorDecorator {
     * do any pre processing here
     */
 	protected function requestPreProcessing(){
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG,
+		eGlooLogger::writeLog( eGlooLogger::DEBUG,
 			"Redirect2ProfileOnLoggedInDecorator::requestPreProcessing - Checking for redirect on login", 'Decorators' );
 
         if ( isset( $_SESSION['LOGGED_IN'] ) && $_SESSION['LOGGED_IN'] === true ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG,
+			eGlooLogger::writeLog( eGlooLogger::DEBUG,
 				"Redirect2ProfileOnLoggedInDecorator::requestPreProcessing' .
 				' - Logged in: Redirecting to login page", 'Decorators' );
 

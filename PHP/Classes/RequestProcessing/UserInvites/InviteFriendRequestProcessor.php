@@ -75,14 +75,14 @@ class InviteFriendRequestProcessor extends RequestProcessor {
 				//$headers = 'From: eGloo <donotreply@test.com' . "\r\n" . 'Reply-To: donotreply@test.com';
 				$headers = ""; 
 				if ( mail($emailAddress, $subject, $body, $headers) ) {
-					eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL SUCCESS" );
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL SUCCESS" );
 				 } else {
-					eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL FAIL" );
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL FAIL" );
 				 }
 			}
   			
   		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Not enough invites left! for user: $userID" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Not enough invites left! for user: $userID" );
   			//TODO return an error
   		}
   		

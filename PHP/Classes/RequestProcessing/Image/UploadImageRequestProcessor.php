@@ -79,18 +79,18 @@ class UploadImageRequestProcessor extends RequestProcessor {
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$success = $gqDTO->get_output_successful();
 			if( $success ){
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SUCCESSFUL call to $daoFunction");
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "SUCCESSFUL call to $daoFunction");
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "FAILURE call to $daoFunction");
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "FAILURE call to $daoFunction");
 			}
         } else {
-        	eGlooLogger::writeLog( eGlooLogger::$DEBUG, "$_FILES" );
+        	eGlooLogger::writeLog( eGlooLogger::DEBUG, "$_FILES" );
         }
         
         
         // else {
         //    print_r($_FILES);
-        //    eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'UploadImageRequestProcessor: File not found' );
+        //    eGlooLogger::writeLog( eGlooLogger::DEBUG, 'UploadImageRequestProcessor: File not found' );
        // }
 
 

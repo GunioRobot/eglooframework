@@ -40,14 +40,14 @@ class ForceSSLDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
    	
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ForceSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
 		
 		if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
 	   		return true;
         } else {
-        	eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Inactive, Redirecting", 'Decorators' );
-        	eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'], 'Decorators' );
+        	eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Inactive, Redirecting", 'Decorators' );
+        	eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'], 'Decorators' );
         	header( 'Location: ' . 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
             return false;
         }

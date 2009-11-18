@@ -51,7 +51,7 @@ class ExternalMainPageAboutRequestProcessor extends RequestProcessor {
      * @access public
      */    
     public function processRequest() {
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageAboutRequestProcessor: Entered processRequest()" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "ExternalMainPageAboutRequestProcessor: Entered processRequest()" );
 
         $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
         $templateBuilder = new XHTMLBuilder();
@@ -62,7 +62,7 @@ class ExternalMainPageAboutRequestProcessor extends RequestProcessor {
                 
         $output = $templateDirector->processTemplate();
 
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ExternalMainPageAboutRequestProcessor: Echoing Response" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "ExternalMainPageAboutRequestProcessor: Echoing Response" );
         
         // TODO move header declarations to a decorator
         header("Content-type: text/html; charset=UTF-8");

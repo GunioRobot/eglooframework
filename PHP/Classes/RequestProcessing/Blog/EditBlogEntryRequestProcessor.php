@@ -48,7 +48,7 @@ class EditBlogEntryRequestProcessor extends RequestProcessor {
         $blogEntryID = $this->requestInfoBean->getGET('blogID');
 
         if ( $this->requestInfoBean->issetPOST('editBlogEntrySubmit') ) {
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'EditBlogEntryRequestProcessor: User submitted new blog' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'EditBlogEntryRequestProcessor: User submitted new blog' );
             $blogEntryTitle = htmlentities( $this->requestInfoBean->getPOST('newBlogEntryTitle') );
             $blogEntryContent = htmlentities( $this->requestInfoBean->getPOST('newBlogEntryContent') );
             

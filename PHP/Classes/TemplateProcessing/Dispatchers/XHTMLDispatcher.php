@@ -67,7 +67,7 @@ class XHTMLDispatcher extends TemplateDispatcher {
      * It then populates a hash of [XHTMLDispatcher] -> [XHTMLDispatch XML Object]
      */
     protected function loadDispatchNodes(){
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "XHTMLDispatcher: Processing XML" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
@@ -90,11 +90,11 @@ class XHTMLDispatcher extends TemplateDispatcher {
             $cacheGateway = CacheGateway::getCacheGateway();
             
             if ( (self::$singletonDispatcher = $cacheGateway->getObject( 'XHTMLDispatcherNodes', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "XHTMLDispatcher: Building Singleton" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new XHTMLDispatcher( $application, $interfaceBundle );
                 $cacheGateway->storeObject( 'XHTMLDispatcherNodes', self::$singletonDispatcher, '<type>' );
             } else {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "XHTMLDispatcher: Singleton pulled from cache" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Singleton pulled from cache" );
             }
         }
         
@@ -109,14 +109,14 @@ class XHTMLDispatcher extends TemplateDispatcher {
         $userRequestClass = $requestInfoBean->getRequestClass();
         $userRequestID = $requestInfoBean->getRequestID();
         $requestLookup = $userRequestClass . $userRequestID;
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, $requestLookup );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, $requestLookup );
         
         /**
          * Ensure that there is a request that corresponds to this request class
          * and id, if not, return false.
          */
         if ( !isset( $this->dispatchNodes[ $requestLookup ]) ){
-           eGlooLogger::writeLog( eGlooLogger::$DEBUG, "XHTMLDispatcher: Dispatch Nodes unset" );
+           eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Dispatch Nodes unset" );
            return false;
            // TODO throw exception
         }
@@ -162,7 +162,7 @@ class XHTMLDispatcher extends TemplateDispatcher {
         // a utility class.  No sense duplicating lines
         if ( $localizationNode !== null ) {
         	if ( (string) $localizationNode['variesOnUserAgent'] === 'true' ) {
-		        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "XHTMLDispatcher: Processing Clients" );
+		        eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Processing Clients" );
         		
         		foreach( $localizationNode->xpath( 'child::Client' ) as $client ) {
 		            $matchFormat = (string) $client['matches'];

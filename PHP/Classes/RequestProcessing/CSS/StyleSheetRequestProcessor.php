@@ -61,7 +61,7 @@ class StyleSheetRequestProcessor extends RequestProcessor {
      * @access public
      */
     public function processRequest() {
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetRequestProcessor: Entered processRequest()" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetRequestProcessor: Entered processRequest()" );
 
         $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
         $templateBuilder = new CSSBuilder();
@@ -91,7 +91,7 @@ class StyleSheetRequestProcessor extends RequestProcessor {
 		
 		$output = $templateDirector->processTemplate();
         
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "StyleSheetRequestProcessor: Echoing Response" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetRequestProcessor: Echoing Response" );
         
         // TODO move header declarations to a decorator
         // TODO find out if we need to set a charset here

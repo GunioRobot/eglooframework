@@ -80,13 +80,13 @@ final class RequestValidator {
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
 	private function loadRequestNodes(){
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Processing XML", 'Security' );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequestValidator: Processing XML", 'Security' );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
 		$this->REQUESTS_XML_LOCATION =
 			eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
 
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Loading "
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequestValidator: Loading "
 			. $this->REQUESTS_XML_LOCATION, 'Security' );
 		
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
@@ -95,7 +95,7 @@ final class RequestValidator {
             foreach( $requestClass->xpath( 'child::Request' ) as $request ){
                 
                 $uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
-            //  eGlooLogger::writeLog( eGlooLogger::$DEBUG, "adding new unique requestKey: " . $uniqueKey );
+            //  eGlooLogger::writeLog( eGlooLogger::DEBUG, "adding new unique requestKey: " . $uniqueKey );
                 $this->requestNodes[ $uniqueKey  ] = $request->asXML();
             
             }   
@@ -111,11 +111,11 @@ final class RequestValidator {
             $cacheGateway = CacheGateway::getCacheGateway();
             
             if ( (self::$singletonRequestValidator = $cacheGateway->getObject( 'requestValidatorNodes', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Building Singleton", 'Security' );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequestValidator: Building Singleton", 'Security' );
                 self::$singletonRequestValidator = new RequestValidator( $webapp, $uibundle );
                 $cacheGateway->storeObject( 'requestValidatorNodes', self::$singletonRequestValidator, '<type>' );
             } else {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "RequestValidator: Singleton pulled from cache", 'Security' );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequestValidator: Singleton pulled from cache", 'Security' );
             }
         }
         
@@ -149,7 +149,7 @@ final class RequestValidator {
 		 * any request processor...
 		 */
 		 if( !isset( $_GET[ self::$class] )){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "request class not set in request", 'Security' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "request class not set in request", 'Security' );
             // TODO Should we set this here?
             // $requestInfoBean->setRequestClass( 'externalMainPage' );
 			return false;
@@ -161,7 +161,7 @@ final class RequestValidator {
 		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::$id ] ) ){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "id not set in request", 'Security' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "id not set in request", 'Security' );
             // TODO Should we set this here?
             // $requestInfoBean->setRequestClass( 'externalMainPage' );
 			return false;
@@ -170,14 +170,14 @@ final class RequestValidator {
 		$requestClass = $_GET[ self::$class];
 		$requestID = $_GET[ self::$id ];
 		$requestLookup = $requestClass . $requestID;
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Incoming request CLASS and ID is: $requestLookup", 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "Incoming request CLASS and ID is: $requestLookup", 'Security' );
 		
 		/**
 		 * Ensure that there is a request that corresponds to this request class
 		 * and id, if not, return false.
 		 */
 		if( !isset( $this->requestNodes[ $requestLookup ]) ){
- 	       eGlooLogger::writeLog( eGlooLogger::$DEBUG, 
+ 	       eGlooLogger::writeLog( eGlooLogger::DEBUG, 
 				"request class and id pairing not found for request class: '" . $requestClass . "' and id '" . $requestID . "'", 'Security' );
  	       return false;
 		}
@@ -240,7 +240,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $boolArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required boolean parameter: " . $boolArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
                             " is not set in GET request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -250,7 +250,7 @@ final class RequestValidator {
 					//check if correctly formatted (true vs false)
 					$boolVal = $_GET[ (string) $boolArg['id'] ];
 					if( $boolVal != "false" and $boolVal != "true" ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "boolean parameter: " . $boolArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
                             " is not in correct 'true' or 'false' format in GET request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -267,7 +267,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $boolArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required boolean parameter: " . $boolArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
                             " is not set in post request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -277,7 +277,7 @@ final class RequestValidator {
 					//check if correctly formatted (true vs false)
 					$boolVal = $_POST[ (string) $boolArg['id'] ];
 					if( $boolVal != "false" and $boolVal != "true" ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "boolean parameter: " . $boolArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
                             " is not in correct 'true' or 'false' format in post request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -312,7 +312,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $variableArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required variable parameter: " . $variableArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
                             " is not set in GET request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -325,7 +325,7 @@ final class RequestValidator {
 					$match = preg_match ( $regexFormat, $variableValue );
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "variable parameter: " . $variableArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
                             " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
                             " in GET request with id: " . $requestID, 'Security' );
 						return false;
@@ -342,7 +342,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $variableArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required variable parameter: " . $variableArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
                             " is not set in post request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -355,7 +355,7 @@ final class RequestValidator {
 					$match = preg_match ( $regexFormat, $variableValue );
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "variable parameter: " . $variableArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
                             " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
                             " in post request with id: " . $requestID, 'Security' );
 						return false;
@@ -391,7 +391,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $selectArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required select argument: " . $selectArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
                             " is not set in GET request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -409,7 +409,7 @@ final class RequestValidator {
 					}
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "select argument: " . $selectArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
                             "GET request with id: " . $requestID, 'Security' );
 						return false;
@@ -428,7 +428,7 @@ final class RequestValidator {
 					
 					//check if required
 					if( $selectArg['required'] == "true") {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "required select argument: " . $selectArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
                             " is not set in POST request with id: " . $requestID, 'Security' );
 						return false;
 					}
@@ -446,7 +446,7 @@ final class RequestValidator {
 					}
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "select argument: " . $selectArg['id'] . 
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
                             "POST request with id: " . $requestID, 'Security' );
 						return false;
@@ -486,7 +486,7 @@ final class RequestValidator {
 						
 						if( $childDependency['type'] == "get" ){
 							if( !isset( $_GET[ (string) $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::$DEBUG, "argument '" . $dependArg['id'] . 
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
                                     "' on the GET request which is not set in request with id: " . $requestID, 'Security' );
 								return false;
@@ -499,7 +499,7 @@ final class RequestValidator {
 							
 						} else if( $childDependency['type'] == "post" ){
 							if( !isset( $_POST[ (string) $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::$DEBUG, "argument '" . $dependArg['id'] . 
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
                                     "' on the POST request which is not set in request with id: " . $requestID, 'Security' );
 								return false;
@@ -523,7 +523,7 @@ final class RequestValidator {
 						
 						if( $childDependency['type'] == "get" ){
 							if( !isset( $_GET[ (string) $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::$DEBUG, "argument '" . $dependArg['id'] . 
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
                                     "' on the GET request which is not set in request with id: " . $requestID, 'Security' );
 								return false;
@@ -536,7 +536,7 @@ final class RequestValidator {
 
 						} else if( $childDependency['type'] == "post" ){
 							if( !isset( $_POST[ (string) $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::$DEBUG, "argument '" . $dependArg['id'] . 
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
                                     "' on the POST request which is not set in request with id: " . $requestID, 'Security' );
 								return false;

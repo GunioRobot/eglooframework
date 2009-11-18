@@ -40,7 +40,7 @@ class VerifyLoggedInDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
    	
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "VerifyLoggedInDecorator::requestPreProcessing - Verifying logged in status", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "VerifyLoggedInDecorator::requestPreProcessing - Verifying logged in status", 'Decorators' );
 		
 		if ( isset( $_SESSION['LOGGED_IN'] ) && $_SESSION['LOGGED_IN'] === true ) {
 	   		return true;

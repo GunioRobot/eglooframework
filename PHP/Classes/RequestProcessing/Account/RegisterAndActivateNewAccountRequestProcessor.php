@@ -73,7 +73,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 				// TODO handle inviting this user failing
 			}
   		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "No invites left for user: $userID" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "No invites left for user: $userID" );
   			//TODO return an error
   		}
   		
@@ -102,7 +102,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
             $accountDTO->setRegistrationError( 'Invalid Registration Request: Requested password and confirmation password do not match' );
 		} else {
 			// TODO rename this because it makes no sense; should registration
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Registration Form Validation Successful" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Registration Form Validation Successful" );
 			
 	        $accountName = $this->requestInfoBean->getPOST('userPreferredAccountName');
 	        $password = $requestedPassword = hash(self::STRONG_HASH, $this->requestInfoBean->getPOST('userRequestedAccountPassword') );
@@ -173,15 +173,15 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 				$success = false;
 				if( $gqDTO->get_output_successful() ) {
 					$success = true;
-					eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Account activation SUCCESS for user: $userID"  );
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, "Account activation SUCCESS for user: $userID"  );
 				} else {
-					eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Account activation FAILURE for user: $userID"  );
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, "Account activation FAILURE for user: $userID"  );
 				}
 				
 				$templateVariables['success'] = $success;
 
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Login Failed. ERROR REASON: ' . $accountDTO->getRegistrationError() );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Login Failed. ERROR REASON: ' . $accountDTO->getRegistrationError() );
 			}
 			
 		}

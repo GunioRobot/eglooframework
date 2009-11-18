@@ -66,7 +66,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
      * It then populates a hash of [JavascriptDispatcher] -> [JavascriptDispatch XML Object]
      */
     protected function loadDispatchNodes(){
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Processing XML" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Processing XML" );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
         $requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
@@ -86,11 +86,11 @@ class JavascriptDispatcher extends TemplateDispatcher {
             $cacheGateway = CacheGateway::getCacheGateway();
             
             if ( (self::$singletonDispatcher = $cacheGateway->getObject( 'JavascriptDispatcherNodes', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Building Singleton" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new JavascriptDispatcher( $application, $interfaceBundle );
                 $cacheGateway->storeObject( 'JavascriptDispatcherNodes', self::$singletonDispatcher, '<type>' );
             } else {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Singleton pulled from cache" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Singleton pulled from cache" );
             }
         }
         
@@ -106,7 +106,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
          * and id, if not, return false.
          */
         if ( !isset( $this->dispatchNodes[ 'JavascriptDispatcher' ]) ){
-           eGlooLogger::writeLog( eGlooLogger::$DEBUG, "JavascriptDispatcher: Dispatch Nodes unset" );
+           eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Dispatch Nodes unset" );
            return false;
            // TODO throw exception
         }
@@ -137,7 +137,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             $match = preg_match ( $matchFormat, $userAgent ); 
             
             if( $match ) {
-                eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'JavascriptDispatcher: Matched ' . (string) $client['id']);
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptDispatcher: Matched ' . (string) $client['id']);
                 $userClient = $client;
                 break;
             }

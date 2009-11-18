@@ -70,13 +70,13 @@ class PGSQLRankingDAO extends RankingDAO {
 				$returnVal->setSuccessful(TRUE);
 				
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::createNewRanking ERROR: The ranking was not created successfully" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::createNewRanking ERROR: The ranking was not created successfully" );
         	    $returnVal = NULL;
-        	    eGlooLogger::writeLog( eGlooLogger::$DEBUG, "SessionHandler::READ -- sessionid = $sessionID" );
+        	    eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ -- sessionid = $sessionID" );
         	}
         	
 		} else {			
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::createNewRanking ERROR: The db handle was not created successfully" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::createNewRanking ERROR: The db handle was not created successfully" );
 		}
  		
  		return $returnVal;
@@ -116,11 +116,11 @@ class PGSQLRankingDAO extends RankingDAO {
 				
 			} else {	
 				$result = NULL;
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::getProfileElementRanking ERROR: The query did not successfully run: ".pg_last_error() );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::getProfileElementRanking ERROR: The query did not successfully run: ".pg_last_error() );
 			}
    
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::getProfileElementRanking ERROR: The db handle was not created successfully" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::getProfileElementRanking ERROR: The db handle was not created successfully" );
 		}
 		
 	    pg_close( $db_handle );
@@ -151,11 +151,11 @@ class PGSQLRankingDAO extends RankingDAO {
 				$result = $array['rank'];
 			} else {	
 				$result = NULL;
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::getElementRanking ERROR: The query did not successfully run: ".pg_last_error() );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::getElementRanking ERROR: The query did not successfully run: ".pg_last_error() );
 			}
 	
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLRankingDAO::getElementRanking ERROR: The db handle was not created successfully" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLRankingDAO::getElementRanking ERROR: The db handle was not created successfully" );
 		}
 		
 	    pg_close( $db_handle );

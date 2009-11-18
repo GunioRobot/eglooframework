@@ -46,7 +46,7 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
 		 * Ensure that the input value is an actual array
 		 */
 		if( !is_array( $inputValues ) ){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData ERROR: input parameter inputValues is not an array" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData ERROR: input parameter inputValues is not an array" );
 			return false;
 		}
 		
@@ -61,17 +61,17 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
         
         if ( ( $genericPLSelectQuery = $cacheGateway->getObject( $genericQueryKeyLookup, '<type>' ) ) == null ) {
 
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericPLSelectQuery $genericQueryKeyLookup, has not been made yet, building from XML" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericPLSelectQuery $genericQueryKeyLookup, has not been made yet, building from XML" );
 
   			/**
 			 *  It's not in the cache... build the query from xml
 			 */	
 			 if( ( $genericPLSelectQuery = $this->buildPLSelectQueryFromXML( $queryName ) ) == null ){
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericSPLSelectQuery $genericQueryKeyLookup, error building query from XML, returning null" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericSPLSelectQuery $genericQueryKeyLookup, error building query from XML, returning null" );
 				return null;
 			}
         } else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericPLSelectQuery $genericQueryKeyLookup, Grabbed from cache!" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericPLSelectQuery $genericQueryKeyLookup, Grabbed from cache!" );
         }
 		
 	
@@ -82,14 +82,14 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
 		foreach( $genericPLSelectQuery->getVariableOrderArray() as $inputParam ){
 
 			if( ! array_key_exists($inputParam, $inputValues) ) {
-    			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData ERROR: $inputParam is not set!" );
+    			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData ERROR: $inputParam is not set!" );
     			//TODO throw exception
     			return false;
     		}
 			$orderedInputArray[] = 	$inputValues[ $inputParam ];
 		}
 		
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData  " . $genericPLSelectQuery->getQuery() );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData  " . $genericPLSelectQuery->getQuery() );
 		
 		/**
 		 * Make call to DB
@@ -198,7 +198,7 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
        	$xmlSelectQuery = $selectQueries[0];		
        	
 		if( $xmlSelectQuery === null ){
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLGenericPLFunctionDAO::buildPLSelectQueryFromXML ERROR: select query $queryName can not be found." );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::buildPLSelectQueryFromXML ERROR: select query $queryName can not be found." );
 			return null;
 		}
 		

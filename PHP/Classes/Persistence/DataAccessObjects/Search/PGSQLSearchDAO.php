@@ -50,13 +50,13 @@ class PGSQLSearchDAO extends SearchDAO {
 		
 		
       	if( ! is_int( $limit ) ){
-      		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSearchDAO::getNameAndProfileIDByName ERROR: limit ($limit) is not an int" );
+      		eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSearchDAO::getNameAndProfileIDByName ERROR: limit ($limit) is not an int" );
       		return array();	
       		//TODO throw exception
       	}
       	
       	if( ! is_int( $offset ) ){
-      		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLSearchDAO::getNameAndProfileIDByName ERROR: offset ($offset) is not an int" );	
+      		eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSearchDAO::getNameAndProfileIDByName ERROR: offset ($offset) is not an int" );	
       		return array();
       		//TODO throw exception
       	}

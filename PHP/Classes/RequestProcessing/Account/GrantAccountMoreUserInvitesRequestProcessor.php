@@ -58,9 +58,9 @@ class GrantAccountMoreUserInvitesRequestProcessor extends RequestProcessor {
 		$functionDAO = $this->processDAORequest( $daoFunction, $inputValues );
   		
     	if( $functionDAO->get_output_successful() ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Granting Additional Invites SUCCESS for user: $userProfileID"  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Granting Additional Invites SUCCESS for user: $userProfileID"  );
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Granting Additional Invites FAILURE for user: $userProfileID"  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Granting Additional Invites FAILURE for user: $userProfileID"  );
 		}
   		  		
   		exit;

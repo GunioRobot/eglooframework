@@ -180,16 +180,16 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 			
 			$headers = ""; 
 			if ( mail($userEmail, $subject, $body, $headers) ) {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL SUCCESS" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL SUCCESS" );
 			 } else {
-				eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL FAIL" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL FAIL" );
 				//TODO: delete account?  Or just delete all non active accounts after a
 				//certain amount of time?
 			 }
 			
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Login successful' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Login successful' );
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Login Failed. ERROR REASON: ' . $accountDTO->getRegistrationError() );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Login Failed. ERROR REASON: ' . $accountDTO->getRegistrationError() );
 		}
 		
 		return $accountDTO;

@@ -85,7 +85,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 			$inputValues[ 'profileID' ] = $blogProfile->get_blogwriter();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$profileImageThumbnailHashArray[$blogProfile->get_blogwriter()] = $gqDTO->get_output_imagefilehash();
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "ViewUpdatedBlogProfiles ImageHash: " . $gqDTO->get_output_imagefilehash() );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ViewUpdatedBlogProfiles ImageHash: " . $gqDTO->get_output_imagefilehash() );
 		}
 		
 		$templateVariables['profileImageThumbnailHashArray'] = $profileImageThumbnailHashArray;

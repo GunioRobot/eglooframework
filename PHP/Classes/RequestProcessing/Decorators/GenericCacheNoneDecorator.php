@@ -40,7 +40,7 @@ class GenericCacheNoneDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
 		
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "GenericCacheNoneDecorator: setting cache headers to no-cache", 'Decorators' );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "GenericCacheNoneDecorator: setting cache headers to no-cache", 'Decorators' );
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 		Header("Pragma: no-cache");

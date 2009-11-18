@@ -49,7 +49,7 @@ class SendPasswordResetConfRequestProcessor extends RequestProcessor {
 		
 		$emailAddress = $this->requestInfoBean->getPOST('emailAddress');
 
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Sending password reset to: $emailAddress" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "Sending password reset to: $emailAddress" );
 
 		$confirmationCode = $this->generateConfirmationCode();		
 		
@@ -64,7 +64,7 @@ class SendPasswordResetConfRequestProcessor extends RequestProcessor {
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		$userID = $gqDTO->get_output_user_id();
 		
-		eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Sending password reset to: $userID" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "Sending password reset to: $userID" );
 		
 		
 		$subject = "eGloo Account Password Reset";
@@ -73,9 +73,9 @@ class SendPasswordResetConfRequestProcessor extends RequestProcessor {
 		"www.egloo.com/account/viewForgotAccountPasswordResetForm/&uID=$userID&confirmationID=$confirmationCode";
 		$headers = ""; 
 		if ( mail($emailAddress, $subject, $body, $headers) ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL SUCCESS" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL SUCCESS" );
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL FAIL" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL FAIL" );
 		}
 		
 					

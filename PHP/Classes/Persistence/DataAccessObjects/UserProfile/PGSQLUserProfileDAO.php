@@ -54,7 +54,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 	
 			// Execute the prepared query.  Note that it is not necessary to escape
 			$result = pg_execute($db_handle, "addInteresedInMen", array($userID, UserProfileDTO::$MEN));
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLUserProfileDAO: Setting Interest Men" );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLUserProfileDAO: Setting Interest Men" );
         } else {
             //call db function to remove interested in men
             //Prepare a query for execution
@@ -62,7 +62,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 	
 			// Execute the prepared query.  Note that it is not necessary to escape
 			$result = pg_execute($db_handle, "dropInterestedInMen", array($userID, UserProfileDTO::$MEN));
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLUserProfileDAO: Removing Interest Men" );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLUserProfileDAO: Removing Interest Men" );
         }
 
         if( $interestedInArray[ UserProfileDTO::$WOMEN ] === true ){
@@ -72,7 +72,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 	
 			// Execute the prepared query.  Note that it is not necessary to escape
 			$result = pg_execute($db_handle, "addInterestedInWomen", array($userID, UserProfileDTO::$WOMEN));
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLUserProfileDAO: Setting Interest Women" );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLUserProfileDAO: Setting Interest Women" );
         } else {
             //call db function to remove interested in women
             //Prepare a query for execution
@@ -80,7 +80,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 	
 			// Execute the prepared query.  Note that it is not necessary to escape
 			$result = pg_execute($db_handle, "dropInterestedInWomen", array($userID, UserProfileDTO::$WOMEN));
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PGSQLUserProfileDAO: Removing Interest Women" );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLUserProfileDAO: Removing Interest Women" );
         }
         
         //get looking for

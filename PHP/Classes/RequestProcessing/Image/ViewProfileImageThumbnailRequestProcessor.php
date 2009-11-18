@@ -96,9 +96,9 @@ class ViewProfileImageThumbnailRequestProcessor extends RequestProcessor {
 	        $profileImageThumbnailDTO->setImageContent( MagickGetImageBlob( $magickWand ) );
 
             $cacheGateway->storeObject( $cacheID, $profileImageThumbnailDTO, '<type>', 3600 );
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Profile Image Thumbnail Pulled from DB' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Thumbnail Pulled from DB' );
         } else {
-            eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Profile Image Thumbnail Pulled from Cache' );
+            eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Thumbnail Pulled from Cache' );
         }
         
         header( 'Content-type: ' . $profileImageThumbnailDTO->getImageMIMEType() );

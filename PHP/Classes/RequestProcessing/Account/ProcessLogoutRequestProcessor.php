@@ -52,8 +52,8 @@ class ProcessLogoutRequestProcessor extends RequestProcessor {
 //        $username = $this->requestInfoBean->getPOST('username');
 //        $password = $this->requestInfoBean->getPOST('password');
 //        
-//        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "USERNAME! " . $username );
-//        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "PASSWORD! " . $password );
+//        eGlooLogger::writeLog( eGlooLogger::DEBUG, "USERNAME! " . $username );
+//        eGlooLogger::writeLog( eGlooLogger::DEBUG, "PASSWORD! " . $password );
 //        
 //        
 //        $daoFactory = DAOFactory::getInstance();

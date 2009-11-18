@@ -62,9 +62,9 @@ class AccountConfirmationRequestProcessor extends RequestProcessor {
 		$success = false;
 		if( $gqDTO->get_output_successful() ) {
 			$success = true;
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Account activation SUCCESS for user: $userID"  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Account activation SUCCESS for user: $userID"  );
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "Account activation FAILURE for user: $userID"  );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Account activation FAILURE for user: $userID"  );
 		}
 		
 		$templateVariables['success'] = $success;

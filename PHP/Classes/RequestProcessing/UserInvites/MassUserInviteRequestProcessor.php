@@ -56,7 +56,7 @@ class MassUserInviteRequestProcessor extends RequestProcessor {
 		}
   		
   		foreach ( $emailAddressList as $address ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MassUserInvite: " . trim( $address ) );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "MassUserInvite: " . trim( $address ) );
   		}
 
   		$hostname = $_SERVER['SERVER_NAME'];
@@ -97,20 +97,20 @@ class MassUserInviteRequestProcessor extends RequestProcessor {
 					//$headers = 'From: eGloo <do_not_reply@egloo.com>' . "\r\n";
 					//$postfixParams = "-f user_invite@egloo.com -F user_invite@egloo.com";
 					if ( mail( $emailAddress, $subject, $body, $headers ) ) {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL SUCCESS" );
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL SUCCESS" );
 					} else {
-						eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MAIL FAIL" );
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "MAIL FAIL" );
 					}
 				} else {
 					// TODO handle inviting this user failing
 				}
  			}
   		} else if ( $userInvitesLeft >= $userInvitesRequested ) {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'Not enough invites to complete request for user: ' . $userID );
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, 
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Not enough invites to complete request for user: ' . $userID );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 
 				$userInvitesRequested . ' invites requested, ' .$userInvitesLeft . ' invites remain.' );
   		} else {
-			eGlooLogger::writeLog( eGlooLogger::$DEBUG, "No invites left for user: $userID" );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "No invites left for user: $userID" );
   			//TODO return an error
   		}
   		

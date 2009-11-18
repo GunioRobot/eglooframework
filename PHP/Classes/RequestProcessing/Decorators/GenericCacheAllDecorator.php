@@ -40,7 +40,7 @@ class GenericCacheAllDecorator extends RequestProcessorDecorator {
     */
 	protected function requestPreProcessing(){
 		
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "GenericCacheAllDecorator: setting cache all headers for one day", 'Decorators' );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "GenericCacheAllDecorator: setting cache all headers for one day", 'Decorators' );
 		Header("Cache-Control: must-revalidate");
 		Header("Pragma: cache");
 		

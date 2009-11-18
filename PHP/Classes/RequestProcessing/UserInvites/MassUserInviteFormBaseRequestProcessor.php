@@ -49,7 +49,7 @@ class MassUserInviteFormBaseRequestProcessor extends RequestProcessor {
      * @access public
      */    
     public function processRequest() {
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MassUserInviteFormBaseRequestProcessor: Entered processRequest()" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "MassUserInviteFormBaseRequestProcessor: Entered processRequest()" );
 
         $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
         $templateBuilder = new XHTMLBuilder();
@@ -60,7 +60,7 @@ class MassUserInviteFormBaseRequestProcessor extends RequestProcessor {
                 
         $output = $templateDirector->processTemplate();
 
-        eGlooLogger::writeLog( eGlooLogger::$DEBUG, "MassUserInviteFormBaseRequestProcessor: Echoing Response" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "MassUserInviteFormBaseRequestProcessor: Echoing Response" );
         
         // TODO move header declarations to a decorator
         header("Content-type: text/html; charset=UTF-8");
