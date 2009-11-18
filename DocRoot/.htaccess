@@ -1,7 +1,7 @@
-# .htaccess file for eGloo applications
+# Sample .htaccess file for eGloo applications
 
 # Deployment Type
-SetEnv EG_ENV development
+SetEnv EG_ENV PRODUCTION
 
 # Application / Bundle Selection
 SetEnv EG_APP eGloo/Default
@@ -16,14 +16,17 @@ SetEnv EG_UI  OverlayInterface
 # SetEnv EG_APP Demos/ImageHosting
 # SetEnv EG_UI Default
 
-# Logging
-SetEnv EG_LOG_LEVEL DEVELOPMENT
-SetEnv EG_LOG_FORMAT LOG
-
 # Caching
-SetEnv EG_CACHE on
-SetEnv EG_CACHE_FILE off
-SetEnv EG_CACHE_MEMCACHE on
+SetEnv EG_CACHE ON
+SetEnv EG_CACHE_FILE OFF
+SetEnv EG_CACHE_MEMCACHE ON
+
+# Database Engine
+SetEnv EG_DB_ENGINE POSTGRESQL
+
+# Logging
+SetEnv EG_LOG_LEVEL PRODUCTION
+SetEnv EG_LOG_FORMAT LOG
 
 # Rewrite Rules
 <IfModule rewrite_module> 
@@ -32,35 +35,29 @@ RewriteEngine on
 # Modify the RewriteBase if you are using eGloo in a subdirectory
 RewriteBase /egloo
 
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^(.*)$ index.php/$1 [L,QSA]
-
-#no rule for images
-RewriteRule ^(.*\.gif)$ $1
+# No rule for images
+RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ - [L]
 
 # Load 'static' css as dynamic css
-RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?class=css&id=$1
+RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?class=css&id=$1 [L]
 
 # Load 'static' javascript as dynamic javascript
-RewriteRule ^javascript/(.+)\.js$ index.php?class=javascript&id=$1
-
-# Redirect all attempts at injecting GET requests into the URL
-# Should redirect to 404.  Currently redirects to /
-RewriteRule ^.*\?.*$ /
+RewriteRule ^(js|javascript)/(.+)\.js$ index.php?class=javascript&id=$2 [L]
 
 # Redirect anything two level deep to a class & id query
 # Pass the remainder as the arguments to that RequestClass / RequestID Pair
 # Make sure the argument list is clean -- allow alphanumerics, dot (.), dash (-)
 # underscore (_) and ampersand (&).  Anything else should cascade down to the
 # last rule
-RewriteRule ^profileID=(-{0,1}[0-9]*)$ index.php?class=internalMainPage&id=getInternalMainPage&profileID=$1
-RewriteRule ^home$ index.php?class=internalMainPage&id=getInternalMainPage
-RewriteRule ^browse$ index.php?class=publicBrowse&id=viewUpdatedBlogProfiles
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?class=$1&id=$2&$3
-RewriteRule ^$ index.php?class=externalMainPage&id=extMainViewBase
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?class=$1&id=$2 [L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?class=$1&id=$2&$3 [L]
+RewriteRule ^$ index.php?class=externalMainPage&id=extMainViewBase [L]
 
-# Catch anything that doesn't fit one of the preceding patterns
+# The only script we allow direct access to
+# NOTE: Required so that the last rule does not block us on previous redirects
+RewriteRule ^index.php$ - [L]
+
+# Forbid anything that doesn't fit one of the preceding patterns
 # Should redirect to 404.  Currently redirects to /
-#RewriteRule ^/.*$ /
+RewriteRule ^.*$ - [F]
 </IfModule>
