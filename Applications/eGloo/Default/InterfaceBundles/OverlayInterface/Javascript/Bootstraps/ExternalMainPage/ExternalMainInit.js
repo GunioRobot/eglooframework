@@ -70,11 +70,11 @@ $(document).ready(function(){
 				});
 				
 				$('#signup').ajaxForm({
-					url: '/account/registerNewAccount/',
+					url: 'account/registerNewAccount/',
 					dataType: 'xml',
 					beforeSubmit: function(){
 						var isValid = true;
-						
+
 						//First Name
 						if ($('#firstNameInput').val() === '' || $('#firstNameInput').val().length > 35 ||
 						!$('#firstNameInput').val().match(/^[A-Z .\-]+$/i)) {
@@ -148,7 +148,7 @@ $(document).ready(function(){
 						if (!isValid) {
 							$("#expectedValues").html("Required information is missing or invalid");
 						}
-						
+
 						return isValid;
 					},
 					success: function(xmlData){
