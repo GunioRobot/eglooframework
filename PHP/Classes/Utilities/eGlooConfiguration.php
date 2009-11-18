@@ -2,23 +2,30 @@
 
 final class eGlooConfiguration {
 
+	// Class Constants
 	const DEVELOPMENT	= 0x00;
 	const STAGING		= 0x01;
 	const PRODUCTION	= 0x02;
 
 	// Configuration Attributes
-	private static $configuration_options = array(
+	private static $configuration_options = array();
+
+	// Configuration Attribute Choices
+	private static $configuration_possible_options = array(
 			'ApplicationsPath'		=> '',
 			'CachePath' 			=> '',
 			'CompiledTemplatesPath'	=> '',
 			'ConfigurationPath'		=> '',
 			'CubesPath'				=> '',
 			'Deployment'			=> '',
+			'DoctrinePath'			=> '',
 			'DocumentationPath'		=> '',
 			'DocumentRoot'			=> '',
 			'FrameworkRootPath'		=> '',
 			'LoggingPath'			=> '',
-			'SmartyPath'			=> ''
+			'SmartyPath'			=> '',
+			'UseDoctrine'			=> false,
+			'UseSmarty'				=> true,
 			);
 
 	public static function loadConfigurationOptions( $config_cache_path = 'ConfigCache.php' ) {
@@ -79,6 +86,12 @@ final class eGlooConfiguration {
 				break;
 		}
 
+		foreach (self::$configuration_possible_options as $possible_option_key => $option_default_value) {
+			if (!isset(self::$configuration_options[$possible_option_key])) {
+				self::$configuration_options[$possible_option_key] = $option_default_value;
+			}
+		}
+
 		// No errors
 		return true;
 	}
@@ -119,6 +132,10 @@ final class eGlooConfiguration {
 		return self::$configuration_options['Deployment'];
 	}
 
+	public static function getDoctrineIncludePath() {
+		return self::$configuration_options['DoctrinePath'];
+	}
+
     public static function getDocumentationPath() {
 		return self::$configuration_options['DocumentationPath'];
 	}
@@ -145,6 +162,14 @@ final class eGlooConfiguration {
 
 	public static function getSmartyIncludePath() {
 		return self::$configuration_options['SmartyPath'];
+	}
+
+	public static function getUseDoctrine() {
+		return self::$configuration_options['UseDoctrine'];
+	}
+
+	public static function getUseSmarty() {
+		return self::$configuration_options['UseSmarty'];
 	}
 
 	public static function getCacheStatus() {
