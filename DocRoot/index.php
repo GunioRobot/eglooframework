@@ -25,12 +25,8 @@
  * @version 1.0
  */
 
-// Setup the OOP autoloader and include the error handlers
+// Setup the OOP autoloader
 include( 'PHP/autoload.php' );
-include( 'PHP/error_handlers.php' );
-
-// Setup the logger
-eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
 
 // Build a request info bean
 $requestInfoBean = new RequestInfoBean();
@@ -48,5 +44,5 @@ if ( $isValidRequest ) {
 	$requestProcessor->processRequest();
 } else {
 	// We probably want to do something a bit more... elegant here.  Eventually
-	eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+	eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
 }
