@@ -29,9 +29,6 @@
 include( 'PHP/autoload.php' );
 include( 'PHP/error_handlers.php' );
 
-// Load the install configuration
-eGlooConfiguration::loadConfigurationOptions();
-
 // Setup the logger
 eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
 
@@ -50,5 +47,6 @@ if ( $isValidRequest ) {
 	$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
 	$requestProcessor->processRequest();
 } else {
+	// We probably want to do something a bit more... elegant here.  Eventually
 	eGlooLogger::writeLog( eGlooLogger::$DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
 }
