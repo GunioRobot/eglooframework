@@ -25,22 +25,26 @@
  * @version 1.0
  */
 
-// Autoloader, CacheGateway and eGlooConfiguration utilize the eGlooLogger
-if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/Utilities/eGlooLogger.php' );
-}
-
-// Autoloader utilizes CacheGateway and eGlooConfiguration
+// Bring up the eGlooConfiguration
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
 	include( 'PHP/Classes/Utilities/eGlooConfiguration.php' );
 }
 
+// Load the install configuration
+eGlooConfiguration::loadConfigurationOptions();
+
+// Bring up the eGlooLogger
+if ( !class_exists( 'eGlooLogger', false ) ) {
+	include( 'PHP/Classes/Utilities/eGlooLogger.php' );
+}
+
+// Initialize the eGlooLogger
+eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
+
+// Bring up the caching system (needed for the autoloader)
 if ( !class_exists( 'CacheGateway', false ) ) {
 	include( 'PHP/Classes/Caching/CacheGateway.php' );
 }
-
-// Load the install configuration
-eGlooConfiguration::loadConfigurationOptions();
 
 // Register eGloo Autoloader
 spl_autoload_register('eglooAutoload');
