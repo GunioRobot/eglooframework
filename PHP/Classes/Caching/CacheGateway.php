@@ -50,28 +50,36 @@ class CacheGateway {
 
 	private static $_singleton;
 
-	const MEMCACHE_ADDR = '127.0.0.1';
-	const MEMCACHE_PORT = 11211;
+	const MEMCACHED_HOST = '127.0.0.1';
+	const MEMCACHED_PORT = 11211;
 
 	private function __construct() {}
 
-	private function loadMemCache() {
+	private function loadMemcache() {
 		if ($this->_active) {
 			try {
 				$this->_memcache = new Memcache();
 
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, self::MEMCACHE_PORT, true );
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11212, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11213, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11214, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11215, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11216, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11217, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11218, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11219, true);
-				$this->_memcache->addServer( self::MEMCACHE_ADDR, 11220, true);
+				$persist_connection = true;
+				$weight = 1;
+				$timeout = 1;
+				$retry_interval = 15;
+				$status = true; // Server is considered online
+				$failure_callback = array('CacheGateway', 'serverFailure');
+
+				for ($i = 0; $i <= 10; $i++) {
+					$this->_memcache->addServer( 	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
 			} catch ( Exception $exception ) {
-				eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+				eGlooLogger::writeLog( eGlooLogger::ERROR, 
 							   'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );	 
 			}
 		} else {
@@ -85,9 +93,9 @@ class CacheGateway {
 				if (file_exists($this->_cache_file_path)) {
 					$this->_filecache = eval( 'return ' . file_get_contents($this->_cache_file_path) . ';' );
 				} else {
-					// eGlooLogger::writeLog( eGlooLogger::$NOTICE, 
+					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
 					// 	'eGloo cache file not found: ' . $cache_file_path , 'Cache' );	 
-					// eGlooLogger::writeLog( eGlooLogger::$NOTICE, 
+					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
 					// 	'Creating eGloo cache file...', 'Cache' );
 					$this->_filecache = array();
 				}
@@ -108,7 +116,7 @@ class CacheGateway {
 				try {
 					$retVal = $this->_memcache->delete( $id );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 								   'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );				 
 				}
 			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
@@ -129,7 +137,7 @@ class CacheGateway {
 				try {
 					$retVal = $this->_memcache->get( $id );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::$ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 								   'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
@@ -178,8 +186,8 @@ class CacheGateway {
 				try {
 					$retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::$ERROR, 
-								   'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );							
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );							
 				}
 			} else if ($this->_cache_tiers & self::$USE_FILECACHE) {
 				$cache_pack = array();
@@ -208,26 +216,33 @@ class CacheGateway {
 		return $retVal; 
 	}
 
+	public static function serverFailure( $host, $port ) {
+		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 
+			'Memcache daemon on host ' . $host . ' and port ' . $port . ' has failed',
+			'Memcache' );
+		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Attempting server failover... ', 'Memcache' );
+	}
+
 	public static function getCacheGateway() {
 		if ( !isset(self::$_singleton) ) {
 			self::$_singleton = new CacheGateway();
 
-			if ($_SERVER['EG_CACHE'] === 'on') {
+			if ($_SERVER['EG_CACHE'] === 'ON') {
 				self::$_singleton->_active = true;
 			} else {
 				self::$_singleton->_active = false;
 			}
 
-			if ($_SERVER['EG_CACHE_FILE'] === 'on') {
+			if ($_SERVER['EG_CACHE_FILE'] === 'ON') {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::$USE_FILECACHE;
 				self::$_singleton->loadFileCache();
 			} else {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::$USE_FILECACHE;
 			}
 
-			if ($_SERVER['EG_CACHE_MEMCACHE'] === 'on') {
+			if ($_SERVER['EG_CACHE_MEMCACHE'] === 'ON') {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::$USE_MEMCACHE;
-				self::$_singleton->loadMemCache();
+				self::$_singleton->loadMemcache();
 			} else {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::$USE_MEMCACHE;
 			}
