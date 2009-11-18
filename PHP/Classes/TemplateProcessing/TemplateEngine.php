@@ -26,8 +26,6 @@
  * @version 1.0
  */
 
-include( eGlooConfiguration::getSmartyIncludePath() );
-
 /**
  * TemplateEngine
  * 
