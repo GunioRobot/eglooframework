@@ -2,10 +2,19 @@
 
 final class eGlooConfiguration {
 
-	// Class Constants
+	/* Class Constants */
+
+	// Deployment Type
 	const DEVELOPMENT	= 0x00;
 	const STAGING		= 0x01;
 	const PRODUCTION	= 0x02;
+
+	// Database Engines
+	const DOCTRINE		= 0x00;
+	const MYSQL			= 0x01;
+	const POSTGRESQL	= 0x02;
+
+	/* Static Members */
 
 	// Configuration Attributes
 	private static $configuration_options = array();
@@ -24,19 +33,50 @@ final class eGlooConfiguration {
 			'FrameworkRootPath'		=> '',
 			'LoggingPath'			=> '',
 			'SmartyPath'			=> '',
+			'UseCache'				=> true,
+			'UseFileCache'			=> false,
+			'UseMemcache'			=> true,
 			'UseDoctrine'			=> false,
 			'UseSmarty'				=> true,
+			'UsePostgreSQL'			=> true,
 			);
 
 	public static function loadConfigurationOptions( $config_cache_path = 'ConfigCache.php' ) {
 		self::$configuration_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
 
 		// Grab our environment variables to determine which application and deployment to run
-		self::$configuration_options['ApplicationName'] = $_SERVER['EG_APP'];
-		self::$configuration_options['UIBundleName'] = $_SERVER['EG_UI'];
-		self::$configuration_options['Cache'] = $_SERVER['EG_CACHE'];
-		self::$configuration_options['FileCache'] = $_SERVER['EG_CACHE_FILE'];
-		self::$configuration_options['MemcacheCache'] = $_SERVER['EG_CACHE_MEMCACHE'];
+		self::$configuration_options['ApplicationName']	= $_SERVER['EG_APP'];
+		self::$configuration_options['UIBundleName']		= $_SERVER['EG_UI'];
+
+		switch( $_SERVER['EG_CACHE'] ) {
+			case 'ON' :
+				self::$configuration_options['UseCache'] = true;
+				break;
+			case 'OFF' :
+			default :
+				self::$configuration_options['UseCache'] = false;
+				break;
+		}
+
+		switch( $_SERVER['EG_CACHE_FILE'] ) {
+			case 'ON' :
+				self::$configuration_options['UseFileCache'] = true;
+				break;
+			case 'OFF' :
+			default :
+				self::$configuration_options['UseFileCache'] = false;
+				break;
+		}
+
+		switch( $_SERVER['EG_CACHE_MEMCACHE'] ) {
+			case 'ON' :
+				self::$configuration_options['UseMemcache'] = true;
+				break;
+			case 'OFF' :
+			default :
+				self::$configuration_options['UseMemcache'] = false;
+				break;
+		}
 
 		switch( $_SERVER['EG_ENV'] ) {
 			case 'DEVELOPMENT' :
@@ -53,36 +93,18 @@ final class eGlooConfiguration {
 				break;
 		}
 
-		switch( $_SERVER['EG_LOG_LEVEL'] ) {
-			case 'LOG_OFF' : 
-				self::$configuration_options['LoggingLevel'] = eGlooLogger::$LOG_OFF;
+		switch( $_SERVER['EG_DB_ENGINE'] ) {
+			case 'DOCTRINE' :
+				self::$configuration_options['DatabaseEngine'] = self::DOCTRINE;
 				break;
-			case 'PRODUCTION' : 
-				self::$configuration_options['LoggingLevel'] = eGlooLogger::$PRODUCTION;
+			case 'MYSQL' :
+				self::$configuration_options['DatabaseEngine'] = self::MYSQL;
 				break;
-			case 'STAGING' : 
-				self::$configuration_options['LoggingLevel'] = eGlooLogger::$STAGING;
-				break;
-			case 'DEVELOPMENT' : 
-				self::$configuration_options['LoggingLevel'] = eGlooLogger::$DEVELOPMENT;
-				break;
-			default : 
-				self::$configuration_options['LoggingLevel'] = eGlooLogger::$DEVELOPMENT;
-				break;
-		}
-
-		switch( $_SERVER['EG_LOG_FORMAT'] ) {
-			case 'LOG' :
-				self::$configuration_options['LogFormat'] = eGlooLogger::$LOG_LOG;
-				break;
-			case 'HTML' :
-				self::$configuration_options['LogFormat'] = eGlooLogger::$LOG_HTML;
-				break;
-			case 'XML' :
-				self::$configuration_options['LogFormat'] = eGlooLogger::$LOG_XML;
+			case 'POSTGRESQL' :
+				self::$configuration_options['DatabaseEngine'] = self::POSTGRESQL;
 				break;
 			default:
-				self::$configuration_options['LogFormat'] = eGlooLogger::$LOG_LOG;
+				self::$configuration_options['DatabaseEngine'] = self::POSTGRESQL;
 				break;
 		}
 
@@ -124,8 +146,12 @@ final class eGlooConfiguration {
 		return self::$configuration_options['ConfigurationPath'];
 	}
 
-    public static function getCubesPath() {
+	public static function getCubesPath() {
 		return self::$configuration_options['CubesPath'];
+	}
+
+	public static function getDatabaseEngine() {
+		return self::$configuration_options['DatabaseEngine'];
 	}
 
     public static function getDeploymentType() {
@@ -149,6 +175,23 @@ final class eGlooConfiguration {
 	}
 
     public static function getLogFormat() {
+		if ( !isset(self::$configuration_options['LogFormat']) ) {
+			switch( $_SERVER['EG_LOG_FORMAT'] ) {
+				case 'LOG' :
+					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_LOG;
+					break;
+				case 'HTML' :
+					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_HTML;
+					break;
+				case 'XML' :
+					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_XML;
+					break;
+				default:
+					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_LOG;
+					break;
+			}
+		}
+
 		return self::$configuration_options['LogFormat'];
 	}
 
@@ -157,11 +200,43 @@ final class eGlooConfiguration {
 	}
 	
 	public static function getLoggingLevel() {
+		if ( !isset(self::$configuration_options['LoggingLevel']) ) {
+			switch( $_SERVER['EG_LOG_LEVEL'] ) {
+				case 'LOG_OFF' : 
+					self::$configuration_options['LoggingLevel'] = eGlooLogger::LOG_OFF;
+					break;
+				case 'PRODUCTION' : 
+					self::$configuration_options['LoggingLevel'] = eGlooLogger::PRODUCTION;
+					break;
+				case 'STAGING' : 
+					self::$configuration_options['LoggingLevel'] = eGlooLogger::STAGING;
+					break;
+				case 'DEVELOPMENT' : 
+					self::$configuration_options['LoggingLevel'] = eGlooLogger::DEVELOPMENT;
+					break;
+				default : 
+					self::$configuration_options['LoggingLevel'] = eGlooLogger::DEVELOPMENT;
+					break;
+			}
+		}
+
 		return self::$configuration_options['LoggingLevel'];
 	}
 
 	public static function getSmartyIncludePath() {
 		return self::$configuration_options['SmartyPath'];
+	}
+
+	public static function getUseCache() {
+		return self::$configuration_options['UseCache'];
+	}
+
+	public static function getUseFileCache() {
+		return self::$configuration_options['UseFileCache'];
+	}
+
+	public static function getUseMemcache() {
+		return self::$configuration_options['UseMemcache'];
 	}
 
 	public static function getUseDoctrine() {
@@ -172,16 +247,16 @@ final class eGlooConfiguration {
 		return self::$configuration_options['UseSmarty'];
 	}
 
-	public static function getCacheStatus() {
-		return self::$configuration_options['Cache'];
-	}
-
-	public static function getFileCacheStatus() {
-		return self::$configuration_options['FileCache'];
-	}
-
-	public static function getMemcacheCacheStatus() {
-		return self::$configuration_options['MemcacheCache'];
-	}
+	// public static function getCacheStatus() {
+	// 	return self::$configuration_options['Cache'];
+	// }
+	// 
+	// public static function getFileCacheStatus() {
+	// 	return self::$configuration_options['FileCache'];
+	// }
+	// 
+	// public static function getMemcacheCacheStatus() {
+	// 	return self::$configuration_options['MemcacheCache'];
+	// }
 
 }
