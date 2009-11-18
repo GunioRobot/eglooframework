@@ -59,7 +59,7 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 		$templateDirector->setTemplateBuilder( $templateBuilder );
 
         // TODO Mark a difference between hard caching and soft caching
-        // Soft caching is basically caching the dispatch mappings, but still requiring traversal to pull the correct template
+        // Soft caching is caching the dispatch mappings, but still requiring traversal to pull the correct template
         // Hard caching takes as little information as is needed in one go and shoots straight to the template cache,
         // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
         // is better suited for production
@@ -67,17 +67,13 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 		$templateDirector->setHardCacheID();
 		$templateDirector->useSmartCaching();
 
-		// if ( !$templateDirector->isHardCached( $this->requestInfoBean->getRequestID(), $cacheID ) ) {
-			$templateDirector->preProcessTemplate();
+		$templateDirector->preProcessTemplate();
 
-			$templateVariables['svnVersion'] = '∞';
-			$templateVariables['app'] = eGlooConfiguration::getApplicationName();
-			$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
+		$templateVariables['svnVersion'] = '∞';
+		$templateVariables['app'] = eGlooConfiguration::getApplicationName();
+		$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
 
-			$templateDirector->setTemplateVariables( $templateVariables );            
-		// } else {
-		// 	$templateDirector->setHardCacheID( $this->requestInfoBean->getRequestID(), $cacheID );
-		// }
+		$templateDirector->setTemplateVariables( $templateVariables );            
 
 		$output = $templateDirector->processTemplate();
 
