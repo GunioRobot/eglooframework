@@ -44,6 +44,9 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		$this->left_delimiter = '/*<!--{';
 		$this->right_delimiter = '}-->*/';
 
+		// $this->left_delimiter = '{';
+		// $this->right_delimiter = '}';
+
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
 			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
