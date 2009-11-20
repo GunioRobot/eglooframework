@@ -1,7 +1,9 @@
 # Sample .htaccess file for eGloo applications
 
 # Deployment Type
-SetEnv EG_ENV PRODUCTION
+# SetEnv EG_ENV PRODUCTION
+# SetEnv EG_ENV STAGING
+SetEnv EG_ENV DEVELOPMENT
 
 # Application / Bundle Selection
 SetEnv EG_APP eGloo/Default
@@ -18,7 +20,7 @@ SetEnv EG_UI  OverlayInterface
 
 # Caching
 SetEnv EG_CACHE ON
-SetEnv EG_CACHE_APC ON
+SetEnv EG_CACHE_APC OFF
 SetEnv EG_CACHE_FILE OFF
 SetEnv EG_CACHE_MEMCACHE ON
 
@@ -26,7 +28,9 @@ SetEnv EG_CACHE_MEMCACHE ON
 SetEnv EG_DB_ENGINE POSTGRESQL
 
 # Logging
-SetEnv EG_LOG_LEVEL PRODUCTION
+# SetEnv EG_LOG_LEVEL PRODUCTION
+# SetEnv EG_LOG_LEVEL STAGING
+SetEnv EG_LOG_LEVEL DEVELOPMENT
 SetEnv EG_LOG_FORMAT LOG
 
 # Rewrite Rules
@@ -36,8 +40,29 @@ RewriteEngine on
 # Modify the RewriteBase if you are using eGloo in a subdirectory
 RewriteBase /egloo
 
-# No rule for images
+# No rule for images that exist in the webroot
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.gif [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.GIF [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.png [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.PNG [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpg [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPG [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpeg [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPEG [OR]
+RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ - [L]
+
+# But we might have images referenced here in the applications bundle
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.gif [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.GIF [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.png [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.PNG [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpg [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPG [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpeg [OR]
+RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPEG [OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ index.php?class=image&id=rawfile&image_name=$1 [L]
 
 # Load 'static' css as dynamic css
 RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?class=css&id=$1 [L]
