@@ -136,16 +136,18 @@ function eglooAutoload($class_name) {
 						}
 					}
 				}
-				
+
+				// We found a path, let's short-circuit this loop
 				if ( $realPath !== null ) {
 					break;
 				}
 			}
 
+			// No path was found, so let's cache that result for future requests
 			if ( $realPath !== null ) {
 				include( $realPath );
 				$autoload_hash[$class_name] = realpath( $realPath );
-				$cacheGateway->storeObject( 'autoload_hash', $autoload_hash, 'array' );				   
+				$cacheGateway->storeObject( 'autoload_hash', $autoload_hash, 'array' );
 				break;
 			}
 		}
