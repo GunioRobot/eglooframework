@@ -54,16 +54,6 @@ DETECTED_PLATFORM=0
 # Get our parent directory
 PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 
-# Check for root
-if [ "$UID" -ne "$ROOT_UID" ]
-then
-	echo "***********************************"
-	echo "* Must be root to run this script *"
-	echo "***********************************"
-	echo
-	exit $E_NOTROOT
-fi
-
 PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
 
 case "$PLATFORM" in
@@ -144,6 +134,16 @@ case "$PLATFORM" in
 		DEFAULT_WEBGROUP="www-data"
 	;;
 esac
+
+# Check for root
+if [ "$UID" -ne "$ROOT_UID" && $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	echo "***********************************"
+	echo "* Must be root to run this script *"
+	echo "***********************************"
+	echo
+	exit $E_NOTROOT
+fi
 
 # Temporarily disable errexit check because grep returns non-true on a result we need
 set +o errexit
