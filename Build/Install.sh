@@ -1055,21 +1055,41 @@ chmod -R 755 "$DOCTRINE_PATH"
 
 echo 
 echo "Writing configuration files... "
-./Configure.php \
-	--ApplicationsPath="$APPLICATIONS_PATH" \
-	--CachePath="$CACHE_PATH" \
-	--CompiledTemplatesPath=blah \
-	--ConfigurationPath="$CONFIG_PATH" \
-	--CubesPath="$CUBES_PATH" \
-	--DoctrinePath="$DOCTRINE_PATH" \
-	--DocumentationPath="$DOCUMENTATION_PATH" \
-	--DocumentRoot="$DOCUMENT_PATH" \
-	--FrameworkRootPath="$FRAMEWORK_PATH" \
-	--LoggingPath="$LOGPATH" \
-	--SmartyPath="$SMARTY_PATH" \
-	--UseDoctrine="true" \
-	--UseSmarty="true" \
-	--WriteLocalizationPaths="true"
+
+if [ DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+then
+	./Configure.php \
+		--ApplicationsPath="c:/cygwin$APPLICATIONS_PATH" \
+		--CachePath="c:/cygwin$CACHE_PATH" \
+		--CompiledTemplatesPath=blah \
+		--ConfigurationPath="c:/cygwin$CONFIG_PATH" \
+		--CubesPath="c:/cygwin$CUBES_PATH" \
+		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
+		--DocumentationPath="c:/cygwin/$DOCUMENTATION_PATH" \
+		--DocumentRoot="c:/cygwin$DOCUMENT_PATH" \
+		--FrameworkRootPath="c:/cygwin$FRAMEWORK_PATH" \
+		--LoggingPath="c:/cygwin$LOGPATH" \
+		--SmartyPath="c:/cygwin$SMARTY_PATH" \
+		--UseDoctrine="true" \
+		--UseSmarty="true" \
+		--WriteLocalizationPaths="true"
+else
+	./Configure.php \
+		--ApplicationsPath="$APPLICATIONS_PATH" \
+		--CachePath="$CACHE_PATH" \
+		--CompiledTemplatesPath=blah \
+		--ConfigurationPath="$CONFIG_PATH" \
+		--CubesPath="$CUBES_PATH" \
+		--DoctrinePath="$DOCTRINE_PATH" \
+		--DocumentationPath="/$DOCUMENTATION_PATH" \
+		--DocumentRoot="$DOCUMENT_PATH" \
+		--FrameworkRootPath="$FRAMEWORK_PATH" \
+		--LoggingPath="$LOGPATH" \
+		--SmartyPath="$SMARTY_PATH" \
+		--UseDoctrine="true" \
+		--UseSmarty="true" \
+		--WriteLocalizationPaths="true"
+fi
 
 # Configure script will make ownership of the child cache directories root so switch it back
 chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
