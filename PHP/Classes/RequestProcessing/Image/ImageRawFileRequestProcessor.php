@@ -53,10 +53,10 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
      * @access public
      */
     public function processRequest() {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ImageRawFileRequestProcessor: Entered processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Entered processRequest()' );
 
 		$file_name = $this->requestInfoBean->getGET( 'image_name' );
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ImageRawFileRequestProcessor: Looking up image " . $file_name );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Looking up image ' . $file_name );
 
 		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationName() .
 			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/Images';
@@ -67,7 +67,6 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 
 /*
-
 Date	Fri, 20 Nov 2009 16:08:31 GMT
 Server	Apache/2.2.14 (Unix) DAV/2
 Last-Modified	Tue, 17 Nov 2009 21:41:58 GMT
@@ -78,7 +77,6 @@ Keep-Alive	timeout=5, max=97
 Connection	Keep-Alive
 Content-Type	image/png
 Cache-Control	max-age=86400
-
 */
 
 			header( 'Content-type: ' . $imageMIMEType );
@@ -87,7 +85,7 @@ Cache-Control	max-age=86400
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
 		}
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ImageRawFileRequestProcessor: Exiting processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Exiting processRequest()' );
     }
 
 }
