@@ -45,6 +45,7 @@ $configuration_options = array(
 		'UseSmarty'				=> true,
 		);
 
+// Build a value pairs array out of provided arguments
 foreach($argv as $argument) {
 	$matches = array();
 	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_. ]+)/', $argument, $matches);
@@ -54,23 +55,28 @@ foreach($argv as $argument) {
 	}
 }
 
+// Loop through all configuration options we expect
 foreach($configuration_options as $option_name => $option_value) {
 	if (isset($value_pairs[$option_name])) {
+		// Change strings for booleans to actual boolean types
 		if ($value_pairs[$option_name] === 'true') {
 			$value_pairs[$option_name] = true;
 		} else if ($value_pairs[$option_name] === 'false') {
 			$value_pairs[$option_name] = false;
 		}
 
+		// Set the given option value in our configuration array
 		$configuration_options[$option_name] = $value_pairs[$option_name];
 	}
 }
 
+// Check if we're going to be writing out localization cache paths
 if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
 	echo "Writing localization paths in cache path...\n";
 	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
 	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
 
+	// Build paths for each locale
 	foreach($countries as $country) {
 		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
 			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755);
@@ -80,6 +86,7 @@ if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocaliza
 			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755);
 		}
 
+		// Build paths for each language in each country
 		foreach($languages as $language) {
 			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
 				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755);
@@ -91,7 +98,9 @@ if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocaliza
 	}
 }
 
+// Dump our fresh configuration set
 $config_dump = var_export($configuration_options, TRUE);
 file_put_contents('ConfigCache.php', $config_dump);
 
+// We're good, let's get out of here
 exit;
