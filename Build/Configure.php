@@ -35,11 +35,14 @@ $configuration_options = array(
 		'CompiledTemplatesPath'	=> '',
 		'ConfigurationPath'		=> '',
 		'CubesPath'				=> '',
+		'DoctrinePath'			=> '',
 		'DocumentationPath'		=> '',
 		'DocumentRoot'			=> '',
 		'FrameworkRootPath'		=> '',
 		'LoggingPath'			=> '',
-		'SmartyPath'			=> ''
+		'SmartyPath'			=> '',
+		'UseDoctrine'			=> true,
+		'UseSmarty'				=> true,
 		);
 
 foreach($argv as $argument) {
@@ -53,6 +56,12 @@ foreach($argv as $argument) {
 
 foreach($configuration_options as $option_name => $option_value) {
 	if (isset($value_pairs[$option_name])) {
+		if ($value_pairs[$option_name] === 'true') {
+			$value_pairs[$option_name] = true;
+		} else if ($value_pairs[$option_name] === 'false') {
+			$value_pairs[$option_name] = false;
+		}
+
 		$configuration_options[$option_name] = $value_pairs[$option_name];
 	}
 }

@@ -75,6 +75,7 @@ case "$PLATFORM" in
 		DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
 		DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
 		DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+		DEFAULT_DOCTRINE="/opt/local/lib/php/Doctrine/lib/Doctrine.php"
 		DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
 		DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
 		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
@@ -93,6 +94,7 @@ case "$PLATFORM" in
 		DEFAULT_CACHE_DIR="/var/cache/egloo"
 		DEFAULT_CONFIG="/etc/egloo/"
 		DEFAULT_CUBES="/usr/lib/egloo/cubes"
+		DEFAULT_DOCTRINE="/usr/share/php/smarty/doctrine/lib/Doctrine.php"
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
@@ -112,6 +114,7 @@ case "$PLATFORM" in
 		DEFAULT_CACHE_DIR="/var/cache/egloo"
 		DEFAULT_CONFIG="/etc/egloo/"
 		DEFAULT_CUBES="/usr/lib/egloo/cubes"
+		DEFAULT_DOCTRINE="/usr/share/php/smarty/doctrine/lib/Doctrine.php"
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
@@ -937,6 +940,104 @@ fi
 chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
 chmod -R 755 "$SMARTY_PATH"
 
+echo
+echo "***********************"
+echo "* Doctrine ORM Engine *"
+echo "***********************"
+echo
+
+if [ -f "$DEFAULT_DOCTRINE" ]
+then
+	echo "Doctrine was found at the following location."
+	echo "\"$DEFAULT_DOCTRINE\""
+	echo 
+	echo -n "Use this Doctrine package? [Y/n]: "
+	read -e CONFIRM_CONTINUE
+
+	# Check if the user wants to use the default or specify their own Doctrine path
+	case "$CONFIRM_CONTINUE" in
+		# User chose to specify own Doctrine path
+		"N" | "n" | "No" | "NO" | "no" )
+			NEW_PATH_SET=0
+
+			# Loop until we have a new path and the user has confirmed the location
+			while [ "$NEW_PATH_SET" -ne 1 ]
+			do
+				echo -n "Enter New Location: "
+				read -e DOCTRINE_PATH
+				echo
+				echo "Location: \"$DOCTRINE_PATH\""
+				echo
+
+				echo -n "Use this location? [y/N]: "
+				read -e CONFIRM_CONTINUE
+
+				# Make sure user entered right path
+				case "$CONFIRM_CONTINUE" in
+					# New path is good, break the loop
+					"Y" | "y" | "Yes" | "YES" | "yes" )
+						NEW_PATH_SET=1
+					;;
+					# New path is no good, loop back
+					* )
+					;;
+				esac
+			done		
+		;;
+
+		# User chose the default path
+		* ) DOCTRINE_PATH=$DEFAULT_DOCTRINE
+		;;
+	esac
+else
+	echo "Doctrine was not found at the default location."
+	echo 
+	echo -n "Install Doctrine? (If no, you will be prompted for an existing Doctrine install) [Y/n]: "
+	read -e CONFIRM_CONTINUE
+	
+	# Check if the user wants to use the default or specify their own Doctrine path
+	case "$CONFIRM_CONTINUE" in
+		# User chose to specify own Doctrine path
+		"N" | "n" | "No" | "NO" | "no" )
+			NEW_PATH_SET=0
+
+			# Loop until we have a new path and the user has confirmed the location
+			while [ "$NEW_PATH_SET" -ne 1 ]
+			do
+				echo -n "Enter New Location: "
+				read -e DOCTRINE_PATH
+				echo
+				echo "Location: \"$DOCTRINE_PATH\""
+				echo
+
+				echo -n "Use this location? [y/N]: "
+				read -e CONFIRM_CONTINUE
+
+				# Make sure user entered right path
+				case "$CONFIRM_CONTINUE" in
+					# New path is good, break the loop
+					"Y" | "y" | "Yes" | "YES" | "yes" )
+						NEW_PATH_SET=1
+					;;
+					# New path is no good, loop back
+					* )
+					;;
+				esac
+			done		
+		;;
+
+		# User chose the default path
+		* )
+			# TODO install Doctrine
+			DOCTRINE_PATH=$DEFAULT_DOCTRINE
+		;;
+	esac
+
+fi
+
+chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
+chmod -R 755 "$DOCTRINE_PATH"
+
 echo 
 echo "Writing configuration files... "
 ./Configure.php \
@@ -945,11 +1046,14 @@ echo "Writing configuration files... "
 	--CompiledTemplatesPath=blah \
 	--ConfigurationPath="$CONFIG_PATH" \
 	--CubesPath="$CUBES_PATH" \
+	--DoctrinePath="$DOCTRINE_PATH" \
 	--DocumentationPath="$DOCUMENTATION_PATH" \
 	--DocumentRoot="$DOCUMENT_PATH" \
 	--FrameworkRootPath="$FRAMEWORK_PATH" \
 	--LoggingPath="$LOGPATH" \
 	--SmartyPath="$SMARTY_PATH" \
+	--UseDoctrine="true" \
+	--UseSmarty="true" \
 	--WriteLocalizationPaths="true"
 
 # Configure script will make ownership of the child cache directories root so switch it back
@@ -972,7 +1076,7 @@ fi
 
 # Set ownership on the config dump created
 chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
-chmod -R 755 "$SMARTY_PATH"
+chmod -R 755 "$DOCUMENT_PATH"
 
 echo
 echo "Done"
