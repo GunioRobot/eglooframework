@@ -1065,7 +1065,7 @@ then
 		--ConfigurationPath="c:/cygwin$CONFIG_PATH" \
 		--CubesPath="c:/cygwin$CUBES_PATH" \
 		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
-		--DocumentationPath="c:/cygwin/$DOCUMENTATION_PATH" \
+		--DocumentationPath="c:/cygwin$DOCUMENTATION_PATH" \
 		--DocumentRoot="c:/cygwin$DOCUMENT_PATH" \
 		--FrameworkRootPath="c:/cygwin$FRAMEWORK_PATH" \
 		--LoggingPath="c:/cygwin$LOGPATH" \
