@@ -48,7 +48,7 @@ $configuration_options = array(
 // Build a value pairs array out of provided arguments
 foreach($argv as $argument) {
 	$matches = array();
-	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_. ]+)/', $argument, $matches);
+	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_.: ]+)/', $argument, $matches);
 
 	if (!empty($matches) && isset($matches[1]) && isset($matches[2])) {
 		$value = str_replace('/cygdrive/c/', '/', $matches[2]);
