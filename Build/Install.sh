@@ -105,7 +105,7 @@ case "$PLATFORM" in
 		DEFAULT_CACHE_DIR="/var/cache/egloo"
 		DEFAULT_CONFIG="/etc/egloo/"
 		DEFAULT_CUBES="/usr/lib/egloo/cubes"
-		DEFAULT_DOCTRINE="/usr/share/php/smarty/doctrine/lib/Doctrine.php"
+		DEFAULT_DOCTRINE="/usr/share/php/doctrine/Doctrine.php"
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
