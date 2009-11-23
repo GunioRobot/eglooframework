@@ -45,6 +45,7 @@ ROOT_UID=0     # Only users with $UID 0 have root privileges.
 OS_UBUNTU=0
 OS_MACOSX=1
 OS_WINDOWS=2
+OS_WINDOWS_XP_CYGWIN=3
 
 # Current platform
 # Default to Debian
@@ -103,7 +104,26 @@ case "$PLATFORM" in
 		DEFAULT_WEBUSER="www-data"
 		DEFAULT_WEBGROUP="www-data"
 	;;
-	
+
+	"Windows XP (iX86) Cygwin 1.5.25 (i686) Cygwin 1.5.25 (iX86)" )
+		echo "Detected Windows XP (Cygwin)"
+		DETECTED_PLATFORM=$OS_WINDOWS_XP_CYGWIN
+
+		# Default Configuration Parameters (Windows XP with Cygwin)
+		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
+		DEFAULT_CACHE_DIR="/var/cache/egloo"
+		DEFAULT_CONFIG="/etc/egloo/"
+		DEFAULT_CUBES="/usr/lib/egloo/cubes"
+		DEFAULT_DOCTRINE="/usr/share/php/smarty/doctrine/lib/Doctrine.php"
+		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
+		DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
+		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
+		DEFAULT_LOGPATH="/var/log/egloo"
+		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+		DEFAULT_WEBUSER="user"
+		DEFAULT_WEBGROUP="user"
+	;;
+
 	* )
 		# Make this an override choice, and fix the linux checks
 		echo "No supported OS detected - Using Ubuntu Linux Defaults (Should be override option...)"
@@ -140,12 +160,6 @@ else
 	WEB_USER=$DEFAULT_WEBUSER
 	WEB_GROUP=$DEFAULT_WEBGROUP
 fi
-
-# if [ "$DETECTED_PLATFORM" -eq "$OS_MACOSX" ]
-# then
-# 	echo "blah"
-# 	exit
-# fi
 
 # Give the user an explanation of the build process
 echo "********************************"
@@ -289,7 +303,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
