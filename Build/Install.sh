@@ -1056,7 +1056,7 @@ chmod -R 755 "$DOCTRINE_PATH"
 echo 
 echo "Writing configuration files... "
 
-if [ DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
 then
 	./Configure.php \
 		--ApplicationsPath="c:/cygwin$APPLICATIONS_PATH" \
