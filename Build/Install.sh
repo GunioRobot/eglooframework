@@ -112,7 +112,7 @@ case "$PLATFORM" in
 		DEFAULT_LOGPATH="/var/log/egloo"
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 		DEFAULT_WEBUSER="user"
-		DEFAULT_WEBGROUP="user"
+		DEFAULT_WEBGROUP="mkpasswd"
 	;;
 
 	* )
