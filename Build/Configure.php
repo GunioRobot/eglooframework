@@ -51,7 +51,7 @@ foreach($argv as $argument) {
 	preg_match('/--([a-zA-Z]+?)=([a-zA-Z0-9\/_. ]+)/', $argument, $matches);
 
 	if (!empty($matches) && isset($matches[1]) && isset($matches[2])) {
-		$value = str_replace('/cygdrive/c/', '/', $matches[2])
+		$value = str_replace('/cygdrive/c/', '/', $matches[2]);
 		$value_pairs[$matches[1]] = $value;
 	}
 }
