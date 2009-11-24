@@ -45,7 +45,6 @@ ROOT_UID=0     # Only users with $UID 0 have root privileges.
 OS_UBUNTU=0
 OS_MACOSX=1
 OS_WINDOWS=2
-OS_WINDOWS=3
 
 # Current platform
 # Default to Debian
@@ -211,7 +210,7 @@ fi
 # If we're on Windows let's use hard links
 if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
 then
-	LINKCMD="ln"
+	LINKCMD="ln -s"
 else
 	LINKCMD="ln -s"
 fi
@@ -267,7 +266,7 @@ esac
 echo "Building configuration files..."
 echo "\"$CONFIG_PATH\""
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	mkdir -p "$CONFIG_PATH"
 	# ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
@@ -275,14 +274,14 @@ then
 else
 	mkdir -p "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
+fi
 
-	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
-	then
-		chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
-		chmod 755 "$CONFIG_PATH"
-	else
-		echo "Ignoring ownership and permissions of Configuration Path for Windows"
-	fi
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+then
+	chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
+	chmod 755 "$CONFIG_PATH"
+else
+	echo "Ignoring ownership and permissions of Configuration Path for Windows"
 fi
 
 echo
@@ -459,7 +458,7 @@ then
 	chown $WEB_USER:$WEB_GROUP "$LOGPATH"
 	chmod 755 "$LOGPATH"
 else
-	echo "Ignoring ownership and permissions of Log Path for Windows"
+	chmod 777 "$LOGPATH"
 fi
 
 echo
@@ -513,7 +512,7 @@ esac
 echo "Building framework path..."
 echo "\"$FRAMEWORK_PATH\""
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
 	then
@@ -542,9 +541,15 @@ else
 	cp -R "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/"
 	cp -R "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/"
 	cp -R "$PARENT_DIRECTORY/XML" "$FRAMEWORK_PATH/"
-	
+
+fi
+
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+then
 	chown -R root:wheel "$FRAMEWORK_PATH"
 	chmod -R 755 "$FRAMEWORK_PATH"
+else
+	echo "Ignoring ownership and permissions of Log Path for Windows"
 fi
 
 echo
@@ -600,7 +605,7 @@ echo "\"$DOCUMENT_ROOT\""
 
 mkdir -p "$DOCUMENT_ROOT"
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	if [ ! -e "$DOCUMENT_ROOT/.htaccess" ] && [  ! -L "$DOCUMENT_ROOT/.htaccess" ]
 	then
@@ -658,7 +663,6 @@ else
 	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
 	cp "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
-
 
 	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 	then
@@ -752,7 +756,7 @@ esac
 echo "Building web applications path..."
 echo "\"$APPLICATIONS_PATH\""
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	if [ ! -e "$APPLICATIONS_PATH" ]
 	then
@@ -777,7 +781,7 @@ then
 	fi
 else
 	mkdir -p "$APPLICATIONS_PATH"
-	cp -R "$PARENT_DIRECTORY/Applications/*" "$APPLICATIONS_PATH/"
+	cp -R "$PARENT_DIRECTORY"/Applications/* "$APPLICATIONS_PATH/"
 fi
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
@@ -839,7 +843,7 @@ esac
 echo "Building cubes path..."
 echo "\"$CUBES_PATH\""
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	if [ ! -e "$CUBES_PATH" ]
 	then
@@ -862,7 +866,7 @@ then
 	fi
 else
 	mkdir -p "$CUBES_PATH"
-	cp -R "$PARENT_DIRECTORY/Cubes/*" "$CUBES_PATH/"
+	cp -R "$PARENT_DIRECTORY"/Cubes/* "$CUBES_PATH/"
 fi
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
@@ -1139,7 +1143,7 @@ else
 	echo "Ignoring ownership of Cache Path for Windows"
 fi
 
-if [ $USE_SYMLINKS ]
+if [ "$USE_SYMLINKS" = "true" ]
 then
 	mv "ConfigCache.php" "$PARENT_DIRECTORY/DocRoot/ConfigCache.php"
 
