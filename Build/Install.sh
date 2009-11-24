@@ -201,6 +201,13 @@ case "$USE_SYMLINKS" in
 	;;
 esac
 
+if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+then
+	LINKCMD="ln"
+else
+	LINKCMD="ln -s"
+fi
+
 echo
 echo "*****************************"
 echo "* eGloo Configuration Files *"
@@ -259,9 +266,15 @@ then
 	# cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 else
 	mkdir -p "$CONFIG_PATH"
-	chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
-	chmod 755 "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
+
+	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+	then
+		chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
+		chmod 755 "$CONFIG_PATH"
+	else
+		echo "Ignoring ownership and permissions of Configuration Path for Windows"
+	fi
 fi
 
 echo
@@ -318,8 +331,14 @@ echo "\"$CACHE_PATH\""
 mkdir -p "$CACHE_PATH"
 mkdir -p "$CACHE_PATH/CompiledTemplates"
 mkdir -p "$CACHE_PATH/SmartyCache"
-chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
-chmod -R 755 "$CACHE_PATH"
+
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
+	chmod -R 755 "$CACHE_PATH"
+else
+	echo "Ignoring ownership and permissions of Cache Path for Windows"
+fi
 
 echo
 echo "****************************"
@@ -426,8 +445,14 @@ echo "Building log path..."
 echo "\"$LOGPATH\""
 
 mkdir -p "$LOGPATH"
-chown $WEB_USER:$WEB_GROUP "$LOGPATH"
-chmod 755 "$LOGPATH"
+
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown $WEB_USER:$WEB_GROUP "$LOGPATH"
+	chmod 755 "$LOGPATH"
+else
+	echo "Ignoring ownership and permissions of Log Path for Windows"
+fi
 
 echo
 echo "*****************************"
@@ -485,6 +510,8 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
 	then
 		mkdir -p "$FRAMEWORK_PATH"
+		
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
 	else
 		echo "Symlink exists"
@@ -493,6 +520,8 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/Templates" ] && [  ! -L "$FRAMEWORK_PATH/Templates" ]
 	then
 		mkdir -p "$FRAMEWORK_PATH"
+
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/Templates"
 	else
 		echo "Symlink exists"
@@ -561,7 +590,7 @@ then
 	if [ ! -e "$DOCUMENT_PATH/.htaccess" ] && [  ! -L "$DOCUMENT_PATH/.htaccess" ]
 	then
 		mkdir -p "$DOCUMENT_PATH/"
-		ln -s "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
+		$LINKCMD "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
 	else
 		echo ".htaccess Symlink exists"
 	fi
@@ -569,7 +598,7 @@ then
 	if [ ! -e "$DOCUMENT_PATH/index.php" ] && [  ! -L "$DOCUMENT_PATH/index.php" ]
 	then
 		mkdir -p "$DOCUMENT_PATH/"
-		ln -s "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/index.php"
+		$LINKCMD "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/index.php"
 	else
 		echo "index.php Symlink exists"
 	fi
@@ -577,6 +606,8 @@ then
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
 		mkdir -p "$DOCUMENT_PATH"
+
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_PATH/PHP"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/PHP" "$PARENT_DIRECTORY/DocRoot/PHP"
@@ -587,6 +618,8 @@ then
 	if [ ! -e "$DOCUMENT_PATH/Templates" ] && [  ! -L "$DOCUMENT_PATH/Templates" ]
 	then
 		mkdir -p "$DOCUMENT_PATH"
+
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_PATH/Templates"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
@@ -597,6 +630,8 @@ then
 	if [ ! -e "$DOCUMENT_PATH/XML" ] && [  ! -L "$DOCUMENT_PATH/XML" ]
 	then
 		mkdir -p "$DOCUMENT_PATH"
+
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_PATH/XML"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
@@ -611,6 +646,8 @@ else
 	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
 	then
 		mkdir -p "$DOCUMENT_PATH"
+
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_PATH/PHP"
 	else
 		echo "PHP Symlink exists"
@@ -618,8 +655,13 @@ else
 
 fi
 
-chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH"
-chmod -R 755 "$DOCUMENT_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH"
+	chmod -R 755 "$DOCUMENT_PATH"
+else
+	echo "Ignoring ownership and permissions of Document Root for Windows"
+fi
 
 echo
 echo "*******************************"
@@ -679,7 +721,8 @@ then
 		mkdir -p "$APPLICATIONS_PATH"
 		for filename in "$PARENT_DIRECTORY"/Applications/*
 		do
-		  ln -s "$PARENT_DIRECTORY/Applications/${filename##*/}" "$APPLICATIONS_PATH/${filename##*/}"
+			# Even if we're using Windows, NTFS does not allow hardlinks to directories
+			ln -s "$PARENT_DIRECTORY/Applications/${filename##*/}" "$APPLICATIONS_PATH/${filename##*/}"
 		done;
 	else
 		echo "Applications path exists"
@@ -687,6 +730,7 @@ then
 		do
 			if [ ! -e "$APPLICATIONS_PATH/${filename##*/}" ] && [  ! -L "$APPLICATIONS_PATH/${filename##*/}" ]
 			then
+				# Even if we're using Windows, NTFS does not allow hardlinks to directories
 				ln -s "$PARENT_DIRECTORY/Applications/${filename##*/}" "$APPLICATIONS_PATH/${filename##*/}"
 			else
 				echo "Application ${filename##*/} Symlink exists"
@@ -698,8 +742,13 @@ else
 	cp -R "$PARENT_DIRECTORY/Applications/*" "$APPLICATIONS_PATH/"
 fi
 
-chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
-chmod -R 755 "$APPLICATIONS_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
+	chmod -R 755 "$APPLICATIONS_PATH"
+else
+	echo "Ignoring ownership and permissions of Applications Path for Windows"
+fi
 
 echo
 echo "********************"
@@ -759,7 +808,7 @@ then
 		mkdir -p "$CUBES_PATH"
 		for filename in "$PARENT_DIRECTORY"/Cubes/*
 		do
-		  ln -s "$PARENT_DIRECTORY/Cubes/${filename##*/}" "$CUBES_PATH/${filename##*/}"
+			ln -s "$PARENT_DIRECTORY/Cubes/${filename##*/}" "$CUBES_PATH/${filename##*/}"
 		done;
 	else
 		echo "Cubes path exists"
@@ -778,15 +827,20 @@ else
 	cp -R "$PARENT_DIRECTORY/Cubes/*" "$CUBES_PATH/"
 fi
 
-chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
-chmod -R 755 "$CUBES_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
+	chmod -R 755 "$CUBES_PATH"
+else
+	echo "Ignoring ownership and permissions of Cubes Path for Windows"
+fi
 
 # if [ $USE_SYMLINKS ]
 # then
 # 	mkdir -p "$CUBES_PATH"
-# 	ln -s ../Cubes/B "$CUBES_PATH/B"
-# 	ln -s ../Cubes/F "$CUBES_PATH/F"
-# 	ln -s ../Cubes/P "$CUBES_PATH/P"
+# 	$LINKCMD ../Cubes/B "$CUBES_PATH/B"
+# 	$LINKCMD ../Cubes/F "$CUBES_PATH/F"
+# 	$LINKCMD ../Cubes/P "$CUBES_PATH/P"
 # else
 # 	mkdir -p "$CUBES_PATH"
 # 	cp -R ../Cubes/* "$CUBES_PATH"
@@ -952,8 +1006,13 @@ else
 
 fi
 
-chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
-chmod -R 755 "$SMARTY_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
+	chmod -R 755 "$SMARTY_PATH"
+else
+	echo "Ignoring ownership and permissions of Smarty Path for Windows"
+fi
 
 echo
 echo "***********************"
@@ -1050,14 +1109,20 @@ else
 
 fi
 
-chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
-chmod -R 755 "$DOCTRINE_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
+	chmod -R 755 "$DOCTRINE_PATH"
+else
+	echo "Ignoring ownership and permissions of Doctrine Path for Windows"
+fi
 
 echo 
 echo "Writing configuration files... "
 
 if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
 then
+	chmod -R 777 "$CACHE_PATH"
 	./Configure.php \
 		--ApplicationsPath="c:/cygwin$APPLICATIONS_PATH" \
 		--CachePath="c:/cygwin$CACHE_PATH" \
@@ -1073,6 +1138,7 @@ then
 		--UseDoctrine="true" \
 		--UseSmarty="true" \
 		--WriteLocalizationPaths="true"
+	chmod -R 755 "$CACHE_PATH"
 else
 	./Configure.php \
 		--ApplicationsPath="$APPLICATIONS_PATH" \
@@ -1092,7 +1158,12 @@ else
 fi
 
 # Configure script will make ownership of the child cache directories root so switch it back
-chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
+else
+	echo "Ignoring ownership of Cache Path for Windows"
+fi
 
 if [ $USE_SYMLINKS ]
 then
@@ -1100,7 +1171,14 @@ then
 
 	if [ ! -e "$DOCUMENT_PATH/ConfigCache.php" ] && [  ! -L "$DOCUMENT_PATH/ConfigCache.php" ]
 	then
-		ln -s "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+		# Windows doesn't seem to handle permissions sanely
+		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+		then
+			chmod -R 777 "$DOCUMENT_PATH"
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+		else
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+		fi
 	else
 		echo "ConfigCache Symlink exists"
 	fi
@@ -1110,8 +1188,13 @@ fi
 
 
 # Set ownership on the config dump created
-chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
-chmod -R 755 "$DOCUMENT_PATH"
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+then
+	chmod -R 755 "$DOCUMENT_PATH"
+	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
+else
+	echo "Ignoring permissions for Document Root for Windows"
+fi
 
 echo
 echo "Done"
