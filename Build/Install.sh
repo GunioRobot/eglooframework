@@ -45,7 +45,7 @@ ROOT_UID=0     # Only users with $UID 0 have root privileges.
 OS_UBUNTU=0
 OS_MACOSX=1
 OS_WINDOWS=2
-OS_WINDOWS_XP_CYGWIN=3
+OS_WINDOWS=3
 
 # Current platform
 # Default to Debian
@@ -98,7 +98,7 @@ case "$PLATFORM" in
 
 	"Windows XP (iX86) Cygwin 1.5.25 (i686) Cygwin 1.5.25 (iX86)" )
 		echo "Detected Windows XP (Cygwin)"
-		DETECTED_PLATFORM=$OS_WINDOWS_XP_CYGWIN
+		DETECTED_PLATFORM=$OS_WINDOWS
 
 		# Default Configuration Parameters (Windows XP with Cygwin)
 		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
@@ -137,7 +137,7 @@ case "$PLATFORM" in
 esac
 
 # Check for root
-if [[ "$UID" -ne "$ROOT_UID" && $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]]
+if [[ "$UID" -ne "$ROOT_UID" && $DETECTED_PLATFORM -ne $OS_WINDOWS ]]
 then
 	echo "***********************************"
 	echo "* Must be root to run this script *"
@@ -185,23 +185,31 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo -n "Use symlinks to distribution instead of files? (Useful for eGloo Development) [Y/n]: "
-read -e USE_SYMLINKS
+# If we're not on Windows, allow a symlink based install
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+then
+	echo -n "Use symlinks to distribution instead of files? (Useful for eGloo Development) [Y/n]: "
+	read -e USE_SYMLINKS
 
-# Make sure the user is prepared to answer some setup questions
-case "$USE_SYMLINKS" in
-	"N" | "n" | "No" | "NO" | "no" )
-		echo "Using files"
-		USE_SYMLINKS=false
-	;;
+	# Make sure the user is prepared to answer some setup questions
+	case "$USE_SYMLINKS" in
+		"N" | "n" | "No" | "NO" | "no" )
+			echo "Using files"
+			USE_SYMLINKS=false
+		;;
 
-	* )
-		echo "Using symlinks"
-		USE_SYMLINKS=true
-	;;
-esac
+		* )
+			echo "Using symlinks"
+			USE_SYMLINKS=true
+		;;
+	esac
+else
+	# There's a bug with Windows Symlinks, PHP and Apache, so let's just not allow this option
+	USE_SYMLINKS=false
+fi
 
-if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+# If we're on Windows let's use hard links
+if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
 then
 	LINKCMD="ln"
 else
@@ -261,14 +269,14 @@ echo "\"$CONFIG_PATH\""
 
 if [ $USE_SYMLINKS ]
 then
-	echo
-	# mkdir -p "$CONFIG_PATH"
+	mkdir -p "$CONFIG_PATH"
+	# ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
 	# cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 else
 	mkdir -p "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 
-	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 	then
 		chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
 		chmod 755 "$CONFIG_PATH"
@@ -332,7 +340,7 @@ mkdir -p "$CACHE_PATH"
 mkdir -p "$CACHE_PATH/CompiledTemplates"
 mkdir -p "$CACHE_PATH/SmartyCache"
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
 	chmod -R 755 "$CACHE_PATH"
@@ -446,7 +454,7 @@ echo "\"$LOGPATH\""
 
 mkdir -p "$LOGPATH"
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown $WEB_USER:$WEB_GROUP "$LOGPATH"
 	chmod 755 "$LOGPATH"
@@ -529,7 +537,14 @@ then
 
 else
 	mkdir -p "$FRAMEWORK_PATH"
-	cp -R ../PHP "$FRAMEWORK_PATH/PHP"
+
+	cp -R "$PARENT_DIRECTORY/Images" "$FRAMEWORK_PATH/"
+	cp -R "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/"
+	cp -R "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/"
+	cp -R "$PARENT_DIRECTORY/XML" "$FRAMEWORK_PATH/"
+	
+	chown -R root:wheel "$FRAMEWORK_PATH"
+	chmod -R 755 "$FRAMEWORK_PATH"
 fi
 
 echo
@@ -554,9 +569,9 @@ case "$CONFIRM_CONTINUE" in
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
 			echo -n "Enter New Location: "
-			read -e DOCUMENT_PATH
+			read -e DOCUMENT_ROOT
 			echo
-			echo "Location: \"$DOCUMENT_PATH\""
+			echo "Location: \"$DOCUMENT_ROOT\""
 			echo
 		
 			echo -n "Use this location? [y/N]: "
@@ -576,63 +591,63 @@ case "$CONFIRM_CONTINUE" in
 	;;
 
 	# User chose the default path
-	* ) DOCUMENT_PATH=$DEFAULT_DOCUMENTROOT
+	* ) DOCUMENT_ROOT=$DEFAULT_DOCUMENTROOT
 	;;
 esac
 
 echo "Building web server document root path..."
-echo "\"$DOCUMENT_PATH\""
+echo "\"$DOCUMENT_ROOT\""
 
-mkdir -p "$DOCUMENT_PATH"
+mkdir -p "$DOCUMENT_ROOT"
 
 if [ $USE_SYMLINKS ]
 then
-	if [ ! -e "$DOCUMENT_PATH/.htaccess" ] && [  ! -L "$DOCUMENT_PATH/.htaccess" ]
+	if [ ! -e "$DOCUMENT_ROOT/.htaccess" ] && [  ! -L "$DOCUMENT_ROOT/.htaccess" ]
 	then
-		mkdir -p "$DOCUMENT_PATH/"
-		$LINKCMD "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
+		mkdir -p "$DOCUMENT_ROOT/"
+		$LINKCMD "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	else
 		echo ".htaccess Symlink exists"
 	fi
 
-	if [ ! -e "$DOCUMENT_PATH/index.php" ] && [  ! -L "$DOCUMENT_PATH/index.php" ]
+	if [ ! -e "$DOCUMENT_ROOT/index.php" ] && [  ! -L "$DOCUMENT_ROOT/index.php" ]
 	then
-		mkdir -p "$DOCUMENT_PATH/"
-		$LINKCMD "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/index.php"
+		mkdir -p "$DOCUMENT_ROOT/"
+		$LINKCMD "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
 	else
 		echo "index.php Symlink exists"
 	fi
 
-	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
+	if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
 	then
-		mkdir -p "$DOCUMENT_PATH"
+		mkdir -p "$DOCUMENT_ROOT"
 
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_PATH/PHP"
+		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/PHP"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/PHP" "$PARENT_DIRECTORY/DocRoot/PHP"
 	else
 		echo "PHP Symlink exists"
 	fi
 
-	if [ ! -e "$DOCUMENT_PATH/Templates" ] && [  ! -L "$DOCUMENT_PATH/Templates" ]
+	if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
 	then
-		mkdir -p "$DOCUMENT_PATH"
+		mkdir -p "$DOCUMENT_ROOT"
 
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_PATH/Templates"
+		ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/Templates"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
 	else
 		echo "Templates Symlink exists"
 	fi
 
-	if [ ! -e "$DOCUMENT_PATH/XML" ] && [  ! -L "$DOCUMENT_PATH/XML" ]
+	if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
 	then
-		mkdir -p "$DOCUMENT_PATH"
+		mkdir -p "$DOCUMENT_ROOT"
 
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_PATH/XML"
+		ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/XML"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
 	else
@@ -640,25 +655,48 @@ then
 	fi
 
 else
-	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_PATH/.htaccess"
-	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_PATH/.index.php"
+	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
+	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
+	cp "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 
-	if [ ! -e "$DOCUMENT_PATH/PHP" ] && [  ! -L "$DOCUMENT_PATH/PHP" ]
+
+	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 	then
-		mkdir -p "$DOCUMENT_PATH"
+		if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
+		then
+			# Even if we're using Windows, NTFS does not allow hardlinks to directories
+			ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_ROOT/PHP"
+		else
+			echo "PHP Symlink exists"
+		fi
 
-		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_PATH/PHP"
+		if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
+		then
+			# Even if we're using Windows, NTFS does not allow hardlinks to directories
+			ln -s "$FRAMEWORK_PATH/Templates" "$DOCUMENT_ROOT/Templates"
+		else
+			echo "Templates Symlink exists"
+		fi
+
+		if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
+		then
+			# Even if we're using Windows, NTFS does not allow hardlinks to directories
+			ln -s "$FRAMEWORK_PATH/XML" "$DOCUMENT_ROOT/XML"
+		else
+			echo "XML Symlink exists"
+		fi
 	else
-		echo "PHP Symlink exists"
+		cp -R "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/"
+		cp -R "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/"
+		cp -R "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/"
 	fi
 
 fi
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH"
-	chmod -R 755 "$DOCUMENT_PATH"
+	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT"
+	chmod -R 755 "$DOCUMENT_ROOT"
 else
 	echo "Ignoring ownership and permissions of Document Root for Windows"
 fi
@@ -742,7 +780,7 @@ else
 	cp -R "$PARENT_DIRECTORY/Applications/*" "$APPLICATIONS_PATH/"
 fi
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
 	chmod -R 755 "$APPLICATIONS_PATH"
@@ -827,77 +865,13 @@ else
 	cp -R "$PARENT_DIRECTORY/Cubes/*" "$CUBES_PATH/"
 fi
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
 	chmod -R 755 "$CUBES_PATH"
 else
 	echo "Ignoring ownership and permissions of Cubes Path for Windows"
 fi
-
-# if [ $USE_SYMLINKS ]
-# then
-# 	mkdir -p "$CUBES_PATH"
-# 	$LINKCMD ../Cubes/B "$CUBES_PATH/B"
-# 	$LINKCMD ../Cubes/F "$CUBES_PATH/F"
-# 	$LINKCMD ../Cubes/P "$CUBES_PATH/P"
-# else
-# 	mkdir -p "$CUBES_PATH"
-# 	cp -R ../Cubes/* "$CUBES_PATH"
-# fi
-
-# echo
-# echo "********************"
-# echo "* eGloo Cubes Root *"
-# echo "********************"
-# echo
-# echo -n "Default Location: "
-# echo "\"$DEFAULT_CUBES\""
-# echo
-# 
-# echo -n "Use this location? [Y/n]: "
-# read -e CONFIRM_CONTINUE
-# 
-# # Check if the user wants to use the default or specify their own documentation path
-# case "$CONFIRM_CONTINUE" in
-# 	# User chose to specify own documentation path
-# 	"N" | "n" | "No" | "NO" | "no" )
-# 		NEW_PATH_SET=0
-# 		
-# 		# Loop until we have a new path and the user has confirmed the location
-# 		while [ "$NEW_PATH_SET" -ne 1 ]
-# 		do
-# 			echo -n "Enter New Location: "
-# 			read -e CUBES_PATH
-# 			echo
-# 			echo "Location: \"$CUBES_PATH\""
-# 			echo
-# 		
-# 			echo -n "Use this location? [y/N]: "
-# 			read -e CONFIRM_CONTINUE
-# 		
-# 			# Make sure user entered right path
-# 			case "$CONFIRM_CONTINUE" in
-# 				# New path is good, break the loop
-# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-# 					NEW_PATH_SET=1
-# 				;;
-# 				# New path is no good, loop back
-# 				* )
-# 				;;
-# 			esac
-# 		done		
-# 	;;
-# 
-# 	# User chose the default path
-# 	* ) CUBES_PATH=$DEFAULT_CUBES
-# 	;;
-# esac
-# 
-# echo "Building framework path..."
-# echo "\"$CUBES_PATH\""
-# 
-# mkdir -p "$CUBES_PATH"
 
 echo
 echo "***********************"
@@ -1006,7 +980,7 @@ else
 
 fi
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
 	chmod -R 755 "$SMARTY_PATH"
@@ -1109,7 +1083,7 @@ else
 
 fi
 
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
 	chmod -R 755 "$DOCTRINE_PATH"
@@ -1120,7 +1094,7 @@ fi
 echo 
 echo "Writing configuration files... "
 
-if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
 then
 	chmod -R 777 "$CACHE_PATH"
 	./Configure.php \
@@ -1131,7 +1105,7 @@ then
 		--CubesPath="c:/cygwin$CUBES_PATH" \
 		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
 		--DocumentationPath="c:/cygwin$DOCUMENTATION_PATH" \
-		--DocumentRoot="c:$DOCUMENT_PATH" \
+		--DocumentRoot="c:$DOCUMENT_ROOT" \
 		--FrameworkRootPath="c:/cygwin$FRAMEWORK_PATH" \
 		--LoggingPath="c:/cygwin$LOGPATH" \
 		--SmartyPath="c:/cygwin$SMARTY_PATH" \
@@ -1148,7 +1122,7 @@ else
 		--CubesPath="$CUBES_PATH" \
 		--DoctrinePath="$DOCTRINE_PATH" \
 		--DocumentationPath="/$DOCUMENTATION_PATH" \
-		--DocumentRoot="$DOCUMENT_PATH" \
+		--DocumentRoot="$DOCUMENT_ROOT" \
 		--FrameworkRootPath="$FRAMEWORK_PATH" \
 		--LoggingPath="$LOGPATH" \
 		--SmartyPath="$SMARTY_PATH" \
@@ -1158,7 +1132,7 @@ else
 fi
 
 # Configure script will make ownership of the child cache directories root so switch it back
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
 else
@@ -1169,29 +1143,29 @@ if [ $USE_SYMLINKS ]
 then
 	mv "ConfigCache.php" "$PARENT_DIRECTORY/DocRoot/ConfigCache.php"
 
-	if [ ! -e "$DOCUMENT_PATH/ConfigCache.php" ] && [  ! -L "$DOCUMENT_PATH/ConfigCache.php" ]
+	if [ ! -e "$DOCUMENT_ROOT/ConfigCache.php" ] && [  ! -L "$DOCUMENT_ROOT/ConfigCache.php" ]
 	then
 		# Windows doesn't seem to handle permissions sanely
-		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS_XP_CYGWIN ]
+		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
 		then
-			chmod -R 777 "$DOCUMENT_PATH"
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+			chmod -R 777 "$DOCUMENT_ROOT"
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 		else
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 		fi
 	else
 		echo "ConfigCache Symlink exists"
 	fi
 else
-	mv "ConfigCache.php" "$DOCUMENT_PATH/ConfigCache.php"
+	mv "ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 fi
 
 
 # Set ownership on the config dump created
-if [ $DETECTED_PLATFORM -ne $OS_WINDOWS_XP_CYGWIN ]
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chmod -R 755 "$DOCUMENT_PATH"
-	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_PATH/ConfigCache.php"
+	chmod -R 755 "$DOCUMENT_ROOT"
+	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/ConfigCache.php"
 else
 	echo "Ignoring permissions for Document Root for Windows"
 fi
