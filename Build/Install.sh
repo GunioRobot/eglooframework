@@ -101,14 +101,14 @@ case "$PLATFORM" in
 		DETECTED_PLATFORM=$OS_WINDOWS
 
 		# Default Configuration Parameters (Windows XP with Cygwin)
-		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
+		DEFAULT_APPLICATIONS="/lib/egloo/applications"
 		DEFAULT_CACHE_DIR="/var/cache/egloo"
 		DEFAULT_CONFIG="/etc/egloo/"
-		DEFAULT_CUBES="/usr/lib/egloo/cubes"
+		DEFAULT_CUBES="/lib/egloo/cubes"
 		DEFAULT_DOCTRINE="/usr/share/php/doctrine/Doctrine.php"
 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 		DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
-		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
+		DEFAULT_FRAMEWORKROOT="/lib/eglooframework"
 		DEFAULT_LOGPATH="/var/log/egloo"
 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 		DEFAULT_WEBUSER="user"
