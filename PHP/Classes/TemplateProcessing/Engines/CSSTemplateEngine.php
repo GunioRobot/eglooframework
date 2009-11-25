@@ -60,8 +60,8 @@ class CSSTemplateEngine extends TemplateEngine {
 		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
 
 		// Because neither Windows nor Smarty is as dumb as both
-		str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
-		str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
+		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
+		$this->cache_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
 
 		// $this->cache_handler_func = 'smarty_cache_memcache';
 
