@@ -546,7 +546,7 @@ fi
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chown -R root:wheel "$FRAMEWORK_PATH"
+#	chown -R root:wheel "$FRAMEWORK_PATH"
 	chmod -R 755 "$FRAMEWORK_PATH"
 else
 	echo "Ignoring ownership and permissions of Log Path for Windows"
