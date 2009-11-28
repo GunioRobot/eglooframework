@@ -4,7 +4,7 @@
  *
  * This file contains the bootstrap for the eGloo framework
  *
- * Copyright 2008 eGloo, LLC
+ * Copyright 2009 eGloo, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *
  * @author George Cooper
- * @copyright 2008 eGloo, LLC
+ * @copyright 2009 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Bootstrap
  * @version 1.0
