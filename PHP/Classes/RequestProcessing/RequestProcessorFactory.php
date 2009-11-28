@@ -40,15 +40,19 @@ final class RequestProcessorFactory {
         $requestProcessor = null;
 
         $cacheGateway = CacheGateway::getCacheGateway();
+		$requestProcessorID = (string) $requestProcessorID;
 
-        if ( ( $requestProcessor = $cacheGateway->getObject( (string) $requestProcessorID, '<type>' ) ) == null ) {
+        if ( ( $requestProcessor = $cacheGateway->getObject( $requestProcessorID, '<type>' ) ) == null ) {
             if ( $requestProcessorID !== null ) {
 				//first make the concrete request processor
-            	$requestProcessor = eval( "return new $requestProcessorID();" );
+				// $requestProcessor = eval( "return new $requestProcessorID();" );
+				$requestProcessor = new $requestProcessorID;
 
 				//now add the decorators
+				
 				foreach( $requestInfoBean->getDecoratorArray() as $decoratorID ){
-					$requestDecorator = eval( "return new $decoratorID();" );
+					// $requestDecorator = eval( "return new $decoratorID();" );
+					$requestDecorator = new $decoratorID;
 
 					$requestDecorator->setChildRequestProcessor( $requestProcessor );
 
