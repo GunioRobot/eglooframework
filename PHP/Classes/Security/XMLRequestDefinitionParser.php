@@ -87,7 +87,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XMLRequestDefinitionParser: Loading "
 			. $this->REQUESTS_XML_LOCATION, 'Security' );
-		
+
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
         foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
             
@@ -96,17 +96,14 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
                 $uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
             //  eGlooLogger::writeLog( eGlooLogger::DEBUG, "adding new unique requestKey: " . $uniqueKey );
                 $this->requestNodes[ $uniqueKey  ] = $request->asXML();
-            
-            }   
-        
-        }        
-	}
+            }
+        }
+}
 
 	/**
 	 * returns the singleton of this class
 	 */
     public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
-	// die;
         if ( !isset(self::$singletonXMLRequestDefinitionParser) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
