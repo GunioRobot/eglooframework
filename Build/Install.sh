@@ -1138,9 +1138,11 @@ fi
 # Configure script will make ownership of the child cache directories root so switch it back
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chown -R $WEB_USER:$WEB_GROUP $CACHE_PATH
+	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
+	chmod -R 755 "$CACHE_PATH"
 else
-	echo "Ignoring ownership of Cache Path for Windows"
+	chmod -R 777 "$CACHE_PATH"
+#	echo "Ignoring ownership of Cache Path for Windows"
 fi
 
 if [ "$USE_SYMLINKS" = "true" ]
