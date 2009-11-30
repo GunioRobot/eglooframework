@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eGlooJavascript:Clients xmlns:eGlooJavascript="com.egloo.www/Javascript" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!-- Example Internet Explorer Client Match
+	<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+		<DefaultDispatchMap>
+
+			<DispatchMap id="jquery">
+				<![CDATA[Core/eGloo/Javascript/jQuery/Testing/jquery-1.2.1.pack.js]]>
+			</DispatchMap>
+
+		</DefaultDispatchMap>
+	</Client>
+-->
+<!-- Example Firefox Client Matches; Covers Major and minor versions, as well as defaults
+	<Client id="Mozilla_Firefox" matches="/^Mozilla.*Gecko.*(BonEcho|Firefox).*$/">
+		<DefaultDispatchMap></DefaultDispatchMap>
+		<MajorVersion id="1.5" matches="/^Mozilla.*rv:1\.8\.0.*Gecko.*Firefox.*1\.5.*$/">
+			<DefaultDispatchMap></DefaultDispatchMap>
+			<MinorVersion id="1.5.0.7" matches="/^Mozilla.*rv:1\.8\.0\.7.*Gecko.*Firefox.*1\.5\.0\.7.*$/">
+				<DefaultDispatchMap></DefaultDispatchMap>
+				<Platform id="Macintosh_Mac_OS_X_Intel"
+					matches="/^Mozilla\/5\.0 \(Macintosh; U; Intel Mac OS X; en-US; rv:1\.8\.0\.7\) Gecko\/20060909 Firefox\/1\.5\.0\.7$/">
+					<UserAgent><![CDATA[Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.0.7) Gecko/20060909 Firefox/1.5.0.7]]></UserAgent>
+				</Platform>
+			</MinorVersion>
+		</MajorVersion>
+		<MajorVersion id="2.0" matches="/^Mozilla.*rv:1\.8\.1.*Gecko.*2\.0.*$/">
+			<DefaultDispatchMap></DefaultDispatchMap>
+			<MinorVersion id="2.0" matches="/^Mozilla.*rv:1\.8\.1.*Gecko.*2\.0.*$/">
+				<DefaultDispatchMap></DefaultDispatchMap>
+				<Platform id="Linux_Ubuntu_Edgy_Intel" matches="">
+					<UserAgent><![CDATA[Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20060601 BonEcho/2.0 (Ubuntu-edgy)]]></UserAgent>
+				</Platform>
+				<Platform id="Macintosh_Mac_OS_X_Intel" matches="">
+					<UserAgent><![CDATA[Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.0.7) Gecko/20060909 Firefox/1.5.0.7]]></UserAgent>
+				</Platform>
+			</MinorVersion>
+		</MajorVersion>
+	</Client>
+-->
+<!-- Example Safari Client Match
+	<Client id="Apple_Safari" matches="/^.*WebKit.*$/">
+		<DefaultDispatchMap></DefaultDispatchMap>
+		<MajorVersion id="2.0" matches="">
+			<DefaultDispatchMap></DefaultDispatchMap>
+			<MinorVersion id="2.0.4" matches="">
+				<DefaultDispatchMap></DefaultDispatchMap>
+				<Platform id="Macintosh_Mac_OS_X_Intel" matches="">
+					<UserAgent><![CDATA[Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/418.9 (KHTML, like Gecko) Safari/419.3]]></UserAgent>
+				</Platform>
+			</MinorVersion>
+		</MajorVersion>
+	</Client>
+-->
+<!-- Default Client Match -->
+	<Client id="Default" matches="/^.*$/">
+		<DefaultDispatchMap>
+<!-- Example Dispatch Map for jQuery
+			<DispatchMap id="jquery">
+				<![CDATA[Core/eGloo/Javascript/jQuery/Compressed/jquery.js]]>
+			</DispatchMap>
+-->
+		</DefaultDispatchMap>
+	</Client>
+</eGlooJavascript:Clients>

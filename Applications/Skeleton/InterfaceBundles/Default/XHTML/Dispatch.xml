@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eGlooXHTML:Requests xmlns:eGlooXHTML="com.egloo.www/XHTML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<RequestClass id="invite">
+		<Request id="massUserInviteFormBase" path="Administrative">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">MassUserInviteFormBase.tpl</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="externalMainPage">
+		<Request id="extMainViewBase" path="ExternalMainPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ExternalMainPageBaseForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Mozilla_Firefox" matches="/^Mozilla.*Gecko.*Firefox.*$/">
+					<DefaultDispatchMap>ExternalMainPageBaseForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Apple_Safari" matches="/^.*WebKit.*$/">
+					<DefaultDispatchMap>ExternalMainPageBaseForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>ExternalMainPageBaseForm.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+			<Localization countryCode="us" languageCode="" variesOnUserAgent="true">ExternalMainPageBaseForm.tpl</Localization>
+			<Localization countryCode="us" languageCode="en" variesOnUserAgent="true">ExternalMainPageBaseForm.tpl</Localization>
+		</Request>
+		<Request id="extMainViewAbout" path="ExternalMainPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ExternalMainPageAboutForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>ExternalMainPageAboutForm.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+			<Localization countryCode="us" languageCode="" variesOnUserAgent="true">ExternalMainPageAboutForm.tpl</Localization>
+			<Localization countryCode="us" languageCode="en" variesOnUserAgent="true">ExternalMainPageAboutForm.tpl</Localization>
+		</Request>
+		<Request id="extMainJoinForm" path="ExternalMainPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ExternalMainPageJoinForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>ExternalMainPageJoinForm.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+			<Localization countryCode="us" languageCode="" variesOnUserAgent="true">ExternalMainPageJoinForm.tpl</Localization>
+			<Localization countryCode="us" languageCode="en" variesOnUserAgent="true">ExternalMainPageJoinForm.tpl</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="internalMainPage">
+		<Request id="getInternalMainPage" path="InternalMainPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">InternalMainPageContainer.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>InternalMainPageContainer.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="blog">
+		<Request id="viewBlog" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ViewBlog.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>ViewBlog.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="createBlogForm" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">EditBlog.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>EditBlog.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="editBlogForm" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">EditBlog.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>EditBlog.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="commentBlogForm" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">CommentBlog.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>CommentBlog.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="viewChildBlogComment" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">ViewChildBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>ViewChildBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="editBlogComment" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">editBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>editBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="commentBlogForm" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">CommentBlog.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>CommentBlog.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="cmntBlogCmntForm" path="InternalBlogPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">CommentBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>CommentBlogComment.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="imp">
+		<Request id="viewProfile" path="InternalMainPage">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">InternalMainPageContainer.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>InternalMainPageContainer.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="infoBoard">
+		<Request id="Blogs" path="InformationBoard/Blogs">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">InformationBoardBlogsBase.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>InformationBoardBlogsBase.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="Fridge" path="Fridge">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">navi-cubes.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>navi-cubes.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="FridgePics" path="Fridge">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">navi-pics.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>navi-pics.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+		<Request id="searchPeople" path="Search">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">SearchPeopleBase.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>SearchPeopleBase.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="util">
+		<Request id="fileUpload" path="Util">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">FileUploadForm.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>FileUploadForm.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="publicBrowse">
+		<Request id="viewUpdatedBlogProfiles" path="PublicBrowse">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="true">
+				<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+					<DefaultDispatchMap path="Microsoft_Internet_Explorer">UpdatedBlogProfiles.tpl</DefaultDispatchMap>
+				</Client>
+				<Client id="Default" matches="/^.*$/">
+					<DefaultDispatchMap>UpdatedBlogProfiles.tpl</DefaultDispatchMap>
+				</Client>
+			</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="account">
+		<Request id="activateAccount" path="Account">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ActivateAccount.tpl</Localization>
+		</Request>
+		<Request id="viewForgotAccountPasswordForm" path="Account">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ForgotAccountPassword.tpl</Localization>
+		</Request>
+		<Request id="sendPasswordResetConfirmation" path="Account">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">SendPasswordResetConf.tpl</Localization>
+		</Request>
+		<Request id="viewForgotAccountPasswordResetForm" path="Account">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ForgotAccountPasswordReset.tpl</Localization>
+		</Request>
+		<Request id="resetForgottenPassword" path="Account">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ForgotPasswordResetResult.tpl</Localization>
+		</Request>
+	</RequestClass>
+</eGlooXHTML:Requests>
