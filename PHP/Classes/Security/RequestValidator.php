@@ -40,32 +40,17 @@
  */
 final class RequestValidator {
 
-	// TODO We need to link this against a shared memory management
-	// system for all singletons in the application.  We should be
-	// checking for the serialized object in memory and using any
-	// pre-existing singleton.  If none is found, we create it.
-	// The class for managing shared memory must be written (is not
-	// as of this writing)
-
-
 	/**
 	 * Static Constants
 	 */
-	private static $id = "id";
-	private static $class = "class";
-	private static $PROCESSOR_ID = "processorID";
 
 	// Parsers (this needs to be refactored)
-	private static $eglooRequestDefinitionParser = null;
-	private static $xmlRequestDefinitionParser = null;
-	private static $arrayRequestDefinitionParser = null;
-	
-	private static $singletonRequestValidator;
+	private static $requestDefinitionParser;
+	private static $singleton;
 
 	/**
 	 * XML Variables
 	 */
-
 	private $webapp = null;
 	private $uibundle = null;
 
@@ -73,23 +58,27 @@ final class RequestValidator {
 	 * Private constructor because this class is a singleton
 	 */
 	private function __construct( $webapp, $uibundle ) {
-		$this->webapp = $webapp;
-		$this->uibundle = $uibundle;
+		if ( isset(static::$singleton) ) {
+			throw new Exception('Attempted __construct(): An instance of RequestValidator already exists');
+		} else {
+			$this->webapp = $webapp;
+			$this->uibundle = $uibundle;
 
-		// We'll do a conditional check, but for now let's just build an XML parser
-		// self::$xmlRequestDefinitionParser = XMLRequestDefinitionParser::getInstance($this->webapp, $this->uibundle);
-		self::$xmlRequestDefinitionParser = XML2ArrayRequestDefinitionParser::getInstance($this->webapp, $this->uibundle);
+			// We'll do a conditional check, but for now let's just build an XML parser
+			// self::$requestDefinitionParser = XMLRequestDefinitionParser::getInstance($this->webapp, $this->uibundle);
+			self::$requestDefinitionParser = XML2ArrayRequestDefinitionParser::getInstance( $this->webapp, $this->uibundle );
+		}
 	}
 
 	/**
 	 * Returns the singleton of this class
 	 */
     public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
-		if ( !isset(self::$singletonRequestValidator) ) {
-			self::$singletonRequestValidator = new RequestValidator( $webapp, $uibundle );
+		if ( !isset(self::$singleton) ) {
+			self::$singleton = new RequestValidator( $webapp, $uibundle );
 		}
 
-		return self::$singletonRequestValidator;
+		return self::$singleton;
     }
 
 	/**
@@ -102,7 +91,11 @@ final class RequestValidator {
 	 * @return true if this is a valid request, or false if it is not
 	 */
 	public function validateAndProcess($requestInfoBean) {
-		return self::$xmlRequestDefinitionParser->validateAndProcess($requestInfoBean);
+		return self::$requestDefinitionParser->validateAndProcess($requestInfoBean);
+	}
+
+	final private function __clone() {
+		throw new Exception('Attempted __clone(): An instance of RequestValidator already exists');
 	}
 
 }

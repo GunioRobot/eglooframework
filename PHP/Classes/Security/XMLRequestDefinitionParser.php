@@ -40,45 +40,16 @@
  */
 final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 
-	// TODO We need to link this against a shared memory management
-	// system for all singletons in the application.  We should be
-	// checking for the serialized object in memory and using any
-	// pre-existing singleton.  If none is found, we create it.
-	// The class for managing shared memory must be written (is not
-	// as of this writing)
-
 	/**
-	 * Static Constants
+	 * Static Data Members
 	 */
-	private static $id = "id";
-	private static $class = "class";
-	private static $PROCESSOR_ID = "processorID";
-	private static $singletonXMLRequestDefinitionParser;
-	
-	/**
-	 * XML Variables
-	 */
-	private $REQUESTS_XML_LOCATION = '';
-	private $requestNodes = array();
+	protected static $singleton;
 
-	private $webapp = null;
-	private $uibundle = null;
-
-	/**
-	 * Private constructor because this class is a singleton
-	 */
-	private function __construct( $webapp, $uibundle ) {
-		$this->webapp = $webapp;
-		$this->uibundle = $uibundle;
-
-		$this->loadRequestNodes();
-	}
-	
 	/**
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
-	private function loadRequestNodes(){
+	protected function loadRequestNodes(){
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "XMLRequestDefinitionParser: Processing XML", 'Security' );
 
         //read the xml onces... global location to do this... it looks like it does this once per request.
@@ -90,34 +61,13 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
         foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
-            
-            foreach( $requestClass->xpath( 'child::Request' ) as $request ){
-                
+            foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
                 $uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
             //  eGlooLogger::writeLog( eGlooLogger::DEBUG, "adding new unique requestKey: " . $uniqueKey );
                 $this->requestNodes[ $uniqueKey  ] = $request->asXML();
             }
         }
-}
-
-	/**
-	 * returns the singleton of this class
-	 */
-    public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
-        if ( !isset(self::$singletonXMLRequestDefinitionParser) ) {
-            $cacheGateway = CacheGateway::getCacheGateway();
-            
-            if ( (self::$singletonXMLRequestDefinitionParser = $cacheGateway->getObject( 'XMLRequestDefinitionParserNodes', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, "XMLRequestDefinitionParser: Building Singleton", 'Security' );
-                self::$singletonXMLRequestDefinitionParser = new XMLRequestDefinitionParser( $webapp, $uibundle );
-                $cacheGateway->storeObject( 'XMLRequestDefinitionParserNodes', self::$singletonXMLRequestDefinitionParser, '<type>' );
-            } else {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, "XMLRequestDefinitionParser: Singleton pulled from cache", 'Security' );
-            }
-        }
-        
-        return self::$singletonXMLRequestDefinitionParser;
-    }
+	}
 
 	/**
 	 * Only functional method available to the public.  
@@ -144,7 +94,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 		 * Check if there is a request class.  If there isn't, return not setting
 		 * any request processor...
 		 */
-		 if( !isset( $_GET[ self::$class] )){
+		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY] )){
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "request class not set in request", 'Security' );
             // TODO Should we set this here?
             // $requestInfoBean->setRequestClass( 'externalMainPage' );
@@ -156,15 +106,15 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 		 * Check if there is a request id.  If there isn't, return not setting
 		 * any request processor...
 		 */
-		if( !isset( $_GET[ self::$id ] ) ){
+		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "id not set in request", 'Security' );
             // TODO Should we set this here?
             // $requestInfoBean->setRequestClass( 'externalMainPage' );
 			return false;
 		}
 		
-		$requestClass = $_GET[ self::$class];
-		$requestID = $_GET[ self::$id ];
+		$requestClass = $_GET[ self::REQUEST_CLASS_KEY];
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		$requestLookup = $requestClass . $requestID;
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "Incoming request CLASS and ID is: $requestLookup", 'Security' );
 		
@@ -185,7 +135,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 
         $requestNode = simplexml_load_string( $this->requestNodes[ $requestLookup ] );
 
-		$processorID = $requestNode[ self::$PROCESSOR_ID ];
+		$processorID = $requestNode[ self::PROCESSOR_ID_KEY ];
 		$requestInfoBean->setRequestProcessorID( $processorID );
         $requestInfoBean->setRequestClass( $requestClass );
         $requestInfoBean->setRequestID( $requestID );
@@ -227,7 +177,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	 * @return true if all boolean arguments pass the test, false otherwise
 	 */
 	private function validateBooleanArguments( $requestNode, $requestInfoBean ){
-		$requestID = $_GET[ self::$id ];
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 foreach( $requestNode->xpath( 'child::BoolArgument' ) as $boolArg ) {
 			
@@ -298,7 +248,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	 */
 	private function validateVariableArguments( $requestNode, $requestInfoBean ){
 
-		$requestID = $_GET[ self::$id ];
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 
 		 foreach( $requestNode->xpath( 'child::VariableArgument' ) as $variableArg ) {
@@ -378,7 +328,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	 */
 	private function validateSelectArguments( $requestNode, $requestInfoBean ){
 
-		$requestID = $_GET[ self::$id ];
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 
 		 foreach( $requestNode->xpath( 'child::SelectArgument' ) as $selectArg ) {
@@ -470,7 +420,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 		
 		
 		
-		$requestID = $_GET[ self::$id ]; 
+		$requestID = $_GET[ self::REQUEST_ID_KEY ]; 
 	
 		foreach( $requestNode->xpath( 'child::Depend' ) as $dependArg ) {
 			

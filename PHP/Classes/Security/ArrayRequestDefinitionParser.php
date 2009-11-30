@@ -54,7 +54,9 @@ final class ArrayRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	private static $class = "class";
 	private static $PROCESSOR_ID = "processorID";
 	private static $singletonArrayRequestDefinitionParser;
-	
+
+	protected static $definitionParserName = 'ArrayRequestDefinitionParser';
+
 	/**
 	 * XML Variables
 	 */
