@@ -216,7 +216,7 @@ final class eGlooLogger {
 			'[File: ' . $_SERVER['SCRIPT_NAME'] . 
 			' Line: ' . __LINE__ . '] Programmer ' .
 			'Error: Request Handler Threw Unknown Exception' .
-			'\n\t' . $exception->getMessage() );    
+			"\n\t" . $exception->getMessage() );    
 
 	    exit;
 	}
