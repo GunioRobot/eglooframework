@@ -74,7 +74,12 @@ final class RequestValidator {
 
 		$this->loadRequestNodes();	
 	}
-	
+
+	public function initializeInfoBean($requestInfoBean) {
+		// For the future
+		return true;
+	}
+
 	/**
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
