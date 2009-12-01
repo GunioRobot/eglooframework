@@ -82,7 +82,15 @@ final class RequestValidator {
     }
 
 	/**
-	 * Only functional method available to the public.  
+	 * A method to initialize the request info bean
+	 *
+	 * @param $requestInfoBean the info bean to initialize
+	 */
+	public function initializeInfoBean($requestInfoBean) {
+		return self::$requestDefinitionParser->initializeInfoBean($requestInfoBean);
+	}
+
+	/**
 	 * This method ensures that this is valid request, by checking arguments 
 	 * against the expectant values in the request XML object. if it is a valid 
 	 * request, the request processor id needed process this request is populated

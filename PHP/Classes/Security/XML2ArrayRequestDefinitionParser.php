@@ -161,7 +161,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
             }
         }
 
-		unset($this->requestNodes);
+		// unset($this->requestNodes);
+	}
+
+	protected function init() {
+		// static::loadRequestNodes();
 	}
 
 	/**
@@ -180,38 +184,29 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 */
 
 		/**
-		 * Set the web application and UI bundle
-		 */
-		$requestInfoBean->setApplication($this->webapp);
-		$requestInfoBean->setInterfaceBundle($this->uibundle);
-
-		/**
 		 * Check if there is a request class.  If there isn't, return not setting
 		 * any request processor...
 		 */
-		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY] )){
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, "request class not set in request", 'Security' );
-            // TODO Should we set this here?
-            // $requestInfoBean->setRequestClass( 'externalMainPage' );
+		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request class not set in request.  ' . "\n" .
+				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
 			return false;
 		 }
-		 
-		
+
 		/**
 		 * Check if there is a request id.  If there isn't, return not setting
 		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, "id not set in request", 'Security' );
-            // TODO Should we set this here?
-            // $requestInfoBean->setRequestClass( 'externalMainPage' );
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n" .
+				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
 			return false;
 		}
-		
-		$requestClass = $_GET[ self::REQUEST_CLASS_KEY];
+
+		$requestClass = $_GET[ self::REQUEST_CLASS_KEY ];
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		$requestLookup = $requestClass . $requestID;
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "Incoming request CLASS and ID is: $requestLookup", 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Incoming Request Class and Request ID lookup is: "' . $requestLookup . '"', 'Security' );
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 		$requestNode = $cacheGateway->getObject( 'XML2ArrayRequestDefinitionParserNodes::' .
@@ -222,6 +217,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$this->loadRequestNodes();
 			$requestNode = isset($this->requestNodes[ $requestLookup ]) ? $this->requestNodes[ $requestLookup ] : null;
 		}
+
+		// FIX $this->requestNodes will NOT be set here if Memcache is off
 
 		/**
 		 * Ensure that there is a request that corresponds to this request class
@@ -243,8 +240,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$processorID = $requestNode[ self::PROCESSOR_ID_KEY ];
 		$requestInfoBean->setRequestProcessorID( $processorID );
-        $requestInfoBean->setRequestClass( $requestClass );
-        $requestInfoBean->setRequestID( $requestID );
 
 		/**
 		 * Now verify the contents of the request before we hand this off 
@@ -253,13 +248,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		//check boolean arguments
 		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) return false;
-
+		
 		//check variable arguments
 		if( !$this->validateVariableArguments( $requestNode, $requestInfoBean ) ) return false;
-
+		
 		//check select arguments
 		if( !$this->validateSelectArguments( $requestNode, $requestInfoBean ) ) return false;
-
+		
 		//check depend arguments
 		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) return false;
 
@@ -275,14 +270,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
         return true;
 	}
-	
+
 // TODO Change array access to references	
 	/**
 	 * validate boolean arguments
 	 * 
 	 * @return true if all boolean arguments pass the test, false otherwise
 	 */
-	private function validateBooleanArguments( $requestNode, $requestInfoBean ){
+	private function validateBooleanArguments( &$requestNode, $requestInfoBean ){
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 foreach( $requestNode['boolArguments'] as $boolArg ) {

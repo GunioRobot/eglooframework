@@ -79,6 +79,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	 * @return true if this is a valid request, or false if it is not
 	 */
 	public function validateAndProcess($requestInfoBean) {
+		die;
 		/**
 		 * TODO: figure out what really should be done if a request ID or 
 		 * request Class is not set
@@ -144,7 +145,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 		 * Now verify the contents of the request before we hand this off 
 		 * for further processing
 		 */
-
+die;
 		//check boolean arguments
 		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) return false;
 
@@ -166,7 +167,7 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 		 */
 		 $_POST = null;
 		 $_GET = null;
-
+die;
         return true;
 	}
 	

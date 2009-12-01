@@ -66,8 +66,6 @@ abstract class eGlooRequestDefinitionParser {
 		} else {
 			$this->webapp = $webapp;
 			$this->uibundle = $uibundle;
-
-			static::loadRequestNodes();
 		}
 
 		// $this injected; magic method invocation
@@ -80,29 +78,68 @@ abstract class eGlooRequestDefinitionParser {
 	final public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
 		$calledDefinitionParser = get_called_class();
 
-        // return isset(static::$INSTANCE) ? static::$INSTANCE : static::$INSTANCE = new static;
         if ( !isset(static::$singleton) ) {
-			$cacheGateway = CacheGateway::getCacheGateway();
-
-            if ( (static::$singleton = $cacheGateway->getObject( $calledDefinitionParser . 'Singleton', '<type>' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Building Singleton', 'Security' );
+			// $cacheGateway = CacheGateway::getCacheGateway();
+			// 
+			//             if ( (static::$singleton = $cacheGateway->getObject( $calledDefinitionParser . 'Singleton', '<type>' ) ) == null ) {
+			//                 eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Building Singleton', 'Security' );
 
 				// Unset whatever memcache set this to
 				static::$singleton = null;
 
 				static::$singleton = new static( $webapp, $uibundle );
 
-                $cacheGateway->storeObject( $calledDefinitionParser . 'Singleton', static::$singleton, '<type>' );
-            } else {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Singleton pulled from cache', 'Security' );
-            }
+            //     $cacheGateway->storeObject( $calledDefinitionParser . 'Singleton', static::$singleton, '<type>' );
+            // } else {
+            //     eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Singleton pulled from cache', 'Security' );
+            // }
         }
         
         return static::$singleton;
 	}
 
 	/**
-	 * Only functional method available to the public.  
+	 * A method to initialize the request info bean
+	 *
+	 * @param $requestInfoBean the info bean to initialize
+	 */
+	public function initializeInfoBean($requestInfoBean) {
+		$retVal = true;
+
+		/**
+		 * Set the web application and UI bundle
+		 */
+		$requestInfoBean->setApplication($this->webapp);
+		$requestInfoBean->setInterfaceBundle($this->uibundle);
+
+		/**
+		 * Check if there is a request class.  If there isn't, return not setting
+		 * any request processor...
+		 */
+		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request class not set in request.  ' . "\n" .
+				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+			$retVal = false;
+		 }
+
+		/**
+		 * Check if there is a request id.  If there isn't, return not setting
+		 * any request processor...
+		 */
+		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n" .
+				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+			$retVal = false;
+		}
+
+		// Grab the request class and request ID
+        $requestInfoBean->setRequestClass( $_GET[ self::REQUEST_CLASS_KEY ] );
+        $requestInfoBean->setRequestID( $_GET[ self::REQUEST_ID_KEY ] );
+
+		return $retVal;
+	}
+
+	/**
 	 * This method ensures that this is valid request, by checking arguments 
 	 * against the expectant values in the request definition object. if it is a valid 
 	 * request, the request processor id needed process this request is populated
@@ -114,7 +151,9 @@ abstract class eGlooRequestDefinitionParser {
 
 	abstract protected function loadRequestNodes();
 
-	protected function init() {}
+	protected function init() {
+		static::loadRequestNodes();
+	}
 
 	final private function __clone() {
 		throw new Exception('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
