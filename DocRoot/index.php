@@ -25,8 +25,23 @@
  * @version 1.0
  */
 
-// Setup the OOP autoloader
-include( 'PHP/autoload.php' );
+// Check for the minimum PHP version to run the framework
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+	// echo 'You are using PHP version ' . PHP_VERSION . '.  ' .
+	// 	'eGloo requires PHP version 5.3.0 or higher.';
+	// exit;
+	// Setup the OOP autoloader
+	include( 'PHP/bcautoload.php' );
+} else {
+	// Setup the OOP autoloader
+	include( 'PHP/autoload.php' );
+}
+
+// Check for Memcache
+if (!extension_loaded('memcache')) {
+	echo 'Memcache support not detected.';
+	exit;
+}
 
 // Build a request info bean
 $requestInfoBean = new RequestInfoBean();
@@ -35,14 +50,30 @@ $requestInfoBean = new RequestInfoBean();
 $requestValidator =
 	RequestValidator::getInstance( eGlooConfiguration::getApplicationName(), eGlooConfiguration::getUIBundleName() );
 
-// Validate this request and update the info bean accordingly
-$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
-
-// If the request is valid, process it.  Otherwise, log it and die
-if ( $isValidRequest ) {
-	$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
-	$requestProcessor->processRequest();
-} else {
-	// We probably want to do something a bit more... elegant here.  Eventually
-	eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
+	eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Could not initialize request info bean', 'Security' );
+	exit;
 }
+
+// $hardCacheOutputID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::OUTPUT';
+// $hardCacheHeaderID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::HEADER';
+// 
+// $cacheGateway = CacheGateway::getCacheGateway();
+// 
+// if (($output = $cacheGateway->getObject( $hardCacheOutputID, '<type>' )) != null) {
+// 	header( $cacheGateway->getObject( $hardCacheHeaderID, '<type>' ) );
+// 	echo $output;
+// } else {
+	// Validate this request and update the info bean accordingly
+	$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
+
+	// If the request is valid, process it.  Otherwise, log it and die
+	if ( $isValidRequest ) {
+		$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
+		$requestProcessor->processRequest();
+	} else {
+		// We probably want to do something a bit more... elegant here.  Eventually
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+	}
+// }
+
