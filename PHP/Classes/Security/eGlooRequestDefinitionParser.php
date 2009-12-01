@@ -78,23 +78,10 @@ abstract class eGlooRequestDefinitionParser {
 	final public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
 		$calledDefinitionParser = get_called_class();
 
-        if ( !isset(static::$singleton) ) {
-			// $cacheGateway = CacheGateway::getCacheGateway();
-			// 
-			//             if ( (static::$singleton = $cacheGateway->getObject( $calledDefinitionParser . 'Singleton', '<type>' ) ) == null ) {
-			//                 eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Building Singleton', 'Security' );
+		if ( !isset(static::$singleton) ) {
+			static::$singleton = new static( $webapp, $uibundle );
+		}
 
-				// Unset whatever memcache set this to
-				static::$singleton = null;
-
-				static::$singleton = new static( $webapp, $uibundle );
-
-            //     $cacheGateway->storeObject( $calledDefinitionParser . 'Singleton', static::$singleton, '<type>' );
-            // } else {
-            //     eGlooLogger::writeLog( eGlooLogger::DEBUG, $calledDefinitionParser . ': Singleton pulled from cache', 'Security' );
-            // }
-        }
-        
         return static::$singleton;
 	}
 
@@ -149,12 +136,23 @@ abstract class eGlooRequestDefinitionParser {
 	 */
 	abstract public function validateAndProcess($requestInfoBean);
 
+	/**
+	 * A definition parser must include this method to handle loading request
+	 * nodes from the requests definition XML
+	 */
 	abstract protected function loadRequestNodes();
 
+	/**
+	 * This method gets called when a definition parser is instantiated.  It allows
+	 * subclasses to handle their initialization without overriding their parent's constructor
+	 */
 	protected function init() {
 		static::loadRequestNodes();
 	}
 
+	/**
+	 * We disallow object cloning to enforce the singleton pattern
+	 */
 	final private function __clone() {
 		throw new Exception('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
 	}
