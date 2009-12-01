@@ -132,7 +132,13 @@ function eglooAutoload($class_name) {
 						// by using $compare, you will get a qualified file name
 						if ( $compare === $currentNode->getFileName() ) {
 							$realPath = $currentNode->getPathName();
-							break;
+							
+							// Since we're in backwards compatibility mode, we only exit early if we found the
+							// backwards compatibility mode version.  Since we cache lookups, this isn't a problem
+							// for performance after the first run.
+							if ( strpos($currentNode->getFileName(), 'eGlooBC') ) {
+								break;
+							}
 						}
 					}
 				}
