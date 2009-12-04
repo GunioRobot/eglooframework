@@ -44,7 +44,7 @@ if (!extension_loaded('memcache')) {
 }
 
 // Build a request info bean
-$requestInfoBean = new RequestInfoBean();
+$requestInfoBean = RequestInfoBean::getInstance();
 
 // Get a request validator based on the current application and UI bundle
 $requestValidator =
@@ -76,4 +76,5 @@ if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
 	}
 // }
+
 

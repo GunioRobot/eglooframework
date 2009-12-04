@@ -48,13 +48,43 @@ class RequestInfoBean {
 
     private $application = null;
 	private $interfaceBundle = null;
+
+	protected static $singleton;
     
-    public function __construct() {
-        $this->COOKIES = array();
-        $this->FILES = array();
-        $this->GET = array();
-        $this->POST = array();
+    final private function __construct() {
+		$calledDefinitionParser = get_called_class();
+
+		if ( isset(self::$singleton) ) {
+			throw new Exception('Attempted __construct(): An instance of ' . get_called_class() . ' already exists');
+		}
+
+		// $this injected; magic method invocation
+		$this->init();
     } 
+
+	/**
+	 * getInstance()
+	 */
+	final public static function getInstance() {
+		$calledDefinitionParser = get_called_class();
+
+		if ( !isset(self::$singleton) ) {
+			self::$singleton = new RequestInfoBean();
+		}
+
+        return self::$singleton;
+	}
+
+	/**
+	 * This method gets called when a definition parser is instantiated.  It allows
+	 * subclasses to handle their initialization without overriding their parent's constructor
+	 */
+	protected function init() {
+		$this->COOKIES = array();
+		$this->FILES = array();
+		$this->GET = array();
+		$this->POST = array();
+	}
 
     public function issetCOOKIE( $key ) {
         $retVal = false;
@@ -212,8 +242,13 @@ class RequestInfoBean {
 	public function setInterfaceBundle( $interfaceBundle ) {
 		$this->interfaceBundle = $interfaceBundle;
 	}
-	
-}
- 
 
-?>
+	/**
+	 * We disallow object cloning to enforce the singleton pattern
+	 */
+	final private function __clone() {
+		throw new Exception('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
+	}
+
+}
+

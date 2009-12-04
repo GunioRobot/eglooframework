@@ -5,7 +5,7 @@
  * Contains the class definition for the eGlooLogger, a final class for 
  * eGloo framework logging functionality.
  * 
- * Copyright 2008 eGloo, LLC
+ * Copyright 2009 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2008 eGloo, LLC
+ * @copyright 2009 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Utilities
  * @version 1.0
@@ -41,7 +41,7 @@
  * already exist; the logger will not create the required path.
  *
  * @author George Cooper
- * @author Thomas Patrick Read I
+ * @author Thomas Patrick Read I ("Red Tom")
  */
 final class eGlooLogger {
     // Class Constants
@@ -69,19 +69,26 @@ final class eGlooLogger {
 	const LOG_XML		= "xml";	// write to error.xml
 
     // Attributes
-    private static $loggingLevel;
+	private static $loggingLevel;
 	private static $loggingType = "log";	//set to log by default
-    private static $requestID = '';
+	private static $requestID = '';
+	private static $requestDate = null;
 
     // Maps log level bitmasks to the appropriate strings
     private static $logLevelStrings = null;
 
 	public static function initialize( $level, $format ) {
+		self::$requestDate = date( 'Y-m-d' );
+
+		$num = mt_rand ( 0, 0xffffff );
+		self::$requestID = sprintf ( "%06x" , $num );
+		
 		self::setLoggingLevel( $level );
 		self::setLoggingType( $format );
 
-		set_error_handler( array('eGlooLogger', 'default_error_handler') );
-		set_exception_handler( array('eGlooLogger', 'default_exception_handler') );
+		// set_error_handler( array('eGlooLogger', 'default_error_handler') );
+		set_error_handler( array('eGlooLogger', 'global_error_handler') );
+		set_exception_handler( array('eGlooLogger', 'global_exception_handler') );
 
         self::writeLog( self::INFO, 'Logger Started [Mode: DEVELOPMENT]', 'Logger' );
 	}
@@ -89,8 +96,6 @@ final class eGlooLogger {
     public static function setLoggingLevel( $level ) {
         self::$loggingLevel = $level;
 
-        $num = mt_rand ( 0, 0xffffff );
-        self::$requestID = sprintf ( "%06x" , $num );
 
         self::$logLevelStrings = array( self::EMERGENCY => "EMERGENCY", self::ALERT => "ALERT",
                                         self::CRITICAL => "CRITICAL",   self::ERROR => "ERROR",
@@ -105,7 +110,7 @@ final class eGlooLogger {
      * Sets the logging type, either default log file, HTML, or XML
      * NOTE: DO NOT use XML yet.
      * 
-     * @param $type						the type to set, either "log", "html", or "xml"
+     * @param $type		the type to set, either "log", "html", or "xml"
      * @returns NULL
      */
      public static function setLoggingType($type){
@@ -149,11 +154,9 @@ final class eGlooLogger {
                         self::$logLevelStrings[$level] . '] ' . $message;
 			
             $message = wordwrap( $message, 120, "\n\t" );
-            
-            $dateDir = date( 'Y-m-d' );
-            
-            if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . $dateDir ) ) {
-                mkdir( eGlooConfiguration::getLoggingPath() . '/' . $dateDir );
+
+            if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate ) ) {
+                mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate );
             }
             
             //Default, write to error.log
@@ -161,7 +164,7 @@ final class eGlooLogger {
 //            	if ( (file_put_contents( self::$logFilePath, $message . "\n", FILE_APPEND ) ) === false ) {
 //               		throw new eGlooLoggerException( 'Error writing to log' );
 //            	}
-                if ( (file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . $dateDir . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
+                if ( (file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
                     throw new eGlooLoggerException( 'Error writing to log' );
                 }
             }
@@ -211,14 +214,42 @@ final class eGlooLogger {
 	 * @param Exception $exception exception thrown
 	 * @todo Finish commenting
 	 */
-	public static function default_exception_handler( $exception ) {
-		self::writeLog( self::EMERGENCY, 
-			'[File: ' . $_SERVER['SCRIPT_NAME'] . 
-			' Line: ' . __LINE__ . '] Programmer ' .
-			'Error: Request Handler Threw Unknown Exception' .
-			"\n\t" . $exception->getMessage() );    
+	public static function global_exception_handler( $exception ) {
+		$exceptionType = get_class($exception);
 
-	    exit;
+		$trace = time() . '.' . self::$requestID . '.eglootrace';
+
+		if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces' ) ) {
+			mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces' );
+		}
+
+		file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces/' . $trace, $exception->getTraceAsString() );
+
+		$requestInfoBean = RequestInfoBean::getInstance();
+
+		// TODO determine how to handle multiple app logging -- branching folders or unique trace hashes
+		// Should probably be a deployment option
+		self::writeLog( self::EMERGENCY,
+			'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
+			"\n\t" . 'Application: ' . $requestInfoBean->getApplication() .
+			"\n\t" . 'InterfaceBundle: ' . $requestInfoBean->getInterfaceBundle() .
+			"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
+			"\n\t" . 'Exception Message: ' . $exception->getMessage() .
+			"\n\n\t" . 'See trace file "' . $trace . '" for details');
+
+		if (self::DEVELOPMENT & self::$loggingLevel) {
+			echo_r('A fatal error has occurred.  Please see the Default.log file for ' . self::$requestDate . '.  Request ID: ' . self::$requestID );
+		}
+
+		// If we get an error, we should terminate this request immediately
+		if (in_array($exception->getCode(), array('USER ERROR', 'RUN-TIME ERROR'))) {
+			exit;
+		}
+
+	}
+
+	public static function global_error_handler($severity, $message, $filename, $linenum, $context ) {
+	    throw new ErrorException($message, 0, $severity, $filename, $linenum);
 	}
 
 	/**
