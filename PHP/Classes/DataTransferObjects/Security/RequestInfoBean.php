@@ -52,10 +52,8 @@ class RequestInfoBean {
 	protected static $singleton;
     
     final private function __construct() {
-		$calledDefinitionParser = get_called_class();
-
 		if ( isset(self::$singleton) ) {
-			throw new Exception('Attempted __construct(): An instance of ' . get_called_class() . ' already exists');
+			throw new Exception('Attempted __construct(): An instance of RequestInfoBean already exists');
 		}
 
 		// $this injected; magic method invocation
@@ -66,8 +64,6 @@ class RequestInfoBean {
 	 * getInstance()
 	 */
 	final public static function getInstance() {
-		$calledDefinitionParser = get_called_class();
-
 		if ( !isset(self::$singleton) ) {
 			self::$singleton = new RequestInfoBean();
 		}
@@ -247,7 +243,7 @@ class RequestInfoBean {
 	 * We disallow object cloning to enforce the singleton pattern
 	 */
 	final private function __clone() {
-		throw new Exception('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
+		throw new Exception('Attempted __clone(): An instance of RequestInfoBean already exists');
 	}
 
 }
