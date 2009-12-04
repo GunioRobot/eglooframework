@@ -144,7 +144,7 @@ function eglooAutoload($class_name) {
 				}
 
 				// We found a path, let's short-circuit this loop
-				if ( $realPath !== null ) {
+				if ( $realPath !== null && strpos($realPath, 'eGlooBC') ) {
 					break;
 				}
 			}
