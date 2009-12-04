@@ -512,11 +512,24 @@ esac
 echo "Building framework path..."
 echo "\"$FRAMEWORK_PATH\""
 
+mkdir -p "$FRAMEWORK_PATH"
+
 if [ "$USE_SYMLINKS" = "true" ]
 then
+	if [ ! -e "$FRAMEWORK_PATH/Images" ] && [  ! -L "$FRAMEWORK_PATH/Images" ]
+	then
+		# mkdir -p "$FRAMEWORK_PATH"
+	
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+		ln -s "$PARENT_DIRECTORY/Images" "$FRAMEWORK_PATH/Images"
+	else
+		echo "Symlink exists"
+	fi
+
+
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
 	then
-		mkdir -p "$FRAMEWORK_PATH"
+		# mkdir -p "$FRAMEWORK_PATH"
 		
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
@@ -526,12 +539,24 @@ then
 
 	if [ ! -e "$FRAMEWORK_PATH/Templates" ] && [  ! -L "$FRAMEWORK_PATH/Templates" ]
 	then
-		mkdir -p "$FRAMEWORK_PATH"
+		# mkdir -p "$FRAMEWORK_PATH"
 
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/Templates"
 	else
 		echo "Symlink exists"
+	fi
+
+	if [ ! -e "$FRAMEWORK_PATH/XML" ] && [  ! -L "$FRAMEWORK_PATH/XML" ]
+	then
+		# mkdir -p "$DOCUMENT_ROOT"
+	
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+		ln -s "$PARENT_DIRECTORY/XML" "$FRAMEWORK_PATH/XML"
+		# Only do this next bit on Ubuntu... getcwd() is broken
+		# ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
+	else
+		echo "XML Symlink exists"
 	fi
 
 else
@@ -607,9 +632,11 @@ mkdir -p "$DOCUMENT_ROOT"
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
+	# mkdir -p "$DOCUMENT_ROOT"
+
 	if [ ! -e "$DOCUMENT_ROOT/.htaccess" ] && [  ! -L "$DOCUMENT_ROOT/.htaccess" ]
 	then
-		mkdir -p "$DOCUMENT_ROOT/"
+		# mkdir -p "$DOCUMENT_ROOT"
 		$LINKCMD "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	else
 		echo ".htaccess Symlink exists"
@@ -617,7 +644,7 @@ then
 
 	if [ ! -e "$DOCUMENT_ROOT/index.php" ] && [  ! -L "$DOCUMENT_ROOT/index.php" ]
 	then
-		mkdir -p "$DOCUMENT_ROOT/"
+		# mkdir -p "$DOCUMENT_ROOT"
 		$LINKCMD "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
 	else
 		echo "index.php Symlink exists"
@@ -625,7 +652,7 @@ then
 
 	if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
 	then
-		mkdir -p "$DOCUMENT_ROOT"
+		# mkdir -p "$DOCUMENT_ROOT"
 
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/PHP"
@@ -635,65 +662,74 @@ then
 		echo "PHP Symlink exists"
 	fi
 
-	if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
-	then
-		mkdir -p "$DOCUMENT_ROOT"
+	# if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
+	# then
+	# 	# mkdir -p "$DOCUMENT_ROOT"
+	# 
+	# 	# Even if we're using Windows, NTFS does not allow hardlinks to directories
+	# 	ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/Templates"
+	# 	# Only do this next bit on Ubuntu... getcwd() is broken
+	# 	ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
+	# else
+	# 	echo "Templates Symlink exists"
+	# fi
 
-		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/Templates"
-		# Only do this next bit on Ubuntu... getcwd() is broken
-		ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
-	else
-		echo "Templates Symlink exists"
-	fi
-
-	if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
-	then
-		mkdir -p "$DOCUMENT_ROOT"
-
-		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-		ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/XML"
-		# Only do this next bit on Ubuntu... getcwd() is broken
-		ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
-	else
-		echo "XML Symlink exists"
-	fi
+	# if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
+	# then
+	# 	# mkdir -p "$DOCUMENT_ROOT"
+	# 
+	# 	# Even if we're using Windows, NTFS does not allow hardlinks to directories
+	# 	ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/XML"
+	# 	# Only do this next bit on Ubuntu... getcwd() is broken
+	# 	ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
+	# else
+	# 	echo "XML Symlink exists"
+	# fi
 
 else
 	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
-	cp "$PARENT_DIRECTORY/DocRoot/ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 
-	if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
-	then
-		if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
-		then
-			# Even if we're using Windows, NTFS does not allow hardlinks to directories
-			ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_ROOT/PHP"
-		else
-			echo "PHP Symlink exists"
-		fi
+	mkdir -p "$DOCUMENT_ROOT/PHP"
 
-		if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
-		then
-			# Even if we're using Windows, NTFS does not allow hardlinks to directories
-			ln -s "$FRAMEWORK_PATH/Templates" "$DOCUMENT_ROOT/Templates"
-		else
-			echo "Templates Symlink exists"
-		fi
+	cp "$PARENT_DIRECTORY/PHP/autoload.php" "$DOCUMENT_ROOT/PHP/autoload.php"
+	cp "$PARENT_DIRECTORY/PHP/bcautoload.php" "$DOCUMENT_ROOT/PHP/bcautoload.php"
 
-		if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
-		then
-			# Even if we're using Windows, NTFS does not allow hardlinks to directories
-			ln -s "$FRAMEWORK_PATH/XML" "$DOCUMENT_ROOT/XML"
-		else
-			echo "XML Symlink exists"
-		fi
-	else
-		cp -R "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/"
-		cp -R "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/"
-		cp -R "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/"
-	fi
+	mkdir -p "$DOCUMENT_ROOT/PHP/Classes/Utilities"
+
+	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooConfiguration.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooConfiguration.php"
+	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooLogger.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooLogger.php"
+	
+	# if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+	# then
+	# 	if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
+	# 	then
+	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+	# 		# ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_ROOT/PHP"
+	# 	else
+	# 		echo "PHP Symlink exists"
+	# 	fi
+	# 
+	# 	if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
+	# 	then
+	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+	# 		# ln -s "$FRAMEWORK_PATH/Templates" "$DOCUMENT_ROOT/Templates"
+	# 	else
+	# 		echo "Templates Symlink exists"
+	# 	fi
+	# 
+	# 	if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
+	# 	then
+	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+	# 		# ln -s "$FRAMEWORK_PATH/XML" "$DOCUMENT_ROOT/XML"
+	# 	else
+	# 		echo "XML Symlink exists"
+	# 	fi
+	# else
+	# 	cp -R "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/"
+	# 	cp -R "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/"
+	# 	cp -R "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/"
+	# fi
 
 fi
 
