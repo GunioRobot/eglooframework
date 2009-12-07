@@ -238,24 +238,25 @@ final class eGlooLogger {
 			"\n\n\t" . 'See trace file "' . $trace . '" for details');
 
 		if ((self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors()) {
-			echo_r('A fatal error has occurred.  Please see the Default.log file for ' .
-				self::$requestDate . '.  Request ID: ' . self::$requestID );
+			echo_r(
+				"<font size='1'>" .
+				"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
+				"<tr><th align='left' bgcolor='#f57900' colspan='5'>" .
+				"<span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span>&nbsp;" .
+				'A fatal error has occurred.  Please see the Default.log file for ' .
+				self::$requestDate . '.  Request ID: ' . self::$requestID . "&nbsp;</th></tr></table></font>"
+			);
 		}
 
 		if ((self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces()) {
-			echo_r("<font size='1'>" .
-			"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
-			"<tr><th align='left' bgcolor='#f57900' colspan='5'>" .
-			"<span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span>" .
-			$exception->getMessage() . "</th></tr></table></font>" .
-			'<br />' . 'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
-			"<br />" . 'Application: ' . $requestInfoBean->getApplication() .
-			"<br />" . 'InterfaceBundle: ' . $requestInfoBean->getInterfaceBundle() .
-			"<br /><br />" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
-			"<br />" . 'Exception Message: ' . $exception->getMessage() .
-			"<br /><br />" . 'See trace file "' . $trace . '" for details');
-
-			echo_r($exception->getTraceAsString());
+			echo_r(
+				'<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
+				"<br />" . '<b>Application:</b> ' . $requestInfoBean->getApplication() .
+				"<br />" . '<b>InterfaceBundle:</b> ' . $requestInfoBean->getInterfaceBundle() .
+				"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
+				'<br /><br /><b>Backtrace:</b><br />' .
+				$exception->getTraceAsString()
+			);
 		}
 
 		// If we get an error, we should terminate this request immediately
