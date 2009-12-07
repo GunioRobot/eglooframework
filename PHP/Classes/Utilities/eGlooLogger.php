@@ -260,7 +260,7 @@ final class eGlooLogger {
 		}
 
 		// If we get an error, we should terminate this request immediately
-		if (in_array($exception->getCode(), array('USER ERROR', 'RUN-TIME ERROR'))) {
+		if (in_array($exception->getCode(), array(E_USER_ERROR, E_ERROR))) {
 			exit;
 		}
 
