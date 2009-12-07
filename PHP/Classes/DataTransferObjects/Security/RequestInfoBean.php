@@ -51,14 +51,14 @@ class RequestInfoBean {
 
 	protected static $singleton;
     
-    final private function __construct() {
+	final private function __construct() {
 		if ( isset(self::$singleton) ) {
-			throw new Exception('Attempted __construct(): An instance of RequestInfoBean already exists');
+		throw new Exception('Attempted __construct(): An instance of RequestInfoBean already exists');
 		}
 
 		// $this injected; magic method invocation
 		$this->init();
-    } 
+	} 
 
 	/**
 	 * getInstance()
@@ -67,8 +67,8 @@ class RequestInfoBean {
 		if ( !isset(self::$singleton) ) {
 			self::$singleton = new RequestInfoBean();
 		}
-
-        return self::$singleton;
+	
+		return self::$singleton;
 	}
 
 	/**

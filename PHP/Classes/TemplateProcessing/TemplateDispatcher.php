@@ -60,7 +60,9 @@ abstract class TemplateDispatcher {
     /**
      * returns the singleton of this class
      */
-    abstract public static function getInstance( $application, $interfaceBundle );
+	public static function getInstance( $application, $interfaceBundle ) {
+		// Junk
+	}
 
     /**
      * Only functional method available to the public.  

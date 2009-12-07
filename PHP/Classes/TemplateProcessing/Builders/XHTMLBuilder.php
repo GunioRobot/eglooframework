@@ -26,7 +26,7 @@
  * @version 1.0
  */
 
-require( 'PHP/Classes/Caching/Smarty/SmartyMemcacheHandler.php' );
+// require( 'PHP/Classes/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * XHTMLBuilder
@@ -67,7 +67,7 @@ class XHTMLBuilder extends TemplateBuilder {
     }
 
     public function setCacheID( $cacheID, $ttl = 3600 ) {
-        $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
+        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
         $this->templateEngine->caching = 2; // lifetime is per cache
         
         $this->templateEngine->cache_lifetime = $ttl;
@@ -128,10 +128,10 @@ class XHTMLBuilder extends TemplateBuilder {
     }
     
     public function setDispatchPath() {
-        $templateDispatcher =
+		$templateDispatcher =
 			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
+		$this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
 
     public function setTemplateEngine() {
@@ -143,12 +143,30 @@ class XHTMLBuilder extends TemplateBuilder {
 
 		if (isset($this->hardCacheID) && $this->isHardCached) {
 			$retVal = $this->output;
-		} else if (isset($this->hardCacheID) && !$this->isHardCached){
-	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+		} else if (isset($this->hardCacheID) && !$this->isHardCached) {
+			try {
+				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			} catch (ErrorException $e) {
+				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
+					// die_r("here: " . $e->getMessage());
+				}
+
+				throw $e;
+			}
+
 			$cacheGateway = CacheGateway::getCacheGateway();
 			$cacheGateway->storeObject($this->hardCacheID, $retVal, 'string', $this->ttl);
 		} else {
-	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			try {
+				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			} catch (ErrorException $e) {
+				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
+					// die_r("here: " . $e->getMessage());
+				}
+
+				throw $e;
+			}
+
 		}
 
         return $retVal;

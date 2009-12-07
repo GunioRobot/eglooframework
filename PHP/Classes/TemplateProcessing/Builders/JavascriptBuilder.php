@@ -120,11 +120,28 @@ class JavascriptBuilder extends TemplateBuilder {
 		if (isset($this->hardCacheID) && $this->isHardCached) {
 			$retVal = $this->output;
 		} else if (isset($this->hardCacheID) && !$this->isHardCached){
-	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			try {
+				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			} catch (ErrorException $e) {
+				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
+					// die_r("here: " . $e->getMessage());
+				}
+
+				throw $e;
+			}
+
 			$cacheGateway = CacheGateway::getCacheGateway();
 			$cacheGateway->storeObject($this->hardCacheID, $retVal, 'string', $this->ttl);
 		} else {
-	        $retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			try {
+				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+			} catch (ErrorException $e) {
+				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
+					// die_r("here: " . $e->getMessage());
+				}
+
+				throw $e;
+			}
 		}
 
         return $retVal;
