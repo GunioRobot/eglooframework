@@ -27,6 +27,8 @@ final class eGlooConfiguration {
 			'ConfigurationPath'		=> '',
 			'CubesPath'				=> '',
 			'Deployment'			=> '',
+			'DisplayErrors'			=> false,
+			'DisplayTraces'			=> false,
 			'DoctrinePath'			=> '',
 			'DocumentationPath'		=> '',
 			'DocumentRoot'			=> '',
@@ -109,6 +111,37 @@ final class eGlooConfiguration {
 				break;
 		}
 
+		if ( isset($_SERVER['EG_DISPLAY_ERRORS']) ) {
+			switch( $_SERVER['EG_DISPLAY_ERRORS'] ) {
+				case 'ON' :
+					self::$configuration_options['DisplayErrors'] = true;
+					break;
+				case 'OFF' :
+					self::$configuration_options['DisplayErrors'] = false;
+					break;
+				default :
+					break;
+			}
+		} else if ( self::$configuration_options['Deployment'] === self::DEVELOPMENT ) {
+			self::$configuration_options['DisplayErrors'] = true;
+		}
+
+		if ( isset($_SERVER['EG_DISPLAY_TRACES']) ) {
+			switch( $_SERVER['EG_DISPLAY_TRACES'] ) {
+				case 'ON' :
+					self::$configuration_options['DisplayTraces'] = true;
+					break;
+				case 'OFF' :
+					self::$configuration_options['DisplayTraces'] = false;
+					break;
+				default :
+					break;
+			}
+		} else if ( self::$configuration_options['Deployment'] === self::DEVELOPMENT ) {
+			self::$configuration_options['DisplayTraces'] = true;
+		}
+
+
 		foreach (self::$configuration_possible_options as $possible_option_key => $option_default_value) {
 			if (!isset(self::$configuration_options[$possible_option_key])) {
 				self::$configuration_options[$possible_option_key] = $option_default_value;
@@ -157,6 +190,14 @@ final class eGlooConfiguration {
 
     public static function getDeploymentType() {
 		return self::$configuration_options['Deployment'];
+	}
+
+    public static function getDisplayErrors() {
+		return self::$configuration_options['DisplayErrors'];
+	}
+
+    public static function getDisplayTraces() {
+		return self::$configuration_options['DisplayTraces'];
 	}
 
 	public static function getDoctrineIncludePath() {

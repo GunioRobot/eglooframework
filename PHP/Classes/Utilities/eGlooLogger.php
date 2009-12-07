@@ -73,6 +73,7 @@ final class eGlooLogger {
 	private static $loggingType = "log";	//set to log by default
 	private static $requestID = '';
 	private static $requestDate = null;
+	private static $showErrors = false;
 
     // Maps log level bitmasks to the appropriate strings
     private static $logLevelStrings = null;
@@ -86,7 +87,6 @@ final class eGlooLogger {
 		self::setLoggingLevel( $level );
 		self::setLoggingType( $format );
 
-		// set_error_handler( array('eGlooLogger', 'default_error_handler') );
 		set_error_handler( array('eGlooLogger', 'global_error_handler') );
 		set_exception_handler( array('eGlooLogger', 'global_exception_handler') );
 
@@ -237,8 +237,25 @@ final class eGlooLogger {
 			"\n\t" . 'Exception Message: ' . $exception->getMessage() .
 			"\n\n\t" . 'See trace file "' . $trace . '" for details');
 
-		if (self::DEVELOPMENT & self::$loggingLevel) {
-			echo_r('A fatal error has occurred.  Please see the Default.log file for ' . self::$requestDate . '.  Request ID: ' . self::$requestID );
+		if ((self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors()) {
+			echo_r('A fatal error has occurred.  Please see the Default.log file for ' .
+				self::$requestDate . '.  Request ID: ' . self::$requestID );
+		}
+
+		if ((self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces()) {
+			echo_r("<font size='1'>" .
+			"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
+			"<tr><th align='left' bgcolor='#f57900' colspan='5'>" .
+			"<span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span>" .
+			$exception->getMessage() . "</th></tr></table></font>" .
+			'<br />' . 'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
+			"<br />" . 'Application: ' . $requestInfoBean->getApplication() .
+			"<br />" . 'InterfaceBundle: ' . $requestInfoBean->getInterfaceBundle() .
+			"<br /><br />" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
+			"<br />" . 'Exception Message: ' . $exception->getMessage() .
+			"<br /><br />" . 'See trace file "' . $trace . '" for details');
+
+			echo_r($exception->getTraceAsString());
 		}
 
 		// If we get an error, we should terminate this request immediately
