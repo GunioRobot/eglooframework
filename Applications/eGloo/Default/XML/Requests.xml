@@ -86,6 +86,16 @@
 			<VariableArgument id="confirmationID" regex="/^\w{20}$/" required="true" type="post" />
 		</Request>
 	</RequestClass>
+	<RequestClass id="coreeGlooAdministration">
+		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="uninstall" processorID="UninstallApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="upgrade" processorID="UpgradeApplicationCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
 	<RequestClass id="alert">
 		<Request id="createAlert" processorID="CreateAlertRequestProcessor"></Request>
 		<Request id="getAlertList" processorID="AlertListRequestProcessor"></Request>

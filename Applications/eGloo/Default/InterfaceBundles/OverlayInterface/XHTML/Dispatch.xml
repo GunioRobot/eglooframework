@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eGlooXHTML:Requests xmlns:eGlooXHTML="com.egloo.www/XHTML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<RequestClass id="coreeGlooAdministration">
+		<Request id="configure" path="CoreeGlooAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ConfigureApplication.tpl</Localization>
+		</Request>
+		<Request id="install" path="CoreeGlooAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">InstallApplication.tpl</Localization>
+		</Request>
+		<Request id="uninstall" path="CoreeGlooAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UninstallApplication.tpl</Localization>
+		</Request>
+		<Request id="upgrade" path="CoreeGlooAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UpgradeApplication.tpl</Localization>
+		</Request>
+	</RequestClass>
 	<RequestClass id="invite">
 		<Request id="massUserInviteFormBase" path="Administrative">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">MassUserInviteFormBase.tpl</Localization>
