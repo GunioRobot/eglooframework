@@ -79,7 +79,6 @@ final class XMLRequestDefinitionParser extends eGlooRequestDefinitionParser {
 	 * @return true if this is a valid request, or false if it is not
 	 */
 	public function validateAndProcess($requestInfoBean) {
-		die;
 		/**
 		 * TODO: figure out what really should be done if a request ID or 
 		 * request Class is not set
@@ -190,7 +189,7 @@ die;
 					//check if required
 					if( $boolArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
-                            " is not set in GET request with id: " . $requestID, 'Security' );
+                            " is not set in GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 			
@@ -200,7 +199,7 @@ die;
 					$boolVal = $_GET[ (string) $boolArg['id'] ];
 					if( $boolVal != "false" and $boolVal != "true" ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
-                            " is not in correct 'true' or 'false' format in GET request with id: " . $requestID, 'Security' );
+                            " is not in correct 'true' or 'false' format in GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -217,7 +216,7 @@ die;
 					//check if required
 					if( $boolArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
-                            " is not set in post request with id: " . $requestID, 'Security' );
+                            " is not set in post request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 			
@@ -227,7 +226,7 @@ die;
 					$boolVal = $_POST[ (string) $boolArg['id'] ];
 					if( $boolVal != "false" and $boolVal != "true" ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
-                            " is not in correct 'true' or 'false' format in post request with id: " . $requestID, 'Security' );
+                            " is not in correct 'true' or 'false' format in post request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -262,7 +261,7 @@ die;
 					//check if required
 					if( $variableArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
-                            " is not set in GET request with id: " . $requestID, 'Security' );
+                            " is not set in GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 			
@@ -276,7 +275,7 @@ die;
 					if( ! $match ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
                             " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
-                            " in GET request with id: " . $requestID, 'Security' );
+                            " in GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -292,7 +291,7 @@ die;
 					//check if required
 					if( $variableArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
-                            " is not set in post request with id: " . $requestID, 'Security' );
+                            " is not set in post request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -306,7 +305,7 @@ die;
 					if( ! $match ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
                             " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
-                            " in post request with id: " . $requestID, 'Security' );
+                            " in post request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -341,7 +340,7 @@ die;
 					//check if required
 					if( $selectArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
-                            " is not set in GET request with id: " . $requestID, 'Security' );
+                            " is not set in GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 			
@@ -360,7 +359,7 @@ die;
 					if( ! $match ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "GET request with id: " . $requestID, 'Security' );
+                            "GET request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -378,7 +377,7 @@ die;
 					//check if required
 					if( $selectArg['required'] == "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
-                            " is not set in POST request with id: " . $requestID, 'Security' );
+                            " is not set in POST request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 			
@@ -397,7 +396,7 @@ die;
 					if( ! $match ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "POST request with id: " . $requestID, 'Security' );
+                            "POST request with request ID: " . $requestID, 'Security' );
 						return false;
 					}
 
@@ -437,7 +436,7 @@ die;
 							if( !isset( $_GET[ (string) $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the GET request which is not set in request with id: " . $requestID, 'Security' );
+                                    "' on the GET request which is not set in request with request ID: " . $requestID, 'Security' );
 								return false;
 							}
 							
@@ -450,7 +449,7 @@ die;
 							if( !isset( $_POST[ (string) $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with id: " . $requestID, 'Security' );
+                                    "' on the POST request which is not set in request with request ID: " . $requestID, 'Security' );
 								return false;
 							}
 							
@@ -474,7 +473,7 @@ die;
 							if( !isset( $_GET[ (string) $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the GET request which is not set in request with id: " . $requestID, 'Security' );
+                                    "' on the GET request which is not set in request with request ID: " . $requestID, 'Security' );
 								return false;
 							}
 							
@@ -487,7 +486,7 @@ die;
 							if( !isset( $_POST[ (string) $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with id: " . $requestID, 'Security' );
+                                    "' on the POST request which is not set in request with request ID: " . $requestID, 'Security' );
 								return false;
 							}
 

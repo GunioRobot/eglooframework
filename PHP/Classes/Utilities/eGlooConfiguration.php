@@ -48,7 +48,8 @@ final class eGlooConfiguration {
 		self::$configuration_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
 
 		// Grab our environment variables to determine which application and deployment to run
-		self::$configuration_options['ApplicationName']	= $_SERVER['EG_APP'];
+		self::$configuration_options['ApplicationPath']		= $_SERVER['EG_APP'];
+		self::$configuration_options['ApplicationName']		= preg_replace('~([a-zA-Z0-9/ ])+?/([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
 		self::$configuration_options['UIBundleName']		= $_SERVER['EG_UI'];
 
 		switch( $_SERVER['EG_CACHE'] ) {
@@ -155,7 +156,11 @@ final class eGlooConfiguration {
 	public static function getApplicationName() {
 		return self::$configuration_options['ApplicationName'];
 	}
-	
+
+	public static function getApplicationPath() {
+		return self::$configuration_options['ApplicationPath'];
+	}
+
 	public static function getUIBundleName() {
 		return self::$configuration_options['UIBundleName'];
 	}

@@ -6,7 +6,7 @@
 SetEnv EG_ENV DEVELOPMENT
 
 # Application / Bundle Selection
-SetEnv EG_APP eGloo/Default
+SetEnv EG_APP eGloo/Default.gloo
 SetEnv EG_UI  OverlayInterface
 # SetEnv EG_UI  Default
 # SetEnv EG_APP Demos/PetFood
@@ -26,12 +26,19 @@ SetEnv EG_CACHE_MEMCACHE ON
 
 # Database Engine
 SetEnv EG_DB_ENGINE POSTGRESQL
+# SetEnv EG_DB_ENGINE MYSQL
+
+# Errors
+SetEnv EG_DISPLAY_ERRORS ON
+SetEnv EG_DISPLAY_TRACES ON
 
 # Logging
 # SetEnv EG_LOG_LEVEL PRODUCTION
 # SetEnv EG_LOG_LEVEL STAGING
 SetEnv EG_LOG_LEVEL DEVELOPMENT
 SetEnv EG_LOG_FORMAT LOG
+
+SetEnv EG_REWRITE_BASE /egloo
 
 # Rewrite Rules
 <IfModule rewrite_module> 
@@ -62,22 +69,22 @@ RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPG [OR]
 RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpeg [OR]
 RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPEG [OR]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ index.php?class=image&id=rawfile&image_name=$1 [L]
+RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ index.php?eg_requestClass=image&eg_requestID=rawfile&image_name=$1 [L]
 
 # Load 'static' css as dynamic css
-RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?class=css&id=$1 [L]
+RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?eg_requestClass=css&eg_requestID=$1 [L]
 
 # Load 'static' javascript as dynamic javascript
-RewriteRule ^(js|javascript)/(.+)\.js$ index.php?class=javascript&id=$2 [L]
+RewriteRule ^(js|javascript)/(.+)\.js$ index.php?eg_requestClass=javascript&eg_requestID=$2 [L]
 
 # Redirect anything two level deep to a class & id query
 # Pass the remainder as the arguments to that RequestClass / RequestID Pair
 # Make sure the argument list is clean -- allow alphanumerics, dot (.), dash (-)
 # underscore (_) and ampersand (&).  Anything else should cascade down to the
 # last rule
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?class=$1&id=$2 [L]
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?class=$1&id=$2&$3 [L]
-RewriteRule ^$ index.php?class=externalMainPage&id=extMainViewBase [L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?eg_requestClass=$1&eg_requestID=$2 [L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3 [L]
+RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
 
 # The only script we allow direct access to
 # NOTE: Required so that the last rule does not block us on previous redirects

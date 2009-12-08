@@ -48,7 +48,7 @@ $requestInfoBean = RequestInfoBean::getInstance();
 
 // Get a request validator based on the current application and UI bundle
 $requestValidator =
-	RequestValidator::getInstance( eGlooConfiguration::getApplicationName(), eGlooConfiguration::getUIBundleName() );
+	RequestValidator::getInstance( eGlooConfiguration::getApplicationPath(), eGlooConfiguration::getUIBundleName() );
 
 if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
 	eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Could not initialize request info bean', 'Security' );

@@ -21,6 +21,25 @@
 		<title>eGloo Administration | Configure Application</title>
 	</head>
 	<body>
-		
+		<h1>eGloo Application Configuration</h1>
+
+		<div>
+			<form>
+			  <fieldset>
+			    <legend>Active Configuration:</legend>
+					<div><span>Application: </span><!--{$app}--></div>
+					<div><span>Interface Bundle: </span><!--{$bundle}--></div>
+			  </fieldset>
+			</form>
+		</div>
+
+		<div>
+			<span>Available Applications:</span>
+			<select>
+			<!--{foreach from=$applications item=application}-->
+				<option value="<!--{$application.application_name}-->"><!--{$application.application_name}--></option>
+			<!--{/foreach}-->
+			</select>
+		</div>
 	</body>
 </html>

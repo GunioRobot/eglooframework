@@ -59,25 +59,51 @@ class ConfigureApplicationCoreeGlooRequestProcessor extends RequestProcessor {
 
 		$templateDirector->preProcessTemplate();
 
-		$templateVariables['svnVersion'] = '∞';
+		$applications = $this->getApplications(eGlooConfiguration::getApplicationsPath());
+
+		// Sort these by name, case insensitive
+		uksort($applications, 'strnatcasecmp');
+
+
 		$templateVariables['app'] = eGlooConfiguration::getApplicationName();
 		$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
+		$templateVariables['applications'] = $applications;
 
 		$templateDirector->setTemplateVariables( $templateVariables );            
-
+		echo_r(file('.htaccess'));
 		$output = $templateDirector->processTemplate();
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ConfigureApplicationCoreeGlooRequestProcessor: Echoing Response" );
 
 		// TODO move header declarations to a decorator
-		header("Content-type: text/html; charset=UTF-8");
+		// header("Content-type: text/html; charset=UTF-8");
 
 		// TODO buffer output
-		echo $output;        
+		echo $output;
 
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "ConfigureApplicationCoreeGlooRequestProcessor: Exiting processRequest()" );
     }
 
+	private function getApplications( $applicationsPath ) {
+		$paths = array();
+
+		if ( file_exists( $applicationsPath ) && is_dir( $applicationsPath ) ) {
+			$it = new RecursiveDirectoryIterator( $applicationsPath );
+
+			foreach ($it as $i) {
+				if ($i->isLink()) {
+					$paths = array_merge($this->getApplications($i->getRealPath()), $paths);
+				} else if ($i->isDir() && strpos($i->getFilename(), '.gloo')) {
+					$application_name = preg_replace('~\.gloo~', '', $i->getFilename());
+					$paths[$application_name] = array('application_name' => $application_name, 'application_path' => $i->getRealPath());
+				} else if ($i->isDir()) {
+					$paths += (array) $this->getApplications($i->getRealPath());
+				}
+			}
+		}
+
+		return $paths;
+	}
 }
 
 
