@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="com.egloo.www/eGlooConfiguration"
+    targetNamespace="com.egloo.www/eGlooConfiguration">
+
+    <xsi:element name="Configuration" type="tns:Configuration"></xsi:element>
+
+    <xsi:complexType name="Component">
+        <xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="displayName" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="override" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="value" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="required" type="xsi:string" use="required"></xsi:attribute>
+    </xsi:complexType>
+    
+    <xsi:complexType name="Option">
+        <xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="displayName" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="override" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="value" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="required" type="xsi:string" use="required"></xsi:attribute>
+    </xsi:complexType>
+
+    <xsi:complexType name="Configuration">
+        <xsi:sequence>
+            <xsi:element name="Applications" type="tns:Applications"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Caching" type="tns:Cubes"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Cubes" type="tns:Cubes"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Databases" type="tns:Databases"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Documents" type="tns:Documents"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Framework" type="tns:Framework"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Library" type="tns:Library"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Network" type="tns:Network"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="Peering" type="tns:Peering"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+            <xsi:element name="System" type="tns:System"
+                maxOccurs="1" minOccurs="1">
+            </xsi:element>
+        </xsi:sequence>
+        <!--
+        <xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+        <xsi:attribute name="processorID" type="xsi:string" use="required"></xsi:attribute>
+        -->
+    </xsi:complexType>
+
+    <xsi:complexType name="Applications">
+        <!-- Application Configuration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Caching">
+        <!-- Caching Configuration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+    
+    <xsi:complexType name="Cubes">
+        <!-- Cube Configuration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Databases">
+        <!-- Database Configuration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+    
+    <xsi:complexType name="Documents">
+        <!-- eGloo Document Configuration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Framework">
+        <!-- eGloo Framework Configuration Options -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Library">
+        <!-- External Software Support (Smarty, Doctrine, etc) -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Network">
+        <!-- Networking and eGlooHub Integration -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="Peering">
+        <!-- Load Balancing and Peer-based Redundancy -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+    <xsi:complexType name="System">
+        <!-- Host Environment and System Support -->
+        <xsi:sequence>
+            <xsi:element name="Component" type="tns:Component"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+            <xsi:element name="Option" type="tns:Option"
+                maxOccurs="unbounded" minOccurs="0">
+            </xsi:element>
+        </xsi:sequence>
+    </xsi:complexType>
+
+</xsi:schema>

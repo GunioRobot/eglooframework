@@ -31,9 +31,11 @@
  * @package XMLHTTPResponse
  * @version 1.0
  -->
-<tns:Requests xmlns:tns="com.egloo.www/Requests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="com.egloo.www/Requests schemas/Requests.xsd">
-	<RequestClass id="css"></RequestClass>
+<tns:Requests xmlns:tns="com.egloo.www/eGlooRequests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="com.egloo.www/eGlooRequests schemas/eGlooRequests.xsd">
+	<!--
+	  <RequestClass id="css"></RequestClass>
+	-->
 	<RequestClass id="externalMainPage">
 		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor"></Request>
 	</RequestClass>
@@ -43,11 +45,12 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
-	<RequestClass id="javascript">
 <!--
+ <RequestClass id="javascript">
+
 		<Request id="jquery" processorID="JavascriptRequestProcessor">
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
--->
 	</RequestClass>
+-->
 </tns:Requests>
