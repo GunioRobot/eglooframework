@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="com.egloo.www/eGlooRequests"
+	targetNamespace="com.egloo.www/eGlooRequests">
+
+	<xsi:complexType name="Request">
+		<xsi:sequence>
+			<xsi:element name="Requirement" type="xsi:string"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+			<xsi:element name="BoolArgument" type="tns:BoolArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+			<xsi:element name="SelectArgument" type="tns:SelectArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+			<xsi:element name="VariableArgument" type="tns:VariableArgument"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+			<xsi:element name="Depend" type="tns:Depend"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+			<xsi:element name="Decorator" type="tns:Decorator"
+				maxOccurs="unbounded" minOccurs="0">
+			</xsi:element>
+		</xsi:sequence>
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="processorID" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+	<xsi:complexType name="RequestClass">
+		<xsi:sequence>
+			<xsi:element name="Request" type="tns:Request"
+				maxOccurs="unbounded" minOccurs="1">
+			</xsi:element>
+		</xsi:sequence>
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+
+
+	<xsi:complexType name="Depend">
+		<xsi:sequence>
+			<xsi:element name="Child" type="tns:Child" maxOccurs="unbounded"
+				minOccurs="1">
+			</xsi:element>
+
+		</xsi:sequence>
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+
+	<xsi:complexType name="SelectArgument">
+		<xsi:sequence maxOccurs="unbounded" minOccurs="0">
+			<xsi:element name="value" type="tns:value" maxOccurs="unbounded"
+				minOccurs="0">
+			</xsi:element>
+		</xsi:sequence>
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="required" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+	<xsi:complexType name="VariableArgument">
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="regex" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="required" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+	<xsi:complexType name="BoolArgument">
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="required" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+	<xsi:complexType name="Child">
+		<xsi:attribute name="id" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="type" type="xsi:string" use="required"></xsi:attribute>
+	</xsi:complexType>
+
+	<xsi:element name="Requests" type="tns:Requests"></xsi:element>
+
+	<xsi:complexType name="Requests">
+		<xsi:sequence>
+			<xsi:element name="RequestClass" type="tns:RequestClass"
+				maxOccurs="unbounded" minOccurs="1">
+			</xsi:element>
+		</xsi:sequence>
+	</xsi:complexType>
+
+
+
+
+	<xsi:simpleType name="value">
+		<xsi:restriction base="xsi:string"></xsi:restriction>
+	</xsi:simpleType>
+
+	<xsi:complexType name="Decorator">
+		<xsi:attribute name="decoratorID" type="xsi:string" use="required"></xsi:attribute>
+		<xsi:attribute name="order" type="xsi:int" use="required"></xsi:attribute>
+	</xsi:complexType>
+</xsi:schema>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="com.egloo.eGloo.Cube" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eglooCube="com.egloo.eGloo.Cube">
+
+    <xs:element name="Cube" type="eglooCube:Cube">
+		<xs:key name="resourceKey">
+	    	<xs:selector xpath="eglooCube:Resource"></xs:selector>
+	    	<xs:field xpath="@eglooCube:resourceID"></xs:field>
+	    </xs:key>
+    </xs:element>
+
+    <xs:element name="Resources" type="eglooCube:Resources"/>
+
+    <xs:complexType name="Cube">
+        <xs:sequence>
+                <xs:element name="Resources" type="eglooCube:Resources" maxOccurs="1" minOccurs="1"></xs:element>
+                <xs:element name="Triggers" type="eglooCube:Triggers" maxOccurs="1" minOccurs="1"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="Version" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}[abf]{0,1}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="CubeID" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <!-- gTLD (Generic Top-Level Domain) -->
+                    <xs:pattern value="(biz|com|edu|gov|info|net|org)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) A-E -->
+                    <xs:pattern value="(au|bm|ca|co.uk|cn|cz|de|dk|es)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) E-H -->
+                    <xs:pattern value="(eu|fi|fr|ge|gf|gr|gu|hk|hn|hr)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) H-K -->
+                    <xs:pattern value="(hu|id|ie|il|in|is|it|jp|kr|ky)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) L-P -->
+                    <xs:pattern value="(la|lt|lu|lv|ma|mc|mx|nz|pa|pe)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) P-S -->
+                    <xs:pattern value="(pf|ph|pl|pr|pt|qa|ro|ru|sa|se)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) S-U -->
+                    <xs:pattern value="(sg|si|sk|th|tr|tw|ua|uk|us|uy)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                    <!-- ccTLD (Country Code Top-Level Domain) U-Z -->
+                    <xs:pattern value="(uz|va|ve|vg|vi|vn)\.[\w-]{1,63}\.eGlooCubes\.[\w-_]{1,25}"/>
+                </xs:restriction>            
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="CubeName" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[\w-_.\s]{1,25}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>        
+    </xs:complexType>
+
+    <xs:complexType name="Resource">
+        <xs:attribute name="resourceID" type="eglooCube:resourceID" use="required"></xs:attribute>
+        <xs:attribute name="resourcePath" type="eglooCube:resourcePath" use="required"></xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="Resources">
+    	<xs:sequence>
+    		<xs:element name="ContentViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="ContentViewMaxResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentViewMax"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="ContentViewMinResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentViewMin"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="ContentDraggingViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentDraggingView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="PreferencesViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="preferencesView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="PermissionsViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="permissionsView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="ContentLoadingViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentLoadingView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="CubeCreateViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="cubeCreateView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="CubeDestroyViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="cubeDestroyView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+    		<xs:element name="ContentDropViewResource" maxOccurs="1" minOccurs="1">
+    			<xs:complexType>
+    				<xs:complexContent>
+						<xs:restriction base="eglooCube:Resource">
+							<xs:attribute name="resourceID" use="required">
+								<xs:simpleType>
+									<xs:restriction base="eglooCube:resourceID">
+										<xs:enumeration value="contentDropView"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="resourcePath" type="eglooCube:xhtmlResourcePath" use="required"/>
+						</xs:restriction>
+	    			</xs:complexContent>
+    			</xs:complexType>
+    		</xs:element>
+            <xs:element name="CubeInitTrigger" maxOccurs="1" minOccurs="1">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:restriction base="eglooCube:Resource">
+                            <xs:attribute name="resourceID" use="required">
+                                <xs:simpleType>
+                                    <xs:restriction base="eglooCube:resourceID">
+                                        <xs:enumeration value="cubeInitTrigger"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                            <xs:attribute name="resourcePath" type="eglooCube:javascriptResourcePath" use="required"/>
+                        </xs:restriction>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+	   	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Trigger">
+        <xs:attribute name="triggerAction" type="eglooCube:triggerAction" use="required"></xs:attribute>
+        <xs:attribute name="triggerID" type="eglooCube:triggerID" use="required"></xs:attribute>
+        <xs:attribute name="triggerSource" type="eglooCube:triggerSource" use="required"></xs:attribute>
+        <xs:attribute name="triggerTag" type="eglooCube:triggerTag" use="required"></xs:attribute>
+        <xs:attribute name="triggerType" type="eglooCube:triggerType" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="Triggers">
+        <xs:sequence>
+            <xs:element name="CubeInitTrigger" maxOccurs="1" minOccurs="1">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:restriction base="eglooCube:Trigger">
+                            <xs:attribute name="triggerAction" use="required">
+                                <xs:simpleType>
+                                    <xs:restriction base="eglooCube:triggerAction">
+                                        <xs:enumeration value="init"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                            
+                        </xs:restriction>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:simpleType name="Copyright">
+	   <xs:restriction base="xs:string">
+	       <xs:pattern value=""/>
+	   </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Creator">
+       <xs:restriction base="xs:string">
+           <xs:pattern value=""/>
+       </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:simpleType name="Email">
+	   <xs:restriction base="xs:string">
+	       <xs:pattern value=""/>
+	   </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:simpleType name="Phone">
+	   <xs:restriction base="xs:string">
+	       <xs:pattern value=""/>
+	   </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:simpleType name="Website">
+	   <xs:restriction base="xs:string">
+	       <xs:pattern value=""/>
+	   </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="resourceID">
+    	<xs:restriction base="xs:string">
+    			<xs:enumeration value="contentView"/>
+    			<xs:enumeration value="contentViewMax"/>
+    			<xs:enumeration value="contentViewMin"/>
+    			<xs:enumeration value="contentDraggingView"/>
+    			<xs:enumeration value="preferencesView"/>
+    			<xs:enumeration value="permissionsView"/>
+    			<xs:enumeration value="contentLoadingView"/>
+    			<xs:enumeration value="cubeCreateView"/>
+    			<xs:enumeration value="cubeDestroyView"/>
+    			<xs:enumeration value="contentDropView"/>
+                <xs:enumeration value="cubeInitTrigger"/>
+		</xs:restriction>
+   	</xs:simpleType>
+   	
+    <xs:simpleType name="resourcePath">
+    	<xs:restriction base="xs:string">
+			<xs:pattern value="css/\w+\.css"/>
+			<xs:pattern value="css/\w+/\w+\.css"/>
+			<xs:pattern value="image/\w+\.(jpg|gif|png|tiff)"/>
+			<xs:pattern value="image/\w+/\w+\.(jpg|gif|png|tiff)"/>
+			<xs:pattern value="javascript/\w+\.js"/>
+			<xs:pattern value="javascript/\w+/\w+\.js"/>
+			<xs:pattern value="xhtml/\w+\.xhtml"/>
+			<xs:pattern value="xhtml/\w+/\w+\.xhtml"/>				
+			<xs:pattern value="xml/\w+\.xml"/>
+            <xs:pattern value="xml/\w+/\w+\.xml"/>
+			<xs:pattern value="xsl/\w+\.xsl"/>
+			<xs:pattern value="xsl/\w+/\w+\.xsl"/>
+    	</xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cssResourcePath">
+        <xs:restriction base="eglooCube:resourcePath">
+			<xs:pattern value="css/\w+\.css"/>
+			<xs:pattern value="css/\w+/\w+\.css"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="imageResourcePath">
+        <xs:restriction base="eglooCube:resourcePath">
+            <xs:pattern value="image/\w+\.(jpg|gif|png|tiff)"/>
+            <xs:pattern value="image/\w+/\w+\.(jpg|gif|png|tiff)"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="javascriptResourcePath">
+        <xs:restriction base="eglooCube:resourcePath">
+			<xs:pattern value="javascript/\w+\.js"/>
+			<xs:pattern value="javascript/\w+/\w+\.js"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="xhtmlResourcePath">
+    	<xs:restriction base="eglooCube:resourcePath">
+    		<xs:pattern value="xhtml/\w+\.xhtml"></xs:pattern>
+    		<xs:pattern value="xhtml/\w+/\w+\.xhtml"></xs:pattern>
+    	</xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="xmlResourcePath">
+        <xs:restriction base="eglooCube:resourcePath">
+			<xs:pattern value="xml/\w+\.xml"/>
+            <xs:pattern value="xml/\w+/\w+\.xml"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="xslResourcePath">
+        <xs:restriction base="eglooCube:resourcePath">
+			<xs:pattern value="xsl/\w+\.xsl"/>
+			<xs:pattern value="xsl/\w+/\w+\.xsl"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerAction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="init"/>
+            <xs:enumeration value="loadContent"/>
+            <xs:enumeration value="loadPreferences"/>
+            <xs:enumeration value="submitContent"/>
+            <xs:enumeration value="submitPreferences"/>
+            <xs:enumeration value="updateContent"/>
+          <!-- <xs:pattern value="patterns and enums can be mixed"/> -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerID">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="init"/>
+            <xs:enumeration value="loadContent"/>
+            <xs:enumeration value="loadPreferences"/>
+            <xs:enumeration value="submitContent"/>
+            <xs:enumeration value="submitPreferences"/>
+            <xs:enumeration value="updateContent"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerSource">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerTag">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="div"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="triggerType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="javascript"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

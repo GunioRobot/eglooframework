@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="com.egloo.db.queries" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:DBQueries="com.egloo.db.queries">
+
+
+	<xs:element name="Queries" type="DBQueries:Queries"></xs:element>
+
+	<xs:complexType name="Queries">
+		<xs:sequence>
+			<xs:element name="PLSelect" type="DBQueries:PLSelect" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PLSelect">
+		<xs:sequence>
+			<xs:element name="PLInputVariable" type="DBQueries:PLInputVariable" maxOccurs="unbounded" minOccurs="0"></xs:element>
+			<xs:element name="PLOutputVariable" type="DBQueries:PLOutputVariable" maxOccurs="unbounded" minOccurs="0"></xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="multipleResults" type="xs:boolean" use="required"></xs:attribute>
+		<xs:attribute name="functionName" type="xs:string" use="required"></xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="PLInputVariable">
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="order" type="xs:int" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="PLOutputVariable">
+    	<xs:attribute name="name" type="xs:string" use="required"></xs:attribute>
+    	<xs:attribute name="type" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+</xs:schema>
