@@ -36,8 +36,7 @@
 abstract class RequestProcessorDecorator extends RequestProcessor {
 
    	private $childRequestProcessor = null;
-   	
-   	
+
    	public function setChildRequestProcessor( $requestProcessor ){
    		$this->childRequestProcessor = $requestProcessor;
    	}
