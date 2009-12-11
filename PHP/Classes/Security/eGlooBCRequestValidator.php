@@ -51,8 +51,8 @@ final class RequestValidator {
 	/**
 	 * Static Constants
 	 */
-	private static $id = "id";
-	private static $class = "class";
+	private static $id = "eg_requestID";
+	private static $class = "eg_requestClass";
 	private static $PROCESSOR_ID = "processorID";
 	private static $singletonRequestValidator;
 	
