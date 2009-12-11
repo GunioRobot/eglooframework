@@ -62,9 +62,14 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/Images';
 
 		if ( file_exists( $app_path . '/' . $file_name ) ) {
-			$info = new finfo( FILEINFO_MIME, '/usr/share/file/magic' );
-			$mimeType = $info->file( $app_path . '/' . $file_name );
+			$imageMIMEType = '';
 
+			try {
+				$info = new finfo( FILEINFO_MIME, '/usr/share/file/magic' );
+				$imageMIMEType = $info->file( $app_path . '/' . $file_name );
+			} catch (Exception $e) {
+				// Just ignore this for now
+			}
 
 /*
 Date	Fri, 20 Nov 2009 16:08:31 GMT
