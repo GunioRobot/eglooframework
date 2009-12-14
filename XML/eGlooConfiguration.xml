@@ -67,6 +67,7 @@
         <Option id="" displayName="" override="" type="" value="" required=""/>
     </Peering>
     <System>
+        <!-- Components -->
         <Component id="ApplicationsPath" displayName="Applications Path" override="false" type="path" value="" required="true"/>
         <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
         <Component id="CompiledTemplatesPath" displayName="Compiled Templates Path" override="false" type="path" value="" required="true"/>
@@ -79,48 +80,46 @@
         <Component id="LoggingPath" displayName="Logging Path" override="false" type="path" value="" required="true"/>
         <Component id="SmartyPath" displayName="Smarty Path" override="false" type="path" value="" required="true"/>
 
-        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="DEVELOPMENT" required="true"/>
-        <Option id="egEnvironment" displayName="eGloo Environment" override="true" type="enum" value="DEVELOPMENT" required="true"/>
-        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="DEVELOPMENT" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
-        
-        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
-            
-            # Application / Bundle Selection
-            SetEnv EG_APP eGloo/Default.gloo
-            SetEnv EG_UI  OverlayInterface
-            # SetEnv EG_UI  Default
-            # SetEnv EG_APP Demos/PetFood
-            # SetEnv EG_UI Default
-            # SetEnv EG_APP Demos/BookResale
-            # SetEnv EG_UI Default
-            # SetEnv EG_APP Demos/DogOwners
-            # SetEnv EG_UI Default
-            # SetEnv EG_APP Demos/ImageHosting
-            # SetEnv EG_UI Default
-            # SetEnv EG_APP Incentient/Client
-            # SetEnv EG_UI Default
-            
-            # Caching
-            
-            # Database Engine
-            SetEnv EG_DB_ENGINE POSTGRESQL
-            # SetEnv EG_DB_ENGINE MYSQL
-            
-            # Errors
-            SetEnv EG_DISPLAY_ERRORS ON
-            SetEnv EG_DISPLAY_TRACES ON
-            
-            # Logging
-            # SetEnv EG_LOG_LEVEL PRODUCTION
-            # SetEnv EG_LOG_LEVEL STAGING
-            SetEnv EG_LOG_LEVEL DEVELOPMENT
-            SetEnv EG_LOG_FORMAT LOG
-            
-            SetEnv EG_REWRITE_BASE /egloo
-            
+        <!-- Application / Bundle Selection -->
+        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="eGloo/Default.gloo" required="true"/>
+        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="OverlayInterface" required="true"/>
+
+        <!--
+        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/PetFood.gloo" required="true"/>
+        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
+        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/BookResale.gloo" required="true"/>
+        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
+        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/DogOwners.gloo" required="true"/>
+        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
+        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/ImageHosting.gloo" required="true"/>
+        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
         -->
         
+        <!-- Database Engine -->
+        <Option id="egDatabaseEngine" displayName="eGloo Database Engine" override="true" type="enum" value="POSTGRESQL" required="true"/>
+        <!-- <Option id="egDatabaseEngine" displayName="eGloo Database Engine" override="true" type="enum" value="MYSQL" required="true"/> -->
+
+        <!-- Deployment -->
+        <Option id="egEnvironment" displayName="eGloo Environment" override="true" type="enum" value="DEVELOPMENT" required="true"/>
+        
+        <!-- Errors -->
+        <Option id="egDisplayErrors" displayName="Display Errors" override="true" type="bool" value="TRUE" required="true"/>
+        <Option id="egDisplayTraces" displayName="Display Error Traces" override="true" type="bool" value="TRUE" required="true"/>
+        
+        <!-- Logging -->
+        <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="PRODUCTION" required="true"/>
+        
+        <!--
+        <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="STAGING" required=""/>
+        <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="DEVELOPMENT" required=""/>
+        -->
+
+        <Option id="egLogFormat" displayName="eGloo Log File Format" override="true" type="enum" value="LOG" required="true"/>
+
+        <!-- Rewrite Options /  -->
+        <Option id="egRewriteBase" displayName="eGloo Rewrite Base" override="true" type="string" value="/egloo" required="true"/>
+
+        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
+        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>        
     </System>
 </tns:Configuration>
