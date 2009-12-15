@@ -1183,6 +1183,22 @@ fi
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
+	mv "Config.xml" "$PARENT_DIRECTORY/DocRoot/Config.xml"
+
+	if [ ! -e "$DOCUMENT_ROOT/Config.xml" ] && [  ! -L "$DOCUMENT_ROOT/Config.xml" ]
+	then
+		# Windows doesn't seem to handle permissions sanely
+		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
+		then
+			chmod -R 777 "$DOCUMENT_ROOT"
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/Config.xml" "$DOCUMENT_ROOT/Config.xml"
+		else
+			$LINKCMD "$PARENT_DIRECTORY/DocRoot/Config.xml" "$DOCUMENT_ROOT/Config.xml"
+		fi
+	else
+		echo "Config.xml Symlink exists"
+	fi
+
 	mv "ConfigCache.php" "$PARENT_DIRECTORY/DocRoot/ConfigCache.php"
 
 	if [ ! -e "$DOCUMENT_ROOT/ConfigCache.php" ] && [  ! -L "$DOCUMENT_ROOT/ConfigCache.php" ]
@@ -1199,6 +1215,7 @@ then
 		echo "ConfigCache Symlink exists"
 	fi
 else
+	mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
 	mv "ConfigCache.php" "$DOCUMENT_ROOT/ConfigCache.php"
 fi
 
@@ -1207,6 +1224,7 @@ fi
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chmod -R 755 "$DOCUMENT_ROOT"
+	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/Config.xml"
 	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/ConfigCache.php"
 else
 	echo "Ignoring permissions for Document Root for Windows"
