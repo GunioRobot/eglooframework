@@ -48,15 +48,15 @@ class XHTMLDispatcher extends TemplateDispatcher {
     private $dispatchNodes = array();
 
 
-    private $application = null;
-    private $interfaceBundle = null;
+	private $application = null;
+	private $interfaceBundle = null;
 
     /**
      * Private constructor because this class is a singleton
      */
     private function __construct( $application, $interfaceBundle ) {
-        $this->application = $application;
-        $this->interfaceBundle = $interfaceBundle;
+		$this->application = $application;
+		$this->interfaceBundle = $interfaceBundle;
         
 		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
         $this->loadDispatchNodes();  
