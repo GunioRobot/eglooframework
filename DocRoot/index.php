@@ -55,15 +55,15 @@ if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
 	exit;
 }
 
-// $hardCacheOutputID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::OUTPUT';
-// $hardCacheHeaderID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::HEADER';
-// 
-// $cacheGateway = CacheGateway::getCacheGateway();
-// 
-// if (($output = $cacheGateway->getObject( $hardCacheOutputID, '<type>' )) != null) {
-// 	header( $cacheGateway->getObject( $hardCacheHeaderID, '<type>' ) );
-// 	echo $output;
-// } else {
+$hardCacheOutputID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::OUTPUT';
+$hardCacheHeaderID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::HEADER';
+
+$cacheGateway = CacheGateway::getCacheGateway();
+
+if (($output = $cacheGateway->getObject( $hardCacheOutputID, '<type>' )) != null) {
+	header( $cacheGateway->getObject( $hardCacheHeaderID, '<type>' ) );
+	echo $output;
+} else {
 	// Validate this request and update the info bean accordingly
 	$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
 
@@ -75,6 +75,6 @@ if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
 		// We probably want to do something a bit more... elegant here.  Eventually
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
 	}
-// }
+}
 
 

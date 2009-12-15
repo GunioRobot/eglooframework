@@ -88,8 +88,17 @@ class JavascriptRequestProcessor extends RequestProcessor {
         
         // TODO move header declarations to a decorator
         // TODO find out if we need to set a charset here
-        header('Content-type: text/javascript');        
-        
+
+		$hardCacheOutputID = 'HardCache::' . $this->requestInfoBean->getRequestClass() . '::' . $this->requestInfoBean->getRequestID() . '::OUTPUT';
+		$hardCacheHeaderID = 'HardCache::' . $this->requestInfoBean->getRequestClass() . '::' . $this->requestInfoBean->getRequestID() . '::HEADER';
+
+		$cacheGateway = CacheGateway::getCacheGateway();
+
+		$cacheGateway->storeObject( $hardCacheOutputID, $output, '<type>' );
+		$cacheGateway->storeObject( $hardCacheHeaderID, 'Content-type: text/javascript', '<type>' );
+
+        header('Content-type: text/javascript');
+
         // TODO buffer output
         echo $output;        
     }
