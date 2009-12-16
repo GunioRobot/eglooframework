@@ -98,6 +98,8 @@ function eglooAutoload($class_name) {
 	// interface. Put the &CLASS wherever the $class_name might appear
 	static $permitted_formats = array("&CLASS.php");
 
+	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
+
 	// Set the first time autoload is called
 	if ( NULL === $possible_path ) {
 		// These are the default paths for this application
@@ -121,7 +123,15 @@ function eglooAutoload($class_name) {
 	$possibility = str_replace( "&CLASS", $class_name, $permitted_formats );
 	$realPath = null;
 
+	if ($sanityCheckClassLoading) {
+		$instances = array();
+	}
+
 	foreach ( $possible_path as $directory ) {
+		if ($sanityCheckClassLoading) {
+			$instances[$directory] = array();
+		}
+
 		if ( file_exists( $directory ) && is_dir( $directory ) ) {
 			$it = new RecursiveDirectoryIterator( $directory );
 
@@ -132,19 +142,58 @@ function eglooAutoload($class_name) {
 						// by using $compare, you will get a qualified file name
 						if ( $compare === $currentNode->getFileName() ) {
 							$realPath = $currentNode->getPathName();
-							break;
+							if ($sanityCheckClassLoading && !in_array($realPath, $instances[$directory])) {
+								$instances[$directory][] = $realPath;
+							} else {
+								break;
+							}
 						}
 					}
 				}
 
-				// We found a path, let's short-circuit this loop
-				if ( $realPath !== null ) {
+				// We found a path and if we're not doing sanity checking, let's short-circuit this loop
+				if ( $realPath !== null && !$sanityCheckClassLoading) {
 					break;
 				}
+
 			}
 
-			// No path was found, so let's cache that result for future requests
+			// Path was found, so let's cache that result for future requests
 			if ( $realPath !== null ) {
+				if ($sanityCheckClassLoading) {
+					// echo_r($instances);
+					foreach( $instances as $directory => $instancePathSet) {
+						$noConflicts = true;
+				
+						if (count($instancePathSet) > 1) {
+							$noConflicts = false;
+							$errorMessage = 'Duplicate class "' . $class_name . '" found.';
+				
+							foreach($instances as $classPath => $classPathInstances) {
+								foreach($classPathInstances as $instance) {
+									$errorMessage .= "\n\tClass Path: " . $classPath . "\n\tInstance: " . $instance . "\n";
+								}
+							}
+				
+							// try {
+							// 	throw new ErrorException($errorMessage);
+							// } catch (ErrorException $e) {
+							// 	// echo_r($e->getMessage());
+							// 	eGlooLogger::global_exception_handler($e);
+							// 	exit;
+							// }
+
+							$errorException = new ErrorException($errorMessage);
+
+							eGlooLogger::global_exception_handler($errorException);
+							exit;
+
+							// }
+
+						}
+					}
+				}
+
 				include( $realPath );
 				$autoload_hash[$class_name] = realpath( $realPath );
 				$cacheGateway->storeObject( 'autoload_hash', $autoload_hash, 'array' );

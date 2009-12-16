@@ -220,19 +220,24 @@ final class eGlooLogger {
 		$trace = time() . '.' . self::$requestID . '.eglootrace';
 
 		if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces' ) ) {
-			mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces' );
+			try {
+				$mode = 0777;
+				$recursive = true;
+
+				mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces', $mode, $recursive );
+			} catch (Exception $e){
+				echo_r($e->getMessage());
+			}
 		}
 
 		file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces/' . $trace, $exception->getTraceAsString() );
-
-		$requestInfoBean = RequestInfoBean::getInstance();
 
 		// TODO determine how to handle multiple app logging -- branching folders or unique trace hashes
 		// Should probably be a deployment option
 		self::writeLog( self::EMERGENCY,
 			'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
-			"\n\t" . 'Application: ' . $requestInfoBean->getApplication() .
-			"\n\t" . 'InterfaceBundle: ' . $requestInfoBean->getInterfaceBundle() .
+			"\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
+			"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
 			"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
 			"\n\t" . 'Exception Message: ' . $exception->getMessage() .
 			"\n\n\t" . 'See trace file "' . $trace . '" for details');
@@ -251,8 +256,8 @@ final class eGlooLogger {
 		if ((self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces()) {
 			echo_r(
 				'<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
-				"<br />" . '<b>Application:</b> ' . $requestInfoBean->getApplication() .
-				"<br />" . '<b>InterfaceBundle:</b> ' . $requestInfoBean->getInterfaceBundle() .
+				"<br />" . '<b>Application:</b> ' . eGlooConfiguration::getApplicationName() .
+				"<br />" . '<b>InterfaceBundle:</b> ' . eGlooConfiguration::getUIBundleName() .
 				"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
 				'<br /><br /><b>Backtrace:</b><br />' .
 				$exception->getTraceAsString()

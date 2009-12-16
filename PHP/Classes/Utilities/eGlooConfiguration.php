@@ -21,27 +21,28 @@ final class eGlooConfiguration {
 
 	// Configuration Attribute Choices
 	private static $configuration_possible_options = array(
-			'ApplicationsPath'		=> '',
-			'CachePath' 			=> '',
-			'CompiledTemplatesPath'	=> '',
-			'ConfigurationPath'		=> '',
-			'CubesPath'				=> '',
-			'Deployment'			=> '',
-			'DisplayErrors'			=> false,
-			'DisplayTraces'			=> false,
-			'DoctrinePath'			=> '',
-			'DocumentationPath'		=> '',
-			'DocumentRoot'			=> '',
-			'FrameworkRootPath'		=> '',
-			'LoggingPath'			=> '',
-			'SmartyPath'			=> '',
-			'UseCache'				=> true,
-			'UseFileCache'			=> false,
-			'UseMemcache'			=> false,
-			'UseAPCCache'			=> true,
-			'UseDoctrine'			=> false,
-			'UseSmarty'				=> true,
-			'UsePostgreSQL'			=> true,
+			'ApplicationsPath'			=> '',
+			'CachePath' 				=> '',
+			'CompiledTemplatesPath'		=> '',
+			'ConfigurationPath'			=> '',
+			'CubesPath'					=> '',
+			'Deployment'				=> '',
+			'DisplayErrors'				=> false,
+			'DisplayTraces'				=> false,
+			'DoctrinePath'				=> '',
+			'DocumentationPath'			=> '',
+			'DocumentRoot'				=> '',
+			'FrameworkRootPath'			=> '',
+			'LoggingPath'				=> '',
+			'SmartyPath'				=> '',
+			'UseCache'					=> true,
+			'UseFileCache'				=> false,
+			'UseMemcache'				=> false,
+			'UseAPCCache'				=> true,
+			'UseDoctrine'				=> false,
+			'UseSmarty'					=> true,
+			'UsePostgreSQL'				=> true,
+			'SanityCheckClassLoading'	=> false,
 			);
 
 	public static function loadWebRootConfig( $overwrite = true ) {
@@ -84,6 +85,7 @@ final class eGlooConfiguration {
 		switch( $_SERVER['EG_ENV'] ) {
 			case 'DEVELOPMENT' :
 				$webRootConfigOptions['Deployment'] = self::DEVELOPMENT;
+				$webRootConfigOptions['SanityCheckClassLoading'] = true;
 				break;
 			case 'STAGING' :
 				$webRootConfigOptions['Deployment'] = self::STAGING;
@@ -94,6 +96,18 @@ final class eGlooConfiguration {
 			default :
 				$webRootConfigOptions['Deployment'] = self::DEVELOPMENT;
 				break;
+		}
+
+		if (isset($_SERVER['EG_SANITY_CHECK_CLASS_LOADING'])) {
+			switch( $_SERVER['EG_SANITY_CHECK_CLASS_LOADING'] ) {
+				case 'ON' :
+					$webRootConfigOptions['SanityCheckClassLoading'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['SanityCheckClassLoading'] = false;
+					break;
+			}
 		}
 
 		// Determine which DB system we're using
@@ -265,7 +279,7 @@ final class eGlooConfiguration {
 			
 			if (is_writable($full_parent_directory_path)) {
 				echo_r("Writing");
-
+				echo_r($config_xml_filename);
 			}
 
 			die;
@@ -320,6 +334,8 @@ final class eGlooConfiguration {
 		if ($prefer_htaccess) {
 			self::loadWebRootConfig($overwrite);
 		}
+
+		// die_r(self::$configuration_options);
 	}
 
 	public static function getApplicationName() {
@@ -437,6 +453,10 @@ final class eGlooConfiguration {
 		}
 
 		return self::$configuration_options['LoggingLevel'];
+	}
+
+	public static function getPerformSanityCheckClassLoading() {
+		return self::$configuration_options['SanityCheckClassLoading'];
 	}
 
 	public static function getSmartyIncludePath() {
