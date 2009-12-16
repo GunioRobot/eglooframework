@@ -40,12 +40,25 @@ SetEnv EG_LOG_FORMAT LOG
 
 SetEnv EG_REWRITE_BASE /egloo
 
+# Sanity Checking
+SetEnv EG_SANITY_CHECK_CLASS_LOADING ON
+
 # Rewrite Rules
 <IfModule rewrite_module> 
 RewriteEngine on 
 
 # Modify the RewriteBase if you are using eGloo in a subdirectory
 RewriteBase /egloo
+
+# No rule for files that exist in the webroot
+RewriteCond %{REQUEST_FILENAME} ^files/.*\.[a-z0-9]+ [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^images/(.*\.[a-z0-9]+)$ - [L]
+
+# But we might have files referenced here in the applications bundle
+RewriteCond %{REQUEST_FILENAME} ^files/.*\.[a-z0-9]+ [OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^images/(.*\.[a-z0-9]+)$ index.php?eg_requestClass=file&eg_requestID=rawfile&file_name=$1 [L]
 
 # No rule for images that exist in the webroot
 RewriteCond %{REQUEST_FILENAME} ^images/.*\.gif [OR]
@@ -70,6 +83,58 @@ RewriteCond %{REQUEST_FILENAME} ^images/.*\.jpeg [OR]
 RewriteCond %{REQUEST_FILENAME} ^images/.*\.JPEG [OR]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^images/(.*(.gif|.GIF|.png|.PNG|.jpg|.JPG|.jpeg|.JPEG))$ index.php?eg_requestClass=image&eg_requestID=rawfile&image_name=$1 [L]
+
+# No rule for media files that exist in the webroot
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.aac [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.AAC [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.dcr [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.DCR [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.flv [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.FLV [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mov [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MOV [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mpg [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MPG [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mp3 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MP3 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mp4 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MP4 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.ogg [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.OGG [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.swf [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.SWF [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.wma [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMA [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.wmv [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMV [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^images/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ - [L]
+
+# But we might have files referenced here in the applications bundle
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.aac [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.AAC [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.dcr [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.DCR [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.flv [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.FLV [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mov [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MOV [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mpg [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MPG [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mp3 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MP3 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.mp4 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.MP4 [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.ogg [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.OGG [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.swf [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.SWF [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.wma [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMA [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.wmv [OR]
+RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMV [OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^images/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ index.php?eg_requestClass=media&eg_requestID=rawfile&media_name=$1 [L]
 
 # Load 'static' css as dynamic css
 RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?eg_requestClass=css&eg_requestID=$1 [L]

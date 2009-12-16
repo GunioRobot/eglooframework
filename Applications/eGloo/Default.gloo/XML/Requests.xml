@@ -179,6 +179,12 @@
 			<VariableArgument type="get" id="blogCommentID" regex="/^-?\d{1,19}$/" required="true" />
 		</Request>
 	</RequestClass>
+	<RequestClass id="file">
+		<Request id="rawfile" processorID="RawFileRequestProcessor">
+			<VariableArgument type="get" id="file_name" regex="~^[a-z0-9/]+?\.[a-z0-9]+$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
 	<RequestClass id="flash">
 		<Request id="getVideo" processorID="FlashVideoDispatcherRequestProcessor">
 			<VariableArgument type="get" id="flv" regex="/^.*$/" required="true" />
@@ -298,6 +304,10 @@
 		<Request id="getUserImageList" processorID="GetUserImageListRequestProcessor">
 			<VariableArgument type="get" required="false" id="profileID" regex="/^.*$/" />
 			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
+		</Request>
+		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
+			<VariableArgument type="get" id="image_name" regex="~^[a-z0-9/]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 		<Request id="setProfileImage" processorID="SetProfileImageRequestProcessor">
 			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
@@ -467,6 +477,12 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 		<Request id="thickbox" processorID="JavascriptRequestProcessor">
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="media">
+		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
+			<VariableArgument type="get" id="media_name" regex="~^[a-z0-9/]+?(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv)$~i" required="true" />
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
