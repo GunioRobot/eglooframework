@@ -53,12 +53,12 @@ RewriteBase /egloo
 # No rule for files that exist in the webroot
 RewriteCond %{REQUEST_FILENAME} ^files/.*\.[a-z0-9]+ [OR]
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^images/(.*\.[a-z0-9]+)$ - [L]
+RewriteRule ^files/(.*\.[a-z0-9]+)$ - [L]
 
 # But we might have files referenced here in the applications bundle
 RewriteCond %{REQUEST_FILENAME} ^files/.*\.[a-z0-9]+ [OR]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^images/(.*\.[a-z0-9]+)$ index.php?eg_requestClass=file&eg_requestID=rawfile&file_name=$1 [L]
+RewriteRule ^files/(.*\.[a-z0-9]+)$ index.php?eg_requestClass=file&eg_requestID=rawfile&file_name=$1 [L]
 
 # No rule for images that exist in the webroot
 RewriteCond %{REQUEST_FILENAME} ^images/.*\.gif [OR]
@@ -108,7 +108,7 @@ RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMA [OR]
 RewriteCond %{REQUEST_FILENAME} ^media/.*\.wmv [OR]
 RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMV [OR]
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^images/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ - [L]
+RewriteRule ^media/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ - [L]
 
 # But we might have files referenced here in the applications bundle
 RewriteCond %{REQUEST_FILENAME} ^media/.*\.aac [OR]
@@ -134,7 +134,7 @@ RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMA [OR]
 RewriteCond %{REQUEST_FILENAME} ^media/.*\.wmv [OR]
 RewriteCond %{REQUEST_FILENAME} ^media/.*\.WMV [OR]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^images/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ index.php?eg_requestClass=media&eg_requestID=rawfile&media_name=$1 [L]
+RewriteRule ^media/(.*(.aac|.AAC|.dcr|.DCR|.flv|.FLV|.mov|.MOV|.mpg|.MPG|.mp3|.MP3|.mp4|.MP4|.ogg|.OGG|.swf|.SWF|.wma|.WMA|.wmv|.WMV))$ index.php?eg_requestClass=media&eg_requestID=rawfile&media_name=$1 [L]
 
 # Load 'static' css as dynamic css
 RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?eg_requestClass=css&eg_requestID=$1 [L]
