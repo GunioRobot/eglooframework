@@ -148,7 +148,7 @@ RewriteRule ^(js|javascript)/(.+)\.js$ index.php?eg_requestClass=javascript&eg_r
 # underscore (_) and ampersand (&).  Anything else should cascade down to the
 # last rule
 RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?eg_requestClass=$1&eg_requestID=$2 [L]
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3 [L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\& ]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3 [L]
 RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
 
 # The only script we allow direct access to
