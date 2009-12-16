@@ -20,92 +20,138 @@ final class eGlooConfiguration {
 	private static $configuration_options = array();
 
 	// Configuration Attribute Choices
+	//// <Component id="" displayName="" override="" type="" value="" required=""/>
+	// 		        <Option id="" displayName="" override="" type="" value="" required=""/>
+	
 	private static $configuration_possible_options = array(
-			'ApplicationsPath'			=> '',
-			'CachePath' 				=> '',
-			'CompiledTemplatesPath'		=> '',
-			'ConfigurationPath'			=> '',
-			'CubesPath'					=> '',
-			'Deployment'				=> '',
-			'DisplayErrors'				=> false,
-			'DisplayTraces'				=> false,
-			'DoctrinePath'				=> '',
-			'DocumentationPath'			=> '',
-			'DocumentRoot'				=> '',
-			'FrameworkRootPath'			=> '',
-			'LoggingPath'				=> '',
-			'SmartyPath'				=> '',
-			'UseCache'					=> true,
-			'UseFileCache'				=> false,
-			'UseMemcache'				=> false,
-			'UseAPCCache'				=> true,
-			'UseDoctrine'				=> false,
-			'UseSmarty'					=> true,
-			'UsePostgreSQL'				=> true,
-			'SanityCheckClassLoading'	=> false,
+			'ApplicationsPath'			=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'CachePath' 				=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'CompiledTemplatesPath'		=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'ConfigurationPath'			=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'CubesPath'					=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egEnvironment'				=> array( 'value' => '', 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egDisplayErrors'			=> array( 'value' => false, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egDisplayTraces'			=> array( 'value' => false, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'DoctrinePath'				=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'DocumentationPath'			=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'DocumentRoot'				=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'FrameworkRootPath'			=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'LoggingPath'				=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'SmartyPath'				=> array( 'value' => '', 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egCacheEnabled'			=> array( 'value' => true, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egFileCacheEnabled'		=> array( 'value' => false, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egMemcacheCacheEnabled'	=> array( 'value' => false, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egAPCCacheEnabled'			=> array( 'value' => true, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egUseDoctrine'				=> array( 'value' => false, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egUseSmarty'				=> array( 'value' => true, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egUsePostgreSQL'			=> array( 'value' => true, 'elementType' => 'Option', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
+
+			'egSanityCheckClassLoading'	=> array( 'value' => false, 'elementType' => 'Component', 'id' => '',
+												  'displayName' => '', 'override' => '', 'type' => '', 'required' => ''),
 			);
 
 	public static function loadWebRootConfig( $overwrite = true ) {
 		$webRootConfigOptions = array();
-		$webRootConfigOptions['ApplicationPath']		= $_SERVER['EG_APP'];
-		$webRootConfigOptions['ApplicationName']		= preg_replace('~([a-zA-Z0-9/ ])+?/([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
-		$webRootConfigOptions['UIBundleName']		= $_SERVER['EG_UI'];
+		$webRootConfigOptions['egApplication']		= $_SERVER['EG_APP'];
+		$webRootConfigOptions['egApplicationName']		= preg_replace('~([a-zA-Z0-9/ ])+?/([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
+		$webRootConfigOptions['egInterfaceBundle']		= $_SERVER['EG_UI'];
 
 		switch( $_SERVER['EG_CACHE'] ) {
 			case 'ON' :
-				$webRootConfigOptions['UseCache'] = true;
+				$webRootConfigOptions['egCacheEnabled'] = true;
 				break;
 			case 'OFF' :
 			default :
-				$webRootConfigOptions['UseCache'] = false;
+				$webRootConfigOptions['egCacheEnabled'] = false;
 				break;
 		}
 
 		switch( $_SERVER['EG_CACHE_FILE'] ) {
 			case 'ON' :
-				$webRootConfigOptions['UseFileCache'] = true;
+				$webRootConfigOptions['egFileCacheEnabled'] = true;
 				break;
 			case 'OFF' :
 			default :
-				$webRootConfigOptions['UseFileCache'] = false;
+				$webRootConfigOptions['egFileCacheEnabled'] = false;
 				break;
 		}
 
 		switch( $_SERVER['EG_CACHE_MEMCACHE'] ) {
 			case 'ON' :
-				$webRootConfigOptions['UseMemcache'] = true;
+				$webRootConfigOptions['egMemcacheCacheEnabled'] = true;
 				break;
 			case 'OFF' :
 			default :
-				$webRootConfigOptions['UseMemcache'] = false;
+				$webRootConfigOptions['egMemcacheCacheEnabled'] = false;
 				break;
 		}
 
 		// Determine our deployment type
 		switch( $_SERVER['EG_ENV'] ) {
 			case 'DEVELOPMENT' :
-				$webRootConfigOptions['Deployment'] = self::DEVELOPMENT;
-				$webRootConfigOptions['SanityCheckClassLoading'] = true;
+				$webRootConfigOptions['egEnvironment'] = self::DEVELOPMENT;
+				$webRootConfigOptions['egSanityCheckClassLoading'] = true;
 				break;
 			case 'STAGING' :
-				$webRootConfigOptions['Deployment'] = self::STAGING;
+				$webRootConfigOptions['egEnvironment'] = self::STAGING;
 				break;
 			case 'PRODUCTION' :
-				$webRootConfigOptions['Deployment'] = self::PRODUCTION;
+				$webRootConfigOptions['egEnvironment'] = self::PRODUCTION;
 				break;
 			default :
-				$webRootConfigOptions['Deployment'] = self::DEVELOPMENT;
+				$webRootConfigOptions['egEnvironment'] = self::DEVELOPMENT;
 				break;
 		}
 
 		if (isset($_SERVER['EG_SANITY_CHECK_CLASS_LOADING'])) {
 			switch( $_SERVER['EG_SANITY_CHECK_CLASS_LOADING'] ) {
 				case 'ON' :
-					$webRootConfigOptions['SanityCheckClassLoading'] = true;
+					$webRootConfigOptions['egSanityCheckClassLoading'] = true;
 					break;
 				case 'OFF' :
 				default :
-					$webRootConfigOptions['SanityCheckClassLoading'] = false;
+					$webRootConfigOptions['egSanityCheckClassLoading'] = false;
 					break;
 			}
 		}
@@ -113,16 +159,16 @@ final class eGlooConfiguration {
 		// Determine which DB system we're using
 		switch( $_SERVER['EG_DB_ENGINE'] ) {
 			case 'DOCTRINE' :
-				$webRootConfigOptions['DatabaseEngine'] = self::DOCTRINE;
+				$webRootConfigOptions['egDatabaseEngine'] = self::DOCTRINE;
 				break;
 			case 'MYSQL' :
-				$webRootConfigOptions['DatabaseEngine'] = self::MYSQL;
+				$webRootConfigOptions['egDatabaseEngine'] = self::MYSQL;
 				break;
 			case 'POSTGRESQL' :
-				$webRootConfigOptions['DatabaseEngine'] = self::POSTGRESQL;
+				$webRootConfigOptions['egDatabaseEngine'] = self::POSTGRESQL;
 				break;
 			default:
-				$webRootConfigOptions['DatabaseEngine'] = self::POSTGRESQL;
+				$webRootConfigOptions['egDatabaseEngine'] = self::POSTGRESQL;
 				break;
 		}
 
@@ -130,32 +176,32 @@ final class eGlooConfiguration {
 		if ( isset($_SERVER['EG_DISPLAY_ERRORS']) ) {
 			switch( $_SERVER['EG_DISPLAY_ERRORS'] ) {
 				case 'ON' :
-					$webRootConfigOptions['DisplayErrors'] = true;
+					$webRootConfigOptions['egDisplayErrors'] = true;
 					break;
 				case 'OFF' :
-					$webRootConfigOptions['DisplayErrors'] = false;
+					$webRootConfigOptions['egDisplayErrors'] = false;
 					break;
 				default :
 					break;
 			}
-		} else if ( $webRootConfigOptions['Deployment'] === self::DEVELOPMENT ) {
-			$webRootConfigOptions['DisplayErrors'] = true;
+		} else if ( $webRootConfigOptions['egEnvironment'] === self::DEVELOPMENT ) {
+			$webRootConfigOptions['egDisplayErrors'] = true;
 		}
 
 		// Check if we're displaying traces in the UI or not
 		if ( isset($_SERVER['EG_DISPLAY_TRACES']) ) {
 			switch( $_SERVER['EG_DISPLAY_TRACES'] ) {
 				case 'ON' :
-					$webRootConfigOptions['DisplayTraces'] = true;
+					$webRootConfigOptions['egDisplayTraces'] = true;
 					break;
 				case 'OFF' :
-					$webRootConfigOptions['DisplayTraces'] = false;
+					$webRootConfigOptions['egDisplayTraces'] = false;
 					break;
 				default :
 					break;
 			}
-		} else if ( $webRootConfigOptions['Deployment'] === self::DEVELOPMENT ) {
-			$webRootConfigOptions['DisplayTraces'] = true;
+		} else if ( $webRootConfigOptions['egEnvironment'] === self::DEVELOPMENT ) {
+			$webRootConfigOptions['egDisplayTraces'] = true;
 		}
 
 		// Check if these options should be allowed to override the ones specified in the cache or XML config
@@ -187,7 +233,7 @@ final class eGlooConfiguration {
 
 			foreach (self::$configuration_possible_options as $possible_option_key => $option_default_value) {
 				if (!isset(self::$configuration_options[$possible_option_key])) {
-					self::$configuration_options[$possible_option_key] = $option_default_value;
+					self::$configuration_options[$possible_option_key] = $option_default_value['value'];
 				}
 			}
 
@@ -261,27 +307,64 @@ final class eGlooConfiguration {
 		file_put_contents($config_cache_path, $config_dump);
 	}
 
-	public static function writeFrameworkConfigurationXML( $config_xml_path = './Config.xml' ) {
+	public static function writeFrameworkConfigurationXML( $config_xml_path = './Config1.xml' ) {
 		if ( file_exists($config_xml_path) ) {
 			$full_config_xml_path = realpath($config_xml_path);
 			$folder = dirname($full_config_xml_path);
 			echo $full_config_xml_path;
 			die_r($folder);
 		} else {
-			echo_r("Here");
-			echo_r($config_xml_path);
-			// echo_r(preg_replace('~([a-zA-Z0-9. ]+/)*?(Config.xml)~', '$1', $config_xml_path));
 			$full_parent_directory_path = realpath(preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$1', $config_xml_path));
 			$config_xml_filename = preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$2', $config_xml_path);
 			
 			echo_r("Parent Directory: " . $full_parent_directory_path);
 			echo_r("Configuration XML Filename: " . $config_xml_filename);
-			
+
 			if (is_writable($full_parent_directory_path)) {
 				echo_r("Writing");
 				echo_r($config_xml_filename);
 			}
 
+			$xmlData = '';
+
+			$xmlData .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+			$xmlData .= '<!--* Custom Generated eGloo Framework Configuration File *-->' . "\n";
+			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
+			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' . "\n\t";
+			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">' . "\n";
+			
+			$xmlData .= 'ffl</tns:Configuration>' . "\n";
+
+			$xmlObject = new SimpleXMLElement($xmlData);
+
+			echo($xmlData);
+
+			// <Component id="" displayName="" override="" type="" value="" required=""/>
+			// <Option id="" displayName="" override="" type="" value="" required=""/>
+			// <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
+			// <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
+
+			$applicationsXMLObject 	= $xmlObject->addChild('Applications');
+			$cachingXMLObject 		= $xmlObject->addChild('Caching');
+			$cubesXMLObject 		= $xmlObject->addChild('Cubes');
+			$databasesXMLObject 	= $xmlObject->addChild('Databases');
+			$documentsXMLObject 	= $xmlObject->addChild('Documents');
+			$frameworkXMLObject 	= $xmlObject->addChild('Framework');
+			$libraryXMLObject 		= $xmlObject->addChild('Library');
+			$networkXMLObject 		= $xmlObject->addChild('Network');
+			$peeringXMLObject 		= $xmlObject->addChild('Peering');
+			$systemXMLObject 		= $xmlObject->addChild('System');
+			
+			foreach (self::$configuration_options as $key => $value) {
+				
+				// <Component id="" displayName="" override="" type="" value="" required=""/>
+				// 		        <Option id="" displayName="" override="" type="" value="" required=""/>
+				// 		        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
+				// 		        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
+		        
+			}
+
+			echo($xmlObject->asXML());
 			die;
 		}
 
@@ -335,23 +418,26 @@ final class eGlooConfiguration {
 			self::loadWebRootConfig($overwrite);
 		}
 
+
+		// self::writeFrameworkConfigurationXML();
+		// die;
 		// die_r(self::$configuration_options);
 	}
 
 	public static function getApplicationName() {
-		return self::$configuration_options['ApplicationName'];
+		return self::$configuration_options['egApplicationName'];
 	}
 
 	public static function getApplicationPath() {
-		return self::$configuration_options['ApplicationPath'];
+		return self::$configuration_options['egApplication'];
 	}
 
 	public static function getUIBundleName() {
-		return self::$configuration_options['UIBundleName'];
+		return self::$configuration_options['egInterfaceBundle'];
 	}
 	
 	public static function getDeployment() {
-		return self::$configuration_options['Deployment'];
+		return self::$configuration_options['egEnvironment'];
 	}
 
     public static function getApplicationsPath() {
@@ -375,19 +461,19 @@ final class eGlooConfiguration {
 	}
 
 	public static function getDatabaseEngine() {
-		return self::$configuration_options['DatabaseEngine'];
+		return self::$configuration_options['egDatabaseEngine'];
 	}
 
     public static function getDeploymentType() {
-		return self::$configuration_options['Deployment'];
+		return self::$configuration_options['egEnvironment'];
 	}
 
     public static function getDisplayErrors() {
-		return self::$configuration_options['DisplayErrors'];
+		return self::$configuration_options['egDisplayErrors'];
 	}
 
     public static function getDisplayTraces() {
-		return self::$configuration_options['DisplayTraces'];
+		return self::$configuration_options['egDisplayTraces'];
 	}
 
 	public static function getDoctrineIncludePath() {
@@ -407,24 +493,24 @@ final class eGlooConfiguration {
 	}
 
     public static function getLogFormat() {
-		if ( !isset(self::$configuration_options['LogFormat']) ) {
+		if ( !isset(self::$configuration_options['egLogFormat']) ) {
 			switch( $_SERVER['EG_LOG_FORMAT'] ) {
 				case 'LOG' :
-					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_LOG;
+					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
 					break;
 				case 'HTML' :
-					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_HTML;
+					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_HTML;
 					break;
 				case 'XML' :
-					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_XML;
+					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_XML;
 					break;
 				default:
-					self::$configuration_options['LogFormat'] = eGlooLogger::LOG_LOG;
+					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
 					break;
 			}
 		}
 
-		return self::$configuration_options['LogFormat'];
+		return self::$configuration_options['egLogFormat'];
 	}
 
     public static function getLoggingPath() {
@@ -432,31 +518,31 @@ final class eGlooConfiguration {
 	}
 	
 	public static function getLoggingLevel() {
-		if ( !isset(self::$configuration_options['LoggingLevel']) ) {
+		if ( !isset(self::$configuration_options['egLogLevel']) ) {
 			switch( $_SERVER['EG_LOG_LEVEL'] ) {
 				case 'LOG_OFF' : 
-					self::$configuration_options['LoggingLevel'] = eGlooLogger::LOG_OFF;
+					self::$configuration_options['egLogLevel'] = eGlooLogger::LOG_OFF;
 					break;
 				case 'PRODUCTION' : 
-					self::$configuration_options['LoggingLevel'] = eGlooLogger::PRODUCTION;
+					self::$configuration_options['egLogLevel'] = eGlooLogger::PRODUCTION;
 					break;
 				case 'STAGING' : 
-					self::$configuration_options['LoggingLevel'] = eGlooLogger::STAGING;
+					self::$configuration_options['egLogLevel'] = eGlooLogger::STAGING;
 					break;
 				case 'DEVELOPMENT' : 
-					self::$configuration_options['LoggingLevel'] = eGlooLogger::DEVELOPMENT;
+					self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 					break;
 				default : 
-					self::$configuration_options['LoggingLevel'] = eGlooLogger::DEVELOPMENT;
+					self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 					break;
 			}
 		}
 
-		return self::$configuration_options['LoggingLevel'];
+		return self::$configuration_options['egLogLevel'];
 	}
 
 	public static function getPerformSanityCheckClassLoading() {
-		return self::$configuration_options['SanityCheckClassLoading'];
+		return self::$configuration_options['egSanityCheckClassLoading'];
 	}
 
 	public static function getSmartyIncludePath() {
@@ -464,23 +550,23 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseCache() {
-		return self::$configuration_options['UseCache'];
+		return self::$configuration_options['egCacheEnabled'];
 	}
 
 	public static function getUseFileCache() {
-		return self::$configuration_options['UseFileCache'];
+		return self::$configuration_options['egFileCacheEnabled'];
 	}
 
 	public static function getUseMemcache() {
-		return self::$configuration_options['UseMemcache'];
+		return self::$configuration_options['egMemcacheCacheEnabled'];
 	}
 
 	public static function getUseDoctrine() {
-		return self::$configuration_options['UseDoctrine'];
+		return self::$configuration_options['egUseDoctrine'];
 	}
 
 	public static function getUseSmarty() {
-		return self::$configuration_options['UseSmarty'];
+		return self::$configuration_options['egUseSmarty'];
 	}
 
 	// public static function getCacheStatus() {
