@@ -316,33 +316,23 @@ final class eGlooConfiguration {
 		} else {
 			$full_parent_directory_path = realpath(preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$1', $config_xml_path));
 			$config_xml_filename = preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$2', $config_xml_path);
-			
-			echo_r("Parent Directory: " . $full_parent_directory_path);
-			echo_r("Configuration XML Filename: " . $config_xml_filename);
 
 			if (is_writable($full_parent_directory_path)) {
-				echo_r("Writing");
-				echo_r($config_xml_filename);
+				// echo_r("Writing");
+				// echo_r($config_xml_filename);
 			}
 
 			$xmlData = '';
 
-			$xmlData .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$xmlData .= '<!--* Custom Generated eGloo Framework Configuration File *-->' . "\n";
+			$xmlData .= '<?xml version="1.0" encoding="UTF-8"?>';
+			$xmlData .= '<!--* Custom Generated eGloo Framework Configuration File *-->';
 			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
-			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' . "\n\t";
-			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">' . "\n";
+			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">';
 			
-			$xmlData .= 'ffl</tns:Configuration>' . "\n";
+			$xmlData .= '</tns:Configuration>';
 
 			$xmlObject = new SimpleXMLElement($xmlData);
-
-			echo($xmlData);
-
-			// <Component id="" displayName="" override="" type="" value="" required=""/>
-			// <Option id="" displayName="" override="" type="" value="" required=""/>
-			// <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-			// <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
 
 			$applicationsXMLObject 	= $xmlObject->addChild('Applications');
 			$cachingXMLObject 		= $xmlObject->addChild('Caching');
@@ -355,16 +345,44 @@ final class eGlooConfiguration {
 			$peeringXMLObject 		= $xmlObject->addChild('Peering');
 			$systemXMLObject 		= $xmlObject->addChild('System');
 			
-			foreach (self::$configuration_options as $key => $value) {
-				
-				// <Component id="" displayName="" override="" type="" value="" required=""/>
-				// 		        <Option id="" displayName="" override="" type="" value="" required=""/>
-				// 		        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-				// 		        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
-		        
+			foreach (self::$configuration_possible_options as $key => $value) {
+				$childXMLObject = null;
+
+				switch($value['elementType']) {
+					case 'Component' :
+						$childXMLObject = $systemXMLObject->addChild('Component');
+						break;
+					case 'Option' :
+						$childXMLObject = $systemXMLObject->addChild('Option');
+						break;
+					default :
+						break;
+				}
+				header('Content-type: text');
+
+				$childXMLObject->addAttribute('id', $key);
+				$childXMLObject->addAttribute('displayName', $value['displayName']);
+				$childXMLObject->addAttribute('override', $value['override']);
+				$childXMLObject->addAttribute('type', $value['type']);
+
+				if (isset(self::$configuration_options[$key])) {
+					$childXMLObject->addAttribute('value', self::$configuration_options[$key]);
+				} else {
+					$childXMLObject->addAttribute('value', $value['value']);
+				}
+
+				$childXMLObject->addAttribute('required', $value['required']);
+
 			}
 
-			echo($xmlObject->asXML());
+			$domObject = new DOMDocument();
+			$domObject->loadXML($xmlObject->asXML());
+
+			$domObject->formatOutput = true;
+			$formattedXML = $domObject->saveXML();
+
+			echo $formattedXML;
+
 			die;
 		}
 
@@ -419,8 +437,8 @@ final class eGlooConfiguration {
 		}
 
 
-		// self::writeFrameworkConfigurationXML();
-		// die;
+		self::writeFrameworkConfigurationXML();
+		die;
 		// die_r(self::$configuration_options);
 	}
 
