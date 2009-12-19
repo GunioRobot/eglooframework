@@ -27,8 +27,8 @@
     <Applications>
         <Component id="" displayName="" override="" type="" value="" required=""/>
         <Option id="" displayName="" override="" type="" value="" required=""/>
-        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
+        <Option id="egUseDoctrine" displayName="" override="true" type="" value="" required="true"/>
+        <Option id="egUseSmarty" displayName="" override="true" type="" value="" required="true"/>
     </Applications>
     <Caching>
         <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
@@ -101,7 +101,7 @@
         <!-- Rewrite Options /  -->
         <Option id="egRewriteBase" displayName="eGloo Rewrite Base" override="true" type="string" value="/egloo" required="true"/>
 
-        <Option id="UseDoctrine" displayName="" override="true" type="" value="true" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="true" required="true"/>        
+        <Option id="egUseDoctrine" displayName="" override="true" type="" value="true" required="true"/>
+        <Option id="egUseSmarty" displayName="" override="true" type="" value="true" required="true"/>        
     </System>
 </tns:Configuration>
