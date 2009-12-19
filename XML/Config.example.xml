@@ -23,12 +23,12 @@
     * @version 1.0
 -->
 <tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="com.egloo.www/eGlooConfiguration schemas/eGlooConfiguration.xsd">
+    xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">
     <Applications>
         <Component id="" displayName="" override="" type="" value="" required=""/>
         <Option id="" displayName="" override="" type="" value="" required=""/>
-        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>
+        <Option id="egUseDoctrine" displayName="" override="true" type="" value="" required="true"/>
+        <Option id="egUseSmarty" displayName="" override="true" type="" value="" required="true"/>
     </Applications>
     <Caching>
         <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
@@ -68,36 +68,24 @@
     </Peering>
     <System>
         <!-- Components -->
-        <Component id="ApplicationsPath" displayName="Applications Path" override="false" type="path" value="" required="true"/>
-        <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
+        <Component id="ApplicationsPath" displayName="Applications Path" override="false" type="path" value="/Library/Application Support/eGloo/Applications" required="true"/>
+        <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="/Library/Caches/eGloo" required="true"/>
         <Component id="CompiledTemplatesPath" displayName="Compiled Templates Path" override="false" type="path" value="" required="true"/>
-        <Component id="ConfigurationPath" displayName="Configuration Path" override="false" type="path" value="" required="true"/>
-        <Component id="CubesPath" displayName="Cubes Path" override="false" type="path" value="" required="true"/>
-        <Component id="DoctrinePath" displayName="Doctrine Path" override="false" type="path" value="" required="true"/>
-        <Component id="DocumentationPath" displayName="Documentation Path" override="false" type="path" value="" required="true"/>
-        <Component id="DocumentRoot" displayName="Document Root" override="false" type="path" value="" required="true"/>
-        <Component id="FrameworkRootPath" displayName="Framework Root Path" override="false" type="path" value="" required="true"/>
-        <Component id="LoggingPath" displayName="Logging Path" override="false" type="path" value="" required="true"/>
-        <Component id="SmartyPath" displayName="Smarty Path" override="false" type="path" value="" required="true"/>
+        <Component id="ConfigurationPath" displayName="Configuration Path" override="false" type="path" value="/Library/Application Support/eGloo/Framework/Configuration" required="true"/>
+        <Component id="CubesPath" displayName="Cubes Path" override="false" type="path" value="/Library/Application Support/eGloo/Cubes" required="true"/>
+        <Component id="DoctrinePath" displayName="Doctrine Path" override="false" type="path" value="/opt/local/lib/php/Doctrine/lib/Doctrine.php" required="true"/>
+        <Component id="DocumentationPath" displayName="Documentation Path" override="false" type="path" value="/Library/Documentation/eGlooFramework" required="true"/>
+        <Component id="DocumentRoot" displayName="Document Root" override="false" type="path" value="/Library/WebServer/eGloo" required="true"/>
+        <Component id="FrameworkRootPath" displayName="Framework Root Path" override="false" type="path" value="/Library/Frameworks/eGloo.framework" required="true"/>
+        <Component id="LoggingPath" displayName="Logging Path" override="false" type="path" value="/Library/Logs/eGloo" required="true"/>
+        <Component id="SmartyPath" displayName="Smarty Path" override="false" type="path" value="/opt/local/lib/php/Smarty/Smarty.class.php" required="true"/>
 
         <!-- Application / Bundle Selection -->
         <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="eGloo/Default.gloo" required="true"/>
         <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="OverlayInterface" required="true"/>
-
-        <!--
-        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/PetFood.gloo" required="true"/>
-        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
-        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/BookResale.gloo" required="true"/>
-        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
-        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/DogOwners.gloo" required="true"/>
-        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
-        <Option id="egApplication" displayName="Default System Application" override="true" type="enum" value="Demos/ImageHosting.gloo" required="true"/>
-        <Option id="egInterfaceBundle" displayName="Default System Interface Bundle" override="true" type="enum" value="Default" required="true"/>
-        -->
         
         <!-- Database Engine -->
         <Option id="egDatabaseEngine" displayName="eGloo Database Engine" override="true" type="enum" value="POSTGRESQL" required="true"/>
-        <!-- <Option id="egDatabaseEngine" displayName="eGloo Database Engine" override="true" type="enum" value="MYSQL" required="true"/> -->
 
         <!-- Deployment -->
         <Option id="egEnvironment" displayName="eGloo Environment" override="true" type="enum" value="DEVELOPMENT" required="true"/>
@@ -108,18 +96,12 @@
         
         <!-- Logging -->
         <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="PRODUCTION" required="true"/>
-        
-        <!--
-        <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="STAGING" required=""/>
-        <Option id="egLogLevel" displayName="eGloo Logging Level" override="true" type="enum" value="DEVELOPMENT" required=""/>
-        -->
-
         <Option id="egLogFormat" displayName="eGloo Log File Format" override="true" type="enum" value="LOG" required="true"/>
 
         <!-- Rewrite Options /  -->
         <Option id="egRewriteBase" displayName="eGloo Rewrite Base" override="true" type="string" value="/egloo" required="true"/>
 
-        <Option id="UseDoctrine" displayName="" override="true" type="" value="" required="true"/>
-        <Option id="UseSmarty" displayName="" override="true" type="" value="" required="true"/>        
+        <Option id="egUseDoctrine" displayName="" override="true" type="" value="true" required="true"/>
+        <Option id="egUseSmarty" displayName="" override="true" type="" value="true" required="true"/>        
     </System>
 </tns:Configuration>
