@@ -1,9 +1,9 @@
 <?php
 /**
- * UninstallFrameworkCoreeGlooRequestProcessor Class File
+ * LoadFrameworkConfigCoreeGlooRequestProcessor Class File
  *
- * Contains the class definition for the UninstallFrameworkCoreeGlooRequestProcessor, a
- * subclass of the RequestProcessor abstract class.
+ * Contains the class definition for the LoadFrameworkConfigCoreeGlooRequestProcessor,
+ * a subclass of the RequestProcessor abstract class.
  * 
  * Copyright 2009 eGloo, LLC
  * 
@@ -27,15 +27,12 @@
  */
 
 /**
- * Uninstall Framework Core eGloo Request Processor
- * 
- * Handles client requests to retrieve the external main page (the domain root;
- * e.g. www.egloo.com).
+ * Load Framework Config Core eGloo Request Processor
  * 
  * @package RequestProcessing
  * @subpackage RequestProcessors
  */
-class UninstallFrameworkCoreeGlooRequestProcessor extends RequestProcessor {
+class LoadFrameworkConfigCoreeGlooRequestProcessor extends RequestProcessor {
 
 	/**
 	 * Concrete implementation of the abstract RequestProcessor method
@@ -50,9 +47,11 @@ class UninstallFrameworkCoreeGlooRequestProcessor extends RequestProcessor {
 	 * @access public
 	 */
 	public function processRequest() {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "UninstallFrameworkCoreeGlooRequestProcessor: Entered processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "LoadFrameworkConfigCoreeGlooRequestProcessor: Entered processRequest()" );
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "UninstallFrameworkCoreeGlooRequestProcessor: Exiting processRequest()" );
+		eGlooConfiguration::loadFrameworkConfigurationXML();
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "LoadFrameworkConfigCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}
 
 }

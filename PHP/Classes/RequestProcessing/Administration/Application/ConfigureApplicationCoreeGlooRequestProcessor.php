@@ -70,7 +70,7 @@ class ConfigureApplicationCoreeGlooRequestProcessor extends RequestProcessor {
 		$templateVariables['applications'] = $applications;
 
 		$templateDirector->setTemplateVariables( $templateVariables );            
-		echo_r(file('.htaccess'));
+		// echo_r(file('.htaccess'));
 		$output = $templateDirector->processTemplate();
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ConfigureApplicationCoreeGlooRequestProcessor: Echoing Response" );
