@@ -86,10 +86,13 @@
 			<VariableArgument id="confirmationID" regex="/^\w{20}$/" required="true" type="post" />
 		</Request>
 	</RequestClass>
+	<!-- Configuration of eGloo Applications -->
 	<RequestClass id="coreeGlooApplicationAdministration">
 		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadApplicationConfigCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="saveConfig" processorID="SaveApplicationConfigCoreeGlooRequestProcessor">
 		</Request>
@@ -98,16 +101,34 @@
 		<Request id="upgrade" processorID="UpgradeApplicationCoreeGlooRequestProcessor">
 		</Request>
 	</RequestClass>
+	<!-- Configuration of eGloo Framework -->
 	<RequestClass id="coreeGlooFrameworkAdministration">
 		<Request id="configure" processorID="ConfigureFrameworkCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="install" processorID="InstallFrameworkCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadFrameworkConfigCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="saveConfig" processorID="SaveFrameworkConfigCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="uninstall" processorID="UninstallFrameworkCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="upgrade" processorID="UpgradeFrameworkCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- Convenience Request Processors for Building eGloo Distribution Packages -->
+	<RequestClass id="coreeGlooDistributionPackaging">
+		<Request id="configure" processorID="ConfigureSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="install" processorID="InstallSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadSystemConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="saveConfig" processorID="SaveSystemConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="uninstall" processorID="UninstallSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="upgrade" processorID="UpgradeSystemPackageCoreeGlooRequestProcessor">
 		</Request>
 	</RequestClass>
 	<RequestClass id="alert">
