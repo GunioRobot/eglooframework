@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eGlooXHTML:Requests xmlns:eGlooXHTML="com.egloo.www/XHTML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<RequestClass id="coreeGlooAdministration">
-		<Request id="configure" path="CoreeGlooAdministration">
+	<RequestClass id="coreeGlooApplicationAdministration">
+		<Request id="configure" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ConfigureApplication.tpl</Localization>
 		</Request>
-		<Request id="install" path="CoreeGlooAdministration">
+		<Request id="install" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">InstallApplication.tpl</Localization>
 		</Request>
-		<Request id="uninstall" path="CoreeGlooAdministration">
+		<Request id="uninstall" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UninstallApplication.tpl</Localization>
 		</Request>
-		<Request id="upgrade" path="CoreeGlooAdministration">
+		<Request id="upgrade" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UpgradeApplication.tpl</Localization>
+		</Request>
+	</RequestClass>
+	<RequestClass id="coreeGlooFrameworkAdministration">
+		<Request id="configure" path="CoreeGlooFrameworkAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ConfigureFramework.tpl</Localization>
+		</Request>
+		<Request id="install" path="CoreeGlooFrameworkAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">InstallFramework.tpl</Localization>
+		</Request>
+		<Request id="uninstall" path="CoreeGlooFrameworkAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UninstallFramework.tpl</Localization>
+		</Request>
+		<Request id="upgrade" path="CoreeGlooFrameworkAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">UpgradeFramework.tpl</Localization>
 		</Request>
 	</RequestClass>
 	<RequestClass id="invite">
