@@ -46,6 +46,8 @@ if ( !class_exists( 'CacheGateway', false ) ) {
 	include( 'PHP/Classes/Caching/CacheGateway.php' );
 }
 
+// CacheGateway::initialize();
+
 // Register eGloo Autoloader
 spl_autoload_register('eglooAutoload');
 
