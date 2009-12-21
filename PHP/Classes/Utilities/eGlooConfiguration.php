@@ -537,9 +537,6 @@ die;
 	}
 
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
-		// self::loadFrameworkSystemXML();
-		// die;
-
 		$success = self::loadFrameworkConfigurationCache($overwrite, $config_cache);
 
 		if (!$success) {
@@ -550,11 +547,6 @@ die;
 		if ($prefer_htaccess) {
 			self::loadWebRootConfig($overwrite);
 		}
-
-
-		// self::writeFrameworkConfigurationXML();
-		// die;
-		// die_r(self::$configuration_options);
 	}
 
 	public static function getApplicationName() {
