@@ -113,6 +113,10 @@ class CacheGateway {
 		// Do nothing
 	}
 
+	public function active() {
+		return $this->_active;
+	}
+
 	public function deleteObject( $id ) {
 		$retVal = null;
 
@@ -242,12 +246,133 @@ class CacheGateway {
 		return $retVal; 
 	}
 
+	public function flushAllCache() {
+		$retVal = null;
+
+		if ($this->_active) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					$retVal = apc_clear_cache();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
+				try {
+					$retVal = $this->_memcache->flush();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
+				}
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
+				$this->_filecache = array();
+			}
+		}
+
+		return $retVal; 
+	}
+
+	public function flushApplicationCache() {
+		// TODO Invalidate application level cache
+		// For now, just flush all
+
+		$retVal = null;
+
+		if ($this->_active) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					$retVal = apc_clear_cache();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
+				try {
+					$retVal = $this->_memcache->flush();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
+				}
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
+				$this->_filecache = array();
+			}
+		}
+
+		return $retVal; 
+	}
+
+	public function flushUIBundleCache() {
+		// TODO Invalidate bundle level cache
+		// For now, just flush all
+
+		$retVal = null;
+
+		if ($this->_active) {
+			if ($this->_cache_tiers & self::USE_APCCACHE) {
+				try {
+					$retVal = apc_clear_cache();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
+				}
+			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
+				try {
+					$retVal = $this->_memcache->flush();
+				} catch ( Exception $exception ) {
+					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
+				}
+			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
+				$this->_filecache = array();
+			}
+		}
+
+		return $retVal; 
+	}
+
 	public static function serverFailure( $host, $port ) {
 		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 
 			'Memcache daemon on host ' . $host . ' and port ' . $port . ' has failed',
 			'Memcache' );
 		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Attempting server failover... ', 'Memcache' );
 	}
+
+	/**
+	 *
+	 *
+	 */
+	public static function initialize() {
+		$cacheGateway = self::getCacheGateway();
+
+		if ($cacheGateway->active()) {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Initializing Caching System ', 'Cache' );
+
+			
+
+			// TODO Add a check for this.  It's unlikely that someone will be switching
+			// applications or bundles and not want to invalidate application/bundle level
+			// caches, but who knows.
+			$egLastApplication = $cacheGateway->getObject('egLastApplication', 'CoreeGloo');
+			$egLastUIBundle = $cacheGateway->getObject('egLastUIBundle', 'CoreeGloo');
+			
+			$currentApplication = eGlooConfiguration::getApplicationName();
+			$currentBundle = eGlooConfiguration::getUIBundleName();
+			
+			if ($currentApplication !== $egLastApplication) {
+				// Invalidate application level cache
+				$cacheGateway->flushApplicationCache();
+			}
+
+			if ($currentBundle !== $egLastUIBundle) {
+				// Invalidate bundle level cache
+				$cacheGateway->flushUIBundleCache();
+			}
+
+			$egLastApplication = $cacheGateway->storeObject('egLastApplication', $currentApplication, 'CoreeGloo');
+			$egLastUIBundle = $cacheGateway->storeObject('egLastUIBundle', $currentBundle, 'CoreeGloo');
+		}
+	}
+
 
 	public static function getCacheGateway() {
 		if ( !isset(self::$_singleton) ) {
