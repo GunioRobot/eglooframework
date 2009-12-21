@@ -83,8 +83,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newBoolArgument = array();
 
 					$newBoolArgument['id'] = (string) $boolArgument['id'];
-					$newBoolArgument['type'] = (string) $boolArgument['type'];
-					$newBoolArgument['required'] = (string) $boolArgument['required'];
+					$newBoolArgument['type'] = strtolower( (string) $boolArgument['type'] );
+					$newBoolArgument['required'] = strtolower( (string) $boolArgument['required'] );
+
+					if ($newBoolArgument['required'] === 'false' && isset($boolArgument['default'])) {
+						$defaultBoolValue = strtolower( (string) $boolArgument['default'] );
+						
+						if ($defaultBoolValue === 'true' || $defaultBoolValue === 'false') {
+							$newBoolArgument['default'] = $defaultBoolValue;
+						}
+					}
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][] = $newBoolArgument;
 				}
@@ -95,13 +103,21 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newSelectArgument = array();
 
 					$newSelectArgument['id'] = (string) $selectArgument['id'];
-					$newSelectArgument['type'] = (string) $selectArgument['type'];
-					$newSelectArgument['required'] = (string) $selectArgument['required'];
+					$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
+					$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
 
 					$newSelectArgument['values'] = array();
 
 					foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
 						$newSelectArgument['values'][] = (string) $selectArgumentValue;
+					}
+
+					if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
+						$defaultSelectValue = (string) $selectArgument['default'];
+						
+						if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
+							$newSelectArgument['default'] = $defaultSelectValue;
+						}
 					}
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][] = $newSelectArgument;
@@ -113,9 +129,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newVariableArgument = array();
 
 					$newVariableArgument['id'] = (string) $variableArgument['id'];
-					$newVariableArgument['type'] = (string) $variableArgument['type'];
-					$newVariableArgument['required'] = (string) $variableArgument['required'];
+					$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
+					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
 					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
+					
+					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default'])) {
+						$defaultVariableValue = (string) $variableArgument['default'];
+
+						if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
+							$newVariableArgument['default'] = $defaultVariableValue;
+						}
+					}
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][] = $newVariableArgument;
 				}
@@ -131,7 +155,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 					foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
 						$dependChildID = (string) $dependChild['id'];
-						$dependChildType = (string) $dependChild['type'];
+						$dependChildType = strtolower( (string) $dependChild['type'] );
 
 						$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
 					}
@@ -282,23 +306,25 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 
 		 foreach( $requestNode['boolArguments'] as $boolArg ) {
 			
-			if( $boolArg['type'] == "get" ){
+			if( $boolArg['type'] === "get" ){
 
 
 				if( !isset( $_GET[ (string) $boolArg['id'] ] ) ){
 					
 					//check if required
-					if( $boolArg['required'] == "true") {
+					if( $boolArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
                             " is not set in GET request with id: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($boolArg['default'])) {
+						$requestInfoBean->setGET( $boolArg['id'],  $boolArg['default'] );
 					}
-			
+
 				} else {
 					
 					//check if correctly formatted (true vs false)
 					$boolVal = $_GET[ $boolArg['id'] ];
-					if( $boolVal != "false" and $boolVal != "true" ){
+					if( $boolVal !== "false" && $boolVal !== "true" ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
                             " is not in correct 'true' or 'false' format in GET request with id: " . $requestID, 'Security' );
 						return false;
@@ -310,22 +336,24 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				}
 
 				
-			} else if( $boolArg['type'] == "post" ) {
+			} else if ( $boolArg['type'] === "post" ) {
 
 				if( !isset( $_POST[ $boolArg['id'] ] ) ){
 					
 					//check if required
-					if( $boolArg['required'] == "true") {
+					if( $boolArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
                             " is not set in post request with id: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($boolArg['default'])) {
+						$requestInfoBean->setPOST( $boolArg['id'],  $boolArg['default'] );
 					}
-			
+
 				} else {
 					
 					//check if correctly formatted (true vs false)
 					$boolVal = $_POST[ $boolArg['id'] ];
-					if( $boolVal != "false" and $boolVal != "true" ){
+					if( $boolVal !== "false" && $boolVal !== "true" ){
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
                             " is not in correct 'true' or 'false' format in post request with id: " . $requestID, 'Security' );
 						return false;
@@ -354,17 +382,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 foreach( $requestNode['variableArguments'] as $variableArg ) {
 			
 			
-			if( $variableArg['type'] == "get" ){
+			if( $variableArg['type'] === "get" ){
 
 				if( !isset( $_GET[ $variableArg['id'] ] ) ){
 					
 					//check if required
-					if( $variableArg['required'] == "true") {
+					if( $variableArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
                             " is not set in GET request with request ID: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($variableArg['default'])) {
+						$requestInfoBean->setGET( $variableArg['id'],  $variableArg['default'] );
 					}
-			
+
 				} else {
 					//check if correctly formatted
 					$variableValue = $_GET[ $variableArg['id'] ];
@@ -382,15 +412,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestInfoBean->setGET( $variableArg['id'],  $variableValue );
 				}
 
-			} else if( $variableArg['type'] == "post" ) {
+			} else if ( $variableArg['type'] === "post" ) {
 
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
-					if( $variableArg['required'] == "true") {
+					if( $variableArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
 							" is not set in post request with request ID: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($variableArg['default'])) {
+						$requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
 					}
+
 				} else {
 					//check if correctly formatted
 					$variableValue = $_POST[ $variableArg['id'] ];
@@ -427,17 +460,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 
 		 foreach( $requestNode['selectArguments'] as $selectArg ) {
 			
-			if( $selectArg['type'] == "get" ){
+			if( $selectArg['type'] === "get" ){
 
 				if( !isset( $_GET[ $selectArg['id'] ] ) ){
 					
 					//check if required
-					if( $selectArg['required'] == "true") {
+					if( $selectArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
                             " is not set in GET request with id: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($selectArg['default'])) {
+						$requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
 					}
-			
+
 				} else {
 					
 					//check if value is one of the allowable values
@@ -445,7 +480,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$match = false;
 					
 					foreach( $selectArg->xpath('child::value/text()') as $validValue ){
-						if( $validValue == $selectVal ){
+						if( $validValue === $selectVal ){
 							$match = true;
 						}
 					}
@@ -463,18 +498,20 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				}
 
 				
-			} else if( $selectArg['type'] == "post" ) {
+			} else if( $selectArg['type'] === "post" ) {
 
 
 				if( !isset( $_POST[ $selectArg['id'] ] ) ){
 					
 					//check if required
-					if( $selectArg['required'] == "true") {
+					if( $selectArg['required'] === "true") {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
                             " is not set in POST request with request ID: " . $requestID, 'Security' );
 						return false;
+					} else if (isset($selectArg['default'])) {
+						$requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
 					}
-			
+
 				} else {
 					
 					//check if value is one of the allowable values
@@ -482,7 +519,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$match = false;
 					
 					foreach( $selectArg->xpath('child::value/text()') as $validValue ){
-						if( $validValue == $selectVal ){
+						if( $validValue === $selectVal ){
 							$match = true;
 						}
 					}
@@ -518,7 +555,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	
 		foreach( $requestNode['depends'] as $dependArg ) {
 			
-			if( $dependArg['type'] == "get" ){
+			if( $dependArg['type'] === "get" ){
 				
 				//only continue if the depend id is actually part of this get request
 				if( isset( $_GET[ $dependArg['id'] ] ) ){
@@ -526,7 +563,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//get the children values of this depend node
 					foreach( $dependArg['children'] as $childDependency ) {
 						
-						if( $childDependency['type'] == "get" ){
+						if( $childDependency['type'] === "get" ){
 							if( !isset( $_GET[ $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
 									"' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
@@ -539,7 +576,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$requestInfoBean->setGET( $childDependency['id'],  $childVal);
 							
 							
-						} else if( $childDependency['type'] == "post" ){
+						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
@@ -555,7 +592,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 				}
 			
-			} else if( $dependArg['type'] == "post" ){
+			} else if( $dependArg['type'] === "post" ){
 				
 				//only continue if the depend id is actually part of this get request
 				if( isset( $_POST[ $dependArg['id'] ] ) ){
@@ -563,7 +600,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//get the children values of this depend node
 					foreach( $dependArg['children'] as $childDependency ) {
 						
-						if( $childDependency['type'] == "get" ){
+						if( $childDependency['type'] === "get" ){
 							if( !isset( $_GET[ $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
@@ -576,7 +613,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$requestInfoBean->setGET( $childDependency['id'],  $childVal);
 							
 
-						} else if( $childDependency['type'] == "post" ){
+						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
