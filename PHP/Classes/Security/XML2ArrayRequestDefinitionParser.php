@@ -222,7 +222,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n" .
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n\t" .
 				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
 			return false;
 		}
