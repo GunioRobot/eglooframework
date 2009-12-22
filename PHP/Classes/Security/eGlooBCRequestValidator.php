@@ -366,10 +366,10 @@ final class RequestValidator {
 					//set argument in the request info bean					
 					$requestInfoBean->setPOST( (string) $variableArg['id'],  $variableValue );
 				}
-			} else if ( $variableArg['type'] === 'postArray') {
+			} else if ( $variableArg['type'] == "postArray") {
 					if( !isset( $_POST[ $variableArg['id'] ] ) ){
 						//check if required
-						if( $variableArg['required'] === "true") {
+						if( $variableArg['required'] == "true") {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
 								" is not set in post request with request ID: " . $requestID, 'Security' );
 							return false;
