@@ -339,10 +339,7 @@ final class RequestValidator {
 					//set argument in the request info bean					
 					$requestInfoBean->setGET( (string) $variableArg['id'],  $variableValue );
 				}
-
-
 			} else if( $variableArg['type'] == "post" ) {
-
 				if( !isset( $_POST[ (string) $variableArg['id'] ] ) ){
 					
 					//check if required
@@ -368,9 +365,37 @@ final class RequestValidator {
 
 					//set argument in the request info bean					
 					$requestInfoBean->setPOST( (string) $variableArg['id'],  $variableValue );
+				}
+			} else if ( $variableArg['type'] === 'postArray') {
+					if( !isset( $_POST[ $variableArg['id'] ] ) ){
+						//check if required
+						if( $variableArg['required'] === "true") {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
+								" is not set in post request with request ID: " . $requestID, 'Security' );
+							return false;
+						}
+					} else {
+						//check if correctly formatted
+						$variableValues = $_POST[ $variableArg['id'] ];
+						$regexFormat = $variableArg['regex'];
 
-				}				
-			}
+						$sanitizedValues = array();
+
+						foreach($variableValues as $key => $variableValue) {
+							$match = preg_match ( $regexFormat, $variableValue );
+
+							if( !$match ){
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
+									" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
+									" in post request with request ID: " . $requestID, 'Security' );
+							} else {
+								$sanitizedValues[$key] = $variableValue;
+							}
+						}
+						//set argument in the request info bean
+						$requestInfoBean->setPOST( $variableArg['id'],  $sanitizedValues );
+					}
+				}
 		} 
 		
 		return true;

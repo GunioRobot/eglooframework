@@ -133,7 +133,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
 					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
 					
-					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default'])) {
+					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postArray') {
 						$defaultVariableValue = (string) $variableArgument['default'];
 
 						if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
@@ -413,7 +413,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				}
 
 			} else if ( $variableArg['type'] === "post" ) {
-
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
 					if( $variableArg['required'] === "true") {
@@ -439,6 +438,37 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 					//set argument in the request info bean					
 					$requestInfoBean->setPOST( $variableArg['id'],  $variableValue );
+				}
+			} else if ( $variableArg['type'] === 'postArray') {
+				if( !isset( $_POST[ $variableArg['id'] ] ) ){
+					//check if required
+					if( $variableArg['required'] === "true") {
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
+							" is not set in post request with request ID: " . $requestID, 'Security' );
+						return false;
+					}
+				} else {
+					//check if correctly formatted
+					$variableValues = $_POST[ $variableArg['id'] ];
+					$regexFormat = $variableArg['regex'];
+					
+					$sanitizedValues = array();
+
+					foreach($variableValues as $key => $variableValue) {
+						$match = preg_match ( $regexFormat, $variableValue );
+
+						if( !$match ){
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
+								" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
+								" in post request with request ID: " . $requestID, 'Security' );
+						} else {
+							$sanitizedValues[$key] = $variableValue;
+						}
+
+					}
+
+					//set argument in the request info bean
+					$requestInfoBean->setPOST( $variableArg['id'],  $sanitizedValues );
 				}
 			}
 		} 
