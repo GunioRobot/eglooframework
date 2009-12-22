@@ -76,7 +76,7 @@ class ConfigureApplicationCoreeGlooRequestProcessor extends RequestProcessor {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ConfigureApplicationCoreeGlooRequestProcessor: Echoing Response" );
 
 		// TODO move header declarations to a decorator
-		// header("Content-type: text/html; charset=UTF-8");
+		header("Content-type: text/html; charset=UTF-8");
 
 		// TODO buffer output
 		echo $output;
