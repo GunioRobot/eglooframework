@@ -367,7 +367,7 @@ final class RequestValidator {
 					$requestInfoBean->setPOST( (string) $variableArg['id'],  $variableValue );
 				}
 			} else if ( $variableArg['type'] == "postArray") {
-					if( !isset( $_POST[ $variableArg['id'] ] ) ){
+					if( !isset( $_POST[ (string) $variableArg['id'] ] ) ){
 						//check if required
 						if( $variableArg['required'] == "true") {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
@@ -376,7 +376,7 @@ final class RequestValidator {
 						}
 					} else {
 						//check if correctly formatted
-						$variableValues = $_POST[ $variableArg['id'] ];
+						$variableValues = $_POST[ (string) $variableArg['id'] ];
 						$regexFormat = $variableArg['regex'];
 
 						$sanitizedValues = array();
