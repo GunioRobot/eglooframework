@@ -1,9 +1,9 @@
 <?php
 /**
- * LoadSystemConfigCoreeGlooRequestProcessor Class File
+ * ClearCacheFrameworkCoreeGlooRequestProcessor Class File
  *
- * Contains the class definition for the LoadSystemConfigCoreeGlooRequestProcessor,
- * a subclass of the RequestProcessor abstract class.
+ * Contains the class definition for the ClearCacheFrameworkCoreeGlooRequestProcessor, a
+ * subclass of the RequestProcessor abstract class.
  * 
  * Copyright 2009 eGloo, LLC
  * 
@@ -27,12 +27,15 @@
  */
 
 /**
- * Load System Config Core eGloo Request Processor
+ * Clear Cache Framework Core eGloo Request Processor
+ * 
+ * Handles client requests to retrieve the external main page (the domain root;
+ * e.g. www.egloo.com).
  * 
  * @package RequestProcessing
  * @subpackage RequestProcessors
  */
-class LoadSystemConfigCoreeGlooRequestProcessor extends RequestProcessor {
+class ClearCacheFrameworkCoreeGlooRequestProcessor extends RequestProcessor {
 
 	/**
 	 * Concrete implementation of the abstract RequestProcessor method
@@ -47,11 +50,13 @@ class LoadSystemConfigCoreeGlooRequestProcessor extends RequestProcessor {
 	 * @access public
 	 */
 	public function processRequest() {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "LoadSystemConfigCoreeGlooRequestProcessor: Entered processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheFrameworkCoreeGlooRequestProcessor: Entered processRequest()" );
 
-		eGlooConfiguration::loadFrameworkSystemXML();
+		eGlooConfiguration::clearFrameworkCache();
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "LoadSystemConfigCoreeGlooRequestProcessor: Exiting processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheFrameworkCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}
 
 }
+
+

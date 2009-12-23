@@ -5,9 +5,9 @@ final class eGlooConfiguration {
 	/* Class Constants */
 
 	// Deployment Type
-	const DEVELOPMENT	= 0x00;
-	const STAGING		= 0x01;
-	const PRODUCTION	= 0x02;
+	const DEVELOPMENT	= 0xff;
+	const STAGING		= 0xfe;
+	const PRODUCTION	= 0xf8;
 
 	// Database Engines
 	const DOCTRINE		= 0x00;
@@ -22,6 +22,35 @@ final class eGlooConfiguration {
 	private static $configuration_possible_options = array();
 
 	// Runtime Initialization / Configuration
+
+	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
+		$useRuntimeCache = self::getUseRuntimeCache();
+		
+		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
+			$success = self::loadFrameworkSystemCache();
+
+			if (!$success) {
+				self::loadFrameworkSystemXML();
+				self::writeFrameworkSystemCache();
+			}
+
+			$success = self::loadFrameworkConfigurationCache($overwrite, $config_cache);
+
+			if (!$success) {
+				self::loadFrameworkConfigurationXML($overwrite, $config_xml);
+				self::writeFrameworkConfigurationCache($config_cache);
+			}
+
+			if ($prefer_htaccess) {
+				self::loadWebRootConfig($overwrite);
+			}
+
+			if (eGlooConfiguration::getUseRuntimeCache()) {
+				self::writeRuntimeCache();
+			}
+		}
+	}
+
 	public static function loadWebRootConfig( $overwrite = true ) {
 		$webRootConfigOptions = array();
 		$webRootConfigOptions['egApplication']		= $_SERVER['EG_APP'];
@@ -189,6 +218,31 @@ final class eGlooConfiguration {
 		file_put_contents($runtime_cache_path, $config_dump);
 	}
 
+	public static function clearRuntimeCache( $runtime_cache_path = null ) {
+		$retVal = false;
+
+		if (!$runtime_cache_path) {
+			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
+				// TODO figure out what to do here
+				$retVal = false;
+			}
+
+			$runtime_cache_path = self::getRuntimeConfigurationCachePath() . self::getRuntimeConfigurationCacheFilename();
+		}
+
+		
+		
+		if ( file_exists($runtime_cache_path) && is_file($runtime_cache_path) && is_writable($runtime_cache_path) ) {
+			$retVal = unlink($runtime_cache_path);
+		}
+
+		return $retVal;
+	}
+
+	public static function clearAllCache() {
+		return self::clearRuntimeCache() && self::clearApplicationCache() && self::clearFrameworkCache() && self::clearSystemCache();
+	}
+
 	// Application Configuration
 
 	public static function getApplicationConfigurationCacheFilename() {
@@ -213,6 +267,27 @@ final class eGlooConfiguration {
 
 	public static function writeApplicationConfigurationXML( $application, $config_xml_path = './Config.xml' ) {
 		
+	}
+
+	public static function clearApplicationCache( $application_cache_path = null ) {
+		$retVal = false;
+
+		if (!$application_cache_path) {
+			if ( !is_writable( self::getApplicationConfigurationCachePath() ) ) {
+				// TODO figure out what to do here
+				$retVal = false;
+			}
+
+			$application_cache_path = self::getApplicationConfigurationCachePath() . self::getApplicationConfigurationCacheFilename();
+		}
+
+		
+		
+		if ( file_exists($application_cache_path) && is_file($application_cache_path) && is_writable($application_cache_path) ) {
+			$retVal = unlink($application_cache_path);
+		}
+
+		return $retVal;
 	}
 
 	// Framework Configuration
@@ -428,6 +503,25 @@ final class eGlooConfiguration {
 		} else {
 			trigger_error("Configuration XML for eGloo Framework not found");
 		}
+	}
+
+	public static function clearFrameworkCache( $config_cache_path = null ) {
+		$retVal = false;
+
+		if (!$config_cache_path) {
+			if ( !is_writable( self::getFrameworkConfigurationCachePath() ) ) {
+				// TODO figure out what to do here
+				$retVal = false;
+			}
+
+			$config_cache_path = self::getFrameworkConfigurationCachePath() . self::getFrameworkConfigurationCacheFilename();
+		}
+
+		if ( file_exists($config_cache_path) && is_file($config_cache_path) && is_writable($config_cache_path) ) {
+			$retVal = unlink($config_cache_path);
+		}
+
+		return $retVal;
 	}
 
 	// System Package Distribution Configuration
@@ -679,35 +773,23 @@ final class eGlooConfiguration {
 		}
 	}
 
-	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
-		$useRuntimeCache = self::getUseRuntimeCache();
-		
-		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
-			$success = self::loadFrameworkSystemCache();
+	public static function clearSystemCache( $system_cache_path = null ) {
+		$retVal = false;
 
-			if (!$success) {
-				self::loadFrameworkSystemXML();
-				self::writeFrameworkSystemCache();
+		if (!$system_cache_path) {
+			if ( !is_writable( self::getFrameworkSystemCachePath() ) ) {
+				// TODO figure out what to do here
+				$retVal = false;
 			}
 
-			$success = self::loadFrameworkConfigurationCache($overwrite, $config_cache);
-
-			if (!$success) {
-				self::loadFrameworkConfigurationXML($overwrite, $config_xml);
-				self::writeFrameworkConfigurationCache($config_cache);
-			}
-
-			if ($prefer_htaccess) {
-				self::loadWebRootConfig($overwrite);
-			}
-
-			if (eGlooConfiguration::getUseRuntimeCache()) {
-				self::writeRuntimeCache();
-			}
+			$system_cache_path = self::getFrameworkSystemCachePath() . self::getFrameworkSystemCacheFilename();
 		}
 
+		if ( file_exists($system_cache_path) && is_file($system_cache_path) && is_writable($system_cache_path) ) {
+			$retVal = unlink($system_cache_path);
+		}
 
-		// echo_r(self::$configuration_options);
+		return $retVal;
 	}
 
 
