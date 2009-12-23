@@ -52,7 +52,11 @@ class ClearCacheAllCoreeGlooRequestProcessor extends RequestProcessor {
 	public function processRequest() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheAllCoreeGlooRequestProcessor: Entered processRequest()" );
 
+		echo_r("Preparing to clear all cache...");
+
 		eGlooConfiguration::clearAllCache();
+
+		echo_r("All cache cleared");
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheAllCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}

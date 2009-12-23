@@ -89,6 +89,7 @@
 	<!-- Configuration of eGloo Applications -->
 	<RequestClass id="coreeGlooCacheAdministration">
 		<Request id="clearCacheAll" processorID="ClearCacheAllCoreeGlooRequestProcessor">
+		</Request>
 		<Request id="clearCacheRuntime" processorID="ClearCacheRuntimeCoreeGlooRequestProcessor">
 		</Request>
 	</RequestClass>
