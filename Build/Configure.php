@@ -171,7 +171,7 @@ foreach($xml_config_options['System']['Options'] as $option_name => $option) {
 // 	}
 // }
 
-eGlooConfiguration::writeFrameworkSystemXML( $xml_config_options, true, '../XML/System.skeleton.xml', './Config.xml');
+eGlooConfiguration::writeFrameworkSystemXML( $xml_config_options, true, '../XML/System.skeleton.xml', './System.xml');
 
 // Dump our fresh configuration set
 // $config_dump = var_export($configuration_options, TRUE);
