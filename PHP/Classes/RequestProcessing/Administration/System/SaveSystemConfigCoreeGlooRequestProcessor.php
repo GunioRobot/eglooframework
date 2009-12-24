@@ -49,7 +49,11 @@ class SaveSystemConfigCoreeGlooRequestProcessor extends RequestProcessor {
 	public function processRequest() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SaveSystemConfigCoreeGlooRequestProcessor: Entered processRequest()" );
 
-		eGlooConfiguration::writeFrameworkConfigurationXML();
+		$output = eGlooConfiguration::writeFrameworkSystemXML(array(), false);
+
+		header('Content-type: text');
+
+		echo $output;
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SaveSystemConfigCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}

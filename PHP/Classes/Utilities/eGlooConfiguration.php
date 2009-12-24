@@ -674,19 +674,101 @@ final class eGlooConfiguration {
 		file_put_contents($system_cache_path, $system_dump);
 	}
 
-	public static function writeFrameworkSystemXML( $config_xml_path = './Config1.xml' ) {
-		if ( file_exists($config_xml_path) ) {
-			$full_config_xml_path = realpath($config_xml_path);
-			$folder = dirname($full_config_xml_path);
-			echo $full_config_xml_path;
-			die_r($folder);
-		} else {
-			$full_parent_directory_path = realpath(preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$1', $config_xml_path));
-			$config_xml_filename = preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$2', $config_xml_path);
+	public static function writeFrameworkSystemXML( $configuration_options, $overwrite, $skeleton_xml_path = null, $config_xml_path = null ) {
+		if ($skeleton_xml_path === null) {
+			$skeleton_xml_path = '../XML/System.skeleton.xml';
+		}
 
-			if (is_writable($full_parent_directory_path)) {
-				// echo_r("Writing");
-				// echo_r($config_xml_filename);
+		if ($config_xml_path === null) {
+			$config_xml_path = './System.generated.xml';
+		}
+
+		if ( file_exists($skeleton_xml_path) && is_file($skeleton_xml_path) && is_readable($skeleton_xml_path) ) {
+			$configXMLObject = simplexml_load_file( $skeleton_xml_path );
+
+			// TODO Error handling
+			// $errors = libxml_get_errors();
+			// echo_r($errors);
+
+			$system_configuration = array();
+
+			// $configuration_options['System'] = array('Components' => array('DocumentRoot' => array('value' => 'junk')));
+
+			foreach( $configXMLObject->xpath( '/tns:Configuration' ) as $configuration ) {
+				foreach($configuration->children() as $section) {
+					$sectionID = (string) $section->getName();
+					$system_configuration[$sectionID] = array('Components' => array(), 'Options' => array());
+					$options_section = array();
+
+					if (isset($configuration_options[$sectionID])) {
+						$options_section = $configuration_options[$sectionID];
+					}
+
+					if (isset($options_section['Components'])) {
+						$options_components = $options_section['Components'];
+					}
+
+					foreach($section->xpath( 'Component' ) as $component) {
+						$nextComponent = array();
+
+						$nextComponent['id'] = $component_id = (string) $component['id'];
+
+						$nextComponent['displayName'] = (string) $component['displayName'];
+						$nextComponent['override'] = (string) $component['override'];
+						$nextComponent['type'] = (string) $component['type'];
+						$nextComponent['value'] = (string) $component['value'];
+						$nextComponent['required'] = (string) $component['required'];
+
+						if (isset($options_components[$component_id]) && isset($options_components[$component_id]['value'])) {
+							$nextComponent['value'] = $options_components[$component_id]['value'];
+						}
+
+						$system_configuration[$sectionID]['Components'][] = $nextComponent;
+					}
+
+					if (isset($options_section['Options'])) {
+						$options_options = $options_section['Options'];
+					}
+
+					foreach($section->xpath( 'Option' ) as $option) {
+						$nextOption = array();
+
+						$nextOption['id'] = $option_id = (string) $option['id'];
+						$nextOption['displayName'] = (string) $option['displayName'];
+						$nextOption['override'] = (string) $option['override'];
+						$nextOption['type'] = (string) $option['type'];
+						$nextOption['value'] = (string) $option['value'];
+						$nextOption['required'] = (string) $option['required'];
+
+						if (isset($options_options[$option_id]) && isset($options_options[$option_id]['value'])) {
+							$nextOption['value'] = $options_options[$option_id]['value'];
+						}
+
+						$system_configuration[$sectionID]['Options'][] = $nextOption;
+					}
+
+				}
+
+			}
+
+		} else {
+			trigger_error("System Skeleton XML for eGloo Framework not found");
+		}
+
+		$full_parent_directory_path = realpath(preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$1', $config_xml_path));
+		$config_xml_filename = preg_replace('~^([a-zA-Z0-9. ]+/)*?([a-zA-Z0-9.]*)$~', '$2', $config_xml_path);
+
+		$qualified_path = $full_parent_directory_path . '/' . $config_xml_filename;
+
+		if ( file_exists($qualified_path) && !$overwrite) {
+			trigger_error('System configuration XML exists - will not overwrite');
+			// $full_config_xml_path = realpath($config_xml_path);
+			// $folder = dirname($full_config_xml_path);
+			// echo $full_config_xml_path;
+			// die_r($folder);
+		} else {
+			if (!is_writable($full_parent_directory_path)) {
+				trigger_error('Destination for generated system configuration XML is not writable');
 			}
 
 			$xmlData = '';
@@ -700,74 +782,32 @@ final class eGlooConfiguration {
 			$xmlData .= '</tns:Configuration>';
 
 			$xmlObject = new SimpleXMLElement($xmlData);
-
-			$applicationsXMLObject 	= $xmlObject->addChild('Applications');
-			$cachingXMLObject 		= $xmlObject->addChild('Caching');
-			$cubesXMLObject 		= $xmlObject->addChild('Cubes');
-			$databasesXMLObject 	= $xmlObject->addChild('Databases');
-			$documentsXMLObject 	= $xmlObject->addChild('Documents');
-			$frameworkXMLObject 	= $xmlObject->addChild('Framework');
-			$libraryXMLObject 		= $xmlObject->addChild('Library');
-			$networkXMLObject 		= $xmlObject->addChild('Network');
-			$peeringXMLObject 		= $xmlObject->addChild('Peering');
-			$systemXMLObject 		= $xmlObject->addChild('System');
 			
-			foreach (self::$configuration_possible_options as $key => $value) {
-				$childXMLObject = null;
+			foreach ($system_configuration as $sectionID => $section) {
 
-				switch($value['elementType']) {
-					case 'Component' :
-						$childXMLObject = $systemXMLObject->addChild('Component');
-						break;
-					case 'Option' :
-						$childXMLObject = $systemXMLObject->addChild('Option');
-						break;
-					default :
-						break;
-				}
-				header('Content-type: text');
+				$sectionXMLObject = $xmlObject->addChild($sectionID);
 
-				$childXMLObject->addAttribute('id', $key);
-				$childXMLObject->addAttribute('displayName', $value['displayName']);
-				$childXMLObject->addAttribute('override', $value['override']);
-				$childXMLObject->addAttribute('type', $value['type']);
+				foreach($section['Components'] as $component) {
+					$componentXMLObject = $sectionXMLObject->addChild('Component');
 
-				if (isset(self::$configuration_options[$key])) {
-					$newValue = null;
+					$componentXMLObject->addAttribute('id', $component['id']);
+					$componentXMLObject->addAttribute('displayName', $component['displayName']);
+					$componentXMLObject->addAttribute('override', $component['override']);
+					$componentXMLObject->addAttribute('type', $component['type']);
 
-					switch(self::$configuration_options[$key]) {
-						case false :
-							$newValue = 'false';
-							break;
-						case true :
-							$newValue = 'true';
-							break;
-						default :
-							$newValue = self::$configuration_options[$key];
-							break;
-					}
-
-					$childXMLObject->addAttribute('value', $newValue);
-				} else {
-					$newValue = null;
-
-					switch($value['value']) {
-						case false :
-							$newValue = 'false';
-							break;
-						case true :
-							$newValue = 'true';
-							break;
-						default :
-							$newValue = $value['value'];
-							break;
-					}
-
-					$childXMLObject->addAttribute('value', $value['value']);
+					$componentXMLObject->addAttribute('value', $component['value']);
 				}
 
-				$childXMLObject->addAttribute('required', $value['required']);
+				foreach($section['Options'] as $option) {
+					$optionXMLObject = $sectionXMLObject->addChild('Option');
 
+					$optionXMLObject->addAttribute('id', $option['id']);
+					$optionXMLObject->addAttribute('displayName', $option['displayName']);
+					$optionXMLObject->addAttribute('override', $option['override']);
+					$optionXMLObject->addAttribute('type', $option['type']);
+
+					$optionXMLObject->addAttribute('value', $option['value']);
+				}
 			}
 
 			$domObject = new DOMDocument();
@@ -776,33 +816,11 @@ final class eGlooConfiguration {
 			$domObject->formatOutput = true;
 			$formattedXML = $domObject->saveXML( $domObject->documentElement, LIBXML_NSCLEAN );
 
-			// $domObject->save( $config_xml_path );
+			$domObject->save( $qualified_path );
 
-			echo $formattedXML;
-			// 
-			die;
+			return $formattedXML;
 		}
 
-        if ( is_writable( $config_xml_path ) ) {
-
-        } else {
-	
-		}
-
-		if ( file_exists($config_xml_path) && is_file($config_xml_path) && is_readable($config_xml_path) ) {
-			$configXML = simplexml_load_file( $config_xml_path );
-
-			$character = $configXML->movie[0]->characters->addChild('character');
-			$character->addChild('name', 'Mr. Parser');
-			$character->addChild('actor', 'John Doe');
-
-			$rating = $configXML->movie[0]->addChild('rating', 'PG');
-			$rating->addAttribute('type', 'mpaa');
-
-			echo $configXML->asXML();
-		} else {
-			trigger_error("Configuration XML for eGloo Framework not found");
-		}
 	}
 
 	public static function clearSystemCache( $system_cache_path = null ) {

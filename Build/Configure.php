@@ -28,6 +28,8 @@
  * @version 1.0
  */
 
+include('../PHP/Classes/Utilities/eGlooConfiguration.php');
+
 $value_pairs = array();
 $configuration_options = array(
 		'ApplicationsPath'		=> '',
@@ -43,7 +45,57 @@ $configuration_options = array(
 		'SmartyPath'			=> '',
 		'UseDoctrine'			=> true,
 		'UseSmarty'				=> true,
+		'egUseDoctrine'			=> 'true',
+		'egUseSmarty'			=> 'true',
 		);
+
+$xml_config_options = array(
+	'System' => array(
+		'Components' => array(
+			'ApplicationsPath' => array(
+				'value' => ''
+				),
+			'CachePath' => array(
+				'value' => ''
+				),
+			'CompiledTemplatesPath' => array(
+				'value' => ''
+				),
+			'ConfigurationPath' => array(
+				'value' => ''
+				),
+			'CubesPath' => array(
+				'value' => ''
+				),
+			'DoctrinePath' => array(
+				'value' => ''
+				),
+			'DocumentationPath' => array(
+				'value' => ''
+				),
+			'DocumentRoot' => array(
+				'value' => ''
+				),
+			'FrameworkRootPath' => array(
+				'value' => ''
+				),
+			'LoggingPath' => array(
+				'value' => ''
+				),
+			'SmartyPath' => array(
+				'value' => ''
+				),
+			),
+		'Options' => array(
+			'egUseDoctrine' => array(
+				'value' => 'true'
+				),
+			'egUseSmarty' => array(
+				'value' => 'true'
+				)
+			)
+		),
+	);
 
 // Build a value pairs array out of provided arguments
 foreach($argv as $argument) {
@@ -71,37 +123,59 @@ foreach($configuration_options as $option_name => $option_value) {
 	}
 }
 
-// Check if we're going to be writing out localization cache paths
-if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
-	echo "Writing localization paths in cache path...\n";
-	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
-	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
+// Loop through all system xml components we expect
+foreach($xml_config_options['System']['Components'] as $component_name => $component) {
+	if (isset($value_pairs[$component_name])) {
+		// Change strings for booleans to actual boolean types
 
-	// Build paths for each locale
-	foreach($countries as $country) {
-		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
-			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755, true);
-		}
-
-		if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
-			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755, true);
-		}
-
-		// Build paths for each language in each country
-		foreach($languages as $language) {
-			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
-				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755, true);
-			}
-			if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
-				mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755, true);
-			}
-		}
+		// Set the given option value in our configuration array
+		$xml_config_options['System']['Components'][$component_name]['value'] = $value_pairs[$component_name];
 	}
 }
 
+// Loop through all system xml options we expect
+foreach($xml_config_options['System']['Options'] as $option_name => $option) {
+	if (isset($value_pairs[$option_name])) {
+		// Change strings for booleans to actual boolean types
+
+		// Set the given option value in our configuration array
+		$xml_config_options['System']['Options'][$option_name]['value'] = $value_pairs[$option_name];
+	}
+}
+
+// Check if we're going to be writing out localization cache paths
+// if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
+// 	echo "Writing localization paths in cache path...\n";
+// 	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
+// 	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
+// 
+// 	// Build paths for each locale
+// 	foreach($countries as $country) {
+// 		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
+// 			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755, true);
+// 		}
+// 
+// 		if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
+// 			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755, true);
+// 		}
+// 
+// 		// Build paths for each language in each country
+// 		foreach($languages as $language) {
+// 			if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
+// 				mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755, true);
+// 			}
+// 			if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
+// 				mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755, true);
+// 			}
+// 		}
+// 	}
+// }
+
+eGlooConfiguration::writeFrameworkSystemXML( $xml_config_options, true, '../XML/System.skeleton.xml', './Config.xml');
+
 // Dump our fresh configuration set
-$config_dump = var_export($configuration_options, TRUE);
-file_put_contents('ConfigCache.php', $config_dump);
+// $config_dump = var_export($configuration_options, TRUE);
+// file_put_contents('ConfigCache.php', $config_dump);
 
 // We're good, let's get out of here
 exit;
