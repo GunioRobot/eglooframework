@@ -25,7 +25,7 @@ final class eGlooConfiguration {
 
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
-		
+
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
@@ -49,6 +49,7 @@ final class eGlooConfiguration {
 				self::writeRuntimeCache();
 			}
 		}
+
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
@@ -595,18 +596,18 @@ final class eGlooConfiguration {
 		if ( file_exists($system_xml_path) && is_file($system_xml_path) && is_readable($system_xml_path) ) {
 			$configXMLObject = simplexml_load_file( $system_xml_path );
 
-			// TODO Error handling
+			// // TODO Error handling
 			// $errors = libxml_get_errors();
 			// echo_r($errors);
 
 			$system_configuration = array();
 
 			foreach( $configXMLObject->xpath( '/tns:Configuration' ) as $configuration ) {
-				foreach($configuration->children() as $section) {
+				foreach($configuration->children('com.egloo.www/eGlooConfiguration') as $section) {
 					$sectionID = (string) $section->getName();
 					$system_configuration[$sectionID] = array('Components' => array(), 'Options' => array());
 
-					foreach($section->xpath( 'Component' ) as $component) {
+					foreach($section->xpath( 'tns:Component' ) as $component) {
 						$nextComponent = array();
 
 						$nextComponent['id'] = (string) $component['id'];
@@ -619,7 +620,7 @@ final class eGlooConfiguration {
 						$system_configuration[$sectionID]['Components'][] = $nextComponent;
 					}
 
-					foreach($section->xpath( 'Option' ) as $option) {
+					foreach($section->xpath( 'tns:Option' ) as $option) {
 						$nextOption = array();
 
 						$nextOption['id'] = (string) $option['id'];
@@ -656,7 +657,17 @@ final class eGlooConfiguration {
 
 			// self::$system_configuration = self::$configuration_options;
 		} else {
-			trigger_error("System XML for eGloo Framework not found");
+			if (!file_exists($system_xml_path)) {
+				trigger_error("System XML for eGloo Framework not found.");
+			} else if (!is_file($system_xml_path)) {
+				trigger_error("Expected path for System XML for eGloo Framework exists but is not a valid file.");
+			} else if (!is_readable($system_xml_path)) {
+				trigger_error("System XML for eGloo Framework file exists but cannot be read.  Check file permissions.");
+			} else {
+				trigger_error("Unknown Error Reading System XML for eGloo Framework.");
+			}
+
+			exit;
 		}
 	}
 
@@ -1009,7 +1020,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseDoctrine() {
-		return self::$configuration_options['egUseDoctrine'];
+		return isset(self::$configuration_options['egUseDoctrine']) ? self::$configuration_options['egUseDoctrine'] : false;
 	}
 
 	public static function getUseRuntimeCache() {
@@ -1031,7 +1042,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseSmarty() {
-		return self::$configuration_options['egUseSmarty'];
+		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
 	}
 
 }
