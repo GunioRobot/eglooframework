@@ -360,9 +360,9 @@ final class eGlooConfiguration {
 			// $errors = libxml_get_errors();
 			// echo_r($errors);
 
-			foreach( $configXMLObject->xpath( '/tns:Configuration/System/Component' ) as $component ) {
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Component' ) as $component ) {
 				$componentID = (string) $component['id'];
-				
+
 				if (isset(self::$configuration_possible_options[$componentID])) {
 					// if (!isset(self::$configuration_options[$componentID])) {
 						self::$configuration_options[$componentID] = (string) $component['value'];
@@ -370,9 +370,9 @@ final class eGlooConfiguration {
 				}
 			}
 
-			foreach( $configXMLObject->xpath( '/tns:Configuration/System/Option' ) as $option ) {
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Option' ) as $option ) {
 				$optionID = (string) $option['id'];
-				
+
 				if (isset(self::$configuration_possible_options[$optionID])) {
 					// if (!isset(self::$configuration_options[$optionID])) {
 						self::$configuration_options[$optionID] = (string) $option['value'];
