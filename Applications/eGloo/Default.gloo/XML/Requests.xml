@@ -99,6 +99,8 @@
 		</Request>
 		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
 		</Request>
+		<Request id="configureCache" processorID="ConfigureApplicationCacheCoreeGlooRequestProcessor">
+		</Request>
 		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="loadConfig" processorID="LoadApplicationConfigCoreeGlooRequestProcessor">

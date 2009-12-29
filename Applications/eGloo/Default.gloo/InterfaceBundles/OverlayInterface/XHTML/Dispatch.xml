@@ -4,6 +4,9 @@
 		<Request id="configure" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ConfigureApplication.tpl</Localization>
 		</Request>
+		<Request id="configureCache" path="CoreeGlooApplicationAdministration">
+			<Localization countryCode="" languageCode="" variesOnUserAgent="false">ConfigureApplicationCache.tpl</Localization>
+		</Request>
 		<Request id="install" path="CoreeGlooApplicationAdministration">
 			<Localization countryCode="" languageCode="" variesOnUserAgent="false">InstallApplication.tpl</Localization>
 		</Request>
