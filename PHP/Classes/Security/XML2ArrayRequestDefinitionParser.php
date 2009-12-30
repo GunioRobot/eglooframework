@@ -133,7 +133,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
 					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
 					
-					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postArray') {
+					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
 						$defaultVariableValue = (string) $variableArgument['default'];
 
 						if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
@@ -380,9 +380,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 foreach( $requestNode['variableArguments'] as $variableArg ) {
-			
-			
-			if( $variableArg['type'] === "get" ){
+			if( $variableArg['type'] === 'get' ){
 
 				if( !isset( $_GET[ $variableArg['id'] ] ) ){
 					
@@ -412,7 +410,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestInfoBean->setGET( $variableArg['id'],  $variableValue );
 				}
 
-			} else if ( $variableArg['type'] === "post" ) {
+			} else if ( $variableArg['type'] === 'post' ) {
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
 					if( $variableArg['required'] === "true") {
@@ -439,7 +437,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//set argument in the request info bean					
 					$requestInfoBean->setPOST( $variableArg['id'],  $variableValue );
 				}
-			} else if ( $variableArg['type'] === 'postArray') {
+			} else if ( $variableArg['type'] === 'postarray') {
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
 					if( $variableArg['required'] === "true") {
@@ -484,7 +482,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * @return true if all select arguments pass the test, false otherwise
 	 */
 	private function validateSelectArguments( $requestNode, $requestInfoBean ){
-
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 
@@ -509,7 +506,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$selectVal = $_GET[ $selectArg['id'] ];
 					$match = false;
 					
-					foreach( $selectArg->xpath('child::value/text()') as $validValue ){
+					foreach( $selectArg['values'] as $validValue ){
 						if( $validValue === $selectVal ){
 							$match = true;
 						}
@@ -547,8 +544,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if value is one of the allowable values
 					$selectVal = $_POST[ $selectArg['id'] ];
 					$match = false;
-					
-					foreach( $selectArg->xpath('child::value/text()') as $validValue ){
+
+					foreach( $selectArg['values'] as $validValue ){
 						if( $validValue === $selectVal ){
 							$match = true;
 						}

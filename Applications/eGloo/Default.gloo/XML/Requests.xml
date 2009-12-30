@@ -100,6 +100,11 @@
 		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="configureCache" processorID="ConfigureApplicationCacheCoreeGlooRequestProcessor">
+			<VariableArgument type="postArray" id="countries_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="postArray" id="languages_selected" regex="/^.*$/" required="false" />
+			<SelectArgument id="submit" type="post" required="false">
+				<value>Submit</value>
+			</SelectArgument>
 		</Request>
 		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
 		</Request>

@@ -21,7 +21,7 @@
 		<title>eGloo Administration | Configure Application</title>
 	</head>
 	<body>
-		<h1>eGloo Application Configuration</h1>
+		<h1>eGloo Application Cache Configuration</h1>
 
 		<div>
 			<form>
@@ -33,13 +33,39 @@
 			</form>
 		</div>
 
-		<div>
-			<span>Available Applications:</span>
-			<select>
-			<!--{foreach from=$applications item=application}-->
-				<option value="<!--{$application.application_name}-->"><!--{$application.application_name}--></option>
-			<!--{/foreach}-->
-			</select>
-		</div>
+		<br /><br />
+
+		<form method="post">
+			<span>Languages:</span>
+			<div>
+				<select name="languages_selected[]" multiple="true">
+				<!--{foreach from=$languages item=language}-->
+					<!--{strip}-->
+						<option <!--{if in_array($language.code, $languages_selected)}-->selected<!--{/if}--> value="<!--{$language.code}-->" >
+							<!--{$language.language|lower|capitalize}-->
+						</option>
+					<!--{/strip}-->
+				<!--{/foreach}-->
+				</select>
+			<div/>
+
+			<br />
+			<br />
+
+			<span>Countries:</span>
+			<div>
+				<select name="countries_selected[]" multiple="true">
+					<!--{foreach from=$countries item=country}-->
+						<!--{strip}-->
+							<option <!--{if in_array($country.A2, $countries_selected)}-->selected<!--{/if}--> value="<!--{$country.A2}-->" >
+								<!--{$country.country|lower|capitalize}-->
+							</option>
+						<!--{/strip}-->
+					<!--{/foreach}-->
+				</select>
+			<div/>
+
+			<input type="submit" name="submit" value="Submit" />
+		</form>
 	</body>
 </html>
