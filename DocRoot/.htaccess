@@ -104,6 +104,7 @@ RewriteRule ^media/(.*(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv))$
 # last rule
 RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?eg_requestClass=$1&eg_requestID=$2 [L]
 RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&\ ]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3 [L]
+RewriteRule ^([a-zA-Z0-9]+)/?$ index.php?eg_requestClass=$1&eg_requestID=index [L]
 RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
 
 # Forbid anything that doesn't fit one of the preceding patterns
