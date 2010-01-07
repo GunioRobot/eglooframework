@@ -86,9 +86,11 @@
 			<VariableArgument id="confirmationID" regex="/^\w{20}$/" required="true" type="post" />
 		</Request>
 	</RequestClass>
-	<!-- Configuration of eGloo Applications -->
+	<!-- Configuration of eGloo Cache -->
 	<RequestClass id="coreeGlooCacheAdministration">
 		<Request id="clearCacheAll" processorID="ClearCacheAllCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="clearCacheGatewayCache" processorID="ClearCacheGatewayCacheCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="clearCacheRuntime" processorID="ClearCacheRuntimeCoreeGlooRequestProcessor">
 		</Request>
@@ -100,6 +102,10 @@
 		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
 		</Request>
 		<Request id="configureCache" processorID="ConfigureApplicationCacheCoreeGlooRequestProcessor">
+			<VariableArgument type="post" id="applications_selected_serialized" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="application_group_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="application_bundle_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="postArray" id="applications_selected" regex="/^.*$/" required="false" />
 			<VariableArgument type="postArray" id="countries_selected" regex="/^.*$/" required="false" />
 			<VariableArgument type="postArray" id="languages_selected" regex="/^.*$/" required="false" />
 			<SelectArgument id="submit" type="post" required="false">
