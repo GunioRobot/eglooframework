@@ -107,7 +107,7 @@ function eglooAutoload($class_name) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkRootPath() . '/PHP';
 		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationName() . '/PHP';
+			eGlooConfiguration::getApplicationPath() . '/PHP';
 
 		// Customize this yourself, but leave the array_flip alone. We will use this to
 		// get rid of duplicate entries from the include_path .ini list.  By default,
@@ -135,13 +135,16 @@ function eglooAutoload($class_name) {
 		}
 
 		if ( file_exists( $directory ) && is_dir( $directory ) ) {
+
 			$it = new RecursiveDirectoryIterator( $directory );
 
 			foreach ( new RecursiveIteratorIterator( $it ) as $currentNode ) {
+
 				if ( strpos( $currentNode->getFileName(), $class_name ) !== false ) {
 					// class_name was included, now compare against all permitted file name patterns
 					foreach ( $possibility as $compare ) {
 						// by using $compare, you will get a qualified file name
+
 						if ( $compare === $currentNode->getFileName() ) {
 							$realPath = $currentNode->getPathName();
 							if ($sanityCheckClassLoading && !in_array($realPath, $instances[$directory])) {
@@ -163,7 +166,6 @@ function eglooAutoload($class_name) {
 			// Path was found, so let's cache that result for future requests
 			if ( $realPath !== null ) {
 				if ($sanityCheckClassLoading) {
-					// echo_r($instances);
 					foreach( $instances as $directory => $instancePathSet) {
 						$noConflicts = true;
 				
