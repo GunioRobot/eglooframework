@@ -54,6 +54,52 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 
 		$applications_info = $this->getApplications(eGlooConfiguration::getApplicationsPath());
 
+		$templateVariables = array();
+
+		if ($this->requestInfoBean->issetPOST('application_group_selected')) {
+			// die_r("Junk");
+			$templateVariables['application_group_selected'] = $this->requestInfoBean->getPOST('application_group_selected');
+		} else {
+			$application_groups = array();
+
+			foreach($applications_info as $application_info) {
+				$application_groups[$application_info['application_group']] = $application_info['application_group'];
+			}
+
+			$templateVariables['application_groups'] = $application_groups;
+		}
+
+		if ($this->requestInfoBean->issetPOST('applications_selected_serialized')) {
+			$templateVariables['applications_selected'] = unserialize(urldecode($this->requestInfoBean->getPOST('applications_selected_serialized')));
+			$templateVariables['applications_selected_serialized'] = $this->requestInfoBean->getPOST('applications_selected_serialized');
+		} else if ($this->requestInfoBean->issetPOST('applications_selected')) {
+			$templateVariables['applications_selected'] = $this->requestInfoBean->getPOST('applications_selected');
+			$templateVariables['applications_selected_serialized'] = urlencode(serialize($this->requestInfoBean->getPOST('applications_selected')));
+		} else {
+			$templateVariables['applications'] = $applications_info;
+		}
+
+		if ($this->requestInfoBean->issetPOST('applications_selected_serialized') &&
+			$this->requestInfoBean->issetPOST('applications_selected') &&
+			$this->requestInfoBean->issetPOST('application_bundle_selected')) {
+
+			$templateVariables['application_bundle_selected'] = $this->requestInfoBean->getPOST('application_bundle_selected');
+		} else if ($this->requestInfoBean->issetPOST('applications_selected_serialized') ||
+				   $this->requestInfoBean->issetPOST('applications_selected')) {
+
+			$applications_selected = $templateVariables['applications_selected'];
+
+			$bundles = array();
+
+			foreach($applications_selected as $application_name) {
+				foreach($applications_info[$application_name]['application_interface_bundles'] as $application_bundle) {
+					$bundles[] = $application_bundle;
+				}
+			}
+
+			$templateVariables['bundles'] = $bundles;
+		}
+
 		if ($this->requestInfoBean->issetPOST('submit')) {
 			if ($this->requestInfoBean->issetPOST('countries_selected')) {
 				$countries_selected = $this->requestInfoBean->getPOST('countries_selected');
@@ -88,26 +134,36 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 		} else {
 			$countries_selected = array();
 			$languages_selected = array();
+			$localizations = array();
 
 			foreach ($applications_info as $application_info) {
-				$countries_selected[$application_info['application_name']] = $this->getCountries( $application_info['application_name'],
-															 $application_info['application_interface_bundles'],
-															 $application_info['application_group']);
-
-				$languages_selected[$application_info['application_name']] = $this->getLanguages( $application_info['application_name'],
+				$localizations[$application_info['application_name']] = $this->getLocalizations( $application_info['application_name'],
 															 $application_info['application_interface_bundles'],
 															 $application_info['application_group']);
 			}
 
-			// echo_r($countries_selected);
-			// echo_r($languages_selected);
 
-			foreach ($applications_info as $application_info) {
-				// $cache_paths = $this->getCachePaths( $application_info['application_name'], array('Default'), array('US', "UK"), array('en', 'fr') );
-				// echo_r($cache_paths);
+			foreach($localizations as $bundles) {
+				foreach($bundles as $localization) {
+					foreach($localization as $country => $languages) {
+						if (!in_array($country, $countries_selected)) {
+							$countries_selected[] = $country;
+						}
+
+						foreach($languages as $language) {
+							if (!in_array($language, $languages_selected)) {
+								$languages_selected[] = $language;
+							}
+						}
+					}
+				}
 			}
 			
 		}
+		// echo_r($countries_selected);
+		// echo_r($languages_selected);
+		// echo_r($localizations);
+		// die;
 
 
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
@@ -160,12 +216,12 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 						$application_name = preg_replace('~\.gloo~', '', $i->getFilename());
 
 						if (strpos($i->getPath(), eGlooConfiguration::getApplicationsPath()) === false) {
-							$application_group = null;
+							$application_group = '-None-';
 						} else {
 							$application_group = preg_replace('~' . eGlooConfiguration::getApplicationsPath() . '/~', '', $i->getPath());
 
-							if ($application_group === '' || $application_group === $i->getPath()) {
-								$application_group = null;
+							if (trim($application_group) === '' || $application_group === $i->getPath()) {
+								$application_group = '-None-';
 							}
 						}
 
@@ -188,12 +244,12 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 					$application_name = preg_replace('~\.gloo~', '', $i->getFilename());
 
 					if (strpos($i->getPath(), eGlooConfiguration::getApplicationsPath()) === false) {
-						$application_group = null;
+						$application_group = '-None-';
 					} else {
 						$application_group = preg_replace('~' . eGlooConfiguration::getApplicationsPath() . '/~', '', $i->getPath());
 						
-						if ($application_group === '' || $application_group === $i->getPath()) {
-							$application_group = null;
+						if (trim($application_group) === '' || $application_group === $i->getPath()) {
+							$application_group = '-None-';
 						}
 					}
 
@@ -226,7 +282,7 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 			foreach($localizations as $localization) {
 				foreach($languages as $language) {
 					$compiled_templates_path = eGlooConfiguration::getCachePath();
-					$compiled_templates_path .= $application_group !== null && $application_group !== '' ? '/' . $application_group : '';
+					$compiled_templates_path .= $application_group !== null && $application_group !== '-None-' && $application_group !== ''  ? '/' . $application_group : '';
 					$compiled_templates_path .= '/' . $application_name;
 					$compiled_templates_path .= '/' . $bundle;
 					$compiled_templates_path .= '/' . 'CompiledTemplates';
@@ -236,7 +292,7 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 					$retVal[] = $compiled_templates_path;
 
 					$smarty_cache_path = eGlooConfiguration::getCachePath();
-					$smarty_cache_path .= $application_group !== null && $application_group !== '' ? '/' . $application_group : '';
+					$smarty_cache_path .= $application_group !== null && $application_group !== '-None-' && $application_group !== '' ? '/' . $application_group : '';
 					$smarty_cache_path .= '/' . $application_name;
 					$smarty_cache_path .= '/' . $bundle;
 					$smarty_cache_path .= '/' . 'SmartyCache';
@@ -332,6 +388,81 @@ class ConfigureApplicationCacheCoreeGlooRequestProcessor extends RequestProcesso
 				foreach ($it as $i) {
 					if ( !in_array($i->getFilename(), array('.', '..', '.DS_Store')) ) {
 						$retVal[$i->getFilename()] = $i->getFilename();
+					}
+				}
+			} catch (Exception $e) {
+				continue;
+			}
+
+		}
+
+		return $retVal;
+	}
+
+	private function getLocalizations( $application_name, $bundles, $application_group = null ) {
+		$retVal = array();
+
+		foreach($bundles as $bundle) {
+			$retVal[$bundle] = array();
+
+			$compiled_templates_path = eGlooConfiguration::getCachePath();
+			$compiled_templates_path .= $application_group !== null && $application_group !== '' ? '/' . $application_group : '';
+			$compiled_templates_path .= '/' . $application_name;
+			$compiled_templates_path .= '/' . $bundle;
+			$compiled_templates_path .= '/' . 'CompiledTemplates';
+
+			try {
+				$it = new DirectoryIterator( $compiled_templates_path );
+
+				foreach ($it as $i) {
+					if ( !in_array($i->getFilename(), array('.', '..', '.DS_Store')) ) {
+						// $retVal[$i->getFilename()] = $i->getFilename();
+						$retVal[$bundle][$i->getFilename()] = array();
+						
+						$languages = new DirectoryIterator( $i->getRealPath() );
+
+						foreach ($languages as $language) {
+							if ( !in_array($language->getFilename(), array('.', '..', '.DS_Store')) ) {
+								// $retVal[$i->getFilename()] = $i->getFilename();
+								$retVal[$bundle][$i->getFilename()][] = $language->getFilename();
+							}
+						}
+					}
+				}
+			} catch (Exception $e) {
+				continue;
+			}
+
+
+			$smarty_cache_path = eGlooConfiguration::getCachePath();
+			$smarty_cache_path .= $application_group !== null && $application_group !== '' ? '/' . $application_group : '';
+			$smarty_cache_path .= '/' . $application_name;
+			$smarty_cache_path .= '/' . $bundle;
+			$smarty_cache_path .= '/' . 'SmartyCache';
+
+			try {
+				// $it = new DirectoryIterator( $smarty_cache_path );
+				// 
+				// foreach ($it as $i) {
+				// 	if ( !in_array($i->getFilename(), array('.', '..', '.DS_Store')) ) {
+				// 		$retVal[$i->getFilename()] = $i->getFilename();
+				// 	}
+				// }
+				$it = new DirectoryIterator( $smarty_cache_path );
+
+				foreach ($it as $i) {
+					if ( !in_array($i->getFilename(), array('.', '..', '.DS_Store')) ) {
+						// $retVal[$i->getFilename()] = $i->getFilename();
+						$retVal[$bundle][$i->getFilename()] = array();
+						
+						$languages = new DirectoryIterator( $i->getRealPath() );
+
+						foreach ($languages as $language) {
+							if ( !in_array($language->getFilename(), array('.', '..', '.DS_Store')) ) {
+								// $retVal[$i->getFilename()] = $i->getFilename();
+								$retVal[$bundle][$i->getFilename()][] = $language->getFilename();
+							}
+						}
 					}
 				}
 			} catch (Exception $e) {
