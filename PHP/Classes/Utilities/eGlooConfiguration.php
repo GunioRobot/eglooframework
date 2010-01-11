@@ -15,6 +15,7 @@ final class eGlooConfiguration {
 	const POSTGRESQL	= 0x02;
 
 	/* Static Members */
+	private static $rewriteBase = '/';
 
 	// Configuration Attributes
 	private static $configuration_options = array();
@@ -48,6 +49,13 @@ final class eGlooConfiguration {
 			if (eGlooConfiguration::getUseRuntimeCache()) {
 				self::writeRuntimeCache();
 			}
+		}
+
+		// Set the rewrite base
+		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
+			$matches = array();
+			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
+			self::$rewriteBase = $matches[1];
 		}
 
 	}
@@ -1001,6 +1009,10 @@ final class eGlooConfiguration {
 
 	public static function getPerformSanityCheckClassLoading() {
 		return self::$configuration_options['egSanityCheckClassLoading'];
+	}
+
+	public static function getRewriteBase() {
+		return self::$rewriteBase;
 	}
 
 	public static function getSmartyIncludePath() {
