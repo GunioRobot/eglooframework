@@ -58,8 +58,10 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 		$file_name = $this->requestInfoBean->getGET( 'image_name' );
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Looking up image ' . $file_name );
 
-		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationName() .
+		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() .
 			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/Images';
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Checking path ' . $app_path . '/' . $file_name );
 
 		if ( file_exists( $app_path . '/' . $file_name ) ) {
 			$imageMIMEType = '';
