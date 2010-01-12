@@ -62,7 +62,7 @@ class SessionDecorator extends RequestProcessorDecorator {
     * do any post processing here
     */
 	protected function requestPostProcessing(){
-		
+		session_write_close();
 	}
 
   }
