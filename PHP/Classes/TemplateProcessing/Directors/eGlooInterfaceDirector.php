@@ -121,7 +121,16 @@ class eGlooInterfaceDirector extends TemplateDirector {
         
     }
 
-    public function setTemplateVariables( $tokenArray ) {
+    public function setTemplateVariables( $tokenArray, $expose_system_variables = false, $system_variable_whitelist = null ) {
+		if ($expose_system_variables) {
+			// Do an automated thing for this with a foreach loop.  For now, just rewrite base
+			if (!isset($tokenArray['rewriteBase'])) {
+				if (!$system_variable_whitelist || ($system_variable_whitelist !== null && isset($system_variable_whitelist['rewriteBase']))) {
+					$tokenArray['rewriteBase'] = eGlooConfiguration::getRewriteBase();
+				}
+			}
+		}
+
         $this->templateBuilder->setTemplateVariables( $tokenArray );
     }
 
