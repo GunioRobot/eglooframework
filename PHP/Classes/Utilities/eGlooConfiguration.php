@@ -388,6 +388,27 @@ final class eGlooConfiguration {
 				}
 			}
 
+			// Load applications after system... 
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
+				$componentID = (string) $component['id'];
+
+				if (isset(self::$configuration_possible_options[$componentID])) {
+					// if (!isset(self::$configuration_options[$componentID])) {
+						self::$configuration_options[$componentID] = (string) $component['value'];
+					// }
+				}
+			}
+
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option' ) as $option ) {
+				$optionID = (string) $option['id'];
+
+				if (isset(self::$configuration_possible_options[$optionID])) {
+					// if (!isset(self::$configuration_options[$optionID])) {
+						self::$configuration_options[$optionID] = (string) $option['value'];
+					// }
+				}
+			}
+
 		} else {
 			trigger_error("Configuration XML for eGloo Framework not found");
 		}
@@ -643,6 +664,26 @@ final class eGlooConfiguration {
 
 				}
 
+			}
+
+			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?  Should be application array set
+			foreach($system_configuration['Applications']['Components'] as $component) {
+				if ($component['override'] === 'true') {
+					self::$configuration_possible_options[$component['id']] = $component;
+				}
+
+				self::$system_configuration[$component['id']] = $component;
+				self::$configuration_options[$component['id']] = $component['value'];
+			}
+
+			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?  Should be application array set
+			foreach($system_configuration['Applications']['Options'] as $option) {
+				if ($option['override'] === 'true') {
+					self::$configuration_possible_options[$option['id']] = $option;
+				}
+
+				self::$system_configuration[$option['id']] = $option;
+				self::$configuration_options[$option['id']] = $option['value'];
 			}
 
 			foreach($system_configuration['System']['Components'] as $component) {
@@ -935,6 +976,10 @@ final class eGlooConfiguration {
 
     public static function getDocumentRoot() {
 		return self::$configuration_options['DocumentRoot'];
+	}
+
+	public static function getExtraClassPath() {
+		return self::$configuration_options['ExtraClassPath'];
 	}
 
     public static function getFrameworkRootPath() {
