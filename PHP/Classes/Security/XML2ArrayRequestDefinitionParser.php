@@ -448,6 +448,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				} else {
 					//check if correctly formatted
 					$variableValues = $_POST[ $variableArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-post array variable as an array
+					if (!is_array($variableValues)) {
+						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $variableArg['id'] . '\' is type \'' .
+							gettype($variableValues) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
 					$regexFormat = $variableArg['regex'];
 					
 					$sanitizedValues = array();
