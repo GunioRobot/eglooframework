@@ -27,8 +27,6 @@ final class eGlooConfiguration {
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
-		$application_path = '';
-
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
@@ -44,8 +42,10 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache($config_cache);
 			}
 
-			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
+			$application_path = eGlooConfiguration::getApplicationPath();
 
+			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
+		
 			if (!$success) {
 				self::loadApplicationConfigurationXML($application_path, $overwrite);
 				self::writeApplicationConfigurationCache($application_path);
@@ -59,8 +59,6 @@ final class eGlooConfiguration {
 				self::writeRuntimeCache();
 			}
 		}
-
-		self::loadApplicationConfigurationXML(self::getApplicationPath(), true);
 
 		// Set the rewrite base
 		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
@@ -367,8 +365,18 @@ final class eGlooConfiguration {
 		}
 	}
 
-	public static function writeApplicationConfigurationCache( $application_name, $config_cache_path = null ) {
-		
+	public static function writeApplicationConfigurationCache( $application_path, $config_cache_path = null ) {
+		if (!$config_cache_path) {
+			if ( !is_writable( self::getApplicationConfigurationCachePath() ) ) {
+			    mkdir( self::getApplicationConfigurationCachePath() );
+			}
+
+			$config_cache_path = self::getApplicationConfigurationCachePath() . self::getApplicationConfigurationCacheFilename($application_path);
+		}
+
+		// Dump our configuration set
+		$config_dump = var_export(self::$configuration_options, TRUE);
+		file_put_contents($config_cache_path, $config_dump);
 	}
 
 	public static function writeApplicationConfigurationXML( $application_name, $config_xml_path = 'Config.xml' ) {
