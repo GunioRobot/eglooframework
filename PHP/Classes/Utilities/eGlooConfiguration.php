@@ -27,6 +27,8 @@ final class eGlooConfiguration {
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
+		$application_path = '';
+
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
@@ -42,6 +44,13 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache($config_cache);
 			}
 
+			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
+
+			if (!$success) {
+				self::loadApplicationConfigurationXML($application_path, $overwrite);
+				self::writeApplicationConfigurationCache($application_path);
+			}
+
 			if ($prefer_htaccess) {
 				self::loadWebRootConfig($overwrite);
 			}
@@ -51,13 +60,14 @@ final class eGlooConfiguration {
 			}
 		}
 
+		self::loadApplicationConfigurationXML(self::getApplicationPath(), true);
+
 		// Set the rewrite base
 		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
 			$matches = array();
 			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
 			self::$rewriteBase = $matches[1];
 		}
-
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
@@ -272,27 +282,96 @@ final class eGlooConfiguration {
 
 	// Application Configuration
 
-	public static function getApplicationConfigurationCacheFilename() {
-		return md5(realpath('.')) . '.application.gloocache';
+	public static function getApplicationConfigurationCacheFilename( $application_name = '' ) {
+		return md5(realpath('.') . $application_name) . '.application.gloocache';
 	}
 
 	public static function getApplicationConfigurationCachePath() {
 		return '/var/tmp/com.egloo.cache/';
 	}
 
-	public static function loadApplicationConfigurationCache( $application, $overwrite = true, $config_cache_path = './ConfigCache.php' ) {
+	public static function loadApplicationConfigurationCache( $application_name, $overwrite = true ) {
+		$retVal = false;
+
+		$config_cache_path = self::getApplicationConfigurationCachePath() . self::getApplicationConfigurationCacheFilename($application_name);
+
+		if ( file_exists($config_cache_path) && is_file($config_cache_path) && is_readable($config_cache_path) ) {
+			$cached_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
+
+			foreach ($cached_options as $possible_option_key => $option_default_value) {
+				if (isset(self::$configuration_possible_options[$possible_option_key])) {
+					self::$configuration_options[$possible_option_key] = $option_default_value;
+				}
+			}
+
+			// No errors
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public static function loadApplicationConfigurationXML( $application_name, $overwrite = true, $config_xml_filename = 'Config.xml' ) {
+		$config_xml_path = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/Configuration/' . $config_xml_filename;
+
+		if ( file_exists($config_xml_path) && is_file($config_xml_path) && is_readable($config_xml_path) ) {
+			$configXMLObject = simplexml_load_file( $config_xml_path );
+
+			// TODO Error handling
+			// $errors = libxml_get_errors();
+			// echo_r($errors);
+
+			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Component' ) as $component ) {
+			// 	$componentID = (string) $component['id'];
+			// 
+			// 	if (isset(self::$configuration_possible_options[$componentID])) {
+			// 		// if (!isset(self::$configuration_options[$componentID])) {
+			// 			self::$configuration_options[$componentID] = (string) $component['value'];
+			// 		// }
+			// 	}
+			// }
+			// 
+			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Option' ) as $option ) {
+			// 	$optionID = (string) $option['id'];
+			// 
+			// 	if (isset(self::$configuration_possible_options[$optionID])) {
+			// 		// if (!isset(self::$configuration_options[$optionID])) {
+			// 			self::$configuration_options[$optionID] = (string) $option['value'];
+			// 		// }
+			// 	}
+			// }
+			// 
+			// // Load applications after system... 
+			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
+			// 	$componentID = (string) $component['id'];
+			// 
+			// 	if (isset(self::$configuration_possible_options[$componentID])) {
+			// 		// if (!isset(self::$configuration_options[$componentID])) {
+			// 			self::$configuration_options[$componentID] = (string) $component['value'];
+			// 		// }
+			// 	}
+			// }
+
+			if (!isset(self::$configuration_options['CustomVariables'])) {
+				self::$configuration_options['CustomVariables'] = array();
+			}
+
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option[@type="customVariable"]' ) as $option ) {
+				$optionID = (string) $option['id'];
+
+				self::$configuration_options['CustomVariables'][$optionID] = (string) $option['value'];
+			}
+
+		} else {
+			trigger_error("Configuration XML for eGloo application not found");
+		}
+	}
+
+	public static function writeApplicationConfigurationCache( $application_name, $config_cache_path = null ) {
 		
 	}
 
-	public static function loadApplicationConfigurationXML( $application, $overwrite = true, $config_xml_path = './Config.xml' ) {
-		
-	}
-
-	public static function writeApplicationConfigurationCache( $application, $config_cache_path = './ConfigCache.php' ) {
-		
-	}
-
-	public static function writeApplicationConfigurationXML( $application, $config_xml_path = './Config.xml' ) {
+	public static function writeApplicationConfigurationXML( $application_name, $config_xml_path = 'Config.xml' ) {
 		
 	}
 
@@ -948,6 +1027,14 @@ final class eGlooConfiguration {
 
 	public static function getCubesPath() {
 		return self::$configuration_options['CubesPath'];
+	}
+
+	public static function getCustomVariable( $index ) {
+		if (!isset(self::$configuration_options['CustomVariables'][$index])) {
+			throw new ErrorException('Invalid custom variable \'' . $index . '\' requested');
+		}
+
+		return self::$configuration_options['CustomVariables'][$index];
 	}
 
 	public static function getDatabaseEngine() {
