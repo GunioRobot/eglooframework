@@ -49,7 +49,7 @@ class TemplateEngine extends Smarty {
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
 
 		$framework_template_path = 'Templates';
 
@@ -62,8 +62,11 @@ class TemplateEngine extends Smarty {
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
 
-		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/CompiledTemplates/' . $local . '/' . $language;
+
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/SmartyCache/' . $local . '/' . $language;
 
 		// Because neither Windows nor Smarty is as dumb as both
 		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
@@ -74,11 +77,13 @@ class TemplateEngine extends Smarty {
 		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 			$this->compile_check = false;
 			$this->force_compile = false;
-			$this->caching = true;
+			// $this->caching = true;
+			$this->caching = 2;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
-			$this->caching = true;
+			// $this->caching = true;
+			$this->caching = 2;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
@@ -95,7 +100,7 @@ class TemplateEngine extends Smarty {
 			$this->config_dir = $this->templateRoots;
 		} else {
 			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-				eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
+				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
 			$this->templateRoots['Application'] = $application_template_path;
 			$this->template_dir = $this->templateRoots;
 		}
