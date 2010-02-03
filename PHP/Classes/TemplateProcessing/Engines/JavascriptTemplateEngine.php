@@ -49,7 +49,7 @@ class JavascriptTemplateEngine extends TemplateEngine {
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationName() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
 		$framework_template_path = 'Templates/Frameworks/Common/Javascript/';
 
@@ -60,8 +60,11 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
 
-		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
-		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/SmartyCache/' . $local . '/' . $language;
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/CompiledTemplates/' . $local . '/' . $language;
+
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/SmartyCache/' . $local . '/' . $language;
 
 		// Because neither Windows nor Smarty is as dumb as both
 		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
