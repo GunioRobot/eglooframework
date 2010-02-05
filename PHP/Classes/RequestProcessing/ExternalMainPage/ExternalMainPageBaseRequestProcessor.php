@@ -73,7 +73,7 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 		$templateVariables['app'] = eGlooConfiguration::getApplicationName();
 		$templateVariables['bundle'] = eGlooConfiguration::getUIBundleName();
 
-		$templateDirector->setTemplateVariables( $templateVariables );            
+		$templateDirector->setTemplateVariables( $templateVariables, true );            
 
 		$output = $templateDirector->processTemplate();
 
