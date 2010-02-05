@@ -123,10 +123,50 @@ class CSSBuilder extends TemplateBuilder {
     }
     
     public function run() {
-        $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
+        $output = $this->__fetch( $this->dispatchPath, $this->cacheID );
 
         return $output;
     }
+
+	private function __fetch($dispatchPath, $cacheID) {
+		$retVal = null;
+
+		try {
+			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+		} catch (ErrorException $e) {
+			$matches = array();
+
+			if ( preg_match('~.*the \$compile_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+				if (count($matches) > 1) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( $matches[1], $mode, $recursive );
+
+						$retVal = $this->__fetch( $dispatchPath, $cacheID );
+					} catch (Exception $e){
+						throw $e;
+					}
+				}
+			} else if ( preg_match('~.*the \$cache_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+				if (count($matches) > 1) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( $matches[1], $mode, $recursive );
+
+						$retVal = $this->__fetch( $dispatchPath, $cacheID );
+					} catch (Exception $e){
+						throw $e;
+					}
+				}
+			}
+		}
+
+		return $retVal;
+	}
 
 }
 

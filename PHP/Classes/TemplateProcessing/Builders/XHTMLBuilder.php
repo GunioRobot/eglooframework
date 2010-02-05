@@ -144,29 +144,11 @@ class XHTMLBuilder extends TemplateBuilder {
 		if (isset($this->hardCacheID) && $this->isHardCached) {
 			$retVal = $this->output;
 		} else if (isset($this->hardCacheID) && !$this->isHardCached) {
-			try {
-				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
-			} catch (ErrorException $e) {
-				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
-					// die_r("here: " . $e->getMessage());
-				}
-
-				throw $e;
-			}
-
+			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 			$cacheGateway = CacheGateway::getCacheGateway();
 			$cacheGateway->storeObject($this->hardCacheID, $retVal, 'string', $this->ttl);
 		} else {
-			try {
-				$retVal = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
-			} catch (ErrorException $e) {
-				if ( preg_match('~.*the \$compile_dir .* does not exist, or is not a directory.*~', $e->getMessage() ) ) {
-					// die_r("here: " . $e->getMessage());
-				}
-
-				throw $e;
-			}
-
+			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 		}
 
         return $retVal;
@@ -179,6 +161,46 @@ class XHTMLBuilder extends TemplateBuilder {
         // 
         // return $output;        
     }
+
+	private function __fetch($dispatchPath, $cacheID) {
+		$retVal = null;
+
+		try {
+			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+		} catch (ErrorException $e) {
+			$matches = array();
+
+			if ( preg_match('~.*the \$compile_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+				if (count($matches) > 1) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( $matches[1], $mode, $recursive );
+
+						$retVal = $this->__fetch( $dispatchPath, $cacheID );
+					} catch (Exception $e){
+						throw $e;
+					}
+				}
+			} else if ( preg_match('~.*the \$cache_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+				if (count($matches) > 1) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( $matches[1], $mode, $recursive );
+
+						$retVal = $this->__fetch( $dispatchPath, $cacheID );
+					} catch (Exception $e){
+						throw $e;
+					}
+				}
+			}
+		}
+
+		return $retVal;
+	}
 
 }
 
