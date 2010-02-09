@@ -347,13 +347,11 @@ class CacheGateway {
 		if ($cacheGateway->active()) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Initializing Caching System ', 'Cache' );
 
-			
-
 			// TODO Add a check for this.  It's unlikely that someone will be switching
 			// applications or bundles and not want to invalidate application/bundle level
 			// caches, but who knows.
-			$egLastApplication = $cacheGateway->getObject('egLastApplication', 'CoreeGloo');
-			$egLastUIBundle = $cacheGateway->getObject('egLastUIBundle', 'CoreeGloo');
+			$egLastApplication = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', 'CoreeGloo');
+			$egLastUIBundle = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', 'CoreeGloo');
 			
 			$currentApplication = eGlooConfiguration::getApplicationName();
 			$currentBundle = eGlooConfiguration::getUIBundleName();
@@ -368,8 +366,8 @@ class CacheGateway {
 				$cacheGateway->flushUIBundleCache();
 			}
 
-			$egLastApplication = $cacheGateway->storeObject('egLastApplication', $currentApplication, 'CoreeGloo');
-			$egLastUIBundle = $cacheGateway->storeObject('egLastUIBundle', $currentBundle, 'CoreeGloo');
+			$egLastApplication = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', $currentApplication, 'CoreeGloo');
+			$egLastUIBundle = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', $currentBundle, 'CoreeGloo');
 		}
 	}
 

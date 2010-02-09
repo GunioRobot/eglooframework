@@ -89,10 +89,10 @@ class XHTMLDispatcher extends TemplateDispatcher {
         if ( !isset(self::$singletonDispatcher) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonDispatcher = $cacheGateway->getObject( 'XHTMLDispatcherNodes', '<type>' ) ) == null ) {
+            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLDispatcherNodes', '<type>' ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new XHTMLDispatcher( $application, $interfaceBundle );
-                $cacheGateway->storeObject( 'XHTMLDispatcherNodes', self::$singletonDispatcher, '<type>' );
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLDispatcherNodes', self::$singletonDispatcher, '<type>' );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Singleton pulled from cache" );
             }

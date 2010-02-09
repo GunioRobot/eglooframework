@@ -180,7 +180,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
 
 				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( 'XML2ArrayRequestDefinitionParserNodes::' .
+				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], '<type>' );
             }
         }
@@ -233,7 +233,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Incoming Request Class and Request ID lookup is: "' . $requestLookup . '"', 'Security' );
 
 		$cacheGateway = CacheGateway::getCacheGateway();
-		$requestNode = $cacheGateway->getObject( 'XML2ArrayRequestDefinitionParserNodes::' .
+		$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 			$requestLookup, '<type>' );
 
         if ( $requestNode == null ) {

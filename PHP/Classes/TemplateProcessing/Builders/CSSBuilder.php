@@ -93,7 +93,7 @@ class CSSBuilder extends TemplateBuilder {
 		} else {
 			$cacheGateway = CacheGateway::getCacheGateway();
 
-			$retVal = $cacheGateway->getObject($this->hardCacheID, 'string');
+			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'string');
 
 		    if ( $retVal != null ) {
 				$this->output = $retVal;

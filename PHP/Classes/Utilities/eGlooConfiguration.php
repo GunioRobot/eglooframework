@@ -21,6 +21,7 @@ final class eGlooConfiguration {
 	private static $configuration_options = array();
 	private static $system_configuration = array();
 	private static $configuration_possible_options = array();
+	private static $uniqueInstanceID = null;
 
 	// Runtime Initialization / Configuration
 
@@ -66,6 +67,8 @@ final class eGlooConfiguration {
 			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
 			self::$rewriteBase = $matches[1];
 		}
+		
+		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
@@ -1157,6 +1160,10 @@ final class eGlooConfiguration {
 
 	public static function getSmartyIncludePath() {
 		return self::$configuration_options['SmartyPath'];
+	}
+
+	public static function getUniqueInstanceIdentifier() {
+		return self::$uniqueInstanceID;
 	}
 
 	public static function getUseCache() {
