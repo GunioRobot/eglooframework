@@ -86,10 +86,10 @@ class StyleSheetDispatcher extends TemplateDispatcher {
         if ( !isset(self::$singletonDispatcher) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonDispatcher = $cacheGateway->getObject(  eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', '<type>' ) ) == null ) {
+            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', '<type>' ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new StyleSheetDispatcher( $application, $interfaceBundle );
-                $cacheGateway->storeObject(  eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', self::$singletonDispatcher, '<type>' );
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', self::$singletonDispatcher, '<type>' );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Singleton pulled from cache" );
             }
