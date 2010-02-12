@@ -59,7 +59,7 @@ class PGSQLSessionDAO extends SessionDAO {
   		$result = pg_prepare($db_handle, "query", 'SELECT setSession($1, $2, $3, $4)');
 
 		// Execute the prepared query.  Note that it is not necessary to escape
-		$result = pg_execute($db_handle, "query", array($sessionDTO->getSessionID(), $sessionDTO->getUserID(), $sessionDTO->getUserAgent(), $sessionDTO->getSessionData()));
+		$result = pg_execute($db_handle, "query", array($sessionDTO->getSessionID(), $sessionDTO->getUserID(), $sessionDTO->getUserAgent(), base64_encode(serialize($sessionDTO->getSessionData()))));
 
 		pg_close( $db_handle );
 
@@ -94,7 +94,7 @@ class PGSQLSessionDAO extends SessionDAO {
 		$sessionDTO->setSessionID($testarray['0']);
 		$sessionDTO->setUserID($testarray['1']);
 		$sessionDTO->setUserAgent($testarray['2']);
-		$sessionDTO->setSessionData($testarray['3']);
+		$sessionDTO->setSessionData(unserialize(base64_decode($testarray['3'])));
 		
 		if($testarray['4'] === 't'){
 			$sessionDTO->setSessionExists(true);
