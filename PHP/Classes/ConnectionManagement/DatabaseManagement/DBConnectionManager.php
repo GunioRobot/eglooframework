@@ -45,75 +45,57 @@ final class DBConnectionManager {
 	private static $mysqlConnection		= null;
 	private static $pgConnection		= null;
 
-	/* Connection Information */
-
-	// Doctrine Settings
-	// private static $doctrine_host		= 'localhost';
-	// private static $doctrine_user		= 'webserver';
-	// private static $doctrine_password	= 'test';
-	// private static $doctrine_dbname		= 'eGlooFramework';
-	// // private static $doctrine_port		   = '5433'; // PGPOOL
-	// private static $doctrine_port		= '5432'; // PostgreSQL Daemon
-
-	// MySQL Settings
-	private static $mysql_host		= 'localhost';
-	private static $mysql_user		= 'webserver';
-	private static $mysql_password	= 'test';
-	private static $mysql_dbname		= 'eGlooFramework';
-	private static $mysql_port		= '';
-
-	// PostgreSQL Settings
-	private static $pg_host		= 'localhost';
-	private static $pg_user		= 'webserver';
-	private static $pg_password	= 'test';
-	private static $pg_database		= 'eGlooFramework';
-	// private static $pg_port		   = '5433'; // PGPOOL
-	private static $pg_port		= '5432'; // PostgreSQL Daemon
-
-	public static function getConnection() {
+	public static function getConnection( $connection_name = 'egPrimary', $engine_mode = null ) {
 		$retVal = null;
 
-		if ( eGlooConfiguration::getDatabaseEngine() === eGlooConfiguration::DOCTRINE ) {
-			$retVal = self::getDoctrineConnection();
-		} else if ( eGlooConfiguration::getDatabaseEngine() === eGlooConfiguration::MYSQL ) {
-			$retVal = self::getMySQLConnection();
-		} else if ( eGlooConfiguration::getDatabaseEngine() === eGlooConfiguration::POSTGRESQL ) {
-			$retVal = self::getPostgreSQLConnection();
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		if ($engine_mode !== null) {
+			if ( $engine_mode === eGlooConfiguration::DOCTRINE ) {
+				$retVal = self::getDoctrineConnection();
+			} else if ( $engine_mode === eGlooConfiguration::MYSQL ) {
+				$retVal = self::getMySQLConnection();
+			} else if ( $engine_mode === eGlooConfiguration::POSTGRESQL ) {
+				$retVal = self::getPostgreSQLConnection();
+			} else {
+				// No DB engine specified in config or no engine available
+			}
 		} else {
-			// No DB engine specified in config or no engine available
+			if ( $connection_info['engine'] === eGlooConfiguration::DOCTRINE ) {
+				$retVal = self::getDoctrineConnection();
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQL ) {
+				$retVal = self::getMySQLConnection();
+			} else if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
+				$retVal = self::getPostgreSQLConnection();
+			} else {
+				// No DB engine specified in config or no engine available
+			}
 		}
 
 		return $retVal;
 	}
 
-	private static function getDoctrineConnection() {
-		$dsn = 'pgsql://' . self::$pg_user . ':' . self::$pg_password . '@' . self::$pg_host . '/' . self::$pg_database;
+	private static function getDoctrineConnection( $connection_name = 'egPrimary' ) {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		$dsn = 'pgsql://' . $connection_info['user'] . ':' . $connection_info['password'] .
+			'@' . $connection_info['host'] .':' . $connection_info['port'] . '/' . $connection_info['database'];
 
 		$manager = Doctrine_Manager::getInstance();
-		$conn = $manager->connection($dsn, 'eGlooFramework');
-
-		// At this point no actual connection to the database is created
-		// $conn = Doctrine_Manager::connection('pgsql://webserver:test@localhost/eGlooFramework');
-		// die;
-		// The first time the connection is needed, it is instantiated
-		// This query triggers the connection to be created
-		// $stmt = $conn->prepare('SELECT * FROM us_stateprovinces limit 1');
-		// $stmt->execute();
-		// $results = $stmt->fetchAll();
-		// die_r($results);
-		// die;
-
-		// $conn->setOption('username', $user);
-		// $conn->setOption('password', $password);
+		$conn = $manager->connection($dsn, $connection_info['name']);
+		
+		return $conn;
 	}
 
-	private static function getPostgreSQLConnection() {
-		$connection_string = 'host=' . self::$pg_host . 
-							' user=' . self::$pg_user . 
-							' password=' . self::$pg_password . 
-							' dbname=' . self::$pg_database .
-							' port=' . self::$pg_port;
-							  
+	private static function getPostgreSQLConnection( $connection_name = 'egPrimary' ) {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		$connection_string = 'host=' . $connection_info['host'] . 
+							' user=' . $connection_info['user'] . 
+							' password=' . $connection_info['password'] . 
+							' dbname=' . $connection_info['database'] .
+							' port=' . $connection_info['port'];
+
 		$db_handle = pg_connect( $connection_string );
 
 		return $db_handle;

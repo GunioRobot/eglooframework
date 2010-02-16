@@ -28,6 +28,9 @@ final class eGlooConfiguration {
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
+		// TODO move this somewhere cleaner
+		self::$configuration_options['egDatabaseConnections'] = array();
+
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
@@ -150,6 +153,33 @@ final class eGlooConfiguration {
 			default:
 				$webRootConfigOptions['egDatabaseEngine'] = self::POSTGRESQL;
 				break;
+		}
+
+		if ( isset($_SERVER['EG_DB_CONNECTION_PRIMARY_HOST']) ) {
+			self::$configuration_options['egDatabaseConnections']['egPrimary'] = array();
+
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['name']		= $_SERVER['EG_DB_CONNECTION_PRIMARY_NAME'];
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['host']		= $_SERVER['EG_DB_CONNECTION_PRIMARY_HOST'];
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['port']		= $_SERVER['EG_DB_CONNECTION_PRIMARY_PORT'];
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['database']	= $_SERVER['EG_DB_CONNECTION_PRIMARY_DATABASE'];
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['user']		= $_SERVER['EG_DB_CONNECTION_PRIMARY_USER'];
+			self::$configuration_options['egDatabaseConnections']['egPrimary']['password']	= $_SERVER['EG_DB_CONNECTION_PRIMARY_PASSWORD'];
+
+			// Determine which DB system we're using
+			switch( $_SERVER['EG_DB_CONNECTION_PRIMARY_ENGINE'] ) {
+				case 'DOCTRINE' :
+					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::DOCTRINE;
+					break;
+				case 'MYSQL' :
+					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::MYSQL;
+					break;
+				case 'POSTGRESQL' :
+					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::POSTGRESQL;
+					break;
+				default:
+					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::POSTGRESQL;
+					break;
+			}
 		}
 
 		// Check if we're displaying errors in the UI or not
@@ -1046,6 +1076,18 @@ final class eGlooConfiguration {
 		}
 
 		return self::$configuration_options['CustomVariables'][$index];
+	}
+
+	public static function getDatabaseConnectionInfo( $connection_name = 'egPrimary' ) {
+		$retVal = null;
+
+		if (isset(self::$configuration_options['egDatabaseConnections'][$connection_name])) {
+			$retVal = self::$configuration_options['egDatabaseConnections'][$connection_name];
+		} else {
+			throw new ErrorException('Details for unknown database connection \'' . $connection_name . '\' requested');
+		}
+
+		return $retVal;
 	}
 
 	public static function getDatabaseEngine() {
