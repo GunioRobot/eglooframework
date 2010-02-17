@@ -249,9 +249,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * and id, if not, return false.
 		 */
 		if( !isset( $requestNode ) ){
- 	       eGlooLogger::writeLog( eGlooLogger::DEBUG, 
-				"Request class and ID pairing not found for request class: '" . $requestClass . "' and request ID '" . $requestID . "'", 'Security' );
- 	       return false;
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 
+				"Request pairing not found for request class: '" . $requestClass . "' and request ID '" . $requestID . "'", 'Security' );
+			
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException("Request pairing not found for request class: '" . $requestClass . "' and request ID '" . $requestID . "'");
+			}
+
+			return false;
 		}
 
 		/**

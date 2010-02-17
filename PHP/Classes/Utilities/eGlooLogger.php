@@ -104,7 +104,10 @@ final class eGlooLogger {
                                         self::LOG_OFF => "OFF",         self::PRODUCTION => "DEPLOYMENT",
                                         self::STAGING => "TESTING",     self::DEVELOPMENT => "DEVELOPMENT" );
     }
-    
+
+    public static function getLoggingLevel() {
+        return self::$loggingLevel;
+    }
     
      /**
      * Sets the logging type, either default log file, HTML, or XML
