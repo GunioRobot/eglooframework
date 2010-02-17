@@ -335,6 +335,16 @@ final class eGlooConfiguration {
 				}
 			}
 
+			if (!isset(self::$configuration_options['CustomVariables'])) {
+				self::$configuration_options['CustomVariables'] = array();
+			}
+
+			if (isset($cached_options['CustomVariables'])) {
+				foreach($cached_options['CustomVariables'] as $key => $value) {
+					self::$configuration_options['CustomVariables'][$key] = $value;
+				}
+			}
+
 			// No errors
 			$retVal = true;
 		}
@@ -1076,6 +1086,14 @@ final class eGlooConfiguration {
 		}
 
 		return self::$configuration_options['CustomVariables'][$index];
+	}
+
+	public static function getCustomVariables() {
+		if (!isset(self::$configuration_options['CustomVariables'])) {
+			self::$configuration_options['CustomVariables'] = array();
+		}
+
+		return self::$configuration_options['CustomVariables'];
 	}
 
 	public static function getDatabaseConnectionInfo( $connection_name = 'egPrimary' ) {
