@@ -108,9 +108,14 @@ class StyleSheetDispatcher extends TemplateDispatcher {
          * and id, if not, return false.
          */
         if ( !isset( $this->dispatchNodes[ 'StyleSheetDispatcher' ]) ){
-           eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Dispatch Nodes unset" );
-           return false;
-           // TODO throw exception
+			$error_message = "StyleSheetDispatcher: Dispatch node missing";
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($error_message);
+			}
+
+			return false;
         }
 
         if ( !isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
@@ -224,8 +229,20 @@ class StyleSheetDispatcher extends TemplateDispatcher {
             // TODO throw exception
         }
 
-//		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DISPATCH CSS PATH: " .  $dispatchPath );
-        return trim( $dispatchPath );
+		$dispatchPath = trim( $dispatchPath );
+
+		if ( $dispatchPath === '' ) {
+			$error_message = "StyleSheetDispatcher: Dispatch node not found for '" . $userRequestID . ".css'" ;
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($error_message);
+			}
+
+			return false;
+		}
+
+        return $dispatchPath;
     }
 
 }

@@ -115,10 +115,15 @@ class XHTMLDispatcher extends TemplateDispatcher {
          * Ensure that there is a request that corresponds to this request class
          * and id, if not, return false.
          */
-        if ( !isset( $this->dispatchNodes[ $requestLookup ]) ){
-           eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Dispatch Nodes unset" );
-           return false;
-           // TODO throw exception
+        if ( !isset( $this->dispatchNodes[ $requestLookup ]) ) {
+			$error_message = "XHTMLDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($error_message);
+			}
+
+			return false;
         }
                
         if ( !isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
@@ -196,7 +201,20 @@ class XHTMLDispatcher extends TemplateDispatcher {
         $dispatchPath = $this->DISPATCH_XML_LOCATION . $this->application . '/InterfaceBundles/' . 
             $this->interfaceBundle . '/XHTML/' . (string) $requestNode['path'] . '/' . $dispatchPath;
 
-        return trim( $dispatchPath );
+		$dispatchPath = trim( $dispatchPath );
+
+		if ( $dispatchPath === '' ) {
+			$error_message = "XHTMLDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($error_message);
+			}
+
+			return false;
+		}
+
+        return $dispatchPath;
     }
 
 }
