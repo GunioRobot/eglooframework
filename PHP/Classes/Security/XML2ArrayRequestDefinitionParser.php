@@ -212,8 +212,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * any request processor...
 		 */
 		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request class not set in request.  ' . "\n" .
-				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+			$errorMessage = 'Request class not set in request.  ' . "\n" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($errorMessage);
+			}
+
 			return false;
 		 }
 
@@ -222,8 +227,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n\t" .
-				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+			$errorMessage = 'Request ID not set in request.  ' . "\n\t" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
+
+			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException($errorMessage);
+			}
+
 			return false;
 		}
 
@@ -318,8 +328,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					//check if required
 					if( $boolArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
-                            " is not set in GET request with id: " . $requestID, 'Security' );
+						$errorMessage = "Required boolean parameter: " . $boolArg['id'] .
+							" is not set in GET request with id: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($boolArg['default'])) {
 						$requestInfoBean->setGET( $boolArg['id'],  $boolArg['default'] );
@@ -330,8 +346,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if correctly formatted (true vs false)
 					$boolVal = $_GET[ $boolArg['id'] ];
 					if( $boolVal !== "false" && $boolVal !== "true" ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
-                            " is not in correct 'true' or 'false' format in GET request with id: " . $requestID, 'Security' );
+						$errorMessage = "boolean parameter: " . $boolArg['id'] .
+							" is not in correct 'true' or 'false' format in GET request with id: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -347,8 +369,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					//check if required
 					if( $boolArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required boolean parameter: " . $boolArg['id'] . 
-                            " is not set in post request with id: " . $requestID, 'Security' );
+						$errorMessage = "Required boolean parameter: " . $boolArg['id'] . 
+                            " is not set in post request with id: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($boolArg['default'])) {
 						$requestInfoBean->setPOST( $boolArg['id'],  $boolArg['default'] );
@@ -359,8 +387,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if correctly formatted (true vs false)
 					$boolVal = $_POST[ $boolArg['id'] ];
 					if( $boolVal !== "false" && $boolVal !== "true" ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "boolean parameter: " . $boolArg['id'] . 
-                            " is not in correct 'true' or 'false' format in post request with id: " . $requestID, 'Security' );
+						$errorMessage = "Boolean parameter: " . $boolArg['id'] . 
+                            " is not in correct 'true' or 'false' format in post request with id: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -391,8 +425,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					//check if required
 					if( $variableArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
-                            " is not set in GET request with request ID: " . $requestID, 'Security' );
+						$errorMessage = "Required variable parameter: " . $variableArg['id'] . 
+                            " is not set in GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($variableArg['default'])) {
 						$requestInfoBean->setGET( $variableArg['id'],  $variableArg['default'] );
@@ -405,9 +445,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$match = preg_match ( $regexFormat, $variableValue );
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
+						$errorMessage = "Variable parameter: " . $variableArg['id'] . 
                             " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
-                            " in GET request with request ID: " . $requestID, 'Security' );
+                            " in GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -419,8 +465,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
 					if( $variableArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
-							" is not set in post request with request ID: " . $requestID, 'Security' );
+						$errorMessage = "Required variable parameter: " . $variableArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($variableArg['default'])) {
 						$requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
@@ -433,9 +485,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$match = preg_match ( $regexFormat, $variableValue );
 
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
+						$errorMessage = "Variable parameter: " . $variableArg['id'] . 
 							" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
-							" in post request with request ID: " . $requestID, 'Security' );
+							" in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -446,8 +504,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required
 					if( $variableArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required variable parameter: " . $variableArg['id'] . 
-							" is not set in post request with request ID: " . $requestID, 'Security' );
+						$errorMessage = "Required variable parameter: " . $variableArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 				} else {
@@ -505,8 +569,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					//check if required
 					if( $selectArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
-                            " is not set in GET request with id: " . $requestID, 'Security' );
+						$errorMessage = "Required select argument: " . $selectArg['id'] . 
+                            " is not set in GET request with id: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($selectArg['default'])) {
 						$requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
@@ -525,9 +595,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
+						$errorMessage = "Select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "GET request with request ID: " . $requestID, 'Security' );
+                            "GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -544,8 +620,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					//check if required
 					if( $selectArg['required'] === "true") {
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "required select argument: " . $selectArg['id'] . 
-                            " is not set in POST request with request ID: " . $requestID, 'Security' );
+						$errorMessage = "Required select argument: " . $selectArg['id'] . 
+                            " is not set in POST request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					} else if (isset($selectArg['default'])) {
 						$requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
@@ -564,9 +646,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 					
 					if( ! $match ){
-						eGlooLogger::writeLog( eGlooLogger::DEBUG, "select argument: " . $selectArg['id'] . 
+						$errorMessage = "Select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "POST request with request ID: " . $requestID, 'Security' );
+                            "POST request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
 						return false;
 					}
 
@@ -604,22 +692,32 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						
 						if( $childDependency['type'] === "get" ){
 							if( !isset( $_GET[ $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
+								$errorMessage = "Argument '" . $dependArg['id'] . 
 									"' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
-									"' on the GET request which is not set in request with id: " . $requestID, 'Security' );
+									"' on the GET request which is not set in request with id: " . $requestID;
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+									throw new ErrorException($errorMessage);
+								}
+
 								return false;
 							}
 							
 							//set argument in the request info bean
 							$childVal = $_GET[ $childDependency['id'] ];	
 							$requestInfoBean->setGET( $childDependency['id'],  $childVal);
-							
-							
 						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
+								$errorMessage = "Argument '" . $dependArg['id'] . 
                                     "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with request ID: " . $requestID, 'Security' );
+                                    "' on the POST request which is not set in request with request ID: " . $requestID;
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+									throw new ErrorException($errorMessage);
+								}
+
 								return false;
 							}
 							
@@ -641,9 +739,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						
 						if( $childDependency['type'] === "get" ){
 							if( !isset( $_GET[ $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
+								$errorMessage = "Argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the GET request which is not set in request with request ID: " . $requestID, 'Security' );
+                                    "' on the GET request which is not set in request with request ID: " . $requestID;
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+									throw new ErrorException($errorMessage);
+								}
+
 								return false;
 							}
 							
@@ -654,9 +758,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
-								eGlooLogger::writeLog( eGlooLogger::DEBUG, "argument '" . $dependArg['id'] . 
+								$errorMessage = "Argument '" . $dependArg['id'] . 
                                     "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with request ID: " . $requestID, 'Security' );
+                                    "' on the POST request which is not set in request with request ID: " . $requestID;
+								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+									throw new ErrorException($errorMessage);
+								}
+
 								return false;
 							}
 
