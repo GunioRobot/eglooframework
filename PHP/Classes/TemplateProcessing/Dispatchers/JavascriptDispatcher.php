@@ -40,7 +40,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
      * Static Constants
      */
     private static $singletonDispatcher;
-    
+
     /**
      * XML Variables
      */
@@ -57,10 +57,10 @@ class JavascriptDispatcher extends TemplateDispatcher {
         $this->application = $application;
         $this->interfaceBundle = $interfaceBundle;
 
-        $this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
-        $this->loadDispatchNodes();  
+		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
+		$this->loadDispatchNodes();  
     }
-    
+
     /**
      * This method reads the xml file from disk into a document object model.
      * It then populates a hash of [JavascriptDispatcher] -> [JavascriptDispatch XML Object]
@@ -136,6 +136,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
         $userMinorVersion = null;
         $userPlatform = null;
         $dispatchPath = null;
+		$processTemplate = 'false';
         
         foreach( $javascriptClients->xpath( 'child::Client' ) as $client ) {
             $matchFormat = (string) $client['matches'];
@@ -185,6 +186,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             foreach( $userPlatform->xpath( 'child::DispatchMap' ) as $map ) {    
                 if( $userRequestID === (string) $map['id'] ) {
                     $dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
                     break;
                 }
             }
@@ -194,6 +196,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             foreach( $userMinorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
                 if( $userRequestID === (string) $map['id'] ) {
                     $dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
                     break;
                 }
             }            
@@ -203,6 +206,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             foreach( $userMajorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
                 if( $userRequestID === (string) $map['id'] ) {
                     $dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
                     break;
                 }
             }            
@@ -212,6 +216,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             foreach( $userClient->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
                 if( $userRequestID === (string) $map['id'] ) {
                     $dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
                     break;
                 }
             }                        
@@ -221,6 +226,7 @@ class JavascriptDispatcher extends TemplateDispatcher {
             foreach( $javascriptClients->xpath( 'Client[@id=\'Default\']/child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
                 if( $userRequestID === (string) $map['id'] ) {
                     $dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
                     break;
                 }
             }
@@ -239,6 +245,18 @@ class JavascriptDispatcher extends TemplateDispatcher {
 			}
 
 			return false;
+		}
+
+		$this->dispatchPath = $dispatchPath;
+
+		switch(trim(strtolower($processTemplate))) {
+			case 'true' :
+				$this->processTemplate = true;
+				break;
+			case 'false' :
+			default :
+				$this->processTemplate = false;
+				break;
 		}
 
         return $dispatchPath;

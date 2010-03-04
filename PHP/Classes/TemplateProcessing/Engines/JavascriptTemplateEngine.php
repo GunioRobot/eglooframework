@@ -44,6 +44,9 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		$this->left_delimiter = '/*<!--{';
 		$this->right_delimiter = '}-->*/';
 
+		$this->error_reporting = E_ALL | E_STRICT;
+		$this->error_unassigned = true;
+
 		// $this->left_delimiter = '{';
 		// $this->right_delimiter = '}';
 

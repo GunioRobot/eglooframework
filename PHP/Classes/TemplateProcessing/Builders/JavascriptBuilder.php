@@ -46,6 +46,10 @@ class JavascriptBuilder extends TemplateBuilder {
     private $templateVariables = null;
 	private $output = null;
 	private $isHardCached = false;
+
+	public function __construct() {
+		$this->processTemplate = false;
+	}
         
     public function setRequestInfoBean( $requestInfoBean ) {
         $this->requestInfoBean = $requestInfoBean;
@@ -108,6 +112,7 @@ class JavascriptBuilder extends TemplateBuilder {
 			JavascriptDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
+		$this->processTemplate = $templateDispatcher->getProcessTemplate();
     }
     
     public function setTemplateEngine() {
@@ -135,7 +140,16 @@ class JavascriptBuilder extends TemplateBuilder {
 		$retVal = null;
 
 		try {
-			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+			if ($this->processTemplate) {
+				$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+			} else {
+				foreach($this->templateEngine->getTemplatePaths() as $path) {
+					if (file_exists($path . $dispatchPath)) {
+						$retVal = file_get_contents($path . $dispatchPath);
+						break;
+					}
+				}
+			}
 		} catch (ErrorException $e) {
 			$matches = array();
 

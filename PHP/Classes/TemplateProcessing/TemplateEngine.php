@@ -41,9 +41,11 @@ class TemplateEngine extends Smarty {
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-        // $this->Smarty();
-        $this->left_delimiter = '<!--{'; 
-        $this->right_delimiter = '}-->'; 
+		$this->left_delimiter = '<!--{'; 
+		$this->right_delimiter = '}-->'; 
+
+		$this->error_reporting = E_ALL | E_STRICT;
+		$this->error_unassigned = true;
 
         $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
@@ -112,10 +114,23 @@ class TemplateEngine extends Smarty {
 			unset($this->templateRoots['Framework']);
 			$this->template_dir = $this->templateRoots;
 		} else {
-			$framework_template_path = 'Templates/' . $scope . '/' . $package . '/';
+			$framework_template_path = 'Templates/';
+
+			if ($scope) {
+				$framework_template_path .= $scope . '/';
+			}
+
+			if ($package) {
+				$framework_template_path .= $package . '/';
+			}
+
 			$this->templateRoots['Framework'] = $framework_template_path;
 			$this->template_dir = $this->templateRoots;
 		}
+	}
+
+	public function getTemplatePaths() {
+		return $this->template_dir;
 	}
 
 }

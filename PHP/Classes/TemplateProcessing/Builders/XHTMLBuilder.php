@@ -144,11 +144,21 @@ class XHTMLBuilder extends TemplateBuilder {
 		if (isset($this->hardCacheID) && $this->isHardCached) {
 			$retVal = $this->output;
 		} else if (isset($this->hardCacheID) && !$this->isHardCached) {
-			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
-			$cacheGateway = CacheGateway::getCacheGateway();
-			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'string', $this->ttl);
+			try {
+				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
+				$cacheGateway = CacheGateway::getCacheGateway();
+				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'string', $this->ttl);
+			} catch (Exception $e) {
+				echo_r($e->getMessage());
+				die;
+			}
 		} else {
-			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
+			try {
+				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
+			} catch (Exception $e) {
+				echo_r($e->getMessage());
+				die;
+			}
 		}
 
         return $retVal;

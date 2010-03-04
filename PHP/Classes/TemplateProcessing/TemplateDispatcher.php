@@ -46,7 +46,8 @@ abstract class TemplateDispatcher {
      */
     private $DISPATCH_XML_LOCATION = "Templates/Applications/";
     private $dispatchNodes = array();
-
+	protected $dispatchPath = '';
+	protected $processTemplate = false;
 
     private $application = null;
     private $interfaceBundle = null;
@@ -68,5 +69,15 @@ abstract class TemplateDispatcher {
      * Only functional method available to the public.  
      */
     abstract public function dispatch( $requestInfoBean );
+
+
+	public function getDispatchPath() {
+		return $this->dispatchPath;
+	}
+
+	public function getProcessTemplate() {
+		return $this->processTemplate;
+	}
+
 
 }

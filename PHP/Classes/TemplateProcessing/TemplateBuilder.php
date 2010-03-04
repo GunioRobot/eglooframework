@@ -42,6 +42,7 @@ abstract class TemplateBuilder {
 	protected $interfaceBundle = '';
 	protected $templateEngine = null;
 	protected $ttl = null;
+	protected $processTemplate = true;
 
 	public function setApplication( $application ) {
 		$this->application = $application;
