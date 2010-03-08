@@ -102,7 +102,16 @@ final class DBConnectionManager {
 	}
 
 	private static function getMySQLConnection() {
-		
+		$host 			= $connection_info['host'];
+		$port 			= $connection_info['port'];
+		$dbname 		= $connection_info['database'];
+		$user 			= $connection_info['user'];
+		$password	 	= $connection_info['password'];
+
+		$mysql_conn = mysql_connect($host,$user,$password);
+		  	mysql_select_db($dbname,$mysql_conn);
+
+		return $mysql_conn;
 	}
 
 
