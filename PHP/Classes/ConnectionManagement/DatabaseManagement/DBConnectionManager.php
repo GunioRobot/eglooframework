@@ -102,6 +102,8 @@ final class DBConnectionManager {
 	}
 
 	private static function getMySQLConnection() {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
 		$host 			= $connection_info['host'];
 		$port 			= $connection_info['port'];
 		$dbname 		= $connection_info['database'];
