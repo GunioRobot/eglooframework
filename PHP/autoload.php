@@ -181,22 +181,11 @@ function eglooAutoload($class_name) {
 									$errorMessage .= "\n\tClass Path: " . $classPath . "\n\tInstance: " . $instance . "\n";
 								}
 							}
-				
-							// try {
-							// 	throw new ErrorException($errorMessage);
-							// } catch (ErrorException $e) {
-							// 	// echo_r($e->getMessage());
-							// 	eGlooLogger::global_exception_handler($e);
-							// 	exit;
-							// }
 
 							$errorException = new ErrorException($errorMessage);
 
 							eGlooLogger::global_exception_handler($errorException);
 							exit;
-
-							// }
-
 						}
 					}
 				}
