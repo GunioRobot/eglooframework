@@ -1,11 +1,23 @@
 <?php
+/**
+ *	base include file for SimpleTest
+ *	@package	SimpleTest
+ *	@subpackage	Extensions
+ *	@version	$Id: testdox.php 1836 2008-12-21 00:02:26Z edwardzyang $
+ */
 
+/**
+ *	base include file for SimpleTest
+ *	@package	SimpleTest
+ *	@subpackage	Extensions
+ *	@version	$Id: testdox.php 1836 2008-12-21 00:02:26Z edwardzyang $
+ */
 class TestDoxReporter extends SimpleReporter
 {
     var $_test_case_pattern = '/^TestOf(.*)$/';
 
-    function TestDoxReporter($test_case_pattern = '/^TestOf(.*)$/') {
-        parent::SimpleScorer();
+    function __construct($test_case_pattern = '/^TestOf(.*)$/') {
+        parent::__construct();
         $this->_test_case_pattern = empty($test_case_pattern) ? '/^(.*)$/' : $test_case_pattern;
     }
 
@@ -18,7 +30,7 @@ class TestDoxReporter extends SimpleReporter
         }
     }
 
-    function paintCaseEnd() {
+    function paintCaseEnd($test_name) {
         echo "\n";
     }
 
@@ -32,11 +44,12 @@ class TestDoxReporter extends SimpleReporter
         echo '- ' . strtolower(preg_replace('/([a-zA-Z])([A-Z0-9])/', '$1 $2', $test_name));
     }
 
-    function paintMethodEnd() {
+    function paintMethodEnd($test_name) {
         echo "\n";
     }
 
-    function paintFail() {
+    function paintFail($message) {
         echo " [FAILED]";
     }
 }
+?>

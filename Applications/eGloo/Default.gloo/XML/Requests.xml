@@ -157,6 +157,18 @@
 		<Request id="upgrade" processorID="UpgradeSystemPackageCoreeGlooRequestProcessor">
 		</Request>
 	</RequestClass>
+	<!-- eGloo SimpleTest Administration -->
+	<RequestClass id="coreeGlooSimpleTestAdministration">
+		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- eGloo SimpleTest Harnesses -->
+	<RequestClass id="coreeGlooSimpleTestHarness">
+		<Request id="index" processorID="SimpleTestHarnessIndexCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="runAll" processorID="SimpleTestHarnessRunAllCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
 	<RequestClass id="alert">
 		<Request id="createAlert" processorID="CreateAlertRequestProcessor"></Request>
 		<Request id="getAlertList" processorID="AlertListRequestProcessor"></Request>
