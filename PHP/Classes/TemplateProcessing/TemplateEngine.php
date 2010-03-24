@@ -44,7 +44,7 @@ class TemplateEngine extends Smarty {
 		$this->left_delimiter = '<!--{'; 
 		$this->right_delimiter = '}-->'; 
 
-		// $this->error_reporting = E_ALL | E_STRICT;
+		$this->error_reporting = E_ALL | E_STRICT;
 		// $this->error_unassigned = true;
 
         $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
