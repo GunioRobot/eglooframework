@@ -539,6 +539,15 @@ final class eGlooConfiguration {
 				}
 			}
 
+			if (!isset(self::$configuration_options['CustomVariables'])) {
+				self::$configuration_options['CustomVariables'] = array();
+			}
+
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option[@type="customVariable"]' ) as $option ) {
+				$optionID = (string) $option['id'];
+
+				self::$configuration_options['CustomVariables'][$optionID] = (string) $option['value'];
+			}
 		} else {
 			trigger_error("Configuration XML for eGloo Framework not found");
 		}
