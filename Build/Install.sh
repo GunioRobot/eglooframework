@@ -57,7 +57,8 @@ PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
 
 case "$PLATFORM" in
-	"4.4BSD/Mach3.0 (iX86) Apple Darwin 9.8.0 (i386) Apple Mac OS X 10.5.8 (iX86)" | "kj" )
+	"4.4BSD/Mach3.0 (iX86) Apple Darwin 9.8.0 (i386) Apple Mac OS X 10.5.8 (iX86)" | 
+	"4.4BSD/Mach3.0 (iX86) Apple Darwin 10.0.0 (i386) Apple Mac OS X 10.6 (iX86)" )
 		echo "Detected Apple Mac OS X"
 		DETECTED_PLATFORM=$OS_MACOSX
 
