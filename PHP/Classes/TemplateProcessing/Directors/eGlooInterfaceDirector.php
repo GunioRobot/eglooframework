@@ -102,11 +102,13 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 		if ($this->useSmartCaching) {
 			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
-				$this->templateBuilder->setHardCacheID(
-					$this->requestInfoBean->getRequestClass(), $this->requestInfoBean->getRequestID(), $this->cacheID);
+				// $this->templateBuilder->setHardCacheID(
+				// $this->requestInfoBean->getRequestClass(), $this->requestInfoBean->getRequestID(), $this->cacheID);
+				// TODO
 				$retVal = $this->templateBuilder->run();
 			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 				// TODO
+				$retVal = $this->templateBuilder->run();
 			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 				$retVal = $this->templateBuilder->run();
 			}
