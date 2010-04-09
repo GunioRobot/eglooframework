@@ -1272,5 +1272,11 @@ final class eGlooConfiguration {
 	public static function getUseSmarty() {
 		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
 	}
+	
+	public static function getWebRoot() {
+		$matches = array();
+		preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_FILENAME'], $matches);
+		return $matches[1];
+	}
 
 }
