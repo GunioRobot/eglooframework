@@ -88,23 +88,25 @@ Cache-Control	max-age=86400
 
 			header( 'Content-type: ' . $imageMIMEType );
 
-			$matches = array();
-			preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
-
-			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1] ) ) {
-				try {
-					$mode = 0777;
-					$recursive = true;
-
-					mkdir( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1], $mode, $recursive );
-				} catch (Exception $e){
-					// TODO figure out what to do here
-				}
-			}
-
-			copy($app_path . '/' . $file_name, eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
-
 			echo file_get_contents( $app_path . '/' . $file_name );
+
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+				$matches = array();
+				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
+
+				if ( !is_writable( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1] ) ) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1], $mode, $recursive );
+					} catch (Exception $e){
+						// TODO figure out what to do here
+					}
+				}
+
+				copy($app_path . '/' . $file_name, eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
+			}
 		} else {
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
 		}

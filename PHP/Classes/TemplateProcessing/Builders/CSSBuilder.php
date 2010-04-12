@@ -55,7 +55,7 @@ class CSSBuilder extends TemplateBuilder {
         $this->templateVariables = $templateVariables;
        foreach( $templateVariables as $key => $value) $this->templateEngine->assign( $key, $value );
     }
-    
+
     public function setCacheID( $cacheID ) {
         $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
         $this->templateEngine->caching = true;
@@ -114,8 +114,8 @@ class CSSBuilder extends TemplateBuilder {
     public function setDispatchPath() {
         $templateDispatcher =
 			StyleSheetDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
-        
-        $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
+
+        $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean, $this->userRequestID );
     }
     
     public function setTemplateEngine() {

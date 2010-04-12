@@ -16,6 +16,8 @@ final class eGlooConfiguration {
 
 	/* Static Members */
 	private static $rewriteBase = '/';
+ 	private static $web_root = null;
+	private static $userAgentHash = null;
 
 	// Configuration Attributes
 	private static $configuration_options = array();
@@ -70,7 +72,7 @@ final class eGlooConfiguration {
 			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
 			self::$rewriteBase = $matches[1];
 		}
-		
+
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
 	}
 
@@ -1274,9 +1276,21 @@ final class eGlooConfiguration {
 	}
 	
 	public static function getWebRoot() {
-		$matches = array();
-		preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_FILENAME'], $matches);
-		return $matches[1];
+		if (self::$web_root === null) {
+			$matches = array();
+			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_FILENAME'], $matches);
+			self::$web_root = $matches[1];
+		}
+
+		return self::$web_root;
+	}
+
+	public static function getUserAgentHash() {
+		if (self::$userAgentHash === null) {
+			self::$userAgentHash = hash('sha256', $_SERVER['HTTP_USER_AGENT']);
+		}
+
+		return self::$userAgentHash;
 	}
 
 }

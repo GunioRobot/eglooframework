@@ -129,6 +129,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			if (!isset($tokenArray['rewriteBase'])) {
 				if (!$system_variable_whitelist || ($system_variable_whitelist !== null && isset($system_variable_whitelist['rewriteBase']))) {
 					$tokenArray['rewriteBase'] = eGlooConfiguration::getRewriteBase();
+					$tokenArray['userAgentHash'] = eGlooConfiguration::getUserAgentHash();
 				}
 			}
 		}
@@ -192,10 +193,15 @@ class eGlooInterfaceDirector extends TemplateDirector {
         $this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
     }
     
-    public function setTemplateBuilder( TemplateBuilder $templateBuilder ) {
+    public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null ) {
         $this->templateBuilder = $templateBuilder;
         // TODO uncomment this as part of refactoring for hard caching
         $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
+
+		if ($userRequestID !== null) {
+			$this->templateBuilder->setUserRequestID($userRequestID);
+		}
+
         $this->templateBuilder->setTemplateEngine();
     }
     

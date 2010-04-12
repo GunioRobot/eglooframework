@@ -101,7 +101,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
     /**
      * Only functional method available to the public.  
      */
-    public function dispatch($requestInfoBean) {
+    public function dispatch($requestInfoBean, $userRequestID = null) {
     	    	
         /**
          * Ensure that there is a request that corresponds to this request class
@@ -125,7 +125,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
             $userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
         
-        $userRequestID = $requestInfoBean->getRequestID();
+        $userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
         
         /**
          * If this is a valid request class/id, get the request denoted 

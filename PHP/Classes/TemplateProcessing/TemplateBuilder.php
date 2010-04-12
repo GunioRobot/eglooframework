@@ -43,6 +43,7 @@ abstract class TemplateBuilder {
 	protected $templateEngine = null;
 	protected $ttl = null;
 	protected $processTemplate = true;
+	protected $userRequestID = null;
 
 	public function setApplication( $application ) {
 		$this->application = $application;
@@ -50,6 +51,14 @@ abstract class TemplateBuilder {
 	
 	public function setInterfaceBundle( $interfaceBundle ) {
 		$this->interfaceBundle = $interfaceBundle;
+	}
+
+	public function setUserRequestID( $userRequestID ) {
+		$this->userRequestID = $userRequestID;
+	}
+
+	public function getUserRequestID() {
+		return $this->userRequestID;
 	}
 
 	abstract public function setDispatchPath();

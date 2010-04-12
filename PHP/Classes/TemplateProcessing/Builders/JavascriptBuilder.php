@@ -111,7 +111,7 @@ class JavascriptBuilder extends TemplateBuilder {
         $templateDispatcher =
 			JavascriptDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
+        $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean, $this->userRequestID );
 		$this->processTemplate = $templateDispatcher->getProcessTemplate();
     }
     
