@@ -88,7 +88,8 @@ class StyleSheetRequestProcessor extends RequestProcessor {
 		// } else {
 		// 	$templateDirector->setHardCacheID( $this->requestInfoBean->getRequestID(), $cacheID );
 		// }
-		
+		$templateDirector->setTemplateVariables(array(), true);
+
 		$output = $templateDirector->processTemplate();
         
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetRequestProcessor: Echoing Response" );

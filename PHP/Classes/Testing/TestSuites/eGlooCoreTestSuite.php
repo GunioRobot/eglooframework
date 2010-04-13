@@ -7,10 +7,8 @@ class eGlooCoreTestSuite extends TestSuite {
 	function eGlooCoreTestSuite() {
 		$this->TestSuite('All tests');
 
-		// $testOfLogging = new TestOfLogging();
-		// $testOfRocking = new TestOfRocking();
-
-		$this->addFile(eGlooConfiguration::getFrameworkRootPath() . '/PHP/TestOfLogging.php');
+		$this->addFile(eGlooConfiguration::getFrameworkRootPath() . '/PHP/Classes/Testing/UnitTestCases/TestOfLogging.php');
+		$this->addFile(eGlooConfiguration::getFrameworkRootPath() . '/PHP/Classes/Testing/UnitTestCases/TestOfRocking.php');
 	}
 
 }

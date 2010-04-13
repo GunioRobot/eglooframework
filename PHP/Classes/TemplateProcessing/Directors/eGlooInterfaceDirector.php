@@ -130,6 +130,8 @@ class eGlooInterfaceDirector extends TemplateDirector {
 				if (!$system_variable_whitelist || ($system_variable_whitelist !== null && isset($system_variable_whitelist['rewriteBase']))) {
 					$tokenArray['rewriteBase'] = eGlooConfiguration::getRewriteBase();
 					$tokenArray['userAgentHash'] = eGlooConfiguration::getUserAgentHash();
+					$tokenArray['eGlooCSS'] = eGlooConfiguration::getRewriteBase() . 'css/' . eGlooConfiguration::getUserAgentHash() . '/';
+					$tokenArray['eGlooJS'] = eGlooConfiguration::getRewriteBase() . 'js/' . eGlooConfiguration::getUserAgentHash() . '/';
 				}
 			}
 		}
