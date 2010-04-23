@@ -45,6 +45,10 @@ $configuration_options = array(
 		'SmartyPath'			=> '',
 		'UseDoctrine'			=> true,
 		'UseSmarty'				=> true,
+		'egBuild'				=> '',
+		'egMaintenanceVersion'	=> '0',
+		'egMajorVersion'		=> '1',
+		'egMinorVersion'		=> '0',
 		'egUseDoctrine'			=> 'true',
 		'egUseSmarty'			=> 'true',
 		);
@@ -87,6 +91,18 @@ $xml_config_options = array(
 				),
 			),
 		'Options' => array(
+			'egBuild' => array(
+				'value' => ''
+				),
+			'egMaintenanceVersion' => array(
+				'value' => ''
+				),
+			'egMajorVersion' => array(
+				'value' => 'true'
+				),
+			'egMinorVersion' => array(
+				'value' => 'true'
+				),
 			'egUseDoctrine' => array(
 				'value' => 'true'
 				),

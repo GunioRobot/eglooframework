@@ -374,15 +374,23 @@ final class eGlooConfiguration {
 			// 	}
 			// }
 			// 
-			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Option' ) as $option ) {
-			// 	$optionID = (string) $option['id'];
-			// 
-			// 	if (isset(self::$configuration_possible_options[$optionID])) {
-			// 		// if (!isset(self::$configuration_options[$optionID])) {
-			// 			self::$configuration_options[$optionID] = (string) $option['value'];
-			// 		// }
-			// 	}
-			// }
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option' ) as $option ) {
+				$optionID = (string) $option['id'];
+			
+				if (isset(self::$configuration_possible_options[$optionID])) {
+					// if (!isset(self::$configuration_options[$optionID])) {
+						self::$configuration_options[$optionID] = (string) $option['value'];
+					// }
+				}
+			}
+
+			if (isset(self::$configuration_options['AppBuild'])) {
+				$build_file_path = eGlooConfiguration::getApplicationsPath() . '/' .
+					eGlooConfiguration::getApplicationPath() . '/' . self::$configuration_options['AppBuild'];
+
+				self::$configuration_options['AppBuild'] = trim(file_get_contents($build_file_path));
+			}
+
 			// 
 			// // Load applications after system... 
 			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
@@ -1054,6 +1062,45 @@ final class eGlooConfiguration {
 
 	// Accessors
 
+	public static function getApplicationBuild() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['AppBuild'])) {
+			$retVal = self::$configuration_options['AppBuild'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getApplicationMaintenanceVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['AppMaintenanceVersion'])) {
+			$retVal = self::$configuration_options['AppMaintenanceVersion'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getApplicationMajorVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['AppMajorVersion'])) {
+			$retVal = self::$configuration_options['AppMajorVersion'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getApplicationMinorVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['AppMinorVersion'])) {
+			$retVal = self::$configuration_options['AppMinorVersion'];
+		}
+		
+		return $retVal;
+	}
 
 	public static function getApplicationName() {
 		return self::$configuration_options['egApplicationName'];
@@ -1145,6 +1192,46 @@ final class eGlooConfiguration {
 
     public static function getDocumentRoot() {
 		return self::$configuration_options['DocumentRoot'];
+	}
+
+	public static function getBuild() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['egBuild'])) {
+			$retVal = self::$configuration_options['egBuild'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getMaintenanceVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['egMaintenanceVersion'])) {
+			$retVal = self::$configuration_options['egMaintenanceVersion'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getMajorVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['egMajorVersion'])) {
+			$retVal = self::$configuration_options['egMajorVersion'];
+		}
+		
+		return $retVal;
+	}
+
+	public static function getMinorVersion() {
+		$retVal = '';
+
+		if (isset(self::$configuration_options['egMinorVersion'])) {
+			$retVal = self::$configuration_options['egMinorVersion'];
+		}
+		
+		return $retVal;
 	}
 
 	public static function getExtraClassPath() {

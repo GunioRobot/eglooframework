@@ -80,12 +80,14 @@ class TemplateEngine extends Smarty {
 			$this->compile_check = false;
 			$this->force_compile = false;
 			// $this->caching = true;
-			$this->caching = 2;
+			// $this->caching = 2;
+			$this->caching = false;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
 			// $this->caching = true;
-			$this->caching = 2;
+			// $this->caching = 2;
+			$this->caching = false;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
