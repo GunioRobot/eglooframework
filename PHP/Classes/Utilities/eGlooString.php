@@ -39,6 +39,11 @@ class eGlooString {
 		array('search' => '&lt;/p&gt;', 'replace' => '</p>'),
 	);
 
+	protected $garbage_sets = array(
+		// For anyone who got a little escape drunk
+		array('search' => '\\\’', 'replace' => '’')
+	);
+
 	private $string_as_UTF8 = '';
 
 	public function __construct($string) {
@@ -67,7 +72,7 @@ class eGlooString {
 		return $retVal;
 	}
 
-	public function getStringWithSafeHTMLTokensDecoded($string = null) {
+	public function getStringWithSafeHTMLTokensDecoded($string = null, $safe_html_tokens = null) {
 		$retVal = null;
 
 		if ($string === null) {
@@ -76,12 +81,37 @@ class eGlooString {
 			$retVal = $string;
 		}
 
-		foreach($this->safe_html_tokens as $token_set) {
+		if ($safe_html_tokens === null) {
+			$safe_html_tokens = $this->safe_html_tokens;
+		}
+
+		foreach($safe_html_tokens as $token_set) {
 			$retVal = str_replace($token_set['search'], $token_set['replace'], $retVal);
 		}
 
 		return $retVal;
 	}
+
+	public function getStringWithoutGarbage($string = null, $garbage_sets = null) {
+		$retVal = null;
+
+		if ($string === null) {
+			$retVal = $this->string_as_UTF8;
+		} else {
+			$retVal = $string;
+		}
+
+		if ($garbage_sets === null) {
+			$garbage_sets = $this->garbage_sets;
+		}
+
+		foreach($garbage_sets as $token_set) {
+			$retVal = str_replace($token_set['search'], $token_set['replace'], $retVal);
+		}
+
+		return $retVal;
+	}
+
 
 	public function setSafeHtmlTokens($safe_html_tokens_array) {
 		$this->safe_html_tokens = $safe_html_tokens_array;
