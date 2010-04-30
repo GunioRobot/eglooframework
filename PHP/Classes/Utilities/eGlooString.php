@@ -33,6 +33,12 @@
  */
 class eGlooString {
 
+	protected $safe_html_tokens = array(
+		array('search' => '&lt;p&gt;', 'replace' => '<p>'),
+		array('search' => '&lt;br /&gt;', 'replace' => '<br />'),
+		array('search' => '&lt;/p&gt;', 'replace' => '</p>'),
+	);
+
 	private $string_as_UTF8 = '';
 
 	public function __construct($string) {
@@ -59,6 +65,26 @@ class eGlooString {
 		}
 
 		return $retVal;
+	}
+
+	public function getStringWithSafeHTMLTokensDecoded($string = null) {
+		$retVal = null;
+
+		if ($string === null) {
+			$retVal = $this->string_as_UTF8;
+		} else {
+			$retVal = $string;
+		}
+
+		foreach($this->safe_html_tokens as $token_set) {
+			$retVal = str_replace($token_set['search'], $token_set['replace'], $retVal);
+		}
+
+		return $retVal;
+	}
+
+	public function setSafeHtmlTokens($safe_html_tokens_array) {
+		$this->safe_html_tokens = $safe_html_tokens_array;
 	}
 
 	public function __toString() {
