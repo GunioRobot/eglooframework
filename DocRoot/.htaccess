@@ -55,11 +55,29 @@ RewriteBase /egloo
 # NOTE: Required so that the last rule does not block us on previous redirects
 RewriteRule ^index.php$ - [L]
 
-# Load 'static' css as dynamic css
-RewriteRule ^css/([a-zA-Z0-9]+)\.css$ index.php?eg_requestClass=css&eg_requestID=$1 [L]
+# No rule for css that exist in the webroot
+# RewriteCond %{REQUEST_URI} ^/egloo/css/.*\.css$ [NC]
+RewriteCond %{REQUEST_URI} css/.*\.css$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^css/(.*\.css)$ - [L]
 
-# Load 'static' javascript as dynamic javascript
-RewriteRule ^(js|javascript)/(.+)\.js$ index.php?eg_requestClass=javascript&eg_requestID=$2 [L]
+# But we might have css referenced here in the applications bundle
+# RewriteCond %{REQUEST_URI} ^/egloo/css/.*\.css [NC]
+RewriteCond %{REQUEST_URI} css/.*\.css [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^css/(.*)\.css$ index.php?eg_requestClass=css&eg_requestID=rawfile&css_name=$1 [L]
+
+# No rule for javascript that exists in the webroot
+# RewriteCond %{REQUEST_URI} ^/egloo/(js|javascript)/.*\.js$ [NC]
+RewriteCond %{REQUEST_URI} (js|javascript)/.*\.js$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(js|javascript)/(.*\.js)$ - [L]
+
+# But we might have css referenced here in the applications bundle
+# RewriteCond %{REQUEST_URI} ^/egloo/(js|javascript)/.*\.js [NC]
+RewriteCond %{REQUEST_URI} (js|javascript)/.*\.js [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(js|javascript)/(.*)\.js$ index.php?eg_requestClass=javascript&eg_requestID=rawfile&javascript_name=$2 [L]
 
 # No rule for files that exist in the webroot
 # RewriteCond %{REQUEST_URI} ^/egloo/files/.*\.[a-z0-9]+ [NC]
@@ -102,7 +120,7 @@ RewriteRule ^media/(.*(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv))$
 # Make sure the argument list is clean -- allow alphanumerics, dot (.), dash (-)
 # underscore (_) and ampersand (&).  Anything else should cascade down to the
 # last rule
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?eg_requestClass=$1&eg_requestID=$2 [L]
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?eg_requestClass=$1&eg_requestID=$2&%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9\.\-\_\=\&\ ]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9]+)/?$ index.php?eg_requestClass=$1&eg_requestID=index&%{QUERY_STRING} [L]
 RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
