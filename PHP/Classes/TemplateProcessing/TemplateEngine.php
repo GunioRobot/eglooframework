@@ -53,9 +53,16 @@ class TemplateEngine extends Smarty {
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
 			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
 
+		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			eGlooConfiguration::getApplicationPath() . '/Templates/';
+
 		$framework_template_path = 'Templates';
 
-		$this->templateRoots = array('Application' => $application_template_path, 'Framework' => $framework_template_path);
+		$this->templateRoots = array(
+			'Application' => $application_template_path,
+			'ApplicationCommon' => $application_common_template_path,
+			'Framework' => $framework_template_path
+		);
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
@@ -98,8 +105,8 @@ class TemplateEngine extends Smarty {
 
     }
 
-	public function useApplicationTemplates( $useFrameworkTemplates = true, $interfaceBundle = null ) {
-		if (!$useFrameworkTemplates) {
+	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
+		if (!$useApplicationTemplates) {
 			unset($this->templateRoots['Application']);
 			$this->config_dir = $this->templateRoots;
 		} else {
@@ -108,7 +115,18 @@ class TemplateEngine extends Smarty {
 			$this->templateRoots['Application'] = $application_template_path;
 			$this->template_dir = $this->templateRoots;
 		}
+	}
 
+	public function useApplicationCommonTemplates( $useApplicationCommonTemplates ) {
+		if (!$useApplicationCommonTemplates) {
+			unset($this->templateRoots['ApplicationCommon']);
+			$this->config_dir = $this->templateRoots;
+		} else {
+			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+				eGlooConfiguration::getApplicationPath() . '/Templates/';
+			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
 	}
 
 	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null ) {

@@ -50,15 +50,24 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		// $this->left_delimiter = '{';
 		// $this->right_delimiter = '}';
 
-        // Get the template paths for the application and the framework
+		// Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
 			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
+		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			eGlooConfiguration::getApplicationPath() . '/Templates/' . $this->packagePrefix . '/';
+
 		$framework_template_path = 'Templates/Frameworks/Common/Javascript/';
+
+		$this->templateRoots = array(
+			'Application' => $application_template_path,
+			'ApplicationCommon' => $application_common_template_path,
+			'Framework' => $framework_template_path
+		);
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-       $this->template_dir = array($application_template_path, $framework_template_path);
+       $this->template_dir = array($application_template_path, $application_common_template_path, $framework_template_path);
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';

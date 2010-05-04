@@ -88,9 +88,15 @@ abstract class TemplateBuilder {
 			$this->templateEngine->useApplicationTemplates(false);
 			$this->templateEngine->useFrameworkTemplates(true, 'Local', $matches[1]);
 			$this->dispatchPath = preg_replace('~^Local/([a-zA-Z0-9]+)/~', '', $this->dispatchPath);
-		} else {
-			$this->templateEngine->useApplicationTemplates(true, eGlooConfiguration::getUIBundleName());
+		} else if (preg_match('~^Application/([a-zA-Z0-9]+)/~', $this->dispatchPath, $matches)) {
+			$this->templateEngine->useApplicationTemplates(false);
+			$this->templateEngine->useApplicationCommonTemplates(true);
 			$this->templateEngine->useFrameworkTemplates(true);
+			$this->dispatchPath = preg_replace('~^Application/([a-zA-Z0-9]+)/~', '', $this->dispatchPath);
+		} else {
+			// $this->templateEngine->useApplicationTemplates(true, eGlooConfiguration::getUIBundleName());
+			// $this->templateEngine->useApplicationCommonTemplates(true);
+			// $this->templateEngine->useFrameworkTemplates(true);
 		}
 
 	}
