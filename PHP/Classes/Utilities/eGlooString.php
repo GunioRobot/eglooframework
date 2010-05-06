@@ -92,7 +92,7 @@ class eGlooString {
 		return $retVal;
 	}
 
-	public function getStringWithoutGarbage($string = null, $garbage_sets = null) {
+	public function getStringWithoutGarbage($string = null, $garbage_sets = null, $merge_sets = true) {
 		$retVal = null;
 
 		if ($string === null) {
@@ -103,6 +103,8 @@ class eGlooString {
 
 		if ($garbage_sets === null) {
 			$garbage_sets = $this->garbage_sets;
+		} else if ($merge_sets) {
+			$garbage_sets = array_merge($this->garbage_sets, $garbage_sets);
 		}
 
 		foreach($garbage_sets as $token_set) {
