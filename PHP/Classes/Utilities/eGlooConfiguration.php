@@ -1380,4 +1380,14 @@ final class eGlooConfiguration {
 		return self::$userAgentHash;
 	}
 
+	public static function issetCustomVariable( $index ) {
+		$retVal = false;
+		
+		if (isset(self::$configuration_options['CustomVariables'][$index])) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
 }
