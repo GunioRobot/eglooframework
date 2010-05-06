@@ -61,6 +61,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
 
+		if (!$requestXMLObject) {
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
+				'XML2ArrayRequestDefinitionParser: simplexml_load_file( $this->REQUESTS_XML_LOCATION ): ' . libxml_get_errors() );
+		}
+
 		$requestClasses = array();
 
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
