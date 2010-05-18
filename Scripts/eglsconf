@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 #
-# eGloo Framework Dispatch Modification Script
+# eGloo Framework List Configuration Script
 #
 # Script should be chmod 700 and run from the working directory
-# using the command egdismod <args>
+# using the command eglsconf <args>
 #
 # Copyright 2010 eGloo, LLC
 # 

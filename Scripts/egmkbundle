@@ -1,0 +1,58 @@
+#! /usr/bin/env bash
+#
+# eGloo Framework Make Bundle Script
+#
+# Script should be chmod 700 and run from the working directory
+# using the command egmkbundle <args>
+#
+# Copyright 2010 eGloo, LLC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#        http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#  
+# @author George Cooper
+# @copyright 2010 eGloo, LLC
+# @license http://www.apache.org/licenses/LICENSE-2.0
+# @package Scripts
+# @subpackage Development Tools
+# @version 1.0
+
+# Exit the script if any variables specified are unset when accessed
+set -o nounset
+
+# Exit the script if any statement returns a non-true value
+# This prevents errors from cascading
+set -o errexit
+
+# Exit Error Codes
+E_XCD=01       # Script can't change directories
+E_NOTROOT=02   # Script not run as root
+
+# Script Constants
+ROOT_UID=0     # Only users with $UID 0 have root privileges.
+
+# OS Constants
+OS_UBUNTU=0
+OS_MACOSX=1
+OS_WINDOWS=2
+
+# Current platform
+# Default to Debian
+DETECTED_PLATFORM=0
+
+# Get our parent directory
+PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
+
+# Get our platform
+PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
+
+exit
