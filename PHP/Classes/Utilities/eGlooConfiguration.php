@@ -267,7 +267,9 @@ final class eGlooConfiguration {
 	public static function writeRuntimeCache( $runtime_cache_path = null ) {
 		if (!$runtime_cache_path) {
 			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
+				$old_umask = umask(0);
 			    mkdir( self::getRuntimeConfigurationCachePath(), 0775 );
+				umask($old_umask);
 			}
 
 			$runtime_cache_path = self::getRuntimeConfigurationCachePath() . self::getRuntimeConfigurationCacheFilename();
@@ -421,7 +423,9 @@ final class eGlooConfiguration {
 	public static function writeApplicationConfigurationCache( $application_path, $config_cache_path = null ) {
 		if (!$config_cache_path) {
 			if ( !is_writable( self::getApplicationConfigurationCachePath() ) ) {
+				$old_umask = umask(0);
 			    mkdir( self::getApplicationConfigurationCachePath(), 0775 );
+				umask($old_umask);
 			}
 
 			$config_cache_path = self::getApplicationConfigurationCachePath() . self::getApplicationConfigurationCacheFilename($application_path);
@@ -566,7 +570,9 @@ final class eGlooConfiguration {
 	public static function writeFrameworkConfigurationCache( $config_cache_path = null ) {
 		if (!$config_cache_path) {
 			if ( !is_writable( self::getFrameworkConfigurationCachePath() ) ) {
+				$old_umask = umask(0);
 			    mkdir( self::getFrameworkConfigurationCachePath(), 0775 );
+				umask($old_umask);
 			}
 
 			$config_cache_path = self::getFrameworkConfigurationCachePath() . self::getFrameworkConfigurationCacheFilename();
@@ -872,7 +878,9 @@ final class eGlooConfiguration {
 	public static function writeFrameworkSystemCache( $system_cache_path = null ) {
 		if (!$system_cache_path) {
 			if ( !is_writable( self::getFrameworkSystemCachePath() ) ) {
+				$old_umask = umask(0);
 			    mkdir( self::getFrameworkSystemCachePath(), 0775 );
+				umask($old_umask);
 			}
 
 			$system_cache_path = self::getFrameworkSystemCachePath() . self::getFrameworkSystemCacheFilename();
