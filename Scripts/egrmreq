@@ -52,7 +52,16 @@ DETECTED_PLATFORM=0
 # Get our parent directory
 PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 
-# Get our platform
-PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
+# Get PHP
+PHP=$(which php)
+EGCTL=$(which egctl.php)
+
+echo $PHP
+echo $EGCTL
+
+eval ${EGCTL}
+
+
+
 
 exit
