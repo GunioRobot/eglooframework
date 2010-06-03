@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
  * Book Resale Default XHTML Request Dispatch File
- *
+ * 
  * Dispatches HTTP requests to the appropriate XHTML template
  *
  * HTTP requests are mapped via request class and request ID to an
