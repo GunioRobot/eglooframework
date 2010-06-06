@@ -1,12 +1,11 @@
 #! /usr/bin/env bash
-##! /bin/bash
 #
 # eGloo Framework Installation Script (OS X)
 #
 # Script should be chmod 700 and run as root from the working directory
 # using the command ./Install.sh
 #
-# Copyright 2008 eGloo, LLC
+# Copyright 2010 eGloo, LLC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +20,7 @@
 # limitations under the License.
 #  
 # @author George Cooper
-# @copyright 2008 eGloo, LLC
+# @copyright 2010 eGloo, LLC
 # @license http://www.apache.org/licenses/LICENSE-2.0
 # @package Build
 # @subpackage Installation
@@ -55,6 +54,20 @@ PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 
 # Get our platform
 PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
+
+checkUserCanRead() {
+	USER_CAN_READ=`su -m $1 -c "./ckwuread.sh '$2'"`
+
+	if [ ! $USER_CAN_READ -eq 1 ]
+	then
+		echo
+		echo "WARNING: User '$1' cannot read $CONFIG_PATH"
+		echo "Please fix permissions for this path after this install has completed."
+		echo
+	fi
+
+   return 0
+}
 
 # Temporarily disable errexit check because grep returns non-true on a result we need
 set +o errexit
@@ -123,14 +136,11 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/usr/lib/egloo/cubes"
-	# DEFAULT_DOCTRINE="/usr/share/php/doctrine/lib/Doctrine.php"
 	DEFAULT_DOCTRINE=`locate /usr/*lib/Doctrine.php | head -n 1`
-
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/var/www/egloo"
 	DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
 	DEFAULT_LOGPATH="/var/log/egloo"
-	# DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
 	DEFAULT_SMARTY=`locate /usr/*libs/Smarty.class.php | head -n 1`
 
 	DEFAULT_WEBUSER="www-data"
@@ -285,23 +295,24 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building configuration files..."
-echo "\"$CONFIG_PATH\""
+printf "Building configuration files... "
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
 	mkdir -p "$CONFIG_PATH"
-	# ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
-	# cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 else
 	mkdir -p "$CONFIG_PATH"
 	cp -R "../Configuration/Smarty" "$CONFIG_PATH"
 fi
 
+printf "done.\n"
+
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown $WEB_USER:$WEB_GROUP "$CONFIG_PATH"
 	chmod 755 "$CONFIG_PATH"
+
+	checkUserCanRead "$WEB_USER" "$CONFIG_PATH"
 else
 	echo "Ignoring ownership and permissions of Configuration Path for Windows"
 fi
@@ -354,17 +365,20 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building cache path..."
-echo "\"$CACHE_PATH\""
+printf "Building cache path... "
 
 mkdir -p "$CACHE_PATH"
 mkdir -p "$CACHE_PATH/CompiledTemplates"
 mkdir -p "$CACHE_PATH/SmartyCache"
 
+printf "done.\n"
+
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
 	chmod -R 755 "$CACHE_PATH"
+
+	checkUserCanRead "$WEB_USER" "$CACHE_PATH"
 else
 	echo "Ignoring ownership and permissions of Cache Path for Windows"
 fi
@@ -417,10 +431,11 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building documentation path..."
-echo "\"$DOCUMENTATION_PATH\""
+printf "Building documentation path... "
 
 mkdir -p "$DOCUMENTATION_PATH"
+
+printf "done.\n"
 
 echo
 echo "**********************"
@@ -470,15 +485,18 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building log path..."
-echo "\"$LOGPATH\""
+printf "Building log path... "
 
 mkdir -p "$LOGPATH"
+
+printf "done.\n"
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown $WEB_USER:$WEB_GROUP "$LOGPATH"
 	chmod 755 "$LOGPATH"
+
+	checkUserCanRead "$WEB_USER" "$LOGPATH"
 else
 	chmod 777 "$LOGPATH"
 fi
@@ -531,8 +549,7 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building framework path..."
-echo "\"$FRAMEWORK_PATH\""
+printf "Building framework path... "
 
 mkdir -p "$FRAMEWORK_PATH"
 
@@ -547,7 +564,6 @@ then
 	else
 		echo "Symlink exists"
 	fi
-
 
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
 	then
@@ -591,10 +607,14 @@ else
 
 fi
 
+printf "done.\n"
+
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 #	chown -R root:wheel "$FRAMEWORK_PATH"
 	chmod -R 755 "$FRAMEWORK_PATH"
+
+	checkUserCanRead "$WEB_USER" "$FRAMEWORK_PATH"
 else
 	echo "Ignoring ownership and permissions of Log Path for Windows"
 fi
@@ -647,8 +667,7 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building web server document root path..."
-echo "\"$DOCUMENT_ROOT\""
+printf "Building web server document root path... "
 
 mkdir -p "$DOCUMENT_ROOT"
 
@@ -683,31 +702,6 @@ then
 	else
 		echo "PHP Symlink exists"
 	fi
-
-	# if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
-	# then
-	# 	# mkdir -p "$DOCUMENT_ROOT"
-	# 
-	# 	# Even if we're using Windows, NTFS does not allow hardlinks to directories
-	# 	ln -s "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/Templates"
-	# 	# Only do this next bit on Ubuntu... getcwd() is broken
-	# 	ln -s "$PARENT_DIRECTORY/Templates" "$PARENT_DIRECTORY/DocRoot/Templates"
-	# else
-	# 	echo "Templates Symlink exists"
-	# fi
-
-	# if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
-	# then
-	# 	# mkdir -p "$DOCUMENT_ROOT"
-	# 
-	# 	# Even if we're using Windows, NTFS does not allow hardlinks to directories
-	# 	ln -s "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/XML"
-	# 	# Only do this next bit on Ubuntu... getcwd() is broken
-	# 	ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
-	# else
-	# 	echo "XML Symlink exists"
-	# fi
-
 else
 	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
@@ -721,44 +715,16 @@ else
 
 	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooConfiguration.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooConfiguration.php"
 	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooLogger.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooLogger.php"
-	
-	# if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
-	# then
-	# 	if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
-	# 	then
-	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-	# 		# ln -s "$FRAMEWORK_PATH/PHP" "$DOCUMENT_ROOT/PHP"
-	# 	else
-	# 		echo "PHP Symlink exists"
-	# 	fi
-	# 
-	# 	if [ ! -e "$DOCUMENT_ROOT/Templates" ] && [  ! -L "$DOCUMENT_ROOT/Templates" ]
-	# 	then
-	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-	# 		# ln -s "$FRAMEWORK_PATH/Templates" "$DOCUMENT_ROOT/Templates"
-	# 	else
-	# 		echo "Templates Symlink exists"
-	# 	fi
-	# 
-	# 	if [ ! -e "$DOCUMENT_ROOT/XML" ] && [  ! -L "$DOCUMENT_ROOT/XML" ]
-	# 	then
-	# 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
-	# 		# ln -s "$FRAMEWORK_PATH/XML" "$DOCUMENT_ROOT/XML"
-	# 	else
-	# 		echo "XML Symlink exists"
-	# 	fi
-	# else
-	# 	cp -R "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/"
-	# 	cp -R "$PARENT_DIRECTORY/Templates" "$DOCUMENT_ROOT/"
-	# 	cp -R "$PARENT_DIRECTORY/XML" "$DOCUMENT_ROOT/"
-	# fi
-
 fi
+
+printf "done.\n"
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT"
 	chmod -R 755 "$DOCUMENT_ROOT"
+
+	checkUserCanRead "$WEB_USER" "$DOCUMENT_ROOT"
 else
 	echo "Ignoring ownership and permissions of Document Root for Windows"
 fi
@@ -811,8 +777,7 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building web applications path..."
-echo "\"$APPLICATIONS_PATH\""
+printf "Building web applications path... "
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
@@ -842,10 +807,14 @@ else
 	cp -R "$PARENT_DIRECTORY"/Applications/* "$APPLICATIONS_PATH/"
 fi
 
+printf "done.\n"
+
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$APPLICATIONS_PATH"
 	chmod -R 755 "$APPLICATIONS_PATH"
+
+	checkUserCanRead "$WEB_USER" "$APPLICATIONS_PATH"
 else
 	echo "Ignoring ownership and permissions of Applications Path for Windows"
 fi
@@ -898,8 +867,7 @@ case "$CONFIRM_CONTINUE" in
 	;;
 esac
 
-echo "Building cubes path..."
-echo "\"$CUBES_PATH\""
+printf "Building cubes path... "
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
@@ -927,10 +895,14 @@ else
 	cp -R "$PARENT_DIRECTORY"/Cubes/* "$CUBES_PATH/"
 fi
 
+printf "done.\n"
+
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CUBES_PATH"
 	chmod -R 755 "$CUBES_PATH"
+
+	checkUserCanRead "$WEB_USER" "$CUBES_PATH"
 else
 	echo "Ignoring ownership and permissions of Cubes Path for Windows"
 fi
@@ -1046,6 +1018,8 @@ if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
 	chmod -R 755 "$SMARTY_PATH"
+
+	checkUserCanRead "$WEB_USER" "$SMARTY_PATH"
 else
 	echo "Ignoring ownership and permissions of Smarty Path for Windows"
 fi
@@ -1149,12 +1123,14 @@ if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
 	chmod -R 755 "$DOCTRINE_PATH"
+
+	checkUserCanRead "$WEB_USER" "$DOCTRINE_PATH"
 else
 	echo "Ignoring ownership and permissions of Doctrine Path for Windows"
 fi
 
 echo 
-echo "Writing configuration files... "
+printf "Writing configuration files... "
 
 if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
 then
@@ -1198,10 +1174,16 @@ if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
 	chmod -R 755 "$CACHE_PATH"
+	
+	checkUserCanRead "$WEB_USER" "$CACHE_PATH"
 else
 	chmod -R 777 "$CACHE_PATH"
 #	echo "Ignoring ownership of Cache Path for Windows"
 fi
+
+printf "done.\n"
+
+printf "Copying generated configuration to appropriate paths... "
 
 cp "System.xml" "Config.xml"
 
@@ -1247,6 +1229,7 @@ else
 	mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
 fi
 
+printf "done.\n"
 
 # Set ownership on the config dump created
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
@@ -1263,6 +1246,6 @@ else
 fi
 
 echo
-echo "Done"
+echo "Installation Complete"
 
 exit
