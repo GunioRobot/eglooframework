@@ -73,7 +73,7 @@ then
 	LOCATEDB_MISSING=$(locate ./ | head -n 1 | grep -i -c "WARNING: The locate database (/var/db/locate.database) does not exist.")
 	set -o errexit
 
-	if [ "$LOCATEDB_MISSING" -eq 1 ]
+	if [ ! -f "/var/db/locate.database" ]
 	then
 		echo "WARNING: The locate database (/var/db/locate.database) does not exist."
 		echo "This installer uses locate to determine the location of supporting software during the installation process."
