@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 #
-# eGloo Framework Request Modification Script
+# eGloo Framework List Bundles Script
 #
 # Script should be chmod 700 and run from the working directory
-# using the command egreqmod <args>
+# using the command eglsbundle <args>
 #
 # Copyright 2010 eGloo, LLC
 # 

@@ -28,7 +28,8 @@
  * @version 1.0
  */
 
-include('../PHP/Classes/Utilities/eGlooConfiguration.php');
 
+// include('../PHP/Classes/Utilities/eGlooConfiguration.php');
+echo "FOIJSDF\n";
 // We're good, let's get out of here
 exit;
