@@ -68,17 +68,45 @@ then
 	echo "Detected Apple Mac OS X"
 	DETECTED_PLATFORM=$OS_MACOSX
 
+	# Make sure locate db exists
+	set +o errexit
+	LOCATEDB_MISSING=$(locate ./ | head -n 1 | grep -i -c "WARNING: The locate database (/var/db/locate.database) does not exist.")
+	set -o errexit
+
+	if [ "$LOCATEDB_MISSING" -eq 1 ]
+	then
+		echo "WARNING: The locate database (/var/db/locate.database) does not exist."
+		echo "This installer uses locate to determine the location of supporting software during the installation process."
+		echo "You can proceed and enter supporting software paths manually, but it is recommended that you activate the locate Launch Daemon instead:"
+		echo "sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist"
+		echo
+
+		echo -n "Continue? [Y/n]: "
+		read -e CONFIRM_CONTINUE
+
+		# Make sure the user is prepared to answer some setup questions
+		case "$CONFIRM_CONTINUE" in
+			"N" | "n" | "No" | "NO" | "no" )
+				echo "Installation Aborted"
+				exit
+			;;
+
+			* )
+			;;
+		esac
+	fi
+
 	# Default Configuration Parameters (OS X)
 	DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
 	DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
 	DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
 	DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
-	DEFAULT_DOCTRINE="/opt/local/lib/php/Doctrine/lib/Doctrine.php"
+	DEFAULT_DOCTRINE=`locate /opt/*lib/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
 	DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
 	DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
 	DEFAULT_LOGPATH="/Library/Logs/eGloo"
-	DEFAULT_SMARTY="/opt/local/lib/php/Smarty/Smarty.class.php"
+	DEFAULT_SMARTY=`locate /opt/*libs/Smarty.class.php | head -n 1`
 	DEFAULT_WEBUSER="_www"
 	DEFAULT_WEBGROUP="admin"
 fi
@@ -93,12 +121,16 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/usr/lib/egloo/cubes"
-	DEFAULT_DOCTRINE="/usr/share/php/doctrine/lib/Doctrine.php"
+	# DEFAULT_DOCTRINE="/usr/share/php/doctrine/lib/Doctrine.php"
+	DEFAULT_DOCTRINE=`locate /usr/*lib/Doctrine.php | head -n 1`
+
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/var/www/egloo"
 	DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
 	DEFAULT_LOGPATH="/var/log/egloo"
-	DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+	# DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
+	DEFAULT_SMARTY=`locate /usr/*libs/Smarty.class.php | head -n 1`
+
 	DEFAULT_WEBUSER="www-data"
 	DEFAULT_WEBGROUP="www-data"
 fi
@@ -122,87 +154,6 @@ then
 	DEFAULT_WEBUSER="user"
 	DEFAULT_WEBGROUP="mkpasswd"
 fi
-
-
-# case "$PLATFORM" in
-# 	"Apple Mac OS X" )
-# 	# "4.4BSD/Mach3.0 (iX86) Apple Darwin 9.8.0 (i386) Apple Mac OS X 10.5.8 (iX86)" | "4.4BSD/Mach3.0 (iX86) Apple Darwin 10.0.0 (i386) Apple Mac OS X 10.6 (iX86)" | "4.4BSD/Mach3.0 (iX86) Apple Darwin 10.3.1 (i386) Apple Mac OS X 10.6.3 (iX86)" | "4.4BSD/Mach3.0 (iX86) Apple Darwin 10.3.0 (i386) Apple Mac OS X 10.6.3 (iX86)")
-# 		echo "Detected Apple Mac OS X"
-# 		DETECTED_PLATFORM=$OS_MACOSX
-# 
-# 		# Default Configuration Parameters (OS X)
-# 		DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
-# 		DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
-# 		DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
-# 		DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
-# 		DEFAULT_DOCTRINE="/opt/local/lib/php/Doctrine/lib/Doctrine.php"
-# 		DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
-# 		DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
-# 		DEFAULT_FRAMEWORKROOT="/Library/Frameworks/eGloo.framework"
-# 		DEFAULT_LOGPATH="/Library/Logs/eGloo"
-# 		DEFAULT_SMARTY="/opt/local/lib/php/Smarty/Smarty.class.php"
-# 		DEFAULT_WEBUSER="_www"
-# 		DEFAULT_WEBGROUP="admin"
-# 	;;
-# 	
-# 	"LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.04 (AMD64)" | "LSB (AMD64) GNU/Linux 2.9/2.6 (AMD64) Ubuntu 9.10 (AMD64)" )
-# 		echo "Detected Ubuntu Linux"
-# 		DETECTED_PLATFORM=$OS_UBUNTU
-# 
-# 		# Default Configuration Parameters (Ubuntu)
-# 		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
-# 		DEFAULT_CACHE_DIR="/var/cache/egloo"
-# 		DEFAULT_CONFIG="/etc/egloo/"
-# 		DEFAULT_CUBES="/usr/lib/egloo/cubes"
-# 		DEFAULT_DOCTRINE="/usr/share/php/doctrine/lib/Doctrine.php"
-# 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
-# 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
-# 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
-# 		DEFAULT_LOGPATH="/var/log/egloo"
-# 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
-# 		DEFAULT_WEBUSER="www-data"
-# 		DEFAULT_WEBGROUP="www-data"
-# 	;;
-# 
-# 	"Windows XP (iX86) Cygwin 1.5.25 (i686) Cygwin 1.5.25 (iX86)" )
-# 		echo "Detected Windows XP (Cygwin)"
-# 		DETECTED_PLATFORM=$OS_WINDOWS
-# 
-# 		# Default Configuration Parameters (Windows XP with Cygwin)
-# 		DEFAULT_APPLICATIONS="/lib/egloo/applications"
-# 		DEFAULT_CACHE_DIR="/var/cache/egloo"
-# 		DEFAULT_CONFIG="/etc/egloo/"
-# 		DEFAULT_CUBES="/lib/egloo/cubes"
-# 		DEFAULT_DOCTRINE="/usr/share/php/doctrine/Doctrine.php"
-# 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
-# 		DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
-# 		DEFAULT_FRAMEWORKROOT="/lib/eglooframework"
-# 		DEFAULT_LOGPATH="/var/log/egloo"
-# 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
-# 		DEFAULT_WEBUSER="user"
-# 		DEFAULT_WEBGROUP="mkpasswd"
-# 	;;
-# 
-# 	* )
-# 		# Make this an override choice, and fix the linux checks
-# 		echo "No supported OS detected - Using Ubuntu Linux Defaults (Should be override option...)"
-# 		DETECTED_PLATFORM=$OS_UBUNTU
-# 
-# 		# Default Configuration Parameters (Ubuntu)
-# 		DEFAULT_APPLICATIONS="/usr/lib/egloo/applications"
-# 		DEFAULT_CACHE_DIR="/var/cache/egloo"
-# 		DEFAULT_CONFIG="/etc/egloo/"
-# 		DEFAULT_CUBES="/usr/lib/egloo/cubes"
-# 		DEFAULT_DOCTRINE="/usr/share/php/doctrine/lib/Doctrine.php"
-# 		DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
-# 		DEFAULT_DOCUMENTROOT="/var/www/egloo"
-# 		DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
-# 		DEFAULT_LOGPATH="/var/log/egloo"
-# 		DEFAULT_SMARTY="/usr/share/php/smarty/Smarty.class.php"
-# 		DEFAULT_WEBUSER="www-data"
-# 		DEFAULT_WEBGROUP="www-data"
-# 	;;
-# esac
 
 # Check for root
 if [[ "$UID" -ne "$ROOT_UID" && $DETECTED_PLATFORM -ne $OS_WINDOWS ]]
