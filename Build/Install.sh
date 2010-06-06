@@ -76,8 +76,10 @@ then
 	if [ ! -f "/var/db/locate.database" ]
 	then
 		echo "WARNING: The locate database (/var/db/locate.database) does not exist."
+		echo
 		echo "This installer uses locate to determine the location of supporting software during the installation process."
 		echo "You can proceed and enter supporting software paths manually, but it is recommended that you activate the locate Launch Daemon instead:"
+		echo
 		echo "sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist"
 		echo
 
