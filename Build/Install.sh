@@ -68,7 +68,7 @@ then
 	echo "Detected Apple Mac OS X"
 	DETECTED_PLATFORM=$OS_MACOSX
 
-	if [ ! -f "/var/db/locate.database1" ]
+	if [ ! -f "/var/db/locate.database" ]
 	then
 		echo "**************************************************************************"
 		echo "* WARNING: The locate database (/var/db/locate.database) does not exist. *"
