@@ -68,14 +68,11 @@ then
 	echo "Detected Apple Mac OS X"
 	DETECTED_PLATFORM=$OS_MACOSX
 
-	# Make sure locate db exists
-	set +o errexit
-	LOCATEDB_MISSING=$(locate ./ | head -n 1 | grep -i -c "WARNING: The locate database (/var/db/locate.database) does not exist.")
-	set -o errexit
-
-	if [ ! -f "/var/db/locate.database" ]
+	if [ ! -f "/var/db/locate.database1" ]
 	then
-		echo "WARNING: The locate database (/var/db/locate.database) does not exist."
+		echo "**************************************************************************"
+		echo "* WARNING: The locate database (/var/db/locate.database) does not exist. *"
+		echo "**************************************************************************"
 		echo
 		echo "This installer uses locate to determine the location of supporting software during the installation process."
 		echo "You can proceed and enter supporting software paths manually, but it is recommended that you activate the locate Launch Daemon instead:"
@@ -83,17 +80,20 @@ then
 		echo "sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist"
 		echo
 
-		echo -n "Continue? [Y/n]: "
+		echo -n "Continue? [y/N]: "
 		read -e CONFIRM_CONTINUE
 
 		# Make sure the user is prepared to answer some setup questions
 		case "$CONFIRM_CONTINUE" in
-			"N" | "n" | "No" | "NO" | "no" )
-				echo "Installation Aborted"
-				exit
+			"Y" | "y" | "Yes" | "YES" | "yes" )
+				echo
+				echo "Continuing without locate database.  Safety not guaranteed."
+				echo
 			;;
 
 			* )
+				echo "Installation Aborted"
+				exit
 			;;
 		esac
 	fi
