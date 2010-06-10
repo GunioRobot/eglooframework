@@ -1,0 +1,167 @@
+What is eGloo Framework?
+
+eGloo Framework is a next-generation, peer-to-peer web development framework that merges the best practices of modern software engineering design, architecture and process with the hottest and most innovative technologies available to the web development world today.  The core of its mission is to be the development foundation and resultant network from which an implicit information exchange between independent personal websites, web services, blogs, e-commerce, social networks and gaming platforms can arise.  In short, eGloo Framework is the rapid development path to breaking down walled gardens and finally realizing a truly free and fluid information economy.
+
+Features:
+
+	Event-Driven REST Architecture
+	Industry Standard Templating Engine
+	Abstracted Database Layer with Plugins for Common DB Engines and Doctrine
+	Granulated Permissions and Security
+	Hot Caching of System, Framework and Application Configuration
+
+News:
+
+Built on eGloo Framework:
+
+	SmartCellar @ SD26: http://www.nytimes.com/2009/09/02/dining/02tside.html?_r=2&ref=technology
+	SmartCellar: http://www.incentient.com/smartcellar.php
+	SmartTouch: http://www.incentient.com/hotel.php
+
+Getting Started:
+
+	System Requirements:
+		Linux:
+			Required:
+				Apache 2.2+
+					mod_rewrite
+				Libraries
+					libevent
+					libiconv
+					libmcrypt
+					libxml2
+					libxslt
+				Memcached
+				MySQL 5+ or PostgreSQL 8.3+
+				PHP 5.3+
+					Doctrine 1.2+
+					ImageMagick 6.5+
+					PHP5 APC
+					PHP5 mbstring
+					PHP5 MySQL
+					PHP5 PostgreSQL
+					Smarty 3+
+				System Utilities
+					file 5+
+			Recommended:
+				pgpool or pgpool2
+				PHP5 APC
+
+		Mac OS X:
+			Required:
+				Apache 2.2+
+					mod_rewrite
+				Libraries
+					libevent
+					libiconv
+					libmcrypt
+					libxml2
+					libxslt
+				Memcached
+				MySQL 5+ or PostgreSQL 8.3+
+				PHP 5.3+
+					Doctrine 1.2+
+					ImageMagick 6.5+
+					PHP5 APC
+					PHP5 mbstring
+					PHP5 MySQL
+					PHP5 PostgreSQL
+					Smarty 3+
+				System Utilities
+					file 5+
+			Recommended:
+				pgpool or pgpool2
+				PHP5 APC
+
+		Windows: Currently Not Supported
+
+	Installation:
+	
+		Installation of eGloo assumes the listed software requirements above, including a functional and 
+		tested LAMP environment with mod_rewrite active, .htaccess override enabled and a user with sudo
+		access to the system.
+	
+		Development:
+			Grab eGloo Framework from source anonymously:
+				git clone git://eglooframework.git.sourceforge.net/gitroot/eglooframework/eglooframework
+			
+			Switch to the Build folder in the source directory that was cloned
+				cd eglooframework/Build
+				
+			Run the eGloo installer as root and follow all prompts
+				sudo ./Install.sh
+
+			Once the installer completes, if your environment is setup correctly you should have a functional
+			eGloo installation ready to install or develop eGloo applications
+
+		Distribution:
+			Download the latest distribution release from our project downloads page:
+				https://sourceforge.net/projects/eglooframework/files/
+
+			Unpack the distribution archive
+				tar -zxvf eglooframework-x.x.x.tar.gz
+
+			Switch to the Build folder in the distribution directory
+				cd eglooframework-x.x.x/Build
+
+			Run the eGloo installer as root and follow all prompts
+				sudo ./Install.sh
+
+			Once the installer completes, if your environment is setup correctly you should have a functional
+			eGloo installation ready to install or develop eGloo applications
+
+Tutorials:
+	Getting started with your first eGloo Application
+	
+	Creating new interface bundles
+	
+	Getting started with your first eGloo Cube
+
+Demo:
+	We eat our own dog food here and so our live demo is also our company website: http://www.egloo.com
+
+Porting Zend Applications to eGloo:
+	
+
+Documentation:
+	Generated Framework Documentation (PHPDoc): 
+	
+	eGloo Framework Manual
+
+Frequently Asked Questions:
+
+
+Getting Involved:
+
+
+Resources:
+	Join us in #egloo on irc.freenode.net for development discussion
+
+	Follow eGloo on Twitter: http://twitter.com/egloo
+
+	Follow development on CIA.vc: http://cia.vc/stats/project/eglooframework
+
+Contact
+	You can find us in #egloo on irc.freenode.net or the forums @ https://sourceforge.net/projects/eglooframework/forums
+	
+About
+	Company
+		Founded in 2006
+		
+	Who We Are
+		eGloo LLC
+			George Cooper - Founder, Chairman & CEO
+			William P. Cook - Co-Founder, Chief Innovation Officer
+			Matthew M. Brennan - Lead Database Architect
+		Contributors
+			Keith Buel
+			Mark Doten
+			Tilek Eshenalieve
+			Jeff Knoch
+			Nate Maurer
+			Lwin Moe
+			Miklos Pataky
+			Tom Read
+			Evan Turner
+			
+
