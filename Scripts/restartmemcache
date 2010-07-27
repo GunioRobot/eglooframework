@@ -54,8 +54,11 @@ killall memcached
 
 instances=10
 
+MEMCACHE_DAEMON=`locate */bin/memcached | head -n 1`
+
 for ((n=1; n<=$instances; n++))
 do
 	((port=(11210+$n)))
-	/opt/local/bin/memcached -u nobody -l 127.0.0.1 -m 24 -c 2048 -p $port -d
+	
+	$MEMCACHE_DAEMON -u nobody -l 127.0.0.1 -m 24 -c 2048 -p $port -d
 done
