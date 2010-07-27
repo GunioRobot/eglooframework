@@ -58,8 +58,8 @@ class MediaRawFileRequestProcessor extends RequestProcessor {
 		$file_name = $this->requestInfoBean->getGET( 'media_name' );
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'MediaRawFileRequestProcessor: Looking up media ' . $file_name );
 
-		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationName() .
-			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/Media';
+		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() .
+			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() .'/Media';
 
 		if ( file_exists( $app_path . '/' . $file_name ) ) {
 			$mediaMIMEType = '';

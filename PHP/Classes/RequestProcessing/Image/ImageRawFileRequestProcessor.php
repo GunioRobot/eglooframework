@@ -94,12 +94,18 @@ Cache-Control	max-age=86400
 				$matches = array();
 				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
 
-				if ( !is_writable( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1] ) ) {
+				if (!empty($matches)) {
+					$cached_file_path = $matches[1] . '/';
+				} else {
+					$cached_file_path = '';
+				}
+
+				if ( !is_writable( eGlooConfiguration::getWebRoot() . 'images/' . $cached_file_path ) ) {
 					try {
 						$mode = 0777;
 						$recursive = true;
 
-						mkdir( eGlooConfiguration::getWebRoot() . 'images/' . $matches[1], $mode, $recursive );
+						mkdir( eGlooConfiguration::getWebRoot() . 'images/' . $cached_file_path, $mode, $recursive );
 					} catch (Exception $e){
 						// TODO figure out what to do here
 					}

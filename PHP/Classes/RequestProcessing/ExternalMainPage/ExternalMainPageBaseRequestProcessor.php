@@ -64,8 +64,8 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
         // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
         // is better suited for production
 
-		$templateDirector->setHardCacheID();
-		$templateDirector->useSmartCaching();
+		// $templateDirector->setHardCacheID();
+		// $templateDirector->useSmartCaching();
 
 		$templateDirector->preProcessTemplate();
 

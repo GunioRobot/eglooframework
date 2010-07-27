@@ -136,12 +136,12 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/usr/lib/egloo/cubes"
-	DEFAULT_DOCTRINE=`locate /usr/*lib/Doctrine.php | head -n 1`
+	DEFAULT_DOCTRINE=`locate /usr/*/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/var/www/egloo"
 	DEFAULT_FRAMEWORKROOT="/usr/lib/eglooframework"
 	DEFAULT_LOGPATH="/var/log/egloo"
-	DEFAULT_SMARTY=`locate /usr/*libs/Smarty.class.php | head -n 1`
+	DEFAULT_SMARTY=`locate /usr/*/Smarty.class.php | head -n 1`
 
 	DEFAULT_WEBUSER="www-data"
 	DEFAULT_WEBGROUP="www-data"
