@@ -182,6 +182,9 @@ function eglooAutoload($class_name) {
 								}
 							}
 
+							// In case you want to know why we do this, it's because exceptions in a PHP autoloader
+							// blow up the stack when thrown.  So instead of throwing, we create it and pass it by hand
+							// to the global exception handler, just as if it was thrown.  Voila!
 							$errorException = new ErrorException($errorMessage);
 
 							eGlooLogger::global_exception_handler($errorException);
