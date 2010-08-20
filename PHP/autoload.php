@@ -27,7 +27,7 @@
 
 // Bring up the eGlooConfiguration
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
-	include( 'PHP/Classes/Utilities/eGlooConfiguration.php' );
+	include( 'PHP/Classes/System/eGlooConfiguration.php' );
 }
 
 // Load the install configuration

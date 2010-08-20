@@ -28,7 +28,7 @@
  * @version 1.0
  */
 
-include('../PHP/Classes/Utilities/eGlooConfiguration.php');
+include('../PHP/Classes/System/eGlooConfiguration.php');
 
 $value_pairs = array();
 $configuration_options = array(
