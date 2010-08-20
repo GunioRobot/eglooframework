@@ -1243,7 +1243,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getExtraClassPath() {
-		return self::$configuration_options['ExtraClassPath'];
+		return isset(self::$configuration_options['ExtraClassPath']) ? self::$configuration_options['ExtraClassPath'] : '';
 	}
 
     public static function getFrameworkRootPath() {
