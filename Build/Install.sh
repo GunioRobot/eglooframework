@@ -684,14 +684,19 @@ then
 
 	if [ ! -e "$DOCUMENT_ROOT/PHP" ] && [  ! -L "$DOCUMENT_ROOT/PHP" ]
 	then
-		# mkdir -p "$DOCUMENT_ROOT"
-
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$DOCUMENT_ROOT/PHP"
+	else
+		echo "PHP Symlink exists"
+	fi
+
+	if [ ! -e "$PARENT_DIRECTORY/PHP" ] && [  ! -L "$PARENT_DIRECTORY/PHP" ] && [ $DETECTED_PLATFORM -eq $OS_UBUNTU ]
+	then
+		echo "Creating PHP symlink shim for Ubuntu because getcwd() is broken"
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		ln -s "$PARENT_DIRECTORY/PHP" "$PARENT_DIRECTORY/DocRoot/PHP"
 	else
-		echo "PHP Symlink exists"
+		echo "PHP Symlink shim for getcwd() exists"
 	fi
 else
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
@@ -708,7 +713,6 @@ fi
 
 if [ -e "$DOCUMENT_ROOT/.htaccess" ]
 then
-	# mkdir -p "$DOCUMENT_ROOT"
 	cp "$DOCUMENT_ROOT/.htaccess" "$DOCUMENT_ROOT/.htaccess.$TIMESTAMP.old"
 fi
 
