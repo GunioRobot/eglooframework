@@ -34,7 +34,7 @@ $value_pairs = array();
 $configuration_options = array(
 		'ApplicationsPath'		=> '',
 		'CachePath' 			=> '',
-		'CompiledTemplatesPath'	=> '',
+		// 'CompiledTemplatesPath'	=> '',
 		'ConfigurationPath'		=> '',
 		'CubesPath'				=> '',
 		'DoctrinePath'			=> '',
@@ -62,9 +62,9 @@ $xml_config_options = array(
 			'CachePath' => array(
 				'value' => ''
 				),
-			'CompiledTemplatesPath' => array(
-				'value' => ''
-				),
+			// 'CompiledTemplatesPath' => array(
+			// 	'value' => ''
+			// 	),
 			'ConfigurationPath' => array(
 				'value' => ''
 				),

@@ -368,8 +368,6 @@ esac
 printf "Building cache path... "
 
 mkdir -p "$CACHE_PATH"
-mkdir -p "$CACHE_PATH/CompiledTemplates"
-mkdir -p "$CACHE_PATH/SmartyCache"
 
 printf "done.\n"
 
@@ -1138,7 +1136,6 @@ then
 	./Configure.php \
 		--ApplicationsPath="c:/cygwin$APPLICATIONS_PATH" \
 		--CachePath="c:/cygwin$CACHE_PATH" \
-		--CompiledTemplatesPath=blah \
 		--ConfigurationPath="c:/cygwin$CONFIG_PATH" \
 		--CubesPath="c:/cygwin$CUBES_PATH" \
 		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
@@ -1155,7 +1152,6 @@ else
 	./Configure.php \
 		--ApplicationsPath="$APPLICATIONS_PATH" \
 		--CachePath="$CACHE_PATH" \
-		--CompiledTemplatesPath=blah \
 		--ConfigurationPath="$CONFIG_PATH" \
 		--CubesPath="$CUBES_PATH" \
 		--DoctrinePath="$DOCTRINE_PATH" \
@@ -1187,47 +1183,8 @@ printf "Copying generated configuration to appropriate paths... "
 
 cp "System.xml" "Config.xml"
 
-if [ "$USE_SYMLINKS" = "true" ]
-then
-	mv "System.xml" "$PARENT_DIRECTORY/DocRoot/System.xml"
-
-	if [ ! -e "$DOCUMENT_ROOT/System.xml" ] && [  ! -L "$DOCUMENT_ROOT/System.xml" ]
-	then
-		# Windows doesn't seem to handle permissions sanely
-		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
-		then
-			chmod -R 777 "$DOCUMENT_ROOT"
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/System.xml" "$DOCUMENT_ROOT/System.xml"
-		else
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/System.xml" "$DOCUMENT_ROOT/System.xml"
-		fi
-	else
-		echo "System.xml Symlink exists"
-	fi
-else
-	mv "System.xml" "$DOCUMENT_ROOT/System.xml"
-fi
-
-if [ "$USE_SYMLINKS" = "true" ]
-then
-	mv "Config.xml" "$PARENT_DIRECTORY/DocRoot/Config.xml"
-
-	if [ ! -e "$DOCUMENT_ROOT/Config.xml" ] && [  ! -L "$DOCUMENT_ROOT/Config.xml" ]
-	then
-		# Windows doesn't seem to handle permissions sanely
-		if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
-		then
-			chmod -R 777 "$DOCUMENT_ROOT"
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/Config.xml" "$DOCUMENT_ROOT/Config.xml"
-		else
-			$LINKCMD "$PARENT_DIRECTORY/DocRoot/Config.xml" "$DOCUMENT_ROOT/Config.xml"
-		fi
-	else
-		echo "Config.xml Symlink exists"
-	fi
-else
-	mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
-fi
+mv "System.xml" "$DOCUMENT_ROOT/System.xml"
+mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
 
 printf "done.\n"
 

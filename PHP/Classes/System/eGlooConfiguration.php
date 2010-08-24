@@ -1134,10 +1134,6 @@ final class eGlooConfiguration {
 		return self::$configuration_options['CachePath'];
 	}
 
-    public static function getCompiledTemplatesPath() {
-		return self::$configuration_options['CompiledTemplatesPath'];
-	}
-
     public static function getConfigurationPath() {
 		return self::$configuration_options['ConfigurationPath'];
 	}

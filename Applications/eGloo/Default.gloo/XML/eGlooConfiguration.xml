@@ -70,7 +70,6 @@
         <!-- Components -->
         <Component id="ApplicationsPath" displayName="Applications Path" override="false" type="path" value="" required="true"/>
         <Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
-        <Component id="CompiledTemplatesPath" displayName="Compiled Templates Path" override="false" type="path" value="" required="true"/>
         <Component id="ConfigurationPath" displayName="Configuration Path" override="false" type="path" value="" required="true"/>
         <Component id="CubesPath" displayName="Cubes Path" override="false" type="path" value="" required="true"/>
         <Component id="DoctrinePath" displayName="Doctrine Path" override="false" type="path" value="" required="true"/>
