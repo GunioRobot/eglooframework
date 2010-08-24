@@ -55,6 +55,9 @@ PARENT_DIRECTORY=$(_egloo_parent_dir=$(pwd) ; echo "${_egloo_parent_dir%/*}")
 # Get our platform
 PLATFORM=$(./shtool platform -v -F "%sc (%ac) %st (%at) %sp (%ap)")
 
+# Get our Timestamp
+TIMESTAMP=$(date +%s)
+
 checkUserCanRead() {
 	USER_CAN_READ=`su -m $1 -c "./ckwuread.sh '$2'"`
 
@@ -671,16 +674,6 @@ mkdir -p "$DOCUMENT_ROOT"
 
 if [ "$USE_SYMLINKS" = "true" ]
 then
-	# mkdir -p "$DOCUMENT_ROOT"
-
-	if [ ! -e "$DOCUMENT_ROOT/.htaccess" ] && [  ! -L "$DOCUMENT_ROOT/.htaccess" ]
-	then
-		# mkdir -p "$DOCUMENT_ROOT"
-		$LINKCMD "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
-	else
-		echo ".htaccess Symlink exists"
-	fi
-
 	if [ ! -e "$DOCUMENT_ROOT/index.php" ] && [  ! -L "$DOCUMENT_ROOT/index.php" ]
 	then
 		# mkdir -p "$DOCUMENT_ROOT"
@@ -701,19 +694,25 @@ then
 		echo "PHP Symlink exists"
 	fi
 else
-	cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
 
 	mkdir -p "$DOCUMENT_ROOT/PHP"
 
 	cp "$PARENT_DIRECTORY/PHP/autoload.php" "$DOCUMENT_ROOT/PHP/autoload.php"
-	cp "$PARENT_DIRECTORY/PHP/bcautoload.php" "$DOCUMENT_ROOT/PHP/bcautoload.php"
 
 	mkdir -p "$DOCUMENT_ROOT/PHP/Classes/Utilities"
 
 	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooConfiguration.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooConfiguration.php"
 	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooLogger.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooLogger.php"
 fi
+
+if [ -e "$DOCUMENT_ROOT/.htaccess" ]
+then
+	# mkdir -p "$DOCUMENT_ROOT"
+	cp "$DOCUMENT_ROOT/.htaccess" "$DOCUMENT_ROOT/.htaccess.$TIMESTAMP.old"
+fi
+
+cp "$PARENT_DIRECTORY/DocRoot/.htaccess" "$DOCUMENT_ROOT/.htaccess"
 
 printf "done.\n"
 
