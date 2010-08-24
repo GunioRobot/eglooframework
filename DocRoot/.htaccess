@@ -8,15 +8,6 @@ SetEnv EG_ENV DEVELOPMENT
 # Application / Bundle Selection
 SetEnv EG_APP eGloo/Default.gloo
 SetEnv EG_UI  OverlayInterface
-# SetEnv EG_UI  Default
-# SetEnv EG_APP Demos/PetFood
-# SetEnv EG_UI Default
-# SetEnv EG_APP Demos/BookResale
-# SetEnv EG_UI Default
-# SetEnv EG_APP Demos/DogOwners
-# SetEnv EG_UI Default
-# SetEnv EG_APP Demos/ImageHosting
-# SetEnv EG_UI Default
 
 # Caching
 SetEnv EG_CACHE ON
@@ -39,8 +30,6 @@ SetEnv EG_DISPLAY_TRACES ON
 SetEnv EG_LOG_LEVEL DEVELOPMENT
 SetEnv EG_LOG_FORMAT LOG
 
-SetEnv EG_REWRITE_BASE /egloo
-
 # Sanity Checking
 SetEnv EG_SANITY_CHECK_CLASS_LOADING ON
 
@@ -49,7 +38,7 @@ SetEnv EG_SANITY_CHECK_CLASS_LOADING ON
 RewriteEngine on
 
 # Modify the RewriteBase if you are using eGloo in a subdirectory
-RewriteBase /egloo
+RewriteBase /
 
 # The only script we allow direct access to
 # NOTE: Required so that the last rule does not block us on previous redirects
