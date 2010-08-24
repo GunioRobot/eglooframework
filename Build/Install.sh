@@ -690,7 +690,7 @@ then
 		echo "PHP Symlink exists"
 	fi
 
-	if [ ! -e "$PARENT_DIRECTORY/PHP" ] && [  ! -L "$PARENT_DIRECTORY/PHP" ] && [ $DETECTED_PLATFORM -eq $OS_UBUNTU ]
+	if [ ! -e "$PARENT_DIRECTORY/DocRoot/PHP" ] && [  ! -L "$PARENT_DIRECTORY/DocRoot/PHP" ] && [ $DETECTED_PLATFORM -eq $OS_UBUNTU ]
 	then
 		echo "Creating PHP symlink shim for Ubuntu because getcwd() is broken"
 		# Only do this next bit on Ubuntu... getcwd() is broken
@@ -1158,7 +1158,7 @@ else
 		--ConfigurationPath="$CONFIG_PATH" \
 		--CubesPath="$CUBES_PATH" \
 		--DoctrinePath="$DOCTRINE_PATH" \
-		--DocumentationPath="/$DOCUMENTATION_PATH" \
+		--DocumentationPath="$DOCUMENTATION_PATH" \
 		--DocumentRoot="$DOCUMENT_ROOT" \
 		--FrameworkRootPath="$FRAMEWORK_PATH" \
 		--LoggingPath="$LOGPATH" \
