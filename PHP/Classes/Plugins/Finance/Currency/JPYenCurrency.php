@@ -1,6 +1,6 @@
 <?php
 /**
- * eGlooCurrency Class File
+ * JPYenCurrency Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * eGlooCurrency
+ * JPYenCurrency
  *
  * $short_description
  *
@@ -36,18 +36,23 @@
  * @package Finance
  * @subpackage Currency
  */
-class eGlooCurrency extends Currency {
+class JPYenCurrency extends Currency {
 	/* Class Constants */
 
 	/* Static Data Members*/
 
 	/* Private Data Members */
-	
-	
+
+	/* Protected Data Members */
+	protected $_code = 'JPY';
+	protected $_sign = '¥';
+
 	/* Public Data Members */
 
-	public function __construct() {
-		
+	public function __construct( $numeric_value, $rounding_mode = PHP_ROUND_HALF_UP, $rounding_precision = 2 ) {
+		$this->_numeric_value = $numeric_value;
+		$this->_rounding_mode = $rounding_mode;
+		$this->_rounding_precision = $rounding_precision;
 	}
 
 	public function __destruct() {
