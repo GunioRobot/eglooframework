@@ -69,13 +69,27 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestClasses = array();
 
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
-			$requestClassID = (string) $requestClass['id'];
-			
+			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
+
+			if ( !$requestClassID || trim($requestClassID) === '' ) {
+				throw new ErrorException("No ID specified in request class.  Please review your Requests.xml");
+			}
+
 			$requestClasses[$requestClassID] = array('requestClass' => $requestClassID, 'requests' => array());
 
             foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
-				$requestID = (string) $request['id'];
-				$processorID = (string) $request['processorID'];
+				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
+				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
+
+				if ( !$requestID || trim($requestID) === '' ) {
+					throw new ErrorException("No request ID specified in request class: '" . $requestClassID .
+						"'.  Please review your Requests.xml");
+				}
+
+				if ( !$processorID || trim($processorID) === '' ) {
+					throw new ErrorException("No processor ID specified in request ID: '" . $requestID .
+					"'.  Please review your Requests.xml");
+				}
 
 				// Request Properties
 				$requestClasses[$requestClassID]['requests'][$requestID] =

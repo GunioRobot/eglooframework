@@ -27,19 +27,17 @@
 
 // Check for the minimum PHP version to run the framework
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-	// echo 'You are using PHP version ' . PHP_VERSION . '.  ' .
-	// 	'eGloo requires PHP version 5.3.0 or higher.';
-	// exit;
-	// Setup the OOP autoloader
-	include( 'PHP/bcautoload.php' );
+	echo 'You are using PHP version ' . PHP_VERSION . '.  ' .
+		'eGloo requires PHP version 5.3.0 or higher.';
+	exit;
 } else {
 	// Setup the OOP autoloader
 	include( 'PHP/autoload.php' );
 }
 
 // Check for Memcache
-if (!extension_loaded('memcache')) {
-	echo 'Memcache support not detected.';
+if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
+	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP';
 	exit;
 }
 
@@ -73,8 +71,7 @@ if (($output = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceId
 		$requestProcessor->processRequest();
 	} else {
 		// We probably want to do something a bit more... elegant here.  Eventually
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );		
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );
 	}
 }
-
 
