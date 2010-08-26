@@ -5,7 +5,7 @@
  * This file contains the function definitions for the default_exception_handler 
  * and default_error_handler runtime handlers.
  * 
- * Copyright 2008 eGloo, LLC
+ * Copyright 2010 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

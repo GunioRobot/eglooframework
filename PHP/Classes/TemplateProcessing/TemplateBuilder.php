@@ -5,7 +5,7 @@
  * Contains the class definition for the TemplateBuilder, an abstract 
  * builder class for template parsing.
  * 
- * Copyright 2008 eGloo, LLC
+ * Copyright 2010 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
