@@ -21,8 +21,8 @@
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  * @version 1.0
  */
 
@@ -33,8 +33,8 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  */
 interface TemplateEngineInterface {
 

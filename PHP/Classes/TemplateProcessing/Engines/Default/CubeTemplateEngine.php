@@ -22,7 +22,8 @@
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Template
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  * @version 1.0
  */
 
@@ -32,7 +33,8 @@
  * Provides a class definition for a Cube template engine subclass of
  * the TemplateEngine class.
  *
- * @package Template
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  */
 class CubeTemplateEngine extends TemplateEngine {
 
