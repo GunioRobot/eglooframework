@@ -13,7 +13,7 @@
      * @Compatibility: XHTML 1.0 Transitional (Tested)
      *
      * @Token username (string) username of the account that this profile belongs to
-     *}-->     
+     *}-->
 
 <div id="contactInformationBox">
     <form name="signup" id="signup" method="POST" action="/account/registerNewAccount/">

@@ -20,7 +20,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2008 eGloo, LLC
+ * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Template
  * @version 1.0
@@ -34,7 +34,7 @@
  *
  * @package Template
  */
-class TemplateEngine extends Smarty {
+class TemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $templateRoots = null;
 	protected $packagePrefix = '';
@@ -45,7 +45,7 @@ class TemplateEngine extends Smarty {
 		$this->right_delimiter = '}-->'; 
 
 		$this->error_reporting = E_ALL | E_STRICT;
-		// $this->error_unassigned = true;
+		$this->error_unassigned = true;
 
         $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 

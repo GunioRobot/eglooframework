@@ -20,7 +20,7 @@
  *  
  * @author George Cooper
  * @author Keith Buel
- * @copyright 2008 eGloo, LLC
+ * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Data Transfer Objects
  * @version 1.0

@@ -20,7 +20,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2008 eGloo, LLC
+ * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Runtime Handlers
  * @version 1.0

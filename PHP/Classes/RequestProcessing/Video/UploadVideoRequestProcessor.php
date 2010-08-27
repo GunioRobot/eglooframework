@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author Tom Read
- * @copyright 2008 eGloo, LLC
+ * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0

@@ -82,15 +82,15 @@ RewriteRule ^files/(.*\.[a-z0-9]+)$ index.php?eg_requestClass=file&eg_requestID=
 
 # No rule for images that exist in the webroot
 # RewriteCond %{REQUEST_URI} ^/egloo/images/.*(.gif|.png|.jpg|.jpeg)$ [NC]
-RewriteCond %{REQUEST_URI} images/.*(.gif|.png|.jpg|.jpeg)$ [NC]
+RewriteCond %{REQUEST_URI} (images|image|img)/.*(.gif|.png|.jpg|.jpeg)$ [NC]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^images/(.*(.gif|.png|.jpg|.jpeg))$ - [L]
 
 # But we might have images referenced here in the applications bundle
 # RewriteCond %{REQUEST_URI} ^/egloo/images/.*(.gif|.png|.jpg|.jpeg) [NC]
-RewriteCond %{REQUEST_URI} images/.*(.gif|.png|.jpg|.jpeg) [NC]
+RewriteCond %{REQUEST_URI} (images|image|img)/.*(.gif|.png|.jpg|.jpeg) [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^images/(.*(.gif|.png|.jpg|.jpeg))$ index.php?eg_requestClass=image&eg_requestID=rawfile&image_name=$1 [L]
+RewriteRule ^(images|image|img)/(.*(.gif|.png|.jpg|.jpeg))$ index.php?eg_requestClass=image&eg_requestID=rawfile&image_name=$2 [L]
 
 # No rule for media files that exist in the webroot
 # RewriteCond %{REQUEST_URI} ^/egloo/media/.*(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv)$ [NC]
