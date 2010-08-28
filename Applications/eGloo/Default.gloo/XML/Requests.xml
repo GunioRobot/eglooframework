@@ -252,68 +252,9 @@
 			<VariableArgument type="get" id="blogCommentID" regex="/^-?\d{1,19}$/" required="true" />
 		</Request>
 	</RequestClass>
-	<RequestClass id="file">
-		<Request id="rawfile" processorID="RawFileRequestProcessor">
-			<VariableArgument type="get" id="file_name" regex="~^[a-z0-9/- _]+?\.[a-z0-9]+$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
 	<RequestClass id="flash">
 		<Request id="getVideo" processorID="FlashVideoDispatcherRequestProcessor">
 			<VariableArgument type="get" id="flv" regex="/^.*$/" required="true" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="css">
-		<Request id="colorPicker" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="extMainBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="extMainJoin" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="extMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="global" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="globalMenuBar" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="infoBoardBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="infoBoardIcing" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="intMainBase" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="intMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="blogMainRoot" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="thickbox" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userCommCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userControlCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userFridge" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="userProfileCenter" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="fridgeStyles" processorID="StyleSheetRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
 	<RequestClass id="cube">
@@ -353,14 +294,14 @@
 	</RequestClass>
 	<RequestClass id="externalMainPage">
 		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor">
-			<Decorator order="0" decoratorID="SessionDecorator" />
-			<Decorator order="1" decoratorID="Redirect2ProfileOnLoggedInDecorator" />
+			<!-- <Decorator order="0" decoratorID="SessionDecorator" />
+			<Decorator order="1" decoratorID="Redirect2ProfileOnLoggedInDecorator" /> -->
 		</Request>
 		<Request id="extMainViewAbout" processorID="ExternalMainPageAboutRequestProcessor">
-			<Decorator order="0" decoratorID="SessionDecorator" />
+			<!-- <Decorator order="0" decoratorID="SessionDecorator" /> -->
 		</Request>
 		<Request id="extMainJoinForm" processorID="ExternalMainPageJoinRequestProcessor">
-			<Decorator order="0" decoratorID="SessionDecorator" />
+			<!-- <Decorator order="0" decoratorID="SessionDecorator" /> -->
 		</Request>
 	</RequestClass>
 	<RequestClass id="fridge">
@@ -379,7 +320,7 @@
 			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
 		</Request>
 		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
-			<VariableArgument type="get" id="image_name" regex="~^[a-z0-9/- _]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
+			<VariableArgument type="get" id="image_name" regex="~^[a-zA-Z0-9/_]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 		<Request id="setProfileImage" processorID="SetProfileImageRequestProcessor">
@@ -471,92 +412,6 @@
 		</Request>
 		<Request id="viewUserInviteForm" processorID="ViewUserInviteFormRequestProcessor">
 			<Decorator order="0" decoratorID="VerifyLoggedInDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="javascript">
-		<Request id="externalMainInit" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="internalMainInit" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="eGlooUtil" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="eGlooUtil_Extras" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ajaxfileupload" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="BlogMainInit" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="CreateEditBlog" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="cookie" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="form" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="idrag" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="idrop" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifx" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxPackRoot" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxscale" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxslide" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ifxtransfer" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="isortables" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="iutil" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery.dom" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="jquery.easing.1.1" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="mousewheel" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="tabs" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="ranking" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="require" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-		<Request id="thickbox" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="media">
-		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
-			<VariableArgument type="get" id="media_name" regex="~^[a-z0-9/- _]+?(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv)$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
 	<RequestClass id="message">
@@ -683,4 +538,50 @@
 			<Decorator order="0" decoratorID="SessionDecorator" />
 		</Request>
 	</RequestClass>
+
+	<!-- Static file loading -->
+	<RequestClass id="file">
+		<Request id="rawfile" processorID="RawFileRequestProcessor">
+			<VariableArgument type="get" id="file_name" regex="~^[a-zA-Z0-9/_ -]+?\.[a-z0-9]+$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="image">
+		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
+			<VariableArgument type="get" id="image_name" regex="~^[a-zA-Z0-9/_ -]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="media">
+		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
+			<VariableArgument type="get" id="media_name" regex="~^[a-zA-Z0-9/_ -]+?(.swf|.SWF)$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="css">
+		<Request id="rawfile" processorID="StyleSheetRawFileRequestProcessor">
+			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_ -]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="javascript">
+		<Request id="rawfile" processorID="JavascriptRawFileRequestProcessor">
+			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_ -]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+
+	<!-- eGloo SimpleTest Administration -->
+	<RequestClass id="coreeGlooSimpleTestAdministration">
+		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- eGloo SimpleTest Harnesses -->
+	<RequestClass id="coreeGlooSimpleTestHarness">
+		<Request id="index" processorID="SimpleTestHarnessIndexCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="runAll" processorID="SimpleTestHarnessRunAllCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+
 </tns:Requests>
