@@ -88,6 +88,8 @@ Cache-Control	max-age=86400
 			$output = file_get_contents( $app_path . '/' . $file_name );
 			$length = strlen($output);
 
+			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 			header( 'Content-type: ' . $imageMIMEType );
 			header( 'Content-Length: ' . $length);
 
