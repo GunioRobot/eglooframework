@@ -85,10 +85,13 @@ Connection	Keep-Alive
 Content-Type	image/png
 Cache-Control	max-age=86400
 */
+			$output = file_get_contents( $app_path . '/' . $file_name );
+			$length = strlen($output);
 
 			header( 'Content-type: ' . $imageMIMEType );
+			header( 'Content-Length: ' . $length);
 
-			echo file_get_contents( $app_path . '/' . $file_name );
+			echo $output;
 
 			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 				$matches = array();
