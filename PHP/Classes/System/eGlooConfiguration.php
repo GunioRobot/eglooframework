@@ -224,6 +224,58 @@ final class eGlooConfiguration {
 			$webRootConfigOptions['egLogFormat'] = $_SERVER['EG_LOG_FORMAT'];
 		}
 
+		if ( isset($_SERVER['EG_HOTFILE_CSS_CLUSTERING_ENABLED']) ) {
+			switch( $_SERVER['EG_HOTFILE_CSS_CLUSTERING_ENABLED'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egHotFileCSSClusteringEnabled'] = true;
+					break;
+				case 'OFF' :
+					$webRootConfigOptions['egHotFileCSSClusteringEnabled'] = false;
+					break;
+				default :
+					break;
+			}
+		}
+
+		if ( isset($_SERVER['EG_HOTFILE_IMAGE_CLUSTERING_ENABLED']) ) {
+			switch( $_SERVER['EG_HOTFILE_IMAGE_CLUSTERING_ENABLED'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egHotFileImageClusteringEnabled'] = true;
+					break;
+				case 'OFF' :
+					$webRootConfigOptions['egHotFileImageClusteringEnabled'] = false;
+					break;
+				default :
+					break;
+			}
+		}
+
+		if ( isset($_SERVER['EG_HOTFILE_JAVASCRIPT_CLUSTERING_ENABLED']) ) {
+			switch( $_SERVER['EG_HOTFILE_JAVASCRIPT_CLUSTERING_ENABLED'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egHotFileJavascriptClusteringEnabled'] = true;
+					break;
+				case 'OFF' :
+					$webRootConfigOptions['egHotFileJavascriptClusteringEnabled'] = false;
+					break;
+				default :
+					break;
+			}
+		}
+
+		if ( isset($_SERVER['EG_HOTFILE_MEDIA_CLUSTERING_ENABLED']) ) {
+			switch( $_SERVER['EG_HOTFILE_MEDIA_CLUSTERING_ENABLED'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = true;
+					break;
+				case 'OFF' :
+					$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = false;
+					break;
+				default :
+					break;
+			}
+		}
+
 		// Check if these options should be allowed to override the ones specified in the cache or XML config
 		if ($overwrite) {
 			// Set these options, overwriting existing settings if necessary
@@ -1334,6 +1386,22 @@ final class eGlooConfiguration {
 
 	public static function getUseFileCache() {
 		return self::$configuration_options['egFileCacheEnabled'];
+	}
+
+	public static function getUseHotFileCSSClustering() {
+		return self::$configuration_options['egHotFileCSSClusteringEnabled'];
+	}
+
+	public static function getUseHotFileImageClustering() {
+		return self::$configuration_options['egHotFileImageClusteringEnabled'];
+	}
+
+	public static function getUseHotFileJavascriptClustering() {
+		return self::$configuration_options['egHotFileJavascriptClusteringEnabled'];
+	}
+
+	public static function getUseHotFileMediaClustering() {
+		return self::$configuration_options['egHotFileMediaClusteringEnabled'];
 	}
 
 	public static function getUseMemcache() {

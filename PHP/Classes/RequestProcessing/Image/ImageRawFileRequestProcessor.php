@@ -95,7 +95,7 @@ Cache-Control	max-age=86400
 
 			echo $output;
 
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
 				$matches = array();
 				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
 
