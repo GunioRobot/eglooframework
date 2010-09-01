@@ -40,7 +40,7 @@ class LineItem {
 
 	private $_valueInCurrency = null;
 
-	public __construct( $valueInCurrency = null, $preferred_currency = CurrencyExchange::USD ) {
+	public function __construct( $valueInCurrency = null, $preferred_currency = CurrencyExchange::USD ) {
 		if ( isset($valueInCurrency) && $valueInCurrency instanceof Currency ) {
 			$this->_valueInCurrency = $valueInCurrency;
 		} else if (isset($valueInCurrency)){

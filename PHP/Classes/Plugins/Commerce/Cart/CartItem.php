@@ -120,22 +120,23 @@ class CartItem {
 			$numeric_value = 0;
 
 			foreach($this->_discountLineItems as $discountLineItem) {
-				$numeric_value = $discountLineItem->getValueInCurrency( $preferred_currency );
+				$foo = $discountLineItem->getNumericValueInCurrency( $preferred_currency );
+				$numeric_value += $discountLineItem->getNumericValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_productLineItems as $productLineItem) {
-				$numeric_value += $productLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value += $productLineItem->getNumericValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_shippingLineItems as $shippingLineItem) {
-				$numeric_value = $shippingLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value += $shippingLineItem->getNumericValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_taxLineItems as $taxLineItem) {
-				$numeric_value = $taxLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value += $taxLineItem->getNumericValueInCurrency( $preferred_currency );
 			}
 
 			$this->_subTotal = CurrencyExchange::getValueInCurrencyFromNumeric( $numeric_value, $preferred_currency );
 			$retVal = $this->_subTotal;
 		} else {
-			$this->_subTotal = CurrencyExchange::getValueInCurrencyFromCurrency($this->_subTotal, $preferred_currency);
+			$this->_subTotal = CurrencyExchange::getValueInCurrencyFromCurrency( $this->_subTotal, $preferred_currency );
 			$retVal = $this->_subTotal;
 		}
 

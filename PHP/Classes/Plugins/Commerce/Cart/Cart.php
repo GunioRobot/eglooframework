@@ -39,14 +39,19 @@
 class Cart {
 
 	private $_cartItems = array();
-	private $_cartTotal = 0;
+	private $_total = null;
 
 	public function __construct() {
 		
 	}
 
+	private function rebuildCart() {
+		$this->_total = null;
+	}
+
 	public function addCartItem( $cartItem ) {
 		$this->_cartItems[] = $cartItem;
+		$this->rebuildCart();
 	}
 
 	public function getCartItems() {
@@ -55,14 +60,56 @@ class Cart {
 
 	public function setCartItems( $cartItems ) {
 		$this->_cartItems = $cartItems;
+		$this->rebuildCart();
 	}
 
 	public function getCartTotal() {
-		return $this->_cartTotal;
+		return $this->_total;
 	}
 
 	public function sortCartItems() {
 		
+	}
+
+	// All totals excluding tax, shipping and discounts
+	public function getSubTotalsArray( $preferred_currency = CurrencyExchange::USD, $prefer_numeric = false ) {
+		$retVal = array();
+
+		if ($prefer_numeric) {
+			foreach($this->_cartItems as $cartItem) {
+				$retVal[] = $cartItem->getSubTotal( $preferred_currency, true );
+			}
+		} else {
+			foreach($this->_cartItems as $cartItem) {
+				$retVal[] = $cartItem->getSubTotal( $preferred_currency, false );
+			}
+		}
+
+		return $retVal;
+	}
+
+	public function getTotal( $preferred_currency = CurrencyExchange::USD, $prefer_numeric = false ) {
+		$retVal = null;
+
+		if (!isset($this->_total)) {
+			$numeric_value = 0;
+
+			foreach($this->_cartItems as $cartItem) {
+				$numeric_value += $cartItem->getSubTotal( $preferred_currency, true );
+			}
+
+			$this->_total = CurrencyExchange::getValueInCurrencyFromNumeric( $numeric_value, $preferred_currency );
+			$retVal = $this->_total;
+		} else {
+			$this->_total = CurrencyExchange::getValueInCurrencyFromCurrency($this->_total, $preferred_currency);
+			$retVal = $this->_total;
+		}
+
+		if ($prefer_numeric) {
+			$retVal = $retVal->getNumericValue();
+		}
+
+		return $retVal;
 	}
 
 }

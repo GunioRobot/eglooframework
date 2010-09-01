@@ -56,7 +56,7 @@ class CurrencyExchange {
 		'JPYenCurrency' => self::JPY,
 	);
 
-	public static function getCurrencyObjectOfType( $preferred_currency = self::USD, $valueInCurrency = self::USD ) {
+	public static function getCurrencyObjectOfType( $preferred_currency = self::USD, $valueInCurrency = 0) {
 		$currency_type_classname = self::$_currencyConstantClassMap[$preferred_currency];
 		return $currency_type_classname::getInstance($valueInCurrency);
 	}
@@ -64,11 +64,11 @@ class CurrencyExchange {
 	public static function getValueInCurrencyFromCurrency( Currency $valueInCurrency, $preferred_currency = self::USD ) {
 		$retVal = null;
 
-		$from_currency = self::$_currencyClassConstantMap(get_class($valueInCurrency));
+		$from_currency = self::$_currencyClassConstantMap[get_class($valueInCurrency)];
 
 		$exchangeRate = self::getExchangeRate( $from_currency, $preferred_currency );
 
-		$from_numeric_value = $from_currency_object->getNumericValue();
+		$from_numeric_value = $valueInCurrency->getNumericValue();
 
 		$to_numeric_value = $from_numeric_value * $exchangeRate;
 
@@ -94,39 +94,43 @@ class CurrencyExchange {
 		// Run some cool math here
 		$retVal = null;
 
-		// Query for rate in the future.  Should probably be some external library.
-		// For now, hardcode to test.  Yes, this is ugly
-		switch( $from_currency ) {
-			case self::USD :
-				{
-					if ( $to_currency === self::EUR ) {
-						$retVal = 0.8;
-					} else if ( $to_currency === self::JPY ) {
-						$retVal = 10;
+		if ($from_currency === $to_currency) {
+			$retVal = 1;
+		} else {
+			// Query for rate in the future.  Should probably be some external library.
+			// For now, hardcode to test.  Yes, this is ugly
+			switch( $from_currency ) {
+				case self::USD :
+					{
+						if ( $to_currency === self::EUR ) {
+							$retVal = 0.8;
+						} else if ( $to_currency === self::JPY ) {
+							$retVal = 10;
+						}
 					}
-				}
-				break;
-			case self::EUR :
-				{
-					if ( $to_currency === self::USD ) {
-						$retVal = 1.4;
-					} else if ( $to_currency === self::JPY ) {
-						$retVal = 5;
+					break;
+				case self::EUR :
+					{
+						if ( $to_currency === self::USD ) {
+							$retVal = 1.4;
+						} else if ( $to_currency === self::JPY ) {
+							$retVal = 5;
+						}
 					}
-				}
-				break;
-			case self::JPY :
-				{
-					if ( $to_currency === self::USD ) {
-						$retVal = 0.10;
-					} else if ( $to_currency === self::EUR ) {
-						$retVal = 0.5;
+					break;
+				case self::JPY :
+					{
+						if ( $to_currency === self::USD ) {
+							$retVal = 0.10;
+						} else if ( $to_currency === self::EUR ) {
+							$retVal = 0.5;
+						}
 					}
-				}
-				break;
-			default :
-				throw new Exception( 'Invalid currency specified to convert from' );
-				break;
+					break;
+				default :
+					throw new Exception( 'Invalid currency specified to convert from' );
+					break;
+			}
 		}
 
 		return $retVal;
