@@ -45,8 +45,45 @@ class CartItem {
 
 	private $_subTotal = null;
 
-	// private $_appliedDiscounts = array();
-	// private $_availableDiscounts = array();
+	public function addDiscountLineItem( $discountLineItem ) {
+		$this->addDiscountLineItems(array($discountLineItem));
+	}
+
+	public function addDiscountLineItems( $discountLineItems ) {
+		foreach( $discountLineItems as $discountLineItem ) {
+			$this->_discountLineItems[] = $discountLineItem;
+		}
+	}
+
+	public function addProductLineItem( $productLineItem ) {
+		$this->addProductLineItems(array($productLineItem));
+	}
+
+	public function addProductLineItems( $productLineItems ) {
+		foreach( $productLineItems as $productLineItem ) {
+			$this->_productLineItems[] = $productLineItem;
+		}
+	}
+
+	public function addShippingLineItem( $shippingLineItem ) {
+		$this->addShippingLineItems(array($shippingLineItem));
+	}
+
+	public function addShippingLineItems( $shippingLineItems ) {
+		foreach( $shippingLineItems as $shippingLineItem ) {
+			$this->_shippingLineItems[] = $shippingLineItem;
+		}
+	}
+
+	public function addTaxLineItem( $taxLineItem ) {
+		$this->addTaxLineItems(array($taxLineItem));
+	}
+
+	public function addTaxLineItems( $taxLineItems ) {
+		foreach( $taxLineItems as $taxLineItem ) {
+			$this->_taxLineItems[] = $taxLineItem;
+		}
+	}
 
 	public function getLineItems( $returnFlat = true ) {
 		$retVal = array();
@@ -76,24 +113,34 @@ class CartItem {
 		return $retVal;
 	}
 
-	public function getSubTotal( $preferred_currency = null, $prefer_numeric = false ) {
+	public function getSubTotal( $preferred_currency = CurrencyExchange::USD, $prefer_numeric = false ) {
 		$retVal = null;
 
-		if (!isset($this->_subTotalInUSD)) {
+		if (!isset($this->_subTotal)) {
+			$numeric_value = 0;
+
 			foreach($this->_discountLineItems as $discountLineItem) {
-				$retVal = $discountLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value = $discountLineItem->getValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_productLineItems as $productLineItem) {
-				$retVal += $productLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value += $productLineItem->getValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_shippingLineItems as $shippingLineItem) {
-				$retVal = $shippingLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value = $shippingLineItem->getValueInCurrency( $preferred_currency );
 			}
 			foreach($this->_taxLineItems as $taxLineItem) {
-				$retVal = $taxLineItem->getValueInCurrency( $preferred_currency );
+				$numeric_value = $taxLineItem->getValueInCurrency( $preferred_currency );
 			}
-		} else {
+
+			$this->_subTotal = CurrencyExchange::getValueInCurrencyFromNumeric( $numeric_value, $preferred_currency );
 			$retVal = $this->_subTotal;
+		} else {
+			$this->_subTotal = CurrencyExchange::getValueInCurrencyFromCurrency($this->_subTotal, $preferred_currency);
+			$retVal = $this->_subTotal;
+		}
+
+		if ($prefer_numeric) {
+			$retVal = $retVal->getNumericValue();
 		}
 
 		return $retVal;

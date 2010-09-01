@@ -38,7 +38,13 @@
  */
 class ShippingLineItem extends LineItem {
 
-
+	// public function getValueInCurrency( $preferred_currency ) {
+	// 	
+	// }
+	// 
+	// public function getNumericValueInCurrency( $preferred_currency ) {
+	// 	
+	// }
 
 }
 

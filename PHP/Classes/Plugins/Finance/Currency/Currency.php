@@ -104,5 +104,21 @@ abstract class Currency {
 		
 	}
 
+	public static function getInstance( $valueInCurrency = 0 ) {
+		return new static( $valueInCurrency );
+	}
+
+	public static function getInstanceFromUSD( $valueInUSD ) {
+		$retVal = null;
+
+		if ($valueInUSD instanceof USDollarCurrency) {
+			$retVal = new static( $valueInUSD->getNumericValue(), PHP_ROUND_HALF_UP, 2, CurrencyExchange::USD );
+		} else {
+			$retVal = new static( $valueInUSD );
+		}
+
+		return $retVal;
+	}
+
 }
 

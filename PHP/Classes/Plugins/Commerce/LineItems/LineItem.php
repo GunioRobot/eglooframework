@@ -38,12 +38,43 @@
  */
 class LineItem {
 
-	public function getValueInCurrency( $preferred_currency ) {
-		
+	private $_valueInCurrency = null;
+
+	public __construct( $valueInCurrency = null, $preferred_currency = CurrencyExchange::USD ) {
+		if ( isset($valueInCurrency) && $valueInCurrency instanceof Currency ) {
+			$this->_valueInCurrency = $valueInCurrency;
+		} else if (isset($valueInCurrency)){
+			$preferredCurrency = CurrencyExchange::getCurrencyObjectOfType($preferred_currency, $valueInCurrency);
+			$this->_valueInCurrency = $preferredCurrency;
+		}
 	}
 
-	public function getNumericValueInCurrency( $preferred_currency ) {
-		
+	public function getValueInCurrency( $preferred_currency = CurrencyExchange::USD) {
+		$retVal = null;
+
+		$retVal = CurrencyExchange::getValueInCurrencyFromCurrency($this->_valueInCurrency, $preferred_currency);
+
+		return $retVal;
+	}
+
+	public function setValueInCurrency( $valueInCurrency, $preferred_currency = CurrencyExchange::USD ) {
+		if ( $valueInCurrency instanceof Currency ) {
+			$this->_valueInCurrency = $valueInCurrency;
+		} else {
+			$preferredCurrency = CurrencyExchange::getCurrencyObjectOfType($preferred_currency, $valueInCurrency);
+			$this->_valueInCurrency = $preferredCurrency;
+		}
+
+	}
+
+	public function getNumericValueInCurrency( $preferred_currency = CurrencyExchange::USD ) {
+		$retVal = null;
+
+		$currencyObject = CurrencyExchange::getValueInCurrencyFromCurrency($this->_valueInCurrency, $preferred_currency);
+
+		$retVal = $currencyObject->getNumericValue();
+
+		return $retVal;
 	}
 
 }
