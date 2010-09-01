@@ -94,7 +94,8 @@ class JavascriptRawFileRequestProcessor extends RequestProcessor {
         // TODO buffer output
         echo $output;
 
-		if ($cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION)) {
+		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
+			eGlooConfiguration::getUseHotFileJavascriptClustering()) ) {
 			// Depending on the requests.xml rules, this could be a security hole
 			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash ) ) {
 				try {
@@ -107,7 +108,10 @@ class JavascriptRawFileRequestProcessor extends RequestProcessor {
 				}
 			}
 
-			file_put_contents( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash . '/' . $file_name . '.js', $output );
+			if ( !file_put_contents( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash . '/' . $file_name . '.js', $output ) ) {
+				throw new Exception( 'File write failed for ' . eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash . '/' . $file_name . '.js' );
+			}
+			
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptRawFileRequestProcessor: Exiting processRequest()' );

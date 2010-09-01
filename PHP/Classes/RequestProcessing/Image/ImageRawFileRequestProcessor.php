@@ -116,7 +116,10 @@ Cache-Control	max-age=86400
 					}
 				}
 
-				copy($app_path . '/' . $file_name, eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
+				if ( !copy($app_path . '/' . $file_name, eGlooConfiguration::getWebRoot() . 'images/' . $file_name ) ) {
+					throw new Exception( 'File copy failed from ' . $app_path . '/' . $file_name . ' to ' .
+						eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
+				}
 			}
 		} else {
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
