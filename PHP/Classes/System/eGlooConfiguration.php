@@ -535,23 +535,35 @@ final class eGlooConfiguration {
 		$config_cache_path = self::getFrameworkConfigurationCachePath() . self::getFrameworkConfigurationCacheFilename();
 
 		if ( file_exists($config_cache_path) && is_file($config_cache_path) && is_readable($config_cache_path) ) {
-			$cached_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
-			// self::$configuration_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
+			$cached_options_array_string = file_get_contents($config_cache_path);
+			
+			if ($cached_options_array_string) {
+				$cached_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
 
-			// Grab our environment variables to determine which application and deployment to run
+				if (isset($cached_options) && is_array($cached_options)) {
+					// Grab our environment variables to determine which application and deployment to run
+					foreach ($cached_options as $possible_option_key => $option_default_value) {
+						if (isset(self::$configuration_possible_options[$possible_option_key])) {
+							self::$configuration_options[$possible_option_key] = $option_default_value;
+						}
+					}
 
-			foreach ($cached_options as $possible_option_key => $option_default_value) {
-				if (isset(self::$configuration_possible_options[$possible_option_key])) {
-					self::$configuration_options[$possible_option_key] = $option_default_value;
+					// No errors
+					$retVal = true;
+				} else {
+					// We don't have eGlooLogger access at this point
+					// eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Cached options read from ' . $config_cache_path . ' were invalid.  Content: ' .
+					// "\n\n" . $cached_options);
 				}
-				// if (!isset(self::$configuration_options[$possible_option_key])) {
-					// self::$configuration_options[$possible_option_key] = $option_default_value['value'];
-				// }
+			} else {
+				// We don't have eGlooLogger access at this point
+				// eGlooLogger::writeLog( eGlooLogger::WARN, 'Attempting to read ' . $config_cache_path . ' returned false');
 			}
-
-			// No errors
-			$retVal = true;
 		}
+		// We don't have eGlooLogger access at this point
+		//  else {
+		// 	eGlooLogger::writeLog( eGlooLogger::NOTICE, 'Could not read ' . $config_cache_path);
+		// }
 
 		return $retVal;
 	}
