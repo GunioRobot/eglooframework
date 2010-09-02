@@ -38,5 +38,24 @@
  */
 class MasterCard extends CreditCard {
 
+	/* Protected Data Members */
+	protected $_card_issuer = null;
+	protected $_cardIssuerPhoneNumber = null;
+	protected $_card_number_pattern = null;
+	protected $_card_security_code_pattern = null;
+	protected $_card_type = null;
+
+	public function __construct() {
+		
+	}
+
+	public function __destruct() {
+		
+	}
+
+	public function __toString() {
+		
+	}
+
 }
 

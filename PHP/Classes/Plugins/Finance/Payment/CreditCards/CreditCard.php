@@ -110,7 +110,7 @@ class CreditCard {
 		return $this->_cardBalance;
 	}
 
-	public function setCardBalance( $cardBalance ) {
+	public function setCardBalance( Currency $cardBalance ) {
 		$this->_cardBalance = $cardBalance;
 	}
 
@@ -182,7 +182,7 @@ class CreditCard {
 		return $this->_creditLimit;
 	}
 
-	public function setCreditLimit( $creditLimit ) {
+	public function setCreditLimit( Currency $creditLimit ) {
 		$this->_creditLimit = $creditLimit;
 	}
 
