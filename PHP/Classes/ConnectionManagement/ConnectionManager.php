@@ -1,6 +1,6 @@
 <?php
 /**
- * PaymentMethod Class File
+ * ConnectionManager Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * PaymentMethod
+ * ConnectionManager
  *
  * $short_description
  *
@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-interface PaymentMethod {
+abstract class ConnectionManager {
+
+	abstract public static function getConnection( $connection_name, $engine_mode );
 
 }
 

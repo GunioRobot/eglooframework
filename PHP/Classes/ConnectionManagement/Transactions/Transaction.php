@@ -1,6 +1,6 @@
 <?php
 /**
- * PaymentMethod Class File
+ * Transaction Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * PaymentMethod
+ * Transaction
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-interface PaymentMethod {
+class Transaction {
 
 }
 

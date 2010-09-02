@@ -1,6 +1,6 @@
 <?php
 /**
- * PaymentMethod Class File
+ * MerchantConnectionManager Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * PaymentMethod
+ * MerchantConnectionManager
  *
  * $short_description
  *
@@ -36,7 +36,13 @@
  * @package $package
  * @subpackage $subpackage
  */
-interface PaymentMethod {
+class MerchantConnectionManager extends ConnectionManager {
+
+	public static function getConnection( $connection_name = 'egMerchantPrimary', $engine_mode = null ) {
+		$retVal = null;
+
+		return $retVal;
+	}
 
 }
 

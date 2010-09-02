@@ -38,7 +38,7 @@
  * @package Database
  * @subpackage Management
  */
-final class DBConnectionManager {
+final class DBConnectionManager extends ConnectionManager {
 
 	// Database Connections
 	private static $doctrineConnection	= null;
@@ -118,4 +118,4 @@ final class DBConnectionManager {
 
 
 }
-?>
+

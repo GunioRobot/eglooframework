@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CreditCard {
+class CreditCard implements PaymentMethod {
 
 	/* Private Data Members */
 	private $_authorized_card_users = array();
@@ -58,6 +58,8 @@ class CreditCard {
 	private $_pending_charges = array();
 	private $_security_questions = array();
 	private $_statementDate = null;
+	private $_transactions = array();
+	private $_transactionsToProcess = array();
 
 	/* Protected Data Members */
 	protected $_card_issuer = null;
@@ -264,6 +266,22 @@ class CreditCard {
 
 	public function setStatementDate( $statementDate ) {
 		$this->_statementDate = $statementDate;
+	}
+
+	public function getTransactions() {
+		return $this->_transactions;
+	}
+
+	public function setTransactions( $transactions ) {
+		$this->_transactions = $transactions;
+	}
+
+	public function getTransactionsToProcess() {
+		return $this->_transactions_to_process;
+	}
+
+	public function setTransactions( $transactions ) {
+		$this->_transactions_to_process = $transactions;
 	}
 
 	public function __toString() {

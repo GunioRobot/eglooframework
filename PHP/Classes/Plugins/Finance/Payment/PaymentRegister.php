@@ -1,6 +1,6 @@
 <?php
 /**
- * PaymentMethod Class File
+ * PaymentRegister Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * PaymentMethod
+ * PaymentRegister
  *
  * $short_description
  *
@@ -36,7 +36,26 @@
  * @package $package
  * @subpackage $subpackage
  */
-interface PaymentMethod {
+class PaymentRegister {
+
+	static public function getTransactionFromCartWithPaymentMethod( Cart $cart, PaymentMethod $paymentMethod ) {
+		$retVal = null;
+
+		// TODO throw this nonsense into a try/catch
+		$paymentTransaction = new PaymentTransaction();
+		
+		$paymentTransaction->setPaymentMethod($paymentMethod);
+		$paymentTransaction->setPaymentTab($cart);
+
+		$retVal = $paymentTransaction;
+
+		return $retVal;
+	}
+
+	static public function processTransaction( PaymentTransaction $paymentTransaction ) {
+		$merchantConnection = MerchantConnectionManager::getConnection();
+		$merchantConnection->processTransaction($paymentTransaction);
+	}
 
 }
 
