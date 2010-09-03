@@ -214,11 +214,12 @@ final class eGlooConfiguration {
 					$webRootConfigOptions['egHotFileCSSClusteringEnabled'] = true;
 					break;
 				case 'OFF' :
+				default :
 					$webRootConfigOptions['egHotFileCSSClusteringEnabled'] = false;
 					break;
-				default :
-					break;
 			}
+		} else {
+			$webRootConfigOptions['egHotFileCSSClusteringEnabled'] = false;
 		}
 
 		if ( isset($_SERVER['EG_HOTFILE_IMAGE_CLUSTERING_ENABLED']) ) {
@@ -227,11 +228,12 @@ final class eGlooConfiguration {
 					$webRootConfigOptions['egHotFileImageClusteringEnabled'] = true;
 					break;
 				case 'OFF' :
+				default :
 					$webRootConfigOptions['egHotFileImageClusteringEnabled'] = false;
 					break;
-				default :
-					break;
 			}
+		} else {
+			$webRootConfigOptions['egHotFileImageClusteringEnabled'] = false;
 		}
 
 		if ( isset($_SERVER['EG_HOTFILE_JAVASCRIPT_CLUSTERING_ENABLED']) ) {
@@ -240,11 +242,12 @@ final class eGlooConfiguration {
 					$webRootConfigOptions['egHotFileJavascriptClusteringEnabled'] = true;
 					break;
 				case 'OFF' :
+				default :
 					$webRootConfigOptions['egHotFileJavascriptClusteringEnabled'] = false;
 					break;
-				default :
-					break;
 			}
+		} else {
+			$webRootConfigOptions['egHotFileJavascriptClusteringEnabled'] = false;
 		}
 
 		if ( isset($_SERVER['EG_HOTFILE_MEDIA_CLUSTERING_ENABLED']) ) {
@@ -253,11 +256,12 @@ final class eGlooConfiguration {
 					$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = true;
 					break;
 				case 'OFF' :
+				default :
 					$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = false;
 					break;
-				default :
-					break;
 			}
+		} else {
+			$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = false;
 		}
 
 		// Check if these options should be allowed to override the ones specified in the cache or XML config
