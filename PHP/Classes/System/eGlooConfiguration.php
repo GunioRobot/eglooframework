@@ -141,22 +141,6 @@ final class eGlooConfiguration {
 			}
 		}
 
-		// Determine which DB system we're using
-		switch( $_SERVER['EG_DB_ENGINE'] ) {
-			case 'DOCTRINE' :
-				$webRootConfigOptions['egDatabaseEngine'] = self::DOCTRINE;
-				break;
-			case 'MYSQL' :
-				$webRootConfigOptions['egDatabaseEngine'] = self::MYSQL;
-				break;
-			case 'POSTGRESQL' :
-				$webRootConfigOptions['egDatabaseEngine'] = self::POSTGRESQL;
-				break;
-			default:
-				$webRootConfigOptions['egDatabaseEngine'] = self::POSTGRESQL;
-				break;
-		}
-
 		if ( isset($_SERVER['EG_DB_CONNECTION_PRIMARY_HOST']) ) {
 			self::$configuration_options['egDatabaseConnections']['egPrimary'] = array();
 
@@ -1232,10 +1216,6 @@ final class eGlooConfiguration {
 		}
 
 		return $retVal;
-	}
-
-	public static function getDatabaseEngine() {
-		return self::$configuration_options['egDatabaseEngine'];
 	}
 
     public static function getDeploymentType() {
