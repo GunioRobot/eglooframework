@@ -430,7 +430,11 @@ final class eGlooConfiguration {
 				$build_file_path = eGlooConfiguration::getApplicationsPath() . '/' .
 					eGlooConfiguration::getApplicationPath() . '/' . self::$configuration_options['AppBuild'];
 
-				self::$configuration_options['AppBuild'] = trim(file_get_contents($build_file_path));
+				if ( file_exists($build_file_path) && is_file($build_file_path) && is_readable($build_file_path) ) {
+					self::$configuration_options['AppBuild'] = file_get_contents($build_file_path);
+				} else {
+					self::$configuration_options['AppBuild'] = 'No application build provided';
+				}
 			}
 
 			// 
