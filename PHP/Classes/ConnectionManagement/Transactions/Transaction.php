@@ -38,5 +38,33 @@
  */
 class Transaction {
 
+	private $_dataPackage = null;
+	private $_destination = null;
+	private $_source = null;
+
+	public function getDataPackage() {
+		
+	}
+
+	public function setDataPackage() {
+		
+	}
+
+	public function getDestination() {
+		
+	}
+
+	public function setDestination() {
+		
+	}
+
+	public function getSource() {
+		
+	}
+
+	public function setSource() {
+		
+	}
+
 }
 
