@@ -58,7 +58,7 @@ class RawFileRequestProcessor extends RequestProcessor {
 		$file_name = $this->requestInfoBean->getGET( 'file_name' );
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'RawFileRequestProcessor: Looking up file ' . $file_name );
 
-		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationName() .
+		$app_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() .
 			'/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/Files';
 
 		if ( file_exists( $app_path . '/' . $file_name ) ) {
@@ -71,6 +71,10 @@ class RawFileRequestProcessor extends RequestProcessor {
 				// Just ignore this for now
 			}
 
+			// This is some ghetto hacks and needs to be optimized out like loco
+			if (strstr($file_name, '.htc')) {
+				$fileMIMEType = 'text/x-component';
+			}
 /*
 Date	Fri, 20 Nov 2009 16:08:31 GMT
 Server	Apache/2.2.14 (Unix) DAV/2
@@ -84,8 +88,10 @@ Content-Type	file/png
 Cache-Control	max-age=86400
 */
 
+			$output = file_get_contents( $app_path . '/' . $file_name );
+
 			header( 'Content-type: ' . $fileMIMEType );
-			echo file_get_contents( $app_path . '/' . $file_name );
+			echo $output;
 		} else {
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
 		}
