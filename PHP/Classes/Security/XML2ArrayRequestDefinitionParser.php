@@ -480,6 +480,51 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestInfoBean->setGET( $variableArg['id'],  $variableValue );
 				}
 
+			} else if ( $variableArg['type'] === 'getarray' ) {
+				if( !isset( $_GET[ $variableArg['id'] ] ) ){
+					//check if required
+					if( $variableArg['required'] === "true") {
+						$errorMessage = "Required variable parameter: " . $variableArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				} else {
+					//check if correctly formatted
+					$variableValues = $_GET[ $variableArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-GET array variable as an array
+					if (!is_array($variableValues)) {
+						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $variableArg['id'] . '\' is type \'' .
+							gettype($variableValues) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
+					$regexFormat = $variableArg['regex'];
+					
+					$sanitizedValues = array();
+
+					foreach($variableValues as $key => $variableValue) {
+						$match = preg_match ( $regexFormat, $variableValue );
+
+						if( !$match ){
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, "variable parameter: " . $variableArg['id'] . 
+								" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
+								" in post request with request ID: " . $requestID, 'Security' );
+						} else {
+							$sanitizedValues[$key] = $variableValue;
+						}
+
+					}
+
+					//set argument in the request info bean
+					$requestInfoBean->setGET( $variableArg['id'],  $sanitizedValues );
+				}
+
 			} else if ( $variableArg['type'] === 'post' ) {
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
 					//check if required

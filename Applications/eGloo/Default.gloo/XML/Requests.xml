@@ -570,6 +570,12 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
+	<RequestClass id="xcss">
+		<Request id="rawfile" processorID="StyleSheetExtendedRawFileRequestProcessor">
+			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_:]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
 
 	<!-- eGloo SimpleTest Administration -->
 	<RequestClass id="coreeGlooSimpleTestAdministration">
