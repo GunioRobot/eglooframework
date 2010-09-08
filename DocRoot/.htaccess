@@ -92,6 +92,18 @@ RewriteCond %{REQUEST_URI} (js|javascript)/.*\.js [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(js|javascript)/(.*)\.js$ index.php?eg_requestClass=javascript&eg_requestID=rawfile&javascript_name=$2 [L]
 
+# No rule for javascript that exists in the webroot
+# RewriteCond %{REQUEST_URI} ^/egloo/(js|javascript)/.*\.js$ [NC]
+RewriteCond %{REQUEST_URI} (xjs|xjavascript)/.*\.js$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(xjs|xjavascript)/(.*\.js)$ - [L]
+
+# But we might have css referenced here in the applications bundle
+# RewriteCond %{REQUEST_URI} ^/egloo/(js|javascript)/.*\.js [NC]
+RewriteCond %{REQUEST_URI} (xjs|xjavascript)/.*\.js [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(xjs|xjavascript)/(.*)\.js$ index.php?eg_requestClass=xjavascript&eg_requestID=rawfile&javascript_name=$2 [L]
+
 # No rule for files that exist in the webroot
 # RewriteCond %{REQUEST_URI} ^/egloo/files/.*\.[a-z0-9]+ [NC]
 RewriteCond %{REQUEST_URI} files/.*\.[a-z0-9]+ [NC]

@@ -58,7 +58,39 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
         $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
         $templateBuilder = new JavascriptBuilder();
 
-		$file_name = $this->requestInfoBean->getGET( 'javascript_name' );
+		$original_file_name = $file_name = $this->requestInfoBean->getGET( 'javascript_name' );
+
+		$templateVariables = array();
+
+		// Strip out all key/value pairs
+		$matches = array();
+		preg_match_all('~([0-9a-zA-Z_ -]+):([0-9a-zA-Z_ -]+)/~', $file_name, $matches, PREG_SET_ORDER);
+
+		foreach($matches as $match_set) {
+			if ( count($match_set) === 3 ) {
+				$templateVariables[$match_set[1]] = $match_set[2];
+			}
+		}
+
+		// Strip out all key/value pairs
+		$matches = array();
+
+		preg_match('~^[^:]+(/([0-9a-zA-Z_ -]+:[0-9a-zA-Z_ -]+/)+)[^:]+$~', $file_name, $matches);
+
+		if (count($matches) === 3) {
+			$key_value_set_string = $matches[1];
+		} else {
+			$key_value_set_string = '/';
+		}
+
+		foreach($matches as $match_set) {
+			if ( count($match_set) === 3 ) {
+				$templateVariables[$match_set[1]] = $match_set[2];
+			}
+		}
+
+		$file_name = preg_replace('~([0-9a-zA-Z_ -]+):([0-9a-zA-Z_ -]+)/~', '', $file_name);
+
 
 		$matches = array();
 		preg_match('~^([^/]*)?/?([^/]*)$~', $file_name, $matches);
@@ -85,6 +117,8 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 
         $templateDirector->preProcessTemplate();
 
+		$templateDirector->setTemplateVariables($templateVariables, true);
+
 		$output = $templateDirector->processTemplate();
 
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptExtendedRawFileRequestProcessor: Echoing Response" );
@@ -97,19 +131,19 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileJavascriptClustering()) ) {
 			// Depending on the requests.xml rules, this could be a security hole
-			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash ) ) {
+			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string ) ) {
 				try {
 					$mode = 0777;
 					$recursive = true;
 
-					mkdir( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash, $mode, $recursive );
+					mkdir( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string, $mode, $recursive );
 				} catch (Exception $e){
 					// TODO figure out what to do here
 				}
 			}
 
-			if ( !file_put_contents( eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash . '/' . $file_name . '.js', $output ) ) {
-				throw new Exception( 'File write failed for ' . eGlooConfiguration::getWebRoot() . 'js/' . $user_agent_hash . '/' . $file_name . '.js' );
+			if ( !file_put_contents( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string . $file_name . '.js', $output ) ) {
+				throw new Exception( 'File write failed for ' . eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string . $file_name . '.js' );
 			}
 			
 		}

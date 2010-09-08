@@ -576,6 +576,12 @@
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
+	<RequestClass id="xjavascript">
+		<Request id="rawfile" processorID="JavascriptExtendedRawFileRequestProcessor">
+			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_: -]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
 
 	<!-- eGloo SimpleTest Administration -->
 	<RequestClass id="coreeGlooSimpleTestAdministration">

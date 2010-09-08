@@ -35,8 +35,9 @@
  * @package Template
  */
 abstract class TemplateDirector {
-    protected $application = null;
-    protected $interfaceBundle = null;
+	protected $application = null;
+	protected $interfaceBundle = null;
+	protected $ttl = 60;
     
 	public function setApplication( $application ) {
 		$this->application = $application;
