@@ -53,6 +53,7 @@ abstract class eGlooRequestDefinitionParser {
 	 * XML Variables
 	 */
 	protected $REQUESTS_XML_LOCATION = '';
+	protected $attributeSets = array();
 	protected $requestNodes = array();
 
 	protected $webapp;

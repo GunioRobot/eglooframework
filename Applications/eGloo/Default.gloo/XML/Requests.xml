@@ -596,4 +596,28 @@
 		</Request>
 	</RequestClass>
 
+	<!-- Example Request Attribute Sets -->
+	<RequestAttributeSet id="testset1">
+		<BoolArgument id="testbool" required="false" type="get" />
+		<SelectArgument id="userGender" required="true" type="get">
+			<value>Male</value>
+			<value>Female</value>
+		</SelectArgument>
+		<VariableArgument id="test1" regex="/^.*$/" required="true" type="get" />
+		<VariableArgument id="userBirthMonth" regex="/^(0[1-9]|1[0-2])$/" required="true" type="get" />
+        <Depend id="test1" type="get">
+            <Child id="userBirthMonth" type="get" />
+            <Child id="userGender" type="get" />
+        </Depend>
+		<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="testset2">
+		<VariableArgument id="test1" regex="/^.*$/" required="true" type="get" />
+		<VariableArgument id="test2" regex="/^.*$/" required="true" type="get" />
+        <Depend id="test1" type="get">
+            <Child id="userBirthMonth" type="get" />
+            <Child id="userGender" type="get" />
+        </Depend>
+		<Decorator order="3" decoratorID="SessionDecorator" />
+	</RequestAttributeSet>
 </tns:Requests>

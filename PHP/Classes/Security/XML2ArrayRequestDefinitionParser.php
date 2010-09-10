@@ -68,6 +68,122 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$requestClasses = array();
 
+		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestAttributeSet' ) as $attributeSet ) {
+			$attributeSetID = isset($attributeSet['id']) ? (string) $attributeSet['id'] : NULL;
+
+			if ( !$attributeSetID || trim($attributeSetID) === '' ) {
+				throw new ErrorException("No ID specified in request attribute set.  Please review your Requests.xml");
+			}
+
+			$requestAttributeSets[$attributeSetID] = array('attributeSet' => $attributeSetID, 'attributes' => array());
+
+			// Arguments
+			$requestAttributeSets[$attributeSetID]['attributes']['boolArguments'] = array();
+
+			foreach( $attributeSet->xpath( 'child::BoolArgument' ) as $boolArgument ) {
+				$newBoolArgument = array();
+
+				$newBoolArgument['id'] = (string) $boolArgument['id'];
+				$newBoolArgument['type'] = strtolower( (string) $boolArgument['type'] );
+				$newBoolArgument['required'] = strtolower( (string) $boolArgument['required'] );
+
+				if ($newBoolArgument['required'] === 'false' && isset($boolArgument['default'])) {
+					$defaultBoolValue = strtolower( (string) $boolArgument['default'] );
+					
+					if ($defaultBoolValue === 'true' || $defaultBoolValue === 'false') {
+						$newBoolArgument['default'] = $defaultBoolValue;
+					}
+				}
+
+				$requestAttributeSets[$attributeSetID]['attributes']['boolArguments'][$newBoolArgument['id']] = $newBoolArgument;
+			}
+
+			$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'] = array();
+
+			foreach( $attributeSet->xpath( 'child::SelectArgument' ) as $selectArgument ) {
+				$newSelectArgument = array();
+
+				$newSelectArgument['id'] = (string) $selectArgument['id'];
+				$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
+				$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
+
+				$newSelectArgument['values'] = array();
+
+				foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
+					$newSelectArgument['values'][] = (string) $selectArgumentValue;
+				}
+
+				if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
+					$defaultSelectValue = (string) $selectArgument['default'];
+					
+					if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
+						$newSelectArgument['default'] = $defaultSelectValue;
+					}
+				}
+
+				$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
+			}
+
+			$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'] = array();
+
+			foreach( $attributeSet->xpath( 'child::VariableArgument' ) as $variableArgument ) {
+				$newVariableArgument = array();
+
+				$newVariableArgument['id'] = (string) $variableArgument['id'];
+				$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
+				$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
+				$newVariableArgument['regex'] = (string) $variableArgument['regex'];
+				
+				if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
+					$defaultVariableValue = (string) $variableArgument['default'];
+
+					if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
+						$newVariableArgument['default'] = $defaultVariableValue;
+					}
+				}
+
+				$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
+			}
+
+			$requestAttributeSets[$attributeSetID]['attributes']['depends'] = array();
+
+			foreach( $attributeSet->xpath( 'child::Depend' ) as $depend ) {
+				$newDepend = array();
+
+				$newDepend['id'] = (string) $depend['id'];
+				$newDepend['type'] = (string) $depend['type'];
+				$newDepend['children'] = array();
+
+				foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
+					$dependChildID = (string) $dependChild['id'];
+					$dependChildType = strtolower( (string) $dependChild['type'] );
+
+					$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
+				}
+
+				$requestAttributeSets[$attributeSetID]['attributes']['depends'][$newDepend['id']] = $newDepend;
+			}
+
+			// Decorators
+			$requestAttributeSets[$attributeSetID]['attributes']['decorators'] = array();
+
+			foreach( $attributeSet->xpath( 'child::Decorator' ) as $decorator ) {
+				$newDecorator = array();
+
+				$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
+				$newDecorator['order'] = (string) $decorator['order'];
+
+				$requestAttributeSets[$attributeSetID]['attributes']['decorators'][$newDecorator['decoratorID']] = $newDecorator;
+			}
+
+			$uniqueKey = ((string) $attributeSet['id']);
+			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
+
+			$cacheGateway = CacheGateway::getCacheGateway();
+			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
+				$uniqueKey, $requestAttributeSets[$attributeSetID], '<type>' );
+		}
+
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
 
@@ -113,7 +229,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][] = $newBoolArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$newBoolArgument['id']] = $newBoolArgument;
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'] = array();
@@ -139,7 +255,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][] = $newSelectArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'] = array();
@@ -160,7 +276,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][] = $newVariableArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['depends'] = array();
@@ -179,7 +295,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['depends'][] = $newDepend;
+					$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$newDepend['id']] = $newDepend;
 				}
 
 				// Decorators
@@ -188,14 +304,126 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				foreach( $request->xpath( 'child::Decorator' ) as $decorator ) {
 					$newDecorator = array();
 
-					$newDecorator['order'] = (string) $decorator['order'];
 					$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
+					$newDecorator['order'] = (string) $decorator['order'];
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][] = $newDecorator;
+					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$newDecorator['decoratorID']] = $newDecorator;
 				}
 
-                $uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id'] );
-                // $this->requestNodes[ $uniqueKey  ] = $request->asXML();
+				// Request Attribute Set Includes
+				$requestClasses[$requestClassID]['requests'][$requestID]['requestAttributeSetIncludes'] = array();
+
+				foreach( $request->xpath( 'child::RequestAttributeSetInclude' ) as $requestAttributeSetInclude ) {
+					$newRequestAttributeSetInclude = array();
+
+					$newRequestAttributeSetInclude['requestAttributeSetID'] = (string) $requestAttributeSetInclude['requestAttributeSetID'];
+					$newRequestAttributeSetInclude['priority'] = (string) $requestAttributeSetInclude['priority'];
+
+					$newInsertArrayID = $newRequestAttributeSetInclude['requestAttributeSetID'];
+
+					$requestClasses[$requestClassID]['requests'][$requestID]['requestAttributeSetIncludes'][$newInsertArrayID] = $newRequestAttributeSetInclude;
+				}
+
+				foreach( $requestClasses[$requestClassID]['requests'][$requestID]['requestAttributeSetIncludes'] as $requestAttributeSetInclude ) {
+					$requestAttributeSetID = $requestAttributeSetInclude['requestAttributeSetID'];
+					$priority = $requestAttributeSetInclude['priority'];
+
+					$requestAttributeSet = $this->attributeSets[$requestAttributeSetID];
+
+					$boolArguments = $requestAttributeSet['attributes']['boolArguments'];
+					$selectArguments = $requestAttributeSet['attributes']['selectArguments'];
+					$variableArguments = $requestAttributeSet['attributes']['variableArguments'];
+					$depends = $requestAttributeSet['attributes']['depends'];
+					$decorators = $requestAttributeSet['attributes']['decorators'];
+
+					foreach( $boolArguments as $boolArgument ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting bool argument ' . $boolArgument['id'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']] = $boolArgument;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence bool argument ' . $boolArgument['id'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']] = $boolArgument;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence bool argument ' . $boolArgument['id'] .
+								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+
+					foreach( $selectArguments as $selectArgument ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting select argument ' . $selectArgument['id'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']] = $selectArgument;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence select argument ' . $selectArgument['id'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']] = $selectArgument;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence select argument ' . $selectArgument['id'] .
+								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+
+					foreach( $variableArguments as $variableArgument ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting variable argument ' . $variableArgument['id'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence variable argument ' . $variableArgument['id'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence variable argument ' . $variableArgument['id'] .
+								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+
+					foreach( $depends as $depend ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting depend ' . $depend['id'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']] = $depend;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence depend ' . $depend['id'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']] = $depend;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence depend ' . $depend['id'] .
+								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+
+					foreach( $decorators as $decorator ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting decorator ' . $decorator['decoratorID'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence decorator ' . $decorator['decoratorID'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence decorator ' . $decorator['decoratorID'] .
+							' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+				}
+
+				$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id'] );
+
 				$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
 
 				$cacheGateway = CacheGateway::getCacheGateway();
