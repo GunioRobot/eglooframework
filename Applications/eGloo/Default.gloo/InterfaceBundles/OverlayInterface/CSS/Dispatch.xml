@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eGlooStyleSheet:Clients xmlns:eGlooStyleSheet="com.egloo.www/StyleSheet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
+	<!-- <Client id="Microsoft_Internet_Explorer" matches="/^.*MSIE.*$/">
 		<DefaultDispatchMap>
 			<DispatchMap id="extMainBase">
 				<![CDATA[ExternalMainPage/Microsoft_Internet_Explorer/ExternalMainPageBase.css]]>
@@ -52,8 +52,8 @@
 				</DispatchMap>
 			</DefaultDispatchMap>
 		</MajorVersion>
-	</Client>
-	<Client id="Mozilla_Firefox" matches="/^Mozilla.*Gecko.*Firefox.*$/">
+	</Client> -->
+	<!-- <Client id="Mozilla_Firefox" matches="/^Mozilla.*Gecko.*Firefox.*$/">
 		<DefaultDispatchMap></DefaultDispatchMap>
 		<MajorVersion id="1.5" matches="/^Mozilla.*rv:1\.8\.0.*Gecko.*Firefox.*1\.5.*$/">
 			<DefaultDispatchMap></DefaultDispatchMap>
@@ -80,8 +80,8 @@
 				</Platform>
 			</MinorVersion>
 		</MajorVersion>
-	</Client>
-	<Client id="Apple_Safari" matches="/^.*WebKit.*$/">
+	</Client> -->
+	<!-- <Client id="Apple_Safari" matches="/^.*WebKit.*$/">
 		<DefaultDispatchMap></DefaultDispatchMap>
 		<MajorVersion id="2.0" matches="">
 			<DefaultDispatchMap></DefaultDispatchMap>
@@ -92,7 +92,7 @@
 				</Platform>
 			</MinorVersion>
 		</MajorVersion>
-	</Client>
+	</Client> -->
 	<Client id="Default" matches="/^.*$/">
 		<DefaultDispatchMap>
 			<DispatchMap id="datePicker">

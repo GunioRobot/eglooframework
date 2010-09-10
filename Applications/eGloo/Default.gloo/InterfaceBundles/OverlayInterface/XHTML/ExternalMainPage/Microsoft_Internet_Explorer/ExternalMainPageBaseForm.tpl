@@ -75,7 +75,7 @@
 	            </div>
 	        </div>
 	    </div>
-        <div id="copyright">Copyright &copy; 2007 eGloo, LLC. All rights reserved.</div>
+        <div id="copyright">Copyright &copy; 2010 eGloo, LLC. All rights reserved.</div>
         <div id="footer">
 			<span class="footer_option link">Terms of Use</span>
 		   	<span class="spantext2">&nbsp;|&nbsp;</span>

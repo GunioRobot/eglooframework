@@ -100,7 +100,7 @@
     </div>
 
     <!--{* Copyright Notice Footer *}-->
-    <div class="footer"><!--{$copyrightNotice}-->Copyright &copy; 2007 eGloo, LLC. All rights reserved.</div>
+    <div class="footer"><!--{$copyrightNotice}-->Copyright &copy; 2010 eGloo, LLC. All rights reserved.</div>
 
 <!--{if $buildContainer == true}-->     
 </div>

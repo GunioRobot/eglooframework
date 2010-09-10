@@ -64,6 +64,6 @@
                 <div id="content_text" style="color:black"></div>
             </div>
         </div>
-        <div id="footer">Copyright &copy; 2007 eGloo, LLC. All rights reserved.</div>
+        <div id="footer">Copyright &copy; 2010 eGloo, LLC. All rights reserved.</div>
     </body>
 </html>
