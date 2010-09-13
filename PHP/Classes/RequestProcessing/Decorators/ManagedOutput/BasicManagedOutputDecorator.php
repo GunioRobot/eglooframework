@@ -1,6 +1,6 @@
 <?php
 /**
- * ConnectionManager Class File
+ * BasicManagedOutputDecorator Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ConnectionManager
+ * BasicManagedOutputDecorator
  *
  * $short_description
  *
@@ -36,9 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ConnectionManager {
-
-	// abstract public static function getConnection( $connection_name, $engine_mode );
+class BasicManagedOutputDecorator {
 
 }
 

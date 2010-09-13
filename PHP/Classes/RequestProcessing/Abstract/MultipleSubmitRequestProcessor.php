@@ -37,7 +37,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MultipleSubmitRequestProcessor extends RequestProcessor {
-
+abstract class MultipleSubmitRequestProcessor extends RequestProcessor {
+	
 }
 

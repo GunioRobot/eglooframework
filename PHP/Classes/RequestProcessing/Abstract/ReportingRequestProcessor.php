@@ -1,6 +1,6 @@
 <?php
 /**
- * ConnectionManager Class File
+ * ReportingRequestProcessor Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ConnectionManager
+ * ReportingRequestProcessor
  *
  * $short_description
  *
@@ -36,9 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ConnectionManager {
-
-	// abstract public static function getConnection( $connection_name, $engine_mode );
-
+abstract class ReportingRequestProcessor {
+	
 }
 
