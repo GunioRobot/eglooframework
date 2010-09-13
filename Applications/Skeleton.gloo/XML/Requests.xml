@@ -33,24 +33,100 @@
  -->
 <tns:Requests xmlns:tns="com.egloo.www/eGlooRequests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="com.egloo.www/eGlooRequests schemas/eGlooRequests.xsd">
-	<!--
-	  <RequestClass id="css"></RequestClass>
-	-->
+	<!-- Root Domain (www.example.com/) -->
 	<RequestClass id="externalMainPage">
 		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor"></Request>
 	</RequestClass>
+
+	<!-- Static file loading -->
+	<RequestClass id="css">
+		<Request id="rawfile" processorID="StyleSheetRawFileRequestProcessor">
+			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="file">
+		<Request id="rawfile" processorID="RawFileRequestProcessor">
+			<VariableArgument type="get" id="file_name" regex="~^[a-zA-Z0-9/._]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
 	<RequestClass id="image">
 		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
-			<VariableArgument type="get" id="image_name" regex="~^[a-z0-9/]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
+			<VariableArgument type="get" id="image_name" regex="~^[a-zA-Z0-9/_]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
 			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
 		</Request>
 	</RequestClass>
-<!--
- <RequestClass id="javascript">
+	<RequestClass id="javascript">
+		<Request id="rawfile" processorID="JavascriptRawFileRequestProcessor">
+			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="media">
+		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
+			<VariableArgument type="get" id="media_name" regex="~^[a-zA-Z0-9/_]+?(.swf|.SWF)$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="xcss">
+		<Request id="rawfile" processorID="StyleSheetExtendedRawFileRequestProcessor">
+			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_:]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
+	<RequestClass id="xjavascript">
+		<Request id="rawfile" processorID="JavascriptExtendedRawFileRequestProcessor">
+			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_: -]+?$~i" required="true" />
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+		</Request>
+	</RequestClass>
 
-		<Request id="jquery" processorID="JavascriptRequestProcessor">
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
+	<!-- eGloo SimpleTest Administration -->
+	<RequestClass id="coreeGlooSimpleTestAdministration">
+		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">
 		</Request>
 	</RequestClass>
--->
+	<!-- eGloo SimpleTest Harnesses -->
+	<RequestClass id="coreeGlooSimpleTestHarness">
+		<Request id="index" processorID="SimpleTestHarnessIndexCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="runAll" processorID="SimpleTestHarnessRunAllCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+
+	<!-- Common eGloo Request Attribute Sets -->
+	<RequestAttributeSet id="egBreadcrumbs">
+		<VariableArgument id="breadcrumbs_path" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egDataExport">
+		<SelectArgument id="data_export_format" required="true" type="get">
+			<value>csv</value>
+			<value>json</value>
+			<value>xhtml</value>
+			<value>xml</value>
+		</SelectArgument>
+		<VariableArgument id="data_export_format_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egFiltering">
+		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+		<VariableArgument id="filtering_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egReport">
+		<VariableArgument id="report_format" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="report_limit" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="report_name" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="report_primary_key" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+		<VariableArgument id="report_primary_value" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egSearch">
+		<VariableArgument id="search_scope" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+		<VariableArgument id="search_term" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="search_type" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egSort">
+		<VariableArgument id="sort_group" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="sort_method" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+		<VariableArgument id="sort_order" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+	</RequestAttributeSet>
 </tns:Requests>
