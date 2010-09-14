@@ -109,7 +109,7 @@ class XHTMLDispatcher extends TemplateDispatcher {
         $userRequestClass = $requestInfoBean->getRequestClass();
         $userRequestID = $requestInfoBean->getRequestID();
         $requestLookup = $userRequestClass . $userRequestID;
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, $requestLookup );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLDispatcher: Request lookup "' . $requestLookup . '"');
         
         /**
          * Ensure that there is a request that corresponds to this request class

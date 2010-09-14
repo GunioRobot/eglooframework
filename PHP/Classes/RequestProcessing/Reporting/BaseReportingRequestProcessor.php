@@ -36,46 +36,102 @@
  * @package $package
  * @subpackage $subpackage
  */
-class BaseReportingRequestProcessor {
+abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProcessor {
 
-    /**
-     * Concrete implementation of the abstract RequestProcessor method
-     * processRequest().
-     * 
-     * This method handles processing of the incoming client request.  Its
-     * primary function is to establish the deployment environment (dev, test,
-     * production) and the current localization, and to then parse the correct
-     * template(s) in order to construct and output the appropriate external
-     * main page (the domain root; e.g. www.egloo.com).
-     * 
-     * @access public
-     */
-		//     public function processRequest() {
-		//         eGlooLogger::writeLog( eGlooLogger::DEBUG, "BaseReportingRequestProcessor: Entered processRequest()" );
-		// 
-		// $templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
-		// $templateBuilder = new XHTMLBuilder();
-		// 
-		// $templateDirector->setTemplateBuilder( $templateBuilder );
-		// 
-		// $templateDirector->preProcessTemplate();
-		// 
-		// $templateDirector->setTemplateVariables( $templateVariables, true );            
-		// 
-		// $output = $templateDirector->processTemplate();
-		// 
-		// eGlooLogger::writeLog( eGlooLogger::DEBUG, "BaseReportingRequestProcessor: Echoing Response" );
-		// 
-		// // TODO move header declarations to a decorator
-		// header("Content-type: text/html; charset=UTF-8");
-		// 
-		// // TODO buffer output
-		// echo $output;        
-		// 
-		//         eGlooLogger::writeLog( eGlooLogger::DEBUG, "BaseReportingRequestProcessor: Exiting processRequest()" );
-		//     }
+	/* Protected Data Members */
+	protected $_connectionName = 'egPrimary';
+	protected $_engineMode = null;
+	protected $_populatedQuery = null;
+	protected $_preparedQuery = null;
+	protected $_queryParameters = array();
+	protected $_queryResultResource = null;
+	protected $_rawDataReport = null;
+	protected $_reportingConnection = null;
+	protected $_structuredDataReport = null;
 
-	// protected function 
+	protected function populateTemplateVariables() {
+		$this->prepareConnection();
+		$this->prepareQuery();
+		$this->prepareQueryParameters();
+		$this->populateQuery();
+		$this->executeQuery();
+		$this->prepareRawDataReport();
+		$this->structureRawDataReport();
+		$this->setTemplateVariablesByMerge($this->getStructuredDataReport());
+	}
+
+	// This is "for now".  It shouldn't be tied to MySQL.  Overload this if you need to
+	public function executeQuery() {
+		$connection = $this->getConnection();
+		$this->_queryResultResource = mysql_query($this->getPopulatedQuery(), $connection);
+
+		if ( !isset($this->_queryResultResource) || !$this->_queryResultResource ) {
+			$error_message = mysql_error($connection);
+
+			if ( $error_message !== '' ) {
+				throw new Exception( 'Query failed with message: ' . $error_message);
+			} else {
+				throw new Exception( 'Query resource unset or was returned null.  No error provided');
+			}
+		}
+	}
+
+	protected function getConnection() {
+		return $this->_reportingConnection;
+	}
+
+	protected function prepareConnection() {
+		$this->_reportingConnection = DBConnectionManager::getConnection($this->_connectionName, $this->_engineMode);
+	}
+
+	// TODO uh... fix this with some query parameters
+	protected function populateQuery() {
+		$this->_populatedQuery = $this->_preparedQuery;
+	}
+
+	protected function getPopulatedQuery() {
+		return $this->_populatedQuery;
+	}
+
+	protected function setPopulatedQuery( $populatedQuery ) {
+		$this->_populatedQuery = $populatedQuery;
+	}
+
+	protected function getPreparedQuery() {
+		return $this->_preparedQuery;
+	}
+
+	protected function setPreparedQuery( $preparedQuery ) {
+		$this->_preparedQuery = $preparedQuery;
+	}
+
+	protected function getRawDataReport() {
+		return $this->_rawDataReport;
+	}
+
+	protected function setRawDataReport( $rawDataReport ) {
+		$this->_rawDataReport = $rawDataReport;
+	}
+
+	protected function getStructuredDataReport() {
+		return $this->_structuredDataReport;
+	}
+
+	protected function setStructuredDataReport( $structuredDataReport ) {
+		$this->_structuredDataReport = $structuredDataReport;
+	}
+
+	// Should set $this->_preparedQuery to something useful
+	abstract protected function prepareQuery();
+
+	// Should set $this->_queryParameters to something useful
+	abstract protected function prepareQueryParameters();
+
+	// Should set $this->_queryParameters to something useful
+	abstract protected function prepareRawDataReport();
+
+	// Should structure the raw data result $this->_structuredDataReport into something useful for templates
+	abstract function structureRawDataReport();
 
 }
 
