@@ -33,10 +33,27 @@
  * @package RequestProcessing
  */
 abstract class RequestProcessor {
- 	
- 	protected $requestInfoBean = null;
+
+	/* Public Static Members */
+	public static $calledClass = null;
+
+	/* Protected Data Members */
+	protected $requestInfoBean = null;
+
+	public static function getClass() {
+		$retVal = null;
+
+		if ( isset(static::$calledClass) ) {
+			$retVal = static::$calledClass;
+		} else {
+			$retVal = static::$calledClass = get_called_class();
+		}
+
+		return $retVal;
+	}
+
 	abstract public function processRequest();
- 	
+
     // TODO we need to make a templated method for processing
     // both the header information and then the content information
     // to guarantee that by default we handle content headers and

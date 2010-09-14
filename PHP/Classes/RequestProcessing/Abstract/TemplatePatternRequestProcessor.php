@@ -38,25 +38,10 @@
  */
 abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
-	/* Public Static Members */
-	public static $calledClass = null;
-
 	/* Protected Data Members */
 	protected $_templateBuilder = null;
 	protected $_templateVariables = array();
 	protected $_useSystemVariables = true;
-
-	public static function getClass() {
-		$retVal = null;
-
-		if ( isset(static::$calledClass) ) {
-			$retVal = static::$calledClass;
-		} else {
-			$retVal = static::$calledClass = get_called_class();
-		}
-
-		return $retVal;
-	}
 
     /**
      * Concrete implementation of the abstract RequestProcessor method
