@@ -86,8 +86,8 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 
 	// TODO uh... fix this with some query parameters
 	protected function populateQuery() {
-		QueryPopulationManager::populateQueryTransaction($this->_preparedQuery, $this->_queryParameters);
-		// $this->_populatedQuery = $this->_preparedQuery;
+		$this->_populatedQuery = clone $this->_preparedQuery;
+		QueryPopulationManager::populateQueryTransaction($this->_populatedQuery, $this->_queryParameters);
 	}
 
 	protected function getPopulatedQuery() {

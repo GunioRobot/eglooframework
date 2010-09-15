@@ -41,14 +41,14 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 	
 	public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = 'sprintf' ) {
 		if ($method === 'sprintf') {
-			$this->populateQueryWithSprintf( $queryTransaction, $queryParameters, $associative, $sort, $method );
+			$this->populateQueryWithVsprintf( $queryTransaction, $queryParameters, $associative, $sort, $method );
 		} else {
 			throw new Exception('MySQLQueryPopulationRoutine: Invalid population method requested');
 		}
 	}
 
 	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
-	private function populateQueryWithSprintf( $queryTransaction, $queryParameters, $method = 'sprintf', $associative = false, $sort = false ) {
+	private function populateQueryWithVsprintf( $queryTransaction, $queryParameters, $method = 'sprintf', $associative = false, $sort = false ) {
 		// For now we're going to assume string
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;
@@ -66,31 +66,25 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 					if (is_string($value['value'])) {
 						$processedParameters[] = mysql_real_escape_string($value['value']);
 					} else {
-						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']));
+						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else if ( $value['type'] === 'int' ) {
 					if (is_int($value['value'])) {
 						$processedParameters[] = $value['value'];
 					} else {
-						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']));
+						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else if ( $value['type'] === 'float' ) {
 					if (is_float($value['value'])) {
 						$processedParameters[] = $value['value'];
 					} else {
-						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']));
+						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else {
 					throw new Exception('MySQLQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
 				}
 			}
-echo_r($dataPackageString);
-echo_r($processedParameters);
-// die;
-			$populatedDataPackageString = sprintf($dataPackageString, $processedParameters);
-	echo_r($populatedDataPackageString);
-	die;		
-			
+			$populatedDataPackageString = vsprintf($dataPackageString, $processedParameters);
 		} else {
 			
 		}
