@@ -36,7 +36,34 @@
  * @package $package
  * @subpackage $subpackage
  */
-class Content {
+abstract class Content {
 
+    protected $id;
+    protected $name;
+    protected $permissions;
+
+    public function __construct() {
+        
+    }
+        
+    public function __destruct() {
+        
+    }    
+    
+    public function getID() {
+        return $this->id;   
+    }
+ 
+    public function getName() {
+        return $this->name;   
+    }
+
+    public function getPermissions() {
+        return $this->permissions;   
+    }
+    
+    abstract public function getOriginalUploader();
+    abstract public function getOriginalUploadDate();
+    abstract public function getContentType();
+    
 }
-
