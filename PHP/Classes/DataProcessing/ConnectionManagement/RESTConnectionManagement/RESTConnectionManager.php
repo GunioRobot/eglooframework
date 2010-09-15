@@ -1,6 +1,6 @@
 <?php
 /**
- * DoctrineQueryPopulationRoutine Class File
+ * RESTConnectionManager Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * DoctrineQueryPopulationRoutine
+ * RESTConnectionManager
  *
  * $short_description
  *
@@ -36,11 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DoctrineQueryPopulationRoutine extends QueryPopulationRoutine {
-
-	function populateQuery( $queryTransaction, $queryParameters ) {
-		
-	}
+class RESTConnectionManager extends ConnectionManager {
 
 }
 

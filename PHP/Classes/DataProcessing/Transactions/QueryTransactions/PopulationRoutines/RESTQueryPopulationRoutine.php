@@ -1,6 +1,6 @@
 <?php
 /**
- * Connection Class File
+ * RESTQueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * Connection
+ * RESTQueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class Connection {
+class RESTQueryPopulationRoutine extends QueryPopulationRoutine {
 
 }
 

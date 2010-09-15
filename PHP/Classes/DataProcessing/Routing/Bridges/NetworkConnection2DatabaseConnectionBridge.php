@@ -1,6 +1,6 @@
 <?php
 /**
- * DoctrineQueryPopulationRoutine Class File
+ * Network2DatabaseBridge Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * DoctrineQueryPopulationRoutine
+ * Network2DatabaseBridge
  *
  * $short_description
  *
@@ -36,11 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DoctrineQueryPopulationRoutine extends QueryPopulationRoutine {
-
-	function populateQuery( $queryTransaction, $queryParameters ) {
-		
-	}
+class NetworkConnection2DatabaseConnectionBridge extends eGlooBridge {
 
 }
 

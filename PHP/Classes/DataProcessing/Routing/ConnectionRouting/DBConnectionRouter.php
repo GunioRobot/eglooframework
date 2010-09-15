@@ -1,6 +1,6 @@
 <?php
 /**
- * DoctrineQueryPopulationRoutine Class File
+ * DBConnectionRouter Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * DoctrineQueryPopulationRoutine
+ * DBConnectionRouter
  *
  * $short_description
  *
@@ -36,11 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DoctrineQueryPopulationRoutine extends QueryPopulationRoutine {
-
-	function populateQuery( $queryTransaction, $queryParameters ) {
-		
-	}
+class DBConnectionRouter extends eGlooRouter {
 
 }
 
