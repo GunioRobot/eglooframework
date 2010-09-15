@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * UpdateQueryTransaction Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * UpdateQueryTransaction
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class UpdateQueryTransaction extends QueryTransaction {
 
 }
 

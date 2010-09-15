@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * QueryPopulationManager Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * QueryPopulationManager
  *
  * $short_description
  *
@@ -36,7 +36,17 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class QueryPopulationManager {
+
+	public static function populateQueryTransaction( QueryTransaction $queryTransaction, $queryParameters ) {
+		// TODO Make this a bit more generalized and less raw
+
+		if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQL ) {
+			$queryPopulationRoutine = new MySQLQueryPopulationRoutine();
+			$queryPopulationRoutine->populateQuery( $queryTransaction, $queryParameters );
+		}
+
+	}
 
 }
 

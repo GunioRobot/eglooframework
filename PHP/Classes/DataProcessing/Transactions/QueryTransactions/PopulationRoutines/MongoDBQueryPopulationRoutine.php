@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * MongoDBPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * MongoDBPopulationRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class MongoDBQueryPopulationRoutine extends QueryPopulationRoutine {
 
 }
 

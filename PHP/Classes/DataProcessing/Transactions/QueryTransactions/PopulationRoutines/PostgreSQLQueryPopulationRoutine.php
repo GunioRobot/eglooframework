@@ -1,6 +1,6 @@
 <?php
 /**
- * Transaction Class File
+ * PostgreSQLPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * Transaction
+ * PostgreSQLPopulationRoutine
  *
  * $short_description
  *
@@ -36,35 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class Transaction {
-
-	private $_dataPackage = null;
-	private $_destination = null;
-	private $_source = null;
-
-	public function getDataPackage() {
-		
-	}
-
-	public function setDataPackage() {
-		
-	}
-
-	public function getDestination() {
-		
-	}
-
-	public function setDestination() {
-		
-	}
-
-	public function getSource() {
-		
-	}
-
-	public function setSource() {
-		
-	}
+class PostgreSQLQueryPopulationRoutine extends QueryPopulationRoutine {
 
 }
 

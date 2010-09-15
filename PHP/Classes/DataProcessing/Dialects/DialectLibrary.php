@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * DialectLibrary Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * DialectLibrary
  *
  * $short_description
  *
@@ -36,7 +36,12 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class DialectLibrary {
+
+	const CASSANDRADB	= 0x0001;
+	const MONGODB		= 0x0002;
+	const MYSQL			= 0x0004;
+	const POSTGRESQL	= 0x0006;
 
 }
 

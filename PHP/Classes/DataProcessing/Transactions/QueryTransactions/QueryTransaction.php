@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * QueryTransaction Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * QueryTransaction
  *
  * $short_description
  *
@@ -36,7 +36,27 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class QueryTransaction extends eGlooTransaction {
+
+	protected $_queryDialect = null;
+	protected $_queryParameters = null;
+	protected $_queryType = null;
+
+	public function getQueryDialect() {
+		return $this->_queryDialect;
+	}
+
+	public function setQueryDialect( $queryDialect ) {
+		$this->_queryDialect = $queryDialect;
+	}
+
+	public function getQueryType() {
+		return $this->_queryType;
+	}
+
+	public function setQueryType( $queryType ) {
+		$this->_queryType = $queryType;
+	}
 
 }
 

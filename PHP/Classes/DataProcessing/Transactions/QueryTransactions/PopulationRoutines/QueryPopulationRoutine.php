@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * QueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * QueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+abstract class QueryPopulationRoutine {
+
+	abstract public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = 'sprintf' );
 
 }
 

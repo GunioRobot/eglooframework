@@ -43,7 +43,7 @@ eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfigurati
 
 // Bring up the caching system (needed for the autoloader)
 if ( !class_exists( 'CacheGateway', false ) ) {
-	include( 'PHP/Classes/Caching/CacheGateway.php' );
+	include( 'PHP/Classes/Performance/Caching/CacheGateway.php' );
 }
 
 // CacheGateway::initialize();

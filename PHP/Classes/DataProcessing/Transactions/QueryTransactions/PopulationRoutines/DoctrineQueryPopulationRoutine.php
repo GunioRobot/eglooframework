@@ -1,6 +1,6 @@
 <?php
 /**
- * FinancialTransaction Class File
+ * DoctrineQueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FinancialTransaction
+ * DoctrineQueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,7 +36,11 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FinancialTransaction extends eGlooTransaction {
+class DoctrineQueryPopulationRoutine {
+
+	function populateQuery( $queryTransaction, $queryParameters ) {
+		
+	}
 
 }
 
