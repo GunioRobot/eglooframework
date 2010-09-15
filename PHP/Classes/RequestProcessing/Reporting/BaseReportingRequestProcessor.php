@@ -63,7 +63,7 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 	// This is "for now".  It shouldn't be tied to MySQL.  Overload this if you need to
 	public function executeQuery() {
 		$connection = $this->getConnection();
-		$this->_queryResultResource = mysql_query($this->getPopulatedQuery(), $connection);
+		$this->_queryResultResource = mysql_query($this->getPopulatedQuery()->getDataPackageString(), $connection);
 
 		if ( !isset($this->_queryResultResource) || !$this->_queryResultResource ) {
 			$error_message = mysql_error($connection);
