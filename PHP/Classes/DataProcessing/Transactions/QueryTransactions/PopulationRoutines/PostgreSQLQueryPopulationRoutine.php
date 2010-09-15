@@ -38,5 +38,58 @@
  */
 class PostgreSQLQueryPopulationRoutine extends QueryPopulationRoutine {
 
+	public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = 'sprintf' ) {
+		if ($method === 'sprintf') {
+			$this->populateQueryWithVsprintf( $queryTransaction, $queryParameters, $associative, $sort, $method );
+		} else {
+			throw new Exception('PostgreSQLQueryPopulationRoutine: Invalid population method requested');
+		}
+	}
+
+	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
+	private function populateQueryWithVsprintf( $queryTransaction, $queryParameters, $method = 'sprintf', $associative = false, $sort = false ) {
+		// For now we're going to assume string
+		$dataPackageString = $queryTransaction->getDataPackageString();
+		$populatedDataPackageString = null;
+
+		// Check if we're doing string replacement or if we can just use sprintf (for now)
+		if (!$associative) {
+			if ($sort) {
+				ksort($queryParameters);
+			}
+
+			$processedParameters = array();
+
+			foreach($queryParameters as $key => $value) {
+				if ( $value['type'] === 'string' ) {
+					if (is_string($value['value'])) {
+						$processedParameters[] = pg_escape_string($value['value']);
+					} else {
+						throw new Exception('PostgreSQLQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+					}
+				} else if ( $value['type'] === 'int' ) {
+					if (is_int($value['value'])) {
+						$processedParameters[] = $value['value'];
+					} else {
+						throw new Exception('PostgreSQLQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+					}
+				} else if ( $value['type'] === 'float' ) {
+					if (is_float($value['value'])) {
+						$processedParameters[] = $value['value'];
+					} else {
+						throw new Exception('PostgreSQLQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+					}
+				} else {
+					throw new Exception('PostgreSQLQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
+				}
+			}
+			$populatedDataPackageString = vsprintf($dataPackageString, $processedParameters);
+		} else {
+			
+		}
+
+		$queryTransaction->setDataPackage($populatedDataPackageString);
+	}
+
 }
 
