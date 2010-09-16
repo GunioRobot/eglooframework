@@ -97,7 +97,7 @@
 
 	<!-- Common eGloo Request Attribute Sets -->
 	<RequestAttributeSet id="egBreadcrumbs">
-		<VariableArgument id="breadcrumbs_path" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+		<VariableArgument id="breadcrumbs_path" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egDataExport">
 		<SelectArgument id="data_export_format" required="true" type="get">
@@ -109,23 +109,23 @@
 		<VariableArgument id="data_export_format_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egFiltering">
-		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 		<VariableArgument id="filtering_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egReport">
-		<VariableArgument id="report_format" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
-		<VariableArgument id="report_limit" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
-		<VariableArgument id="report_name" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
-		<VariableArgument id="report_primary_key" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
-		<VariableArgument id="report_primary_value" regex="/^[0-9a-zA-Z]+$/" required="true" type="getArray" />
+		<VariableArgument id="report_format" regex="/^[0-9a-zA-Z]+$/" required="false" default="csv" type="get" />
+		<VariableArgument id="report_limit" regex="/^[0-9a-zA-Z]+$/" required="false" default="100" scalarType="integer" type="get" />
+		<VariableArgument id="report_name" regex="/^[0-9a-zA-Z]+$/" required="false" default="Default" type="get" />
+		<VariableArgument id="report_primary_key" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+		<VariableArgument id="report_primary_value" regex="/^[0-9a-zA-Z]+$/" required="false" scalarType="integer" type="get" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egSearch">
 		<VariableArgument id="search_scope" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="search_term" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="search_term" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 		<VariableArgument id="search_type" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egSort">
-		<VariableArgument id="sort_group" regex="/^[0-9a-zA-Z]+$/" required="true" type="get" />
+		<VariableArgument id="sort_group" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 		<VariableArgument id="sort_method" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 		<VariableArgument id="sort_order" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 	</RequestAttributeSet>
