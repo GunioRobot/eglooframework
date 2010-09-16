@@ -110,7 +110,6 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 	}
 
 	protected function setTemplateVariablesByMerge( $templateVariables ) {
-		die_r($templateVariables);
 		$this->_templateVariables = array_merge($this->_templateVariables, $templateVariables);
 	}
 

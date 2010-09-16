@@ -67,7 +67,7 @@ class PostgreSQLQueryPopulationRoutine extends QueryPopulationRoutine {
 					} else {
 						throw new Exception('PostgreSQLQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
-				} else if ( $value['type'] === 'int' ) {
+				} else if ( $value['type'] === 'integer' ) {
 					if (is_int($value['value'])) {
 						$processedParameters[] = $value['value'];
 					} else {

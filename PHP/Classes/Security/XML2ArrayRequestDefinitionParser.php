@@ -107,6 +107,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
 				$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
 
+				if ( isset($selectArgument['scalarType']) ) {
+					$newSelectArgument['scalarType'] =  strtolower( (string) $selectArgument['scalarType'] );
+				}
+
 				$newSelectArgument['values'] = array();
 
 				foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
@@ -133,7 +137,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
 				$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
 				$newVariableArgument['regex'] = (string) $variableArgument['regex'];
-				
+
+				if ( isset($variableArgument['scalarType']) ) {
+					$newVariableArgument['scalarType'] =  (string) $variableArgument['scalarType'];
+				}
+
 				if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
 					$defaultVariableValue = (string) $variableArgument['default'];
 
@@ -241,6 +249,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
 					$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
 
+					if ( isset($selectArgument['scalarType']) ) {
+						$newSelectArgument['scalarType'] = strtolower( (string) $selectArgument['scalarType'] );
+					}
+
 					$newSelectArgument['values'] = array();
 
 					foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
@@ -267,7 +279,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
 					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
 					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
-					
+
+					if ( isset($variableArgument['scalarType']) ) {
+						$newVariableArgument['scalarType'] = (string) $variableArgument['scalarType'];
+					}
+
 					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
 						$defaultVariableValue = (string) $variableArgument['default'];
 
@@ -682,7 +698,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						return false;
 					} else if (isset($variableArg['default'])) {
-						$requestInfoBean->setGET( $variableArg['id'],  $variableArg['default'] );
+						if ( isset($variableArg['scalarType']) ) {
+							if ( $variableArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setGET( $variableArg['id'],  intval($variableArg['default']));
+							} else if ( $variableArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setGET( $variableArg['id'],  floatval($variableArg['default']));
+							}
+						} else {
+							$requestInfoBean->setGET( $variableArg['id'],  $variableArg['default'] );
+						}
+
+						// $requestInfoBean->setGET( $variableArg['id'],  $variableArg['default'] );
 					}
 
 				} else {
@@ -704,10 +730,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						return false;
 					}
 
-					//set argument in the request info bean					
-					$requestInfoBean->setGET( $variableArg['id'],  $variableValue );
-				}
+					//set argument in the request info bean
+					if ( isset($variableArg['scalarType']) ) {
+						if ( $variableArg['scalarType'] === 'integer' ) {
+							$requestInfoBean->setGET( $variableArg['id'],  intval($variableValue));
+						} else if ( $variableArg['scalarType'] === 'float' ) {
+							$requestInfoBean->setGET( $variableArg['id'],  floatval($variableValue));
+						}
+					} else {
+						$requestInfoBean->setGET( $variableArg['id'],  $variableValue);
+					}
 
+					// $requestInfoBean->setGET( $variableArg['id'],  $variableValue );
+				}
 			} else if ( $variableArg['type'] === 'getarray' ) {
 				if( !isset( $_GET[ $variableArg['id'] ] ) ){
 					//check if required
@@ -744,7 +779,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
 								" in post request with request ID: " . $requestID, 'Security' );
 						} else {
-							$sanitizedValues[$key] = $variableValue;
+							if ( isset($variableArg['scalarType']) ) {
+								if ( $variableArg['scalarType'] === 'integer' ) {
+									$sanitizedValues[$key] = intval($variableValue);
+								} else if ( $variableArg['scalarType'] === 'float' ) {
+									$sanitizedValues[$key] = floatval($variableValue);
+								}
+							} else {
+								$sanitizedValues[$key] = $variableValue;
+							}
 						}
 
 					}
@@ -767,7 +810,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						return false;
 					} else if (isset($variableArg['default'])) {
-						$requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
+						if ( isset($variableArg['scalarType']) ) {
+							if ( $variableArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setPOST( $variableArg['id'],  intval($variableArg['default']));
+							} else if ( $variableArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableArg['default']));
+							}
+						} else {
+							$requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
+						}
+
+						// $requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
 					}
 
 				} else {
@@ -789,8 +842,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						return false;
 					}
 
-					//set argument in the request info bean					
-					$requestInfoBean->setPOST( $variableArg['id'],  $variableValue );
+					//set argument in the request info bean
+					if ( isset($variableArg['scalarType']) ) {
+						if ( $variableArg['scalarType'] === 'integer' ) {
+							$requestInfoBean->setPOST( $variableArg['id'],  intval($variableValue));
+						} else if ( $variableArg['scalarType'] === 'float' ) {
+							$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableValue));
+						}
+					} else {
+						$requestInfoBean->setPOST( $variableArg['id'],  $variableValue);
+					}
+
+					// $requestInfoBean->setPOST( $variableArg['id'],  $variableValue );
 				}
 			} else if ( $variableArg['type'] === 'postarray') {
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
@@ -828,7 +891,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
 								" in post request with request ID: " . $requestID, 'Security' );
 						} else {
-							$sanitizedValues[$key] = $variableValue;
+							if ( isset($variableArg['scalarType']) ) {
+								if ( $variableArg['scalarType'] === 'integer' ) {
+									$sanitizedValues[$key] = intval($variableValue);
+								} else if ( $variableArg['scalarType'] === 'float' ) {
+									$sanitizedValues[$key] = floatval($variableValue);
+								}
+							} else {
+								$sanitizedValues[$key] = $variableValue;
+							}
 						}
 
 					}
@@ -854,9 +925,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 
 		 
 		 foreach( $requestNode['selectArguments'] as $selectArg ) {
-			
 			if( $selectArg['type'] === "get" ){
-
 				if( !isset( $_GET[ $selectArg['id'] ] ) ){
 					
 					//check if required
@@ -871,22 +940,30 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						return false;
 					} else if (isset($selectArg['default'])) {
-						$requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
-					}
+						if ( isset($selectArg['scalarType']) ) {
+							if ( $selectArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setGET( $selectArg['id'],  intval($selectArg['default']));
+							} else if ( $selectArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setGET( $selectArg['id'],  floatval($selectArg['default']));
+							}
+						} else {
+							$requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
+						}
 
+						// $requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
+					}
 				} else {
-					
 					//check if value is one of the allowable values
 					$selectVal = $_GET[ $selectArg['id'] ];
 					$match = false;
-					
+
 					foreach( $selectArg['values'] as $validValue ){
 						if( $validValue === $selectVal ){
 							$match = true;
 						}
 					}
-					
-					if( ! $match ){
+
+					if( !$match ){
 						$errorMessage = "Select argument: " . $selectArg['id'] . 
                             " with specified value '" . $selectVal . "' does not match required set of variables in " . 
                             "GET request with request ID: " . $requestID;
@@ -899,14 +976,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						return false;
 					}
 
-					//set argument in the request info bean					
-					$requestInfoBean->setGET( $selectArg['id'],  $selectVal);
-
+					//set argument in the request info bean
+					if ( isset($selectArg['scalarType']) ) {
+						if ( $selectArg['scalarType'] === 'integer' ) {
+							$requestInfoBean->setGET( $selectArg['id'],  intval($selectVal));
+						} else if ( $selectArg['scalarType'] === 'float' ) {
+							$requestInfoBean->setGET( $selectArg['id'],  floatval($selectVal));
+						}
+					} else {
+						$requestInfoBean->setGET( $selectArg['id'],  $selectVal);
+					}
 				}
 
-				
 			} else if( $selectArg['type'] === "post" ) {
-
 
 				if( !isset( $_POST[ $selectArg['id'] ] ) ){
 					
@@ -922,7 +1004,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						return false;
 					} else if (isset($selectArg['default'])) {
-						$requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
+						if ( isset($selectArg['scalarType']) ) {
+							if ( $selectArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setPOST( $selectArg['id'],  intval($selectArg['default']));
+							} else if ( $selectArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setPOST( $selectArg['id'],  floatval($selectArg['default']));
+							}
+						} else {
+							$requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
+						}
+
+						// $requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
 					}
 
 				} else {
@@ -950,9 +1042,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						return false;
 					}
 
-					//set argument in the request info bean					
-					$requestInfoBean->setPOST( $selectArg['id'],  $selectVal);
-					
+					//set argument in the request info bean
+					if ( isset($selectArg['scalarType']) ) {
+						if ( $selectArg['scalarType'] === 'integer' ) {
+							$requestInfoBean->setPOST( $selectArg['id'],  intval($selectVal));
+						} else if ( $selectArg['scalarType'] === 'float' ) {
+							$requestInfoBean->setPOST( $selectArg['id'],  floatval($selectVal));
+						}
+					} else {
+						$requestInfoBean->setPOST( $selectArg['id'],  $selectVal);
+					}
 				}
 			}
 		} 
@@ -960,16 +1059,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		return true;
 	}
 
-
 	/**
 	 * validate depend arguments
 	 * 
 	 * @return true if all depend arguments pass the test, false otherwise
 	 */
 	private function validateDependArguments( $requestNode, $requestInfoBean ){
-		
-		
-		
 		$requestID = $_GET[ self::REQUEST_ID_KEY ]; 
 	
 		foreach( $requestNode['depends'] as $dependArg ) {
