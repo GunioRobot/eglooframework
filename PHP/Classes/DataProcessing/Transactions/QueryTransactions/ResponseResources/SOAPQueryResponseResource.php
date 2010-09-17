@@ -1,6 +1,6 @@
 <?php
 /**
- * InsertQueryTransaction Class File
+ * SOAPQueryResponseResource Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * InsertQueryTransaction
+ * SOAPQueryResponseResource
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class InsertQueryTransaction extends QueryTransaction {
+class SOAPQueryResponseResource extends QueryResponseResource {
 
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * UpdateQueryTransaction Class File
+ * eGlooDBQueryExecutionRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * UpdateQueryTransaction
+ * eGlooDBQueryExecutionRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class UpdateQueryTransaction extends QueryTransaction {
+class eGlooDBQueryExecutionRoutine {
 
 }
 

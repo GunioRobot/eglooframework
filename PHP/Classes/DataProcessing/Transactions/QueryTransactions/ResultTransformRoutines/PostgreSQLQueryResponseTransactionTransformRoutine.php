@@ -1,6 +1,6 @@
 <?php
 /**
- * WriteQueryTransaction Class File
+ * PostgreSQLQueryResponseTransactionTransformRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * WriteQueryTransaction
+ * PostgreSQLQueryResponseTransactionTransformRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class WriteQueryTransaction extends QueryTransaction {
+class PostgreSQLQueryResponseTransactionTransformRoutine extends QueryResponseTransactionTransformRoutine {
 
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * DeleteQueryTransaction Class File
+ * RESTQueryResponseTransactionTransformRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * DeleteQueryTransaction
+ * RESTQueryResponseTransactionTransformRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DeleteQueryTransaction extends QueryTransaction {
+class RESTQueryResponseTransactionTransformRoutine extends QueryResponseTransactionTransformRoutine {
 
 }
 

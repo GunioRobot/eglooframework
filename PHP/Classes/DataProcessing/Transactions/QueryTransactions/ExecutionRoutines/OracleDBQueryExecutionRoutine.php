@@ -1,6 +1,6 @@
 <?php
 /**
- * ReadQueryTransaction Class File
+ * OracleDBQueryExecutionRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ReadQueryTransaction
+ * OracleDBQueryExecutionRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ReadQueryTransaction extends QueryTransaction {
+class OracleDBQueryExecutionRoutine extends QueryExecutionRoutine {
 
 }
 
