@@ -82,6 +82,12 @@
 		</Request>
 	</RequestClass>
 
+	<!-- eGloo Default Request Processor for invalid/unset request classes or request IDs -->
+	<RequestClass id="egDefault">
+		<Request id="egDefault" processorID="eGlooDefaultRequestProcessor">
+		</Request>
+	</RequestClass>
+
 	<!-- eGloo SimpleTest Administration -->
 	<RequestClass id="coreeGlooSimpleTestAdministration">
 		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">
@@ -123,6 +129,9 @@
 		<VariableArgument id="search_scope" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 		<VariableArgument id="search_term" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
 		<VariableArgument id="search_type" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+	</RequestAttributeSet>
+	<RequestAttributeSet id="egSluggable">
+		<VariableArgument id="eg_slug" regex="/^[0-9a-zA-Z_-]+$/" required="false" type="get" />
 	</RequestAttributeSet>
 	<RequestAttributeSet id="egSort">
 		<VariableArgument id="sort_group" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
