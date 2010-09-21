@@ -48,7 +48,7 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 	}
 
 	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
-	private function populateQueryWithVsprintf( $queryTransaction, $queryParameters, $method = 'sprintf', $associative = false, $sort = false ) {
+	private function populateQueryWithVsprintf( $queryTransaction, $queryParameters, $associative = false, $sort = false ) {
 		// For now we're going to assume string
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;

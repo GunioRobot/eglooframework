@@ -122,6 +122,10 @@
 		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 		<VariableArgument id="filtering_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 	</RequestAttributeSet>
+	<RequestAttributeSet id="egPagination">
+		<VariableArgument id="pagination_page" regex="/^[0-9]+$/" required="false" default="1" scalarType="integer" type="get" />
+		<VariableArgument id="pagination_limit" regex="/^[0-9]+$/" required="false" default="25" scalarType="integer" type="get" />
+	</RequestAttributeSet>
 	<RequestAttributeSet id="egReport">
 		<VariableArgument id="report_format" regex="/^[0-9a-zA-Z]+$/" required="false" default="csv" type="get" />
 		<VariableArgument id="report_limit" regex="/^[0-9a-zA-Z]+$/" required="false" default="100" scalarType="integer" type="get" />
