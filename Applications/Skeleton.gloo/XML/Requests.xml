@@ -114,6 +114,10 @@
 		</SelectArgument>
 		<VariableArgument id="data_export_format_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 	</RequestAttributeSet>
+	<RequestAttributeSet id="egDateRange">
+		<VariableArgument id="start_date" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false" type="getArray" />
+		<VariableArgument id="end_date" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false" type="getArray" />
+	</RequestAttributeSet>
 	<RequestAttributeSet id="egFiltering">
 		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
 		<VariableArgument id="filtering_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />

@@ -54,7 +54,7 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 		$populatedDataPackageString = null;
 
 		// Check if we're doing string replacement or if we can just use sprintf (for now)
-		if (!$associative) {
+		if (!$associative && !empty($queryParameters)) {
 			if ($sort) {
 				ksort($queryParameters);
 			}
@@ -84,9 +84,11 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 					throw new Exception('MySQLQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
 				}
 			}
+
 			$populatedDataPackageString = vsprintf($dataPackageString, $processedParameters);
-		} else {
-			
+		} else if ( empty($queryParameters) ) {
+			// Means we don't want to do vsprintf on this, just return the prepared query string
+			$populatedDataPackageString = $dataPackageString;
 		}
 
 		$queryTransaction->setDataPackage($populatedDataPackageString);
