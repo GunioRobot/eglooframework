@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLQueryResponseResource Class File
+ * PDOQueryResponseResource Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLQueryResponseResource
+ * PDOQueryResponseResource
  *
  * $short_description
  *
@@ -36,26 +36,10 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLQueryResponseResource extends QueryResponseResource {
-
-	public function getBooleanValue() {
-		return (bool) $this->_rawResponseResource;
-	}
-
-	public function isBooleanValue() {
-		return is_bool($this->_rawResponseResource);
-	}
+class PDOQueryResponseResource extends QueryResponseResource {
 
 	public function fetchNextRowAssociative() {
-		$retVal = null;
-		
-		if ( !is_bool($this->_rawResponseResource) ) {
-			$retVal = mysql_fetch_assoc($this->_rawResponseResource);
-		} else {
-			$retVal = $this->_rawResponseResource;
-		}
-
-		return $retVal;
+		// return mysql_fetch_assoc($this->_rawResponseResource);
 	}
 
 }

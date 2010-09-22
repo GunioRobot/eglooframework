@@ -71,8 +71,12 @@ class MySQLQueryExecutionRoutine extends QueryExecutionRoutine {
 
 		$responseDataPackage = array();
 
-		while( $row = $queryResponseResource->fetchNextRowAssociative() ) {
-			$responseDataPackage[] = $row;
+		if (!$queryResponseResource->isBooleanValue()) {
+			while( $row = $queryResponseResource->fetchNextRowAssociative() ) {
+				$responseDataPackage[] = $row;
+			}
+		} else {
+			$responseDataPackage = $queryResponseResource->getBooleanValue();
 		}
 
 		$retVal = new QueryResponseTransaction($responseDataPackage);

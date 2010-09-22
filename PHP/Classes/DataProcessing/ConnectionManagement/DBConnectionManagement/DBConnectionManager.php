@@ -49,6 +49,19 @@ final class DBConnectionManager extends ConnectionManager {
 		$retVal = null;
 
 		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+		// const AQUINAS		= 0x00;
+		// const CASSANDRA		= 0x01;
+		// const DOCTRINE		= 0x02;
+		// const EGLOO			= 0x03;
+		// const MONGO			= 0x04;
+		// const MYSQL			= 0x05;
+		// const MYSQLI		= 0x06;
+		// const MYSQLIOOP		= 0x07;
+		// const ORACLE		= 0x08;
+		// const PDO			= 0x09;
+		// const POSTGRESQL	= 0x0a;
+		// const REST			= 0x0b;
+		// const SOAP			= 0x0c;
 
 		if ($engine_mode !== null) {
 			if ( $engine_mode === eGlooConfiguration::DOCTRINE ) {
@@ -75,6 +88,14 @@ final class DBConnectionManager extends ConnectionManager {
 		return $retVal;
 	}
 
+	private static function getActiveRecordConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
+	private static function getCassandraConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
 	private static function getDoctrineConnection( $connection_name = 'egPrimary' ) {
 		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
@@ -87,18 +108,12 @@ final class DBConnectionManager extends ConnectionManager {
 		return $conn;
 	}
 
-	private static function getPostgreSQLConnection( $connection_name = 'egPrimary' ) {
-		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+	private static function geteGlooDBConnection( $connection_name = 'egPrimary' ) {
+		
+	}
 
-		$connection_string = 'host=' . $connection_info['host'] . 
-							' user=' . $connection_info['user'] . 
-							' password=' . $connection_info['password'] . 
-							' dbname=' . $connection_info['database'] .
-							' port=' . $connection_info['port'];
-
-		$db_handle = pg_connect( $connection_string );
-
-		return $db_handle;
+	private static function getMongoDBConnection( $connection_name = 'egPrimary' ) {
+		
 	}
 
 	private static function getMySQLConnection( $connection_name = 'egPrimary' ) {
@@ -110,12 +125,102 @@ final class DBConnectionManager extends ConnectionManager {
 		$user 			= $connection_info['user'];
 		$password	 	= $connection_info['password'];
 
-		$mysql_conn = mysql_connect($host . ':' . $port, $user, $password);
+		$mysql_conn = mysql_connect($host . ':' . $port, $user, $password, $dbname);
+
+		if (!$mysql_conn) {
+			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLConnection.  Error: ' . mysql_error();
+
+			throw new Exception($exception_message);
+		} else {
+			
+		}
+
 		mysql_select_db($dbname, $mysql_conn);
 
 		return $mysql_conn;
 	}
 
+	private static function getMySQLiConnection( $connection_name = 'egPrimary' ) {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		$host 			= $connection_info['host'];
+		$port 			= $connection_info['port'];
+		$dbname 		= $connection_info['database'];
+		$user 			= $connection_info['user'];
+		$password	 	= $connection_info['password'];
+
+		$mysqli_conn = mysqli_connect($host . ':' . $port, $user, $password, $dbname);
+
+		if (!$mysqli_conn) {
+			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiConnection.  Error: '
+				. mysqli_connect_error();
+
+			throw new Exception($exception_message);
+		}
+
+		return $mysqli_conn;
+	}
+
+	private static function getMySQLiOOPConnection( $connection_name = 'egPrimary' ) {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		$host 			= $connection_info['host'];
+		$port 			= $connection_info['port'];
+		$dbname 		= $connection_info['database'];
+		$user 			= $connection_info['user'];
+		$password	 	= $connection_info['password'];
+
+		$mysqli = new mysqli($host . ':' . $port, $user, $password, $dbname);
+
+		if (mysqli_connect_errno()) {
+			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiOOPConnection.  Error: '
+				. mysqli_connect_error();
+
+			throw new Exception($exception_message);
+		}
+
+		return $mysqli;
+	}
+
+	private static function getOracleDBConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
+	private static function getOutletConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
+	private static function getPDOConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
+	private static function getPostgreSQLConnection( $connection_name = 'egPrimary' ) {
+		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+		$connection_string = 'host=' . $connection_info['host'] . 
+							' user=' . $connection_info['user'] . 
+							' password=' . $connection_info['password'] . 
+							' dbname=' . $connection_info['database'] .
+							' port=' . $connection_info['port'];
+
+		$db_handle = pg_connect( $connection_string );
+		
+		if (!$db_handle) {
+			$exception_message = 'DBConnectionManager: Cannot connect to PostgreSQL server via getPostgreSQLConnection.  Error: ' . pg_last_error($db_handle);
+
+			throw new Exception($exception_message);
+		}
+
+		return $db_handle;
+	}
+
+	private static function getPropelConnection( $connection_name = 'egPrimary' ) {
+		
+	}
+
+	private static function getRedBeanConnection( $connection_name = 'egPrimary' ) {
+		
+	}
 
 }
 

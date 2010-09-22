@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLQueryResponseResource Class File
+ * RedBeanQueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLQueryResponseResource
+ * RedBeanQueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,27 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLQueryResponseResource extends QueryResponseResource {
-
-	public function getBooleanValue() {
-		return (bool) $this->_rawResponseResource;
-	}
-
-	public function isBooleanValue() {
-		return is_bool($this->_rawResponseResource);
-	}
-
-	public function fetchNextRowAssociative() {
-		$retVal = null;
-		
-		if ( !is_bool($this->_rawResponseResource) ) {
-			$retVal = mysql_fetch_assoc($this->_rawResponseResource);
-		} else {
-			$retVal = $this->_rawResponseResource;
-		}
-
-		return $retVal;
-	}
+class RedBeanQueryPopulationRoutine extends QueryPopulationRoutine {
 
 }
 

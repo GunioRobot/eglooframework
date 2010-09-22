@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLQueryResponseResource Class File
+ * PDOQueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLQueryResponseResource
+ * PDOQueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,27 +36,20 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLQueryResponseResource extends QueryResponseResource {
+class PDOQueryPopulationRoutine extends QueryPopulationRoutine {
 
-	public function getBooleanValue() {
-		return (bool) $this->_rawResponseResource;
-	}
-
-	public function isBooleanValue() {
-		return is_bool($this->_rawResponseResource);
-	}
-
-	public function fetchNextRowAssociative() {
-		$retVal = null;
-		
-		if ( !is_bool($this->_rawResponseResource) ) {
-			$retVal = mysql_fetch_assoc($this->_rawResponseResource);
+	public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = '' ) {
+		if ($method === '') {
+			// $this->populateQueryWithOracleByBindName( $queryTransaction, $queryParameters, $associative, $sort, $method );
 		} else {
-			$retVal = $this->_rawResponseResource;
+			// throw new Exception('OracleDBQueryPopulationRoutine: Invalid population method requested');
 		}
+	}
 
-		return $retVal;
+	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
+	private function populateQueryWithOracleByBindName( $queryTransaction, $queryParameters, $associative = false, $sort = false ) {
+		// TODO - should use oci_bind_by_name
+		// throw new Exception('OracleDBQueryPopulationRoutine::populateQueryWithOracleByBindName() is not yet implemented.')
 	}
 
 }
-

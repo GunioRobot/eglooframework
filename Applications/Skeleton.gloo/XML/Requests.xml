@@ -88,6 +88,78 @@
 		</Request>
 	</RequestClass>
 
+	<!-- Configuration of eGloo Cache -->
+	<RequestClass id="coreeGlooCacheAdministration">
+		<Request id="clearCacheAll" processorID="ClearCacheAllCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="clearCacheGatewayCache" processorID="ClearCacheGatewayCacheCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="clearCacheRuntime" processorID="ClearCacheRuntimeCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- Configuration of eGloo Applications -->
+	<RequestClass id="coreeGlooApplicationAdministration">
+		<Request id="clearCache" processorID="ClearCacheApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="configureCache" processorID="ConfigureApplicationCacheCoreeGlooRequestProcessor">
+			<VariableArgument type="post" id="applications_selected_serialized" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="application_group_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="post" id="application_bundle_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="postArray" id="applications_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="postArray" id="countries_selected" regex="/^.*$/" required="false" />
+			<VariableArgument type="postArray" id="languages_selected" regex="/^.*$/" required="false" />
+			<SelectArgument id="submit" type="post" required="false">
+				<value>Submit</value>
+			</SelectArgument>
+		</Request>
+		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadApplicationConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="saveConfig" processorID="SaveApplicationConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="uninstall" processorID="UninstallApplicationCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="upgrade" processorID="UpgradeApplicationCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- Configuration of eGloo Framework -->
+	<RequestClass id="coreeGlooFrameworkAdministration">
+		<Request id="clearCache" processorID="ClearCacheFrameworkCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="configure" processorID="ConfigureFrameworkCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="install" processorID="InstallFrameworkCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadFrameworkConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="saveConfig" processorID="SaveFrameworkConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="uninstall" processorID="UninstallFrameworkCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="upgrade" processorID="UpgradeFrameworkCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+	<!-- Convenience Request Processors for Building eGloo Distribution Packages -->
+	<RequestClass id="coreeGlooDistributionPackaging">
+		<Request id="clearCache" processorID="ClearCacheSystemCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="configure" processorID="ConfigureSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="install" processorID="InstallSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="loadConfig" processorID="LoadSystemConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="saveConfig" processorID="SaveSystemConfigCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="uninstall" processorID="UninstallSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+		<Request id="upgrade" processorID="UpgradeSystemPackageCoreeGlooRequestProcessor">
+		</Request>
+	</RequestClass>
+
 	<!-- eGloo SimpleTest Administration -->
 	<RequestClass id="coreeGlooSimpleTestAdministration">
 		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">

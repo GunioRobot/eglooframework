@@ -10,9 +10,19 @@ final class eGlooConfiguration {
 	const PRODUCTION	= 0xf8;
 
 	// Database Engines
-	const DOCTRINE		= 0x00;
-	const MYSQL			= 0x01;
-	const POSTGRESQL	= 0x02;
+	const AQUINAS		= 0x00;
+	const CASSANDRA		= 0x01;
+	const DOCTRINE		= 0x02;
+	const EGLOO			= 0x03;
+	const MONGO			= 0x04;
+	const MYSQL			= 0x05;
+	const MYSQLI		= 0x06;
+	const MYSQLIOOP		= 0x07;
+	const ORACLE		= 0x08;
+	const PDO			= 0x09;
+	const POSTGRESQL	= 0x0a;
+	const REST			= 0x0b;
+	const SOAP			= 0x0c;
 
 	/* Static Members */
 	private static $rewriteBase = '/';
