@@ -39,6 +39,12 @@ abstract class RequestProcessor {
 
 	/* Protected Data Members */
 	protected $requestInfoBean = null;
+	protected $decoratorInfoBean = null;
+
+	public function __construct() {
+		$this->requestInfoBean = RequestInfoBean::getInstance();
+		$this->decoratorInfoBean = DecoratorInfoBean::getInstance();
+	}
 
 	public static function getClass() {
 		$retVal = null;
@@ -59,13 +65,21 @@ abstract class RequestProcessor {
     // to guarantee that by default we handle content headers and
     // and other prerequisites correctly 
     
- 	public function setRequestInfoBean( $requestInfoBean ){
+ 	public function setRequestInfoBean( $requestInfoBean ) {
  		$this->requestInfoBean = $requestInfoBean;
  	}
  	
- 	public function getRequestInfoBean(){
+ 	public function getRequestInfoBean() {
  		return $this->requestInfoBean;
  	}
- }
- 
-?>
+
+	public function setDecoratorInfoBean( $decoratorInfoBean ) {
+		$this->decoratorInfoBean = $decoratorInfoBean;
+	}
+
+	public function getDecoratorInfoBean() {
+		return $this->decoratorInfoBean;
+	}
+
+
+}

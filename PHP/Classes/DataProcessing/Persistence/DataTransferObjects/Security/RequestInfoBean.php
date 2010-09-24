@@ -230,6 +230,25 @@ class RequestInfoBean {
 		return $this->requestProcessorID;
 	}	
 
+	public function getFullyQualifiedRequestString( $keys_to_ignore = array() ) {
+		$retVal = $this->requestClass . '/' . $this->requestID . '?';
+
+		$count = count($this->GET);
+		$i = 1;
+
+		foreach($this->GET as $key => $value) {
+			if (!in_array($key, $keys_to_ignore)) {
+				$retVal .= $key . '=' . urlencode($value);
+				$i++;
+
+				if ($count > $i) {
+					$retVal .= '&';
+				}
+			}
+		}
+
+		return $retVal;
+	}
 
 	public function setDecoratorArray( $decoratorArray ) {
 		$this->decoratorArray = $decoratorArray;

@@ -72,9 +72,12 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Echoing Response" );
 
-		$this->setOutputHeaders();
-
-		echo $output;        
+		if ($this->decoratorInfoBean->issetNamespace('ManagedOutput')) {
+			$this->decoratorInfoBean->setValue('Output', $output, 'ManagedOutput');
+		} else {
+			$this->setOutputHeaders();
+			echo $output;        
+		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Exiting processRequest()" );
 	}
@@ -90,7 +93,35 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 	// Defaults to XHTMLBuilder - override as needed
 	protected function setTemplateBuilder() {
-		$this->_templateBuilder = new XHTMLBuilder();
+		if ($this->decoratorInfoBean->issetNamespace('ManagedOutput')) {
+			$format = $this->decoratorInfoBean->getValue('Format', 'ManagedOutput');
+
+			switch( $format ) {
+				case 'csv' :
+					$this->_templateBuilder = new CSVBuilder();
+					break;
+				case 'html' :
+					$this->_templateBuilder = new XHTMLBuilder();
+					break;
+				case 'json' :
+					$this->_templateBuilder = new JavascriptBuilder();
+					break;
+				case 'svg' :
+					break;
+				case 'xhtml' :
+					$this->_templateBuilder = new XHTMLBuilder();
+					break;
+				case 'xml' :
+					$this->_templateBuilder = new XMLBuilder();
+					break;
+				default :
+					$this->_templateBuilder = new XHTMLBuilder();
+					break;
+			}
+		} else {
+			$this->_templateBuilder = new XHTMLBuilder();
+		}
+
 	}
 
 	protected function getTemplateVariable( $key ) {

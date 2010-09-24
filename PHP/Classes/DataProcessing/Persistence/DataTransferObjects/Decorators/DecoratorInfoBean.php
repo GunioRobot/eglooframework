@@ -94,10 +94,19 @@ class DecoratorInfoBean {
 		}
 	}
 
+	public function getNamespaces() {
+		return $this->namespaces;
+	}
+
 	public function resetNamespace( $namespace ) {
 		$this->unsetNamespace($namespace);
 		$this->createNamespace($namespace);
 	}
+
+	public function issetNamespace( $namespace ) {
+		return isset($this->namespaces[$namespace]);
+	}
+
 
 	public function unsetNamespace( $namespace ) {
 		unset($this->namespaces[$namespace]);
