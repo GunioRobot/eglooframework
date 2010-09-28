@@ -36,44 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooDefaultRequestProcessor extends RequestProcessor {
-
-    /**
-     * Concrete implementation of the abstract RequestProcessor method
-     * processRequest().
-     * 
-     * This method handles processing of the incoming client request.  Its
-     * primary function is to establish the deployment environment (dev, test,
-     * production) and the current localization, and to then parse the correct
-     * template(s) in order to construct and output the appropriate external
-     * main page (the domain root; e.g. www.egloo.com).
-     * 
-     * @access public
-     */
-    public function processRequest() {
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "ExternalMainPageBaseRequestProcessor: Entered processRequest()" );
-
-		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
-		$templateBuilder = new XHTMLBuilder();
-
-		$templateDirector->setTemplateBuilder( $templateBuilder );
-
-		$templateDirector->preProcessTemplate();
-
-		$templateDirector->setTemplateVariables( $templateVariables, true );            
-
-		$output = $templateDirector->processTemplate();
-
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ExternalMainPageBaseRequestProcessor: Echoing Response" );
-
-		// TODO move header declarations to a decorator
-		header("Content-type: text/html; charset=UTF-8");
-
-		// TODO buffer output
-		echo $output;        
-
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "ExternalMainPageBaseRequestProcessor: Exiting processRequest()" );
-    }
+class eGlooDefaultRequestProcessor extends TemplatePatternRequestProcessor {
 
 }
 

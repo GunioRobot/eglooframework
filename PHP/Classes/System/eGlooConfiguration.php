@@ -274,6 +274,38 @@ final class eGlooConfiguration {
 			$webRootConfigOptions['egHotFileMediaClusteringEnabled'] = false;
 		}
 
+		if ( isset($_SERVER['EG_ENABLE_DEFAULT_REQUEST_CLASS']) ) {
+			switch( $_SERVER['EG_ENABLE_DEFAULT_REQUEST_CLASS'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egEnableDefaultRequestClass'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egEnableDefaultRequestClass'] = false;
+					break;
+			}
+		} else if ( $webRootConfigOptions['egEnvironment'] === self::DEVELOPMENT ) {
+			$webRootConfigOptions['egEnableDefaultRequestClass'] = false;
+		} else {
+			$webRootConfigOptions['egEnableDefaultRequestClass'] = true;
+		}
+
+		if ( isset($_SERVER['EG_ENABLE_DEFAULT_REQUEST_ID']) ) {
+			switch( $_SERVER['EG_ENABLE_DEFAULT_REQUEST_ID'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egEnableDefaultRequestID'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egEnableDefaultRequestID'] = false;
+					break;
+			}
+		} else if ( $webRootConfigOptions['egEnvironment'] === self::DEVELOPMENT ) {
+			$webRootConfigOptions['egEnableDefaultRequestID'] = false;
+		} else {
+			$webRootConfigOptions['egEnableDefaultRequestID'] = true;
+		}
+
 		// Check if these options should be allowed to override the ones specified in the cache or XML config
 		if ($overwrite) {
 			// Set these options, overwriting existing settings if necessary
@@ -1392,6 +1424,14 @@ final class eGlooConfiguration {
 
 	public static function getUseCache() {
 		return self::$configuration_options['egCacheEnabled'];
+	}
+
+	public static function getUseDefaultRequestClassHandler() {
+		return self::$configuration_options['egEnableDefaultRequestClass'];
+	}
+
+	public static function getUseDefaultRequestIDHandler() {
+		return self::$configuration_options['egEnableDefaultRequestID'];
 	}
 
 	public static function getUseFileCache() {

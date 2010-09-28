@@ -33,11 +33,15 @@
  * @package Data Transfer Objects
  */
 class RequestInfoBean {
-	
+
+	private $arguments = null;
 	private $requestProcessorID = null;
 	private $requestClass = null;
 	private $requestID = null;
-	private $arguments = null;
+	private $_wildCardRequest = false;
+	private $_wildCardRequestClass = null;
+	private $_wildCardRequestID = null;
+
 
 	private $COOKIES = null;
 	private $FILES = null;
@@ -221,7 +225,31 @@ class RequestInfoBean {
 	public function getRequestID() {
 		return $this->requestID;
 	}	
+
+	public function isWildCardRequest() {
+		return $this->_wildCardRequest;
+	}
+
+	public function setWildCardRequest( $wildCardRequest ) {
+		$this->_wildCardRequest = $wildCardRequest;
+	}
+
+	public function setWildCardRequestClass( $wildCardRequestClass ) {
+		$this->_wildCardRequestClass = $wildCardRequestClass;
+	}
 	
+	public function getWildCardRequestClass() {
+		return $this->_wildCardRequestClass;	   
+	}
+	
+	public function setWildCardRequestID( $wildCardRequestID ) {
+		$this->_wildCardRequestID = $wildCardRequestID;
+	}
+	
+	public function getWildCardRequestID() {
+		return $this->_wildCardRequestID;
+	}	
+
 	public function setRequestProcessorID( $requestProcessorID ) {
 		$this->requestProcessorID = $requestProcessorID;
 	}
