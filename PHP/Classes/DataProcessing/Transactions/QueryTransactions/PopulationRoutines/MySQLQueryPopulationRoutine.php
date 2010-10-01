@@ -72,7 +72,10 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 					if (is_int($value['value'])) {
 						$processedParameters[] = $value['value'];
 					} else {
-						throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+						$integer_value = intval($value['value']);
+						$processedParameters[] = $integer_value;
+
+						// throw new Exception('MySQLQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else if ( $value['type'] === 'float' ) {
 					if (is_float($value['value'])) {

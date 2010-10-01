@@ -73,7 +73,7 @@ abstract class MultipleQueryReportingRequestProcessor extends BaseReportingReque
 	protected function processSubQuery( $subQuery ) {
 		$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
 		$preparedQuery = $this->prepareQuery( $preparedQueryString );
-		$subQueryParameters = $this->prepareSubQueryParameters($this->_queryExecutionSteps[$subQuery]['parameters']);
+		$subQueryParameters = $this->prepareSubQueryParameters( $subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 		$this->populateQuery( $preparedQuery, $subQueryParameters );
 		$queryResponseTransaction = $this->executeQuery( $preparedQuery );
 		$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
@@ -81,6 +81,7 @@ abstract class MultipleQueryReportingRequestProcessor extends BaseReportingReque
 
 		// I'd like to support multiple column feeders in the future.  For now, this works.
 		$output = $queryResultTransformRoutine->getSingleColumnFeederStringFormat($queryResponseTransaction);
+
 		$feederColumnKey = $output['column_key'];
 
 		$feederValue = implode(', ', $output[$feederColumnKey]);
@@ -93,7 +94,7 @@ abstract class MultipleQueryReportingRequestProcessor extends BaseReportingReque
 		return $preparedQuery;
 	}
 
-	public function prepareSubQueryParameters( $parametersNeeded ) {
+	public function prepareSubQueryParameters( $queryName, $parametersNeeded ) {
 		$queryParameters = array();
 		
 		if (isset($parametersNeeded['get'])) {

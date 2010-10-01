@@ -36,8 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQueryReportingRequestProcessor {
-	// $queryTransformRoutine = QueryTransformationManager::getQueryResultTransformRoutine( $queryTransaction );
+abstract class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQueryReportingRequestProcessor {
 
 	/* Protected Data Members */
 	protected $_executedQueries = array();
@@ -45,9 +44,12 @@ class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQuery
 	protected $_preparedQueries = array();
 	protected $_preparedQueryStrings = array();
 	protected $_queryExecutionSteps = array();
+	protected $_querySequences = array();
 	protected $_queryParameters = array();
 	protected $_queryResultResources = array();
 	protected $_rawDataReports = array();
+	protected $_executedQueriesInFeederForm = array();
+	protected $_executedQuerySequences = array();
 
 	protected function populateTemplateVariables() {
 		$this->prepareConnection();
@@ -62,7 +64,11 @@ class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQuery
 					}
 				}
 
-				$this->processSubQuery($preparedQueryName);
+				if (!empty($executionStep['loopsOn'])) {
+					$this->processSubQuery($executionStep['loopsOn']);
+				}
+
+				$this->processQuery($preparedQueryName);
 			}
 		}
 
@@ -73,10 +79,33 @@ class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQuery
 	protected function processSubQuery( $subQuery ) {
 		$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
 		$preparedQuery = $this->prepareQuery( $preparedQueryString );
-		$subQueryParameters = $this->prepareSubQueryParameters($this->_queryExecutionSteps[$subQuery]['parameters']);
+		$subQueryParameters = $this->prepareSubQueryParameters( $subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 		$this->populateQuery( $preparedQuery, $subQueryParameters );
 		$queryResponseTransaction = $this->executeQuery( $preparedQuery );
 		$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
+		$this->_executedQueries[$subQuery] = $queryResponseTransaction->getDataPackage();
+
+		$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($queryResponseTransaction);
+
+		$feederValue = $this->getTransformedFeederQueryArray($queryResponseTransaction);
+
+		$this->_executedQueriesInFeederForm[$subQuery] = $feederValue;
+	}
+
+	protected function getTransformedFeederQueryArray( $queryResponseTransaction ) {
+		$retVal = null;
+
+		$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($queryResponseTransaction);
+
+		// I'd like to support multiple column feeders in the future.  For now, this works.
+		$retVal = $queryResultTransformRoutine->getSingleColumnFeederStringFormat($queryResponseTransaction);
+
+		return $retVal;
+	}
+
+	protected function getTransformedFeederQueryString( $queryResponseTransaction ) {
+		$retVal = null;
+
 		$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($queryResponseTransaction);
 
 		// I'd like to support multiple column feeders in the future.  For now, this works.
@@ -84,7 +113,20 @@ class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQuery
 		$feederColumnKey = $output['column_key'];
 
 		$feederValue = implode(', ', $output[$feederColumnKey]);
-		$this->_executedQueries[$subQuery] = array($output['column_key'] => $feederValue);
+		
+		$retVal = array($output['column_key'] => $feederValue);
+
+		return $retVal;
+	}
+
+	protected function processQuery( $subQuery ) {
+		$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
+		$preparedQuery = $this->prepareQuery( $preparedQueryString );
+		$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
+		$this->populateQuery( $preparedQuery, $subQueryParameters );
+		$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+		$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
+		$this->_executedQueries[$subQuery] = $queryResponseTransaction->getDataPackage();
 	}
 
 	protected function prepareQuery( $preparedQueryString = null ) {
@@ -93,23 +135,55 @@ class MultipleQueryWithSequencingReportingRequestProcessor extends MultipleQuery
 		return $preparedQuery;
 	}
 
-	public function prepareSubQueryParameters( $parametersNeeded ) {
+	public function prepareSubQueryParameters( $queryName, $parametersNeeded ) {
 		$queryParameters = array();
-		
-		if (isset($parametersNeeded['get'])) {
-			foreach( $parametersNeeded['get'] as $getParameter ) {
-				$queryParameters[] = array('type' => 'integer', 'value' => $this->requestInfoBean->getGET($getParameter));
-			}
+
+		if ( isset($this->_queryExecutionSteps[$queryName]['loopsOn']) ) {
+			$loopsOn = $this->_queryExecutionSteps[$queryName]['loopsOn'];
+		} else {
+			$loopsOn = null;
 		}
-		
-		if (isset($parametersNeeded['other'])) {
-			foreach( $parametersNeeded['other'] as $subQuery => $parameters ) {
-				foreach( $parameters as $parameter_name ) {
-					$queryParameters[] = array('type' => 'string', 'value' => $this->_executedQueries[$subQuery][$parameter_name]);
+
+		if ( isset($this->_queryExecutionSteps[$queryName]['loopIndex']) ) {
+			$loopIndex = $this->_queryExecutionSteps[$queryName]['loopIndex'];
+		} else {
+			$loopIndex = null;
+		}
+
+		if ( isset($this->_queryExecutionSteps[$queryName]['loopColumn']) ) {
+			$loopColumn = $this->_queryExecutionSteps[$queryName]['loopColumn'];
+		} else {
+			$loopColumn = null;
+		}
+
+		if ($this->_queryExecutionSteps[$queryName]['parameterOrderMatters']) {
+			// We might sort in the future, but for now let's assume it's coming in ordered
+			foreach( $parametersNeeded as $parameter ) {
+				if ( $parameter['source'] === 'GET' ) {
+					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getGET($parameter['value']));
+				} else if ( $parameter['source'] === 'POST' ) {
+					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getPOST($parameter['value']));
+				} else if ( $parameter['source'] === $loopsOn ) {
+					$source = $parameter['source'];
+echo_r($this->_executedQueriesInFeederForm[$source]);
+					if ( isset($this->_executedQueriesInFeederForm[$source]) && isset($this->_executedQueriesInFeederForm[$source][$loopColumn]) ) {
+						if ( isset($this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex]) ) {
+							$loopValue = $this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex];
+							$queryParameters[] = array('type' => $parameter['type'], 'value' => $loopValue);
+						}
+					}
+				} else if ( isset($this->_queryExecutionSteps[$parameter['source']]) ) {
+					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->_executedQueries[$subQuery][$parameter['value']]);
+				} else {
+					throw new Exception('Invalid query parameter source specified');
 				}
 			}
 		}
 
+		if ( isset($this->_queryExecutionSteps[$queryName]['loopIndex']) ) {
+			$this->_queryExecutionSteps[$queryName]['loopIndex'] += 1;
+		}
+echo_r($queryParameters);
 		return $queryParameters;
 	}
 

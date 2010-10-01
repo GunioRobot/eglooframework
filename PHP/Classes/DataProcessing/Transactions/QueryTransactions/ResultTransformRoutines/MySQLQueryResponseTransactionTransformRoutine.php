@@ -59,6 +59,7 @@ class MySQLQueryResponseTransactionTransformRoutine extends QueryResponseTransac
 
 		foreach($dataPackage as $row) {
 			foreach($row as $inner) {
+				echo gettype($inner);
 				$reformatted[$key][] = $inner;
 			}
 		}
