@@ -56,40 +56,59 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 		$this->setReportFilePaths();
 
 		foreach($this->_queryExecutionSteps as $preparedQueryName => $executionStep) {
-			// array( 'preparedQueryName' => array('eatsFrom' => array(0 => 'preparedQueryName1', 1 => 'preparedQueryName2'), 'parameters' => array('get'=>array(), 'post'=>array())))
-			if (!isset($this->_executedQueries[$preparedQueryName])) {
-				if (!empty($executionStep['eatsFrom'])) {
-					foreach( $executionStep['eatsFrom'] as $subQuery ) {
-						$this->processSubQuery($subQuery);
-					}
-				}
-
-				if (!empty($executionStep['loopsOn'])) {
-					$this->processSubQuery($executionStep['loopsOn']);
-				}
-
-				$this->processQuery($preparedQueryName);
-			}
+			$this->processQueryDependencies($preparedQueryName, $executionStep);
 		}
 
 		$this->structureRawDataReport();
 		$this->setTemplateVariablesByMerge($this->getStructuredDataReport());
 	}
 
+	protected function processQueryDependencies( $preparedQueryName ) {
+		$executionStep = $this->_queryExecutionSteps[$preparedQueryName];
+
+		if (!isset($this->_executedQueries[$preparedQueryName])) {
+			if (!empty($executionStep['eatsFrom'])) {
+				foreach( $executionStep['eatsFrom'] as $subQuery ) {
+					$this->processSubQuery($subQuery);
+				}
+			}
+
+			if (!empty($executionStep['loopsOn'])) {
+				$this->processSubQuery($executionStep['loopsOn']);
+			}
+
+			$this->processQuery($preparedQueryName);
+		}
+	}
+
 	protected function processSubQuery( $subQuery ) {
-		$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
-		$preparedQuery = $this->prepareQuery( $preparedQueryString );
-		$subQueryParameters = $this->prepareSubQueryParameters( $subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
-		$this->populateQuery( $preparedQuery, $subQueryParameters );
-		$queryResponseTransaction = $this->executeQuery( $preparedQuery );
-		$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
-		$this->_executedQueries[$subQuery] = $queryResponseTransaction->getDataPackage();
+		if (!isset($this->_executedQueries[$subQuery])) {
+			$this->processQueryDependencies($subQuery);
 
-		$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($queryResponseTransaction);
+			$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
+			$preparedQuery = $this->prepareQuery( $preparedQueryString );
+			$subQueryParameters = $this->prepareSubQueryParameters( $subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
+			$this->populateQuery( $preparedQuery, $subQueryParameters );
+			$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+			$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
+			$this->_executedQueries[$subQuery] = $queryResponseTransaction;
+		}
 
-		$feederValue = $this->getTransformedFeederQueryArray($queryResponseTransaction);
+		if (is_array($this->_executedQueries[$subQuery]) && isset($this->_executedQueries[$subQuery]['loopResultSets'])) {
+			$this->_executedQueriesInFeederForm[$subQuery] = array();
 
-		$this->_executedQueriesInFeederForm[$subQuery] = $feederValue;
+			foreach($this->_executedQueries[$subQuery]['loopResultSets'] as $index => $responseTransactionEntry) {
+				$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($responseTransactionEntry);
+				$feederValue = $this->getTransformedFeederQueryArray($responseTransactionEntry);
+				$this->_executedQueriesInFeederForm[$subQuery][$index] = $feederValue;
+			}
+
+		} else {
+			$queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($this->_executedQueries[$subQuery]);
+			$feederValue = $this->getTransformedFeederQueryArray($this->_executedQueries[$subQuery]);
+			$this->_executedQueriesInFeederForm[$subQuery] = $feederValue;
+		}
+
 	}
 
 	protected function getTransformedFeederQueryArray( $queryResponseTransaction ) {
@@ -119,14 +138,47 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 		return $retVal;
 	}
 
+	protected function getTransformedFeederStringFromArray( $feederArray ) {
+		$retVal = 'NULL';
+
+		if (is_array($feederArray) && !empty($feederArray)) {
+			$output = $feederArray;
+
+			$feederColumnKey = $output['column_key'];
+
+			$feederValue = implode(', ', $output[$feederColumnKey]);
+
+			$retVal = $feederValue;
+		}
+
+		return $retVal;
+	}
+
 	protected function processQuery( $subQuery ) {
-		$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
-		$preparedQuery = $this->prepareQuery( $preparedQueryString );
-		$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
-		$this->populateQuery( $preparedQuery, $subQueryParameters );
-		$queryResponseTransaction = $this->executeQuery( $preparedQuery );
-		$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
-		$this->_executedQueries[$subQuery] = $queryResponseTransaction->getDataPackage();
+		if (isset($this->_queryExecutionSteps[$subQuery]['loopsOn'])) {
+			$loopQuery = $this->_queryExecutionSteps[$subQuery]['loopsOn'];
+			$loopArray = $this->_executedQueriesInFeederForm[$loopQuery];
+			$columnKey = $loopArray['column_key'];
+			$this->_executedQueries[$subQuery]['loopResultSets'] = array();
+
+			foreach( $loopArray[$columnKey] as $value ) {
+				$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
+				$preparedQuery = $this->prepareQuery( $preparedQueryString );
+				$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
+				$this->populateQuery( $preparedQuery, $subQueryParameters );
+				$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+				$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
+				$this->_executedQueries[$subQuery]['loopResultSets'][$value] = $queryResponseTransaction;
+			}
+		} else {
+			$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
+			$preparedQuery = $this->prepareQuery( $preparedQueryString );
+			$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
+			$this->populateQuery( $preparedQuery, $subQueryParameters );
+			$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+			$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
+			$this->_executedQueries[$subQuery] = $queryResponseTransaction;
+		}
 	}
 
 	protected function prepareQuery( $preparedQueryString = null ) {
@@ -165,7 +217,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getPOST($parameter['value']));
 				} else if ( $parameter['source'] === $loopsOn ) {
 					$source = $parameter['source'];
-echo_r($this->_executedQueriesInFeederForm[$source]);
+
 					if ( isset($this->_executedQueriesInFeederForm[$source]) && isset($this->_executedQueriesInFeederForm[$source][$loopColumn]) ) {
 						if ( isset($this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex]) ) {
 							$loopValue = $this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex];
@@ -173,7 +225,35 @@ echo_r($this->_executedQueriesInFeederForm[$source]);
 						}
 					}
 				} else if ( isset($this->_queryExecutionSteps[$parameter['source']]) ) {
-					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->_executedQueries[$subQuery][$parameter['value']]);
+					if (!isset($parameter['lookupIndexSource'])) {
+						$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->_executedQueries[$subQuery][$parameter['value']]);
+					} else {
+						$lookupIndexSource = $parameter['lookupIndexSource']['source'];
+						$lookupIndexColumnKey = $parameter['lookupIndexSource']['column_key'];
+
+						if ($lookupIndexSource === $loopsOn) {
+							if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource]) && isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn]) ) {
+								if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex]) ) {
+									$lookupIndexColumnValue = $this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex];
+								}
+							}
+
+							$feederArrayForm = $this->_executedQueriesInFeederForm[$parameter['source']][$lookupIndexColumnValue];
+							
+							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
+
+							$queryParameters[] = array('type' => $parameter['type'], 'value' => $feederStringForm);
+						} else {
+							
+						}
+						// $this->_executedQueries[$lookupIndexSource]['loopResultSets'][];
+					}
+					//  else {
+					// 	$lookupIndexSource = $parameter['lookupIndexSource'];
+					// 	if (!isset($this->_executedQueriesInFeederForm[$lookupIndexSource['source']])) {
+					// 		$this->_executedQueriesInFeederForm[$lookupIndexSource['source']] = $this->getTransformedFeederQueryString()
+					// 	}
+					// }
 				} else {
 					throw new Exception('Invalid query parameter source specified');
 				}
@@ -183,7 +263,7 @@ echo_r($this->_executedQueriesInFeederForm[$source]);
 		if ( isset($this->_queryExecutionSteps[$queryName]['loopIndex']) ) {
 			$this->_queryExecutionSteps[$queryName]['loopIndex'] += 1;
 		}
-echo_r($queryParameters);
+
 		return $queryParameters;
 	}
 

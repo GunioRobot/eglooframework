@@ -50,21 +50,22 @@ class MySQLQueryResponseTransactionTransformRoutine extends QueryResponseTransac
 				$column_key = $key;
 				break;
 			}
+
+			$reformatted[$key] = array();
+			$reformatted['column_key'] = $key;
+
+			foreach($dataPackage as $row) {
+				foreach($row as $inner) {
+					$reformatted[$key][] = $inner;
+				}
+			}
+
+			$retVal = $reformatted;
+		} else if (empty($dataPackage)) {
+			$retVal = null;
 		} else {
 			throw new Exception( 'MySQLQueryResponseTransactionTransformRoutine: Invalid column data set supplied' );
 		}
-
-		$reformatted[$key] = array();
-		$reformatted['column_key'] = $key;
-
-		foreach($dataPackage as $row) {
-			foreach($row as $inner) {
-				echo gettype($inner);
-				$reformatted[$key][] = $inner;
-			}
-		}
-
-		$retVal = $reformatted;
 
 		return $retVal;
 	}
