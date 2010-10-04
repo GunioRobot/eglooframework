@@ -267,11 +267,12 @@ class RequestInfoBean {
 		foreach($this->GET as $key => $value) {
 			if (!in_array($key, $keys_to_ignore)) {
 				$retVal .= $key . '=' . urlencode($value);
-				$i++;
 
 				if ($count > $i) {
 					$retVal .= '&';
 				}
+
+				$i++;
 			}
 		}
 

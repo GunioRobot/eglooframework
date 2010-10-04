@@ -422,10 +422,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					}
 
+					$existingDecoratorCount = count($requestClasses[$requestClassID]['requests'][$requestID]['decorators']);
+
 					foreach( $decorators as $decorator ) {
 						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]) ) {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting decorator ' . $decorator['decoratorID'] .
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
+
+							$decorator['order'] += $existingDecoratorCount;
 							$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority']) &&
 							 	$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority'] < $priority ) {
@@ -1233,6 +1237,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	private function buildDecoratorArray( $requestNode, $requestInfoBean ){
 		
 		$decoratorArray = array();
+		$requestNode['decorators'];
 		foreach( $requestNode['decorators'] as $decoratorArg ) {
 			$decoratorID = $decoratorArg['decoratorID'];
 			$order = $decoratorArg['order'];

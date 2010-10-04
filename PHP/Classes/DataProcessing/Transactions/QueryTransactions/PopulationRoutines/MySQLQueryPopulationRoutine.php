@@ -89,6 +89,8 @@ class MySQLQueryPopulationRoutine extends QueryPopulationRoutine {
 			}
 
 			$populatedDataPackageString = vsprintf($dataPackageString, $processedParameters);
+			
+			self::$numberOfQueriesPopulated += 1;
 		} else if ( empty($queryParameters) ) {
 			// Means we don't want to do vsprintf on this, just return the prepared query string
 			$populatedDataPackageString = $dataPackageString;

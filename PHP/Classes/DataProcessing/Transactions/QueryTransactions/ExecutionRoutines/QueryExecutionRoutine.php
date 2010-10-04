@@ -38,9 +38,15 @@
  */
 class QueryExecutionRoutine extends ExecutionRoutine {
 
+	public static $numberOfQueriesExecuted = 0;
+
 	public static function executeTransaction( $queryTransaction ) {}
 
 	public static function executeTransactionWithConnection( $queryTransaction, $connection ) {}
+
+	public static function getNumberOfQueriesExecuted() {
+		return self::$numberOfQueriesExecuted;
+	}
 
 }
 

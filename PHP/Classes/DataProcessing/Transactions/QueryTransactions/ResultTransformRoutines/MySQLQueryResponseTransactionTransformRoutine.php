@@ -67,6 +67,8 @@ class MySQLQueryResponseTransactionTransformRoutine extends QueryResponseTransac
 			throw new Exception( 'MySQLQueryResponseTransactionTransformRoutine: Invalid column data set supplied' );
 		}
 
+		self::$numberOfTransformations += 1;
+
 		return $retVal;
 	}
 

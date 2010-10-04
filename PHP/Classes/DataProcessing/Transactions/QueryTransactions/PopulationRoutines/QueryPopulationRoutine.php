@@ -38,7 +38,13 @@
  */
 abstract class QueryPopulationRoutine {
 
+	public static $numberOfQueriesPopulated = 0;
+
 	abstract public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = 'sprintf' );
+
+	public static function getNumberOfQueriesPopulated() {
+		return self::$numberOfQueriesPopulated;
+	}
 
 }
 

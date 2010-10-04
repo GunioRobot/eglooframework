@@ -38,6 +38,8 @@
  */
 abstract class eGlooTransaction {
 
+	public static $numberOfTransactionsInFlight = 0;
+
 	private $_dataPackage = null;
 	private $_destination = null;
 	private $_source = null;
@@ -46,6 +48,8 @@ abstract class eGlooTransaction {
 		$this->_dataPackage = $dataPackage;
 		$this->_source = $source;
 		$this->_destination = $destination;
+
+		self::$numberOfTransactionsInFlight += 1;
 	}
 
 	public function getDataPackage() {
@@ -83,6 +87,10 @@ abstract class eGlooTransaction {
 
 	public function setSource( $source ) {
 		$this->_source = $source;
+	}
+
+	public static function getNumberOfTransactionsInFlight() {
+		return self::$numberOfTransactionsInFlight;
 	}
 
 }

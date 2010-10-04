@@ -1,6 +1,6 @@
 <?php
 /**
- * QueryResultTransformRoutine Class File
+ * DataProcessingStatisticsDecorator Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * QueryResultTransformRoutine
+ * DataProcessingStatisticsDecorator
  *
  * $short_description
  *
@@ -36,14 +36,23 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class QueryResponseTransactionTransformRoutine {
+class DataProcessingStatisticsDecorator extends RequestProcessorDecorator {
 
-	public static $numberOfTransformations = 0;
+  /**
+   * do any pre processing here
+   */
+	protected function requestPreProcessing() {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DataProcessingStatisticsOutputDecorator: Entering requestPreProcessing()", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DataProcessingStatisticsOutputDecorator: Exiting requestPreProcessing()", 'Decorators' );
+		return true;
+   }
 
-	abstract public function getSingleColumnFeederStringFormat( $queryResponseTransaction );
-
-	public static function getNumberOfTransformations() {
-		return self::$numberOfTransformations;
+  /**
+   * do any post processing here
+   */
+	protected function requestPostProcessing() {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DataProcessingStatisticsOutputDecorator: Entering requestPostProcessing()", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "DataProcessingStatisticsOutputDecorator: Exiting requestPostProcessing()", 'Decorators' );
 	}
 
 }

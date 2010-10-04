@@ -63,6 +63,8 @@ class MySQLQueryExecutionRoutine extends QueryExecutionRoutine {
 			$retVal = self::convertResponseResourceIntoResponseTransaction($responseResource);
 		}
 
+		self::$numberOfQueriesExecuted += 1;
+
 		return $retVal;
 	}
 

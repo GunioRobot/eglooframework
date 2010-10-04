@@ -38,6 +38,8 @@
  */
 abstract class eGlooResponseTransaction {
 
+	public static $numberOfResponseTransactionsInFlight = 0;
+
 	private $_dataPackage = null;
 	private $_destination = null;
 	private $_source = null;
@@ -46,6 +48,8 @@ abstract class eGlooResponseTransaction {
 		$this->_dataPackage = $dataPackage;
 		$this->_source = $source;
 		$this->_destination = $destination;
+
+		self::$numberOfResponseTransactionsInFlight += 1;
 	}
 
 	public function getDataPackage() {
@@ -83,6 +87,10 @@ abstract class eGlooResponseTransaction {
 
 	public function setSource( $source ) {
 		$this->_source = $source;
+	}
+
+	public static function getNumberOfResponseTransactionsInFlight() {
+		return self::$numberOfResponseTransactionsInFlight;
 	}
 
 }
