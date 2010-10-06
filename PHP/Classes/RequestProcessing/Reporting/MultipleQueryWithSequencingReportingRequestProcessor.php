@@ -55,6 +55,8 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 		$this->prepareConnection();
 		$this->setReportFilePaths();
 
+		$this->prepareAvailableRequestQueryParameters();
+
 		foreach($this->_queryExecutionSteps as $preparedQueryName => $executionStep) {
 			$this->processQueryDependencies($preparedQueryName, $executionStep);
 		}
@@ -307,5 +309,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 	protected function getRawDataReports() {
 		return $this->_rawDataReports;
 	}
+
+	abstract protected function prepareAvailableRequestQueryParameters();
 
 }
