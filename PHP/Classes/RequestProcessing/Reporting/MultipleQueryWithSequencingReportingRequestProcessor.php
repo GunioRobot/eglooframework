@@ -50,6 +50,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 	protected $_rawDataReports = array();
 	protected $_executedQueriesInFeederForm = array();
 	protected $_executedQuerySequences = array();
+	protected $_availableRequestQueryParameters = array();
 
 	protected function populateTemplateVariables() {
 		$this->prepareConnection();
@@ -217,6 +218,10 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getGET($parameter['value']));
 				} else if ( $parameter['source'] === 'POST' ) {
 					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getPOST($parameter['value']));
+				} else if ( $parameter['source'] === 'const' ) {
+					$queryParameters[] = array('type' => $parameter['type'], 'value' => $parameter['value']);
+				} else if ( $parameter['source'] === 'this' ) {
+					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->getAvailableRequestQueryParameter($parameter['value']));
 				} else if ( $parameter['source'] === $loopsOn ) {
 					$source = $parameter['source'];
 
@@ -228,7 +233,15 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					}
 				} else if ( isset($this->_queryExecutionSteps[$parameter['source']]) ) {
 					if (!isset($parameter['lookupIndexSource'])) {
-						$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->_executedQueries[$subQuery][$parameter['value']]);
+						$source = $parameter['source'];
+
+						if ( isset($this->_executedQueriesInFeederForm[$source]) ) {
+							$feederArrayForm = $this->_executedQueriesInFeederForm[$source];
+							
+							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
+
+							$queryParameters[] = array('type' => $parameter['type'], 'value' => $feederStringForm);
+						}
 					} else {
 						$lookupIndexSource = $parameter['lookupIndexSource']['source'];
 						$lookupIndexColumnKey = $parameter['lookupIndexSource']['column_key'];
@@ -308,6 +321,22 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 	protected function getRawDataReports() {
 		return $this->_rawDataReports;
+	}
+
+	protected function setAvailableRequestQueryParameter( $parameterName, $parameterValue ) {
+		$this->_availableRequestQueryParameters[$parameterName] = $parameterValue;
+	}
+
+	protected function getAvailableRequestQueryParameter( $parameterName ) {
+		return $this->_availableRequestQueryParameters[$parameterName];
+	}
+
+	protected function setAvailableRequestQueryParameters( $availableRequestQueryParameters ) {
+		$this->_availableRequestQueryParameters = $availableRequestQueryParameters;
+	}
+
+	protected function getAvailableRequestQueryParameters() {
+		return $this->_availableRequestQueryParameters;
 	}
 
 	abstract protected function prepareAvailableRequestQueryParameters();
