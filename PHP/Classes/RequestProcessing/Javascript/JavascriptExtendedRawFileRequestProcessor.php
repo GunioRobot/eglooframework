@@ -130,22 +130,8 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 
 		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileJavascriptClustering()) ) {
-			// Depending on the requests.xml rules, this could be a security hole
-			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string ) ) {
-				try {
-					$mode = 0777;
-					$recursive = true;
 
-					mkdir( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string, $mode, $recursive );
-				} catch (Exception $e){
-					// TODO figure out what to do here
-				}
-			}
-
-			if ( !file_put_contents( eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string . $file_name . '.js', $output ) ) {
-				throw new Exception( 'File write failed for ' . eGlooConfiguration::getWebRoot() . 'xjs/' . $user_agent_hash . $key_value_set_string . $file_name . '.js' );
-			}
-			
+			StaticContentCacheManager::buildStaticContentCache('xjs', $user_agent_hash . $key_value_set_string, $file_name . '.js', $output );
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptExtendedRawFileRequestProcessor: Exiting processRequest()' );
