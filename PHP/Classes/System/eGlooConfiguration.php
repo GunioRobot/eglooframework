@@ -365,7 +365,8 @@ final class eGlooConfiguration {
 	public static function clearRuntimeCache( $runtime_cache_path = null ) {
 		$retVal = false;
 
-		echo_r("Preparing to delete runtime cache... ");
+		$systemInfoBean = SystemInfoBean::getInstance();
+		$systemInfoBean->appendValue( 'SystemActions', 'Preparing to delete runtime cache' );
 
 		if (!$runtime_cache_path) {
 			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
@@ -376,13 +377,13 @@ final class eGlooConfiguration {
 			$runtime_cache_path = self::getRuntimeConfigurationCachePath() . self::getRuntimeConfigurationCacheFilename();
 		}
 
-		echo_r("Runtime cache path is " . $runtime_cache_path);
+		$systemInfoBean->appendValue( 'SystemActions', 'Runtime cache path is ' . $runtime_cache_path );
 
 		if ( file_exists($runtime_cache_path) && is_file($runtime_cache_path) && is_writable($runtime_cache_path) ) {
-			echo_r("Deleting runtime cache at " . $runtime_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Deleting runtime cache at ' . $runtime_cache_path );
 			$retVal = unlink($runtime_cache_path);
 		} else {
-			echo_r("Runtime cache not found at " . $runtime_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Runtime cache not found at ' . $runtime_cache_path );
 			$retVal = true;
 		}
 
@@ -529,7 +530,9 @@ final class eGlooConfiguration {
 	public static function clearApplicationCache( $application_cache_path = null ) {
 		$retVal = false;
 
-		echo_r("Preparing to delete application cache... ");
+		$systemInfoBean = SystemInfoBean::getInstance();
+
+		$systemInfoBean->appendValue( 'SystemActions', 'Preparing to delete application cache' );
 
 		if (!$application_cache_path) {
 			if ( !is_writable( self::getApplicationConfigurationCachePath() ) ) {
@@ -540,13 +543,13 @@ final class eGlooConfiguration {
 			$application_cache_path = self::getApplicationConfigurationCachePath() . self::getApplicationConfigurationCacheFilename();
 		}
 
-		echo_r("Application cache path is " . $application_cache_path);
+		$systemInfoBean->appendValue( 'SystemActions', 'Application cache path is ' . $application_cache_path );
 
 		if ( file_exists($application_cache_path) && is_file($application_cache_path) && is_writable($application_cache_path) ) {
-			echo_r("Deleting application cache at " . $application_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Deleting application cache at ' . $application_cache_path );
 			$retVal = unlink($application_cache_path);
 		} else {
-			echo_r("Application cache not found at " . $application_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Application cache not found at ' . $application_cache_path );
 			$retVal = true;
 		}
 
@@ -815,7 +818,8 @@ final class eGlooConfiguration {
 	public static function clearFrameworkCache( $config_cache_path = null ) {
 		$retVal = false;
 
-		echo_r("Preparing to delete framework cache... ");
+		$systemInfoBean = SystemInfoBean::getInstance();
+		$systemInfoBean->appendValue( 'SystemActions', 'Preparing to delete framework cache' );
 
 		if (!$config_cache_path) {
 			if ( !is_writable( self::getFrameworkConfigurationCachePath() ) ) {
@@ -826,13 +830,13 @@ final class eGlooConfiguration {
 			$config_cache_path = self::getFrameworkConfigurationCachePath() . self::getFrameworkConfigurationCacheFilename();
 		}
 
-		echo_r("Framework cache path is " . $config_cache_path);
+		$systemInfoBean->appendValue( 'SystemActions', 'Framework cache path is ' . $config_cache_path );
 
 		if ( file_exists($config_cache_path) && is_file($config_cache_path) && is_writable($config_cache_path) ) {
-			echo_r("Deleting framework cache at " . $config_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Deleting framework cache at ' . $config_cache_path );
 			$retVal = unlink($config_cache_path);
 		} else {
-			echo_r("Framework cache not found at " . $config_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Framework cache not found at ' . $config_cache_path );
 			$retVal = true;
 		}
 
@@ -1141,7 +1145,8 @@ final class eGlooConfiguration {
 	public static function clearSystemCache( $system_cache_path = null ) {
 		$retVal = false;
 
-		echo_r("Preparing to delete system cache... ");
+		$systemInfoBean = SystemInfoBean::getInstance();
+		$systemInfoBean->appendValue( 'SystemActions', 'Preparing to delete system cache' );
 
 		if (!$system_cache_path) {
 			if ( !is_writable( self::getFrameworkSystemCachePath() ) ) {
@@ -1152,13 +1157,13 @@ final class eGlooConfiguration {
 			$system_cache_path = self::getFrameworkSystemCachePath() . self::getFrameworkSystemCacheFilename();
 		}
 
-		echo_r("System cache path is " . $system_cache_path);
+		$systemInfoBean->appendValue( 'SystemActions', 'System cache path is ' . $system_cache_path );
 
 		if ( file_exists($system_cache_path) && is_file($system_cache_path) && is_writable($system_cache_path) ) {
-			echo_r("Deleting system cache at " . $system_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'Deleting system cache at ' . $system_cache_path );
 			$retVal = unlink($system_cache_path);
 		} else {
-			echo_r("System cache not found at " . $system_cache_path);
+			$systemInfoBean->appendValue( 'SystemActions', 'System cache not found at ' . $system_cache_path );
 			$retVal = true;
 		}
 

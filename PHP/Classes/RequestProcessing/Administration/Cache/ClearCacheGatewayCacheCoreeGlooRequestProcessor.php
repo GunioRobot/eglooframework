@@ -35,7 +35,7 @@
  * @package RequestProcessing
  * @subpackage RequestProcessors
  */
-class ClearCacheGatewayCacheCoreeGlooRequestProcessor extends RequestProcessor {
+class ClearCacheGatewayCacheCoreeGlooRequestProcessor extends TemplatePatternRequestProcessor {
 
 	/**
 	 * Concrete implementation of the abstract RequestProcessor method
@@ -49,15 +49,16 @@ class ClearCacheGatewayCacheCoreeGlooRequestProcessor extends RequestProcessor {
 	 * 
 	 * @access public
 	 */
-	public function processRequest() {
+	public function populateTemplateVariables() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheGatewayCacheCoreeGlooRequestProcessor: Entered processRequest()" );
-
-		echo_r("Preparing to clear all cache...");
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 		$cacheGateway->flushAllCache();
 
-		echo_r("All cache cleared");
+		$systemInfoBean = SystemInfoBean::getInstance();
+		$systemActions = $systemInfoBean->getValue('SystemActions');
+		
+		$this->setTemplateVariable('systemActions', $systemActions);
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ClearCacheGatewayCacheCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}
