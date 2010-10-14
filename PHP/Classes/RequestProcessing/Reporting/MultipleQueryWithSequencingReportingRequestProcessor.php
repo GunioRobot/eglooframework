@@ -105,9 +105,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 				$feederValue = $this->getTransformedFeederQueryArray($responseTransactionEntry);
 				$this->_executedQueriesInFeederForm[$subQuery][$index] = $feederValue;
 			}
-
 		} else {
-			// $queryResultTransformRoutine = QueryTransformationManager::getQueryResponseTransactionTransformRoutine($this->_executedQueries[$subQuery]);
 			$feederValue = $this->getTransformedFeederQueryArray($this->_executedQueries[$subQuery]);
 			$this->_executedQueriesInFeederForm[$subQuery] = $feederValue;
 		}
@@ -182,13 +180,16 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$preparedQuery = $this->prepareQuery( $preparedQueryString );
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
-					$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+					// if ($subQuery !== 'CustomersCanceledInChunk') {
+					// 	$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+					// } else {
+					// 	continue;
+					// }
+
 					$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
 					$this->_executedQueries[$subQuery]['loopResultSets'][] = $queryResponseTransaction;
 				}
 			}
-
-			// die_r($this->_executedQueries);
 		} else {
 			$preparedQueryString = $this->getPreparedQueryStringFromPath( $this->_queryExecutionSteps[$subQuery]['path'] );
 			$preparedQuery = $this->prepareQuery( $preparedQueryString );
@@ -272,19 +273,26 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 						}
 					} else {
 						$lookupIndexSource = $parameter['lookupIndexSource']['source'];
-						$lookupIndexColumnKey = $parameter['lookupIndexSource']['column_key'];
+
+						if (isset($parameter['lookupIndexSource']['column_key'])) {
+							$lookupIndexColumnKey = $parameter['lookupIndexSource']['column_key'];
+						} else {
+							$lookupIndexColumnKey = $loopIndex;
+						}
 
 						if ($lookupIndexSource === $loopsOn) {
-							if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource]) && isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn]) ) {
-								if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex]) ) {
-									$lookupIndexColumnValue = $this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex];
+							if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource]) ) {
+								if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn]) ) {
+									if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex]) ) {
+										$lookupIndexColumnValue = $this->_executedQueriesInFeederForm[$lookupIndexSource][$loopColumn][$loopIndex];
+									}
+								} else if ( isset($this->_executedQueriesInFeederForm[$lookupIndexSource][$loopIndex]) ) {
+									$lookupIndexColumnValue = $loopIndex;
 								}
 							}
 
 							$feederArrayForm = $this->_executedQueriesInFeederForm[$parameter['source']][$lookupIndexColumnValue];
-							
 							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
-
 							$queryParameters[] = array('type' => $parameter['type'], 'value' => $feederStringForm);
 						} else {
 							
