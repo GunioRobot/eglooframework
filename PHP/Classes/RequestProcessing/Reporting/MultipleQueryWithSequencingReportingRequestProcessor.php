@@ -180,12 +180,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$preparedQuery = $this->prepareQuery( $preparedQueryString );
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
-					// if ($subQuery !== 'CustomersCanceledInChunk') {
-					// 	$queryResponseTransaction = $this->executeQuery( $preparedQuery );
-					// } else {
-					// 	continue;
-					// }
-
+					$queryResponseTransaction = $this->executeQuery( $preparedQuery );
 					$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
 					$this->_executedQueries[$subQuery]['loopResultSets'][] = $queryResponseTransaction;
 				}
