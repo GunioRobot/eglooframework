@@ -6,15 +6,16 @@
 -- MODIFIED BY to a nother table?
 -- Hashes for passwords and security questions or row based encryption through the db?
 
--- Additional Constraints: created date not in the future, modified date not in the future
+-- Additional Constraints: 	created date not in the future, modified date not in the future
+--							Hashes need checks to ensure that they contain the proper types of characters
 
 -- Conventions: make explicite constraints.
 --				Null values should mean data is missing not that data has not been enetered (need to think about modified date)
 
 CREATE TABLE users (
 	user_id BIGINT,
-	username VARCHAR(32) NOT NULL,
-	user_password_hash VARCHAR(64),
+	username VARCHAR(32), -- Constraint needed
+	user_password_hash VARCHAR(64), -- Constraint needed
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp timestamptz DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 CONSTRAINT users_username_nn NOT NULL (username)
@@ -23,8 +24,8 @@ CONSTRAINT pk_users PRIMARY KEY (user_id)
 
 CREATE TABLE security_questions (
 	security_question_id	BIGINT,
-	security_question_hash	VARCHAR(64),
-	security_question_answer_hash VARCHAR(64),
+	security_question_hash	VARCHAR(64), -- Constraint needed
+	security_question_answer_hash VARCHAR(64), -- Constraint needed
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp timestamptz DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 CONSTRAINT security_question_hash_nn NOT NULL (security_question_hash)
@@ -39,6 +40,16 @@ CREATE TABLE user_security_questions (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp timestamptz DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 CONSTRAINT pk_user_security_question (user_security_question_id)
+CONSTRAINT fk_user_security_questions_user_id FOREIGN KEY (user_id)
+	REFERENCES users(user_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE,
+CONSTRAINT fk_user_security_questions_security_question_id FOREIGN KEY (security_question_id)
+	REFERENCES security_questions(security_questions_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE
 );
 
 CREATE TABLE email_addresses (
