@@ -134,21 +134,8 @@ class StyleSheetExtendedRawFileRequestProcessor extends RequestProcessor {
 
 		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileCSSClustering()) ) {
-			// Depending on the requests.xml rules, this could be a security hole
-			if ( !is_writable( eGlooConfiguration::getWebRoot() . 'xcss/' . $user_agent_hash . $key_value_set_string ) ) {
-				try {
-					$mode = 0777;
-					$recursive = true;
 
-					mkdir( eGlooConfiguration::getWebRoot() . 'xcss/' . $user_agent_hash . $key_value_set_string, $mode, $recursive );
-				} catch (Exception $e){
-					// TODO figure out what to do here
-				}
-			}
-
-			if (!file_put_contents( eGlooConfiguration::getWebRoot() . 'xcss/' . $user_agent_hash . $key_value_set_string . $file_name . '.css', $output )) {
-				throw new Exception( 'File write failed for ' . eGlooConfiguration::getWebRoot() . 'xcss/' . $user_agent_hash . $key_value_set_string . $file_name . '.css');
-			}
+			StaticContentCacheManager::buildStaticContentCache('xcss', $user_agent_hash . $key_value_set_string, $file_name . '.css', $output );
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'StyleSheetExtendedRawFileRequestProcessor: Exiting processRequest()' );

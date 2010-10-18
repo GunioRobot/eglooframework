@@ -249,6 +249,9 @@ class CacheGateway {
 	public function flushAllCache() {
 		$retVal = null;
 
+		$systemInfoBean = SystemInfoBean::getInstance();
+		$systemActions = $systemInfoBean->appendValue('SystemActions', 'Preparing to flush CacheGateway Cache');
+
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
 				try {
@@ -268,6 +271,8 @@ class CacheGateway {
 				$this->_filecache = array();
 			}
 		}
+
+		$systemActions = $systemInfoBean->appendValue('SystemActions', 'CacheGateway Cache flushed');
 
 		return $retVal; 
 	}
