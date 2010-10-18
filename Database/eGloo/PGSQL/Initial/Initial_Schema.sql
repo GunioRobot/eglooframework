@@ -41,8 +41,25 @@
 --				Null values should mean data is missing not that data has not been enetered (need to think about modified date)
 --				Table names should be plurals, make the names descriptive as possible so that laymen can understand them.
 
+-- To implement: Product Options as opposed to product sizes.  Allow for multiple variations on products, e.g. Color and size.  Allow for hierarchy within options
+--					Shipping weight as two data types, actual weight as manufacturer determined in whatever units they used and lbs for shipping calculation.
+--					Zones for warehouses, discuss examples.
+--					Multiple shipping providers
+--					Recuring coupons
+--					Designation between manufacturer and selling coupons
+--					Discounts and discount priority (additive, stackable, hierarchichal)
+--					Domains for non sequence based identification?
+
+CREATE SEQUENCE user_ident_seq 
+	MINVALUE -9223372036854775808
+	START WITH -9223372036854775808;
+--	OWNED BY users.user_id-- Test this functionality
+
+CREATE DOMAIN user_ident AS BIGINT
+	DEFAULT nextval('user_ident_seq');
+
 CREATE TABLE users (
-	user_id BIGINT,
+	user_id user_ident,
 	username VARCHAR(32), -- Constraint needed
 	user_password_hash VARCHAR(64), -- Constraint needed
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
@@ -51,6 +68,13 @@ CONSTRAINT users_username_nn NOT NULL (username),
 CONSTRAINT users_user_password_hash_nn NOT NULL (user_password_hash),
 CONSTRAINT pk_users PRIMARY KEY (user_id)
 );
+
+CREATE SEQUENCE security_question_ident_seq 
+	MINVALUE -9223372036854775808
+	START WITH -9223372036854775808;
+
+CREATE DOMAIN security_question_ident AS BIGINT
+	DEFAULT nextval('security_question_ident_seq');
 
 CREATE TABLE security_questions (
 	security_question_id	BIGINT,
@@ -124,7 +148,7 @@ CREATE TABLE mailing_addresses (
 	address_line2	VARCHAR (256), -- Needs check
 	city	VARCHAR(64), -- Double check size for this, needs check
 	state,	CHAR(2),
-	zip_code	CHAR(9), -- Needs check, decide if this is the proper data format, 5 digit or 9 digit? or include the dash and 10 digit
+	zip_code	CHAR(9), -- Needs check, decide if this is the proper data format, 5 digit or 9 digit? or include the dash and 10 digit, Create a domain for it
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 CONSTRAINT pk_mailing_addresses PRIMARY KEY (address_id)
