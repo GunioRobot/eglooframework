@@ -156,6 +156,8 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 	}
 
 	protected function processQuery( $subQuery ) {
+		$cacheGateway = CacheGateway::getCacheGateway();
+
 		if (isset($this->_queryExecutionSteps[$subQuery]['loopsOn'])) {
 			$loopQuery = $this->_queryExecutionSteps[$subQuery]['loopsOn'];
 			$loopArray = $this->_executedQueriesInFeederForm[$loopQuery];
@@ -170,7 +172,21 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$preparedQuery = $this->prepareQuery( $preparedQueryString );
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
-					$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+						$this->_queryExecutionSteps[$subQuery]['cache'] &&
+						($cachedResponse = $cacheGateway->getObject( $preparedQuery->getDataPackage(), 'array' )) != null) {
+						$queryResponseTransaction = $cachedResponse;
+					} else {
+						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+							$this->_queryExecutionSteps[$subQuery]['cache']) {
+							$cacheGateway = CacheGateway::getCacheGateway();
+							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+						}
+					}
+
 					$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
 					$this->_executedQueries[$subQuery]['loopResultSets'][$value] = $queryResponseTransaction;
 				}
@@ -180,7 +196,21 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$preparedQuery = $this->prepareQuery( $preparedQueryString );
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
-					$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+						$this->_queryExecutionSteps[$subQuery]['cache'] &&
+						($cachedResponse = $cacheGateway->getObject( $preparedQuery->getDataPackage(), 'array' )) != null) {
+						$queryResponseTransaction = $cachedResponse;
+					} else {
+						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+							$this->_queryExecutionSteps[$subQuery]['cache']) {
+							$cacheGateway = CacheGateway::getCacheGateway();
+							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+						}
+					}
+
 					$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
 					$this->_executedQueries[$subQuery]['loopResultSets'][] = $queryResponseTransaction;
 				}
@@ -190,7 +220,21 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 			$preparedQuery = $this->prepareQuery( $preparedQueryString );
 			$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 			$this->populateQuery( $preparedQuery, $subQueryParameters );
-			$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+			if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+				$this->_queryExecutionSteps[$subQuery]['cache'] &&
+				($cachedResponse = $cacheGateway->getObject( $preparedQuery->getDataPackage(), 'array' )) != null) {
+				$queryResponseTransaction = $cachedResponse;
+			} else {
+				$queryResponseTransaction = $this->executeQuery( $preparedQuery );
+
+				if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
+					$this->_queryExecutionSteps[$subQuery]['cache']) {
+					$cacheGateway = CacheGateway::getCacheGateway();
+					$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+				}
+			}
+
 			$this->prepareRawDataReportByQueryName( $subQuery, $queryResponseTransaction );
 			$this->_executedQueries[$subQuery] = $queryResponseTransaction;
 		}
