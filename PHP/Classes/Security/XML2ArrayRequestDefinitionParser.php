@@ -194,6 +194,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$uniqueKey, $requestAttributeSets[$attributeSetID], '<type>' );
 		}
 
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
+			$this->attributeSets, '<type>' );
+
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
 
@@ -219,7 +222,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				// Request Properties
 				$requestClasses[$requestClassID]['requests'][$requestID] =
-					array('requestID' => $requestID, 'processorID' => $processorID );
+					array('requestClass' => $requestClassID, 'requestID' => $requestID, 'processorID' => $processorID );
 
 				// Arguments
 				$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'] = array();
@@ -453,6 +456,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], '<type>' );
             }
         }
+
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
+			$this->requestNodes, '<type>' );
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, '<type>' );
