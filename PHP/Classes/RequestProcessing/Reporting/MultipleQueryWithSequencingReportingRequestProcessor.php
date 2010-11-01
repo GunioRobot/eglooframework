@@ -182,8 +182,15 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 							$this->_queryExecutionSteps[$subQuery]['cache']) {
+
+							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+								$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
+							} else {
+								$cache_ttl = 30;
+							}
+
 							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array', $cache_ttl );
 						}
 					}
 
@@ -206,8 +213,15 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 							$this->_queryExecutionSteps[$subQuery]['cache']) {
+
+							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+								$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
+							} else {
+								$cache_ttl = 30;
+							}
+
 							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+							$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array', $cache_ttl );
 						}
 					}
 
@@ -230,8 +244,15 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 				if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 					$this->_queryExecutionSteps[$subQuery]['cache']) {
+
+					if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+						$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
+					} else {
+						$cache_ttl = 30;
+					}
+
 					$cacheGateway = CacheGateway::getCacheGateway();
-					$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array' );
+					$cacheGateway->storeObject( $preparedQuery->getDataPackage(), $queryResponseTransaction, 'array', $cache_ttl );
 				}
 			}
 

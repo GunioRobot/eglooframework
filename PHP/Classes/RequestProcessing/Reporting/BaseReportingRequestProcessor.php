@@ -39,6 +39,8 @@
 abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProcessor {
 
 	/* Protected Data Members */
+	protected $_cache = true;
+	protected $_cache_ttl = 30;
 	protected $_connectionName = 'egPrimary';
 	protected $_engineMode = null;
 	protected $_executedQueryResponseTransaction = null;
@@ -52,12 +54,27 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 	protected $_structuredDataReport = null;
 
 	protected function populateTemplateVariables() {
+		$cacheGateway = CacheGateway::getCacheGateway();
+
 		$this->prepareConnection();
 		$this->setPreparedQueryString();
 		$this->prepareQuery();
 		$this->prepareQueryParameters();
 		$this->populateQuery();
-		$this->executeQuery();
+
+		if ($this->_cache &&
+			($cachedResponse = $cacheGateway->getObject( $this->getPopulatedQuery()->getDataPackage(), 'array' )) != null) {
+			$this->setExecutedQueryResponseTransaction( $cachedResponse );
+		} else {
+			$this->executeQuery();
+
+			if ($this->_cache) {
+				$cacheGateway = CacheGateway::getCacheGateway();
+				$cacheGateway->storeObject( $this->getPopulatedQuery()->getDataPackage(), $this->getExecutedQueryResponseTransaction(), 'array', $this->_cache_ttl );
+			}
+		}
+
+		
 		$this->prepareRawDataReport();
 		$this->structureRawDataReport();
 		$this->setTemplateVariablesByMerge($this->getStructuredDataReport());
@@ -164,6 +181,13 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 		}
 	}
 
+	protected function getExecutedQueryResponseTransaction() {
+		return $this->_executedQueryResponseTransaction;
+	}
+
+	protected function setExecutedQueryResponseTransaction( $executedQueryResponseTransaction ) {
+		$this->_executedQueryResponseTransaction = $executedQueryResponseTransaction;
+	}
 
 	protected function getRawDataReport() {
 		return $this->_rawDataReport;
