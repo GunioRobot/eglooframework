@@ -153,7 +153,7 @@ final class DBConnectionManager extends ConnectionManager {
 		$user 			= $connection_info['user'];
 		$password	 	= $connection_info['password'];
 
-		$mysqli_conn = mysqli_connect($host . ':' . $port, $user, $password, $dbname);
+		$mysqli_conn = mysqli_connect($host, $user, $password, $dbname, $port);
 
 		if (!$mysqli_conn) {
 			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiConnection.  Error: '
