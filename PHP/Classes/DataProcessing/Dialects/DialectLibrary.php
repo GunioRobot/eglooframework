@@ -41,7 +41,8 @@ class DialectLibrary {
 	const CASSANDRADB	= 0x0001;
 	const MONGODB		= 0x0002;
 	const MYSQL			= 0x0004;
-	const POSTGRESQL	= 0x0006;
+	const MYSQLI		= 0x0006;
+	const POSTGRESQL	= 0x0008;
 
 }
 

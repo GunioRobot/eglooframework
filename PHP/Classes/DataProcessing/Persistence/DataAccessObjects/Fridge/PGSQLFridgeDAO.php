@@ -39,7 +39,7 @@ class PGSQLFridgeDAO {
      */
     public function getFridgeItemList( $profileID ) {
 
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'select elementtype_id, elementpackagepath from 

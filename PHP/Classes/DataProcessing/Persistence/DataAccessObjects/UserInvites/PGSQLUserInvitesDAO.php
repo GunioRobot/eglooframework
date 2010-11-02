@@ -46,7 +46,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
      */
 	public function addUserInvite($userID, $emailAddress, $referralCode){
 	    
-	    $db_handle = DBConnectionManager::getConnection();
+	    $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT addUserInvite($1, $2, $3)');
@@ -72,7 +72,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
      * @return boolean 
      */
 	public function isReferralCodeValid($referralCode){
-	    $db_handle = DBConnectionManager::getConnection();
+	    $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT checkReferral_ID($1)');
@@ -99,7 +99,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
      */
 	public function isReferralCodeUnique($referralCode){
 		
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT isReferral_IDUnique($1)');
@@ -138,7 +138,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
      * @return integer
      */
 	public function getNumberOfInvitesLeft($userID){
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT getNumberOfInvitesLeft($1)');
@@ -160,7 +160,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
      * @return boolean
      */
 	public function setNumberOfInvites($userID, $numberOfInvites){
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT setNumberOfInvites($1, $2)');
@@ -185,7 +185,7 @@ class PGSQLUserInvitesDAO extends UserInvitesDAO {
 	 * @return - int, the user association level
 	 */
 	public function getUserAssociationLevel($userID){
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT getUserAssociationLevel($1)');

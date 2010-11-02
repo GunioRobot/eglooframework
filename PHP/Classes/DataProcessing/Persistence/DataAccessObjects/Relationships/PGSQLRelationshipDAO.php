@@ -49,7 +49,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 														$accepterProfileID,
 														$relationshipType ){
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
         // TODO Make sure to check against relationship type constants
 
@@ -83,7 +83,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 	public function acceptRelationship( $relationshipID, $accepterProfileID ){
 		
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape input variables
 		$relationshipID = pg_escape_string($relationshipID);
@@ -108,7 +108,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
      */
     public function declineRelationship( $relationshipID, $accepterProfileID ){
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape input variables
 		$relationshipID = pg_escape_string($relationshipID);
@@ -133,7 +133,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
      */
     public function removeRelationship( $relationshipID, $profileID ){
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape input variables
 		$relationshipID = pg_escape_string($relationshipID);
@@ -160,7 +160,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 
 
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape name
 		$requestedProfileID = pg_escape_string($requestedProfileID);
@@ -207,7 +207,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 
 
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape name
 		$requestedProfileID = pg_escape_string($requestedProfileID);
@@ -272,7 +272,7 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 	public function getProfilesRelationships( $profileID1, $profileID2 ){
 	
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape name
 		$profileID1 = pg_escape_string($profileID1);

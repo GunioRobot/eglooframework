@@ -36,7 +36,26 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DBConnection extends Connection {
+class DBConnection extends eGlooConnection {
+
+	protected $_connectionDialect = null;
+	protected $_rawConnectionResource = null;
+
+	public function getConnectionDialect() {
+		return $this->_connectionDialect;
+	}
+
+	public function setConnectionDialect( $connectionDialect ) {
+		$this->_connectionDialect = $connectionDialect;
+	}
+
+	public function getRawConnectionResource() {
+		return $this->_rawConnectionResource;
+	}
+
+	public function setRawConnectionResource( $rawConnectionResource ) {
+		$this->_rawConnectionResource = $rawConnectionResource;
+	}
 
 }
 

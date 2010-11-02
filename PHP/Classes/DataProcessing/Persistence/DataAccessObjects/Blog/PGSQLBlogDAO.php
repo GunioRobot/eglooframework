@@ -38,7 +38,7 @@ class PGSQLBlogDAO extends BlogDAO {
      * @return BlogDTO 
      */
     public function createBlogEntry( $userID, $blogEntryTitle, $blogEntryContent ) {
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT createNewBlog($1, $2, $3)');
@@ -70,7 +70,7 @@ class PGSQLBlogDAO extends BlogDAO {
         //$userID is not really needed here for now, may be later, or there may need to be a check to see who is deleting what . . .
         //Also need to decide whether blogs are to be truely deleted or just removed from viewing.
         //For now they are truely deleted. We need to figure out the legal issues with that.
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT deleteBlog($1)');
@@ -88,7 +88,7 @@ class PGSQLBlogDAO extends BlogDAO {
      * @return BlogDTO 
      */
     public function editBlogEntry( $userID, $blogEntryID, $blogEntryTitle, $blogEntryContent ) {
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT editBlog($1, $2, $3)');
@@ -114,7 +114,7 @@ class PGSQLBlogDAO extends BlogDAO {
      * @return BlogDTO 
      */    
     public function viewBlogEntry( $userID, $blogEntryID ) {
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 		//[output_blogwriter]
 		//[output_dateblogcreated]
 		//[output_dateedited]
@@ -148,7 +148,7 @@ class PGSQLBlogDAO extends BlogDAO {
         $retVal = array();
 
   		//Prepare a query for execution
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   		
   		$result = pg_prepare($db_handle, "query", 'SELECT Blogs.Blog_ID, BlogWriter, DateBlogCreated, DateEdited, BlogTitle, BlogContent
 														FROM Blogs INNER JOIN BlogEntries ON Blogs.Blog_ID=BlogEntries.Blog_ID

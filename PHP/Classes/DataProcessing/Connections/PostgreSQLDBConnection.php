@@ -1,6 +1,6 @@
 <?php
 /**
- * NetworkConnection Class File
+ * PostgreSQLDBConnection Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * NetworkConnection
+ * PostgreSQLDBConnection
  *
  * $short_description
  *
@@ -36,7 +36,12 @@
  * @package $package
  * @subpackage $subpackage
  */
-class NetworkConnection extends eGlooConnection {
+class PostgreSQLDBConnection extends DBConnection {
+
+	public function __construct( $rawConnectionResource ) {
+		$this->setConnectionDialect( DialectLibrary::POSTGRESQL );
+		$this->setRawConnectionResource( $rawConnectionResource );
+	}
 
 }
 

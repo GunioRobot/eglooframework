@@ -38,7 +38,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
      * update profile information
      */
     public function setProfilePageLayout($profileID, $pageLayout) {
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT setProfilePageLayout($1, $2)');
@@ -58,7 +58,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
      * @return UserProfilePageDTO
      */
     public function getProfile( $profileID ) {
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT getProfilePageLayout($1)');
@@ -79,7 +79,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
     
     public function getProfileCubes( $profileID ){
     	
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'select element_id, layoutrow, layoutcolumn from profilelayout where profile_id = $1 order by layoutcolumn asc, layoutrow asc');
@@ -106,7 +106,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
 
     public function deleteAllProfileCubes( $profileID ){
     	
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'delete from profilelayout where profile_id = $1');
@@ -120,7 +120,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
 
     public function addCubeToPage( $profileID, $cubeID, $column, $row ){
     	
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'INSERT INTO profilelayout (profile_id, element_id, layoutcolumn, layoutrow ) VALUES ($1, $2, $3, $4)');
@@ -135,7 +135,7 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
     public function getProfileName( $profileID ) {
         $retVal = null;
         //get handle
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
         //escape input variables
         $profileID = pg_escape_string($profileID);

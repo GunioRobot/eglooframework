@@ -39,7 +39,7 @@ class PGSQLCubeDAO extends CubeDAO {
     	//get a dto based on element unique ID
     	//Will return only the info based off element table.  
 		//For now at least.
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_ElementType_ID, output_Creator_ID, output_ElementPackagePath FROM getElementInstance($1, $2);');
@@ -76,7 +76,7 @@ class PGSQLCubeDAO extends CubeDAO {
  		}
  		$inputQuery.=')';
  		
- 		$db_handle = DBConnectionManager::getConnection();
+ 		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", $inputQuery);
@@ -100,7 +100,7 @@ class PGSQLCubeDAO extends CubeDAO {
     
     // Cubes user has made*
     public function getCubeInstanceList( $profileID ) {
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT Element_ID, ElementType_ID FROM Elements WHERE Creator_ID=$1');
@@ -131,7 +131,7 @@ class PGSQLCubeDAO extends CubeDAO {
     
     public function cubeSingletonExists( $profileID, $cubeTypeID ){
     	
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
     		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT elements.element_id FROM elements 

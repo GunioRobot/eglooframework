@@ -44,7 +44,7 @@ class PGSQLRankingDAO extends RankingDAO {
 		$returnVal = NULL;
 		
 		//Create a handle to the database
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//If the handle was successfully created, then proceed.
 		if($db_handle){
@@ -94,7 +94,7 @@ class PGSQLRankingDAO extends RankingDAO {
   		$result = NULL;
     
     	//Create a handle to the database
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   
     	//If the handle was successfully created, then proceed with retrieving the ranking.
 		if($db_handle){
@@ -137,7 +137,7 @@ class PGSQLRankingDAO extends RankingDAO {
   		$result = NULL;
     	
     	//Create a handle to the database
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   
     	//If the handle was successfully created, then proceed.
 		if($db_handle){

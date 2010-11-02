@@ -141,7 +141,10 @@ final class DBConnectionManager extends ConnectionManager {
 
 		mysql_select_db($dbname, $mysql_conn);
 
-		return $mysql_conn;
+		// return $mysql_conn;
+		$retVal = new MySQLDBConnection( $mysql_conn );
+
+		return $retVal;
 	}
 
 	private static function getMySQLiConnection( $connection_name = 'egPrimary' ) {
@@ -162,7 +165,9 @@ final class DBConnectionManager extends ConnectionManager {
 			throw new Exception($exception_message);
 		}
 
-		return $mysqli_conn;
+		$retVal = new MySQLiDBConnection( $mysqli_conn );
+
+		return $retVal;
 	}
 
 	private static function getMySQLiOOPConnection( $connection_name = 'egPrimary' ) {
@@ -215,7 +220,10 @@ final class DBConnectionManager extends ConnectionManager {
 			throw new Exception($exception_message);
 		}
 
-		return $db_handle;
+		// return $db_handle;
+		$retVal = new PostgreSQLDBConnection( $db_handle );
+
+		return $retVal;
 	}
 
 	private static function getPropelConnection( $connection_name = 'egPrimary' ) {

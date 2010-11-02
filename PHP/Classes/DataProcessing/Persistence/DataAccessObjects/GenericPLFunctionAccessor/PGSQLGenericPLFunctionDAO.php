@@ -94,7 +94,7 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
 		/**
 		 * Make call to DB
 		 */
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$result = pg_prepare( $db_handle, "query", $genericPLSelectQuery->getQuery() );
 
 		// Execute the prepared query.  Note that it is not necessary to escape

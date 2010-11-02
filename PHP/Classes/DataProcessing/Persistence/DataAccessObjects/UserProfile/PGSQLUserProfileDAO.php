@@ -43,7 +43,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
      * @return boolean 
      */
     public function setProfile($profileDTO, $userID){
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
         
         //get interested in
         $interestedInArray = $profileDTO->getInterestedIn();
@@ -240,7 +240,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
      * @return UserProfileDTO
      */
     public function getProfile( $profileID ){
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$userProfileDTO = new UserProfileDTO();
 		
         //Get interested in.
@@ -381,7 +381,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
     public function getProfileName( $profileID ) {
         $retVal = null;
         //get handle
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
         //escape input variables
         $profileID = pg_escape_string($profileID);
@@ -405,7 +405,7 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
     public function getProfileRealName( $profileID ){
         $retVal = array();
         //get handle
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
         //escape input variables
         $profileID = pg_escape_string( $profileID );

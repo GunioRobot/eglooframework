@@ -1,6 +1,6 @@
 <?php
 /**
- * NetworkConnection Class File
+ * Connection Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * NetworkConnection
+ * Connection
  *
  * $short_description
  *
@@ -36,7 +36,21 @@
  * @package $package
  * @subpackage $subpackage
  */
-class NetworkConnection extends eGlooConnection {
+abstract class eGlooConnection {
+
+	protected $_rawHandle = null;
+
+	public function __construct( $rawHandle = null ) {
+		$this->_rawHandle = $rawHandle;
+	}
+
+	public function getRawHandle() {
+		return $this->_rawHandle;
+	}
+
+	public function setRawHandle( $rawHandle ) {
+		$this->_rawHandle = $rawHandle;
+	}
 
 }
 

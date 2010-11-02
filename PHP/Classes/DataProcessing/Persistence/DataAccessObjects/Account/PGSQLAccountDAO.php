@@ -44,7 +44,7 @@ class PGSQLAccountDAO extends AccountDAO {
         
 		$birthday = $birthMonth . "-" . $birthDay . "-" . "-" . $birthYear;
 		        
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_UserCreated, output_UserUnique, output_EmailUnique, output_User_ID FROM createNewUser($1, $2, $3, $4, $5, $6, $7, $8)');
@@ -93,7 +93,7 @@ class PGSQLAccountDAO extends AccountDAO {
         
         $userDTO = new UserDTO();
         //TODO: make appropriate database call
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 //        echo "connected to ". pg_dbname( $db_handle ) . "<br>";
 
@@ -129,7 +129,7 @@ class PGSQLAccountDAO extends AccountDAO {
 	public function getMainProfileID( $userID ){
 		
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape input variables
 		$userID = pg_escape_string($userID);
@@ -150,7 +150,7 @@ class PGSQLAccountDAO extends AccountDAO {
     public function getUserInformation( $userID ){
         $retVal = array();
         //get handle
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
         //escape input variables
         $userID = pg_escape_string($userID);

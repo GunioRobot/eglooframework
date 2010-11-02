@@ -36,7 +36,7 @@ class PGSQLInformationBoardPeopleDAO extends InformationBoardPeopleDAO {
  
     public function getInformationBoardPeopleBase( $options = null ) {
        
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//get bidirectional first
 		$query = "select u.username, u.firstname, u.lastname, p.profile_id, p.profilename from users u, profiles p " .

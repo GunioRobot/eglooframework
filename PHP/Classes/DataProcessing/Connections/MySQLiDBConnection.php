@@ -1,6 +1,6 @@
 <?php
 /**
- * NetworkConnection Class File
+ * MySQLiDBConnection Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * NetworkConnection
+ * MySQLiDBConnection
  *
  * $short_description
  *
@@ -36,7 +36,12 @@
  * @package $package
  * @subpackage $subpackage
  */
-class NetworkConnection extends eGlooConnection {
+class MySQLiDBConnection extends DBConnection {
+
+	public function __construct( $rawConnectionResource ) {
+		$this->setConnectionDialect( DialectLibrary::MYSQLI );
+		$this->setRawConnectionResource( $rawConnectionResource );
+	}
 
 }
 

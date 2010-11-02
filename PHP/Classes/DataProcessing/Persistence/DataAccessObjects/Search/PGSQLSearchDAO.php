@@ -63,7 +63,7 @@ class PGSQLSearchDAO extends SearchDAO {
       	
       	
 		//get handle
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
 		//escape name
 		$name = pg_escape_string($name);

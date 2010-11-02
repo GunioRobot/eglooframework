@@ -47,7 +47,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function getImageElement( $requesterProfileID, $imageDTO ) {
     	//Since permissions are not yet implemented $requseterProfileID is not used in the query.
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_ElementType, output_ElementPackagePath, output_Creator_ID, output_DateCreated, output_ImageFileHash, output_MIMEType, output_Title, output_Summery, output_File, output_FileSize, output_DateUploaded, output_Uploader, output_FileName, output_ImageDimensionX, output_ImageDimensionY FROM getImageElementInstance($1)');
@@ -89,7 +89,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function getImageElementList( $requesterProfileID, $requestedProfileID ) {
     	//Once again permissions have not be implemented so $requesterProfileID is not used in the below query.
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT ElementTypes.ElementType, ElementTypes.ElementPackagePath, Elements.Creator_ID, Elements.DateCreated, Image_Elements.ImageFileHash, Image_Elements.MIMEType, Image_Elements.Title, Image_Elements.Summery, Files.File,	Files.FileSize,	Files.DateUploaded,	Files.Uploader, ImageFiles.ImageDimensionX, ImageFiles.ImageDimensionY
@@ -145,7 +145,7 @@ class PGSQLImageDAO extends ImageDAO {
     public function setImageElement( $userID, $requesterProfileID, $requestedProfileID, $imageDTO ) {
     	//Make sure the $userID supplied has access to the file.
     	//Make sure the $profileID  used is allowed to set shit.
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_Successful, output_Element_ID, output_ElementType_ID, output_ElementType, output_ElementPackagePath FROM setImageElement($1, $2, $3, $4, $5, $6)');
@@ -176,7 +176,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function removeImageElement( $profileID, $imageDTO ) {
     	//Makes sure the $profileID supplied owns the element then removes the element.
-    	$db_handle = DBConnectionManager::getConnection();
+    	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT removeElement($1, $2)');
@@ -202,7 +202,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function getProfileImageElement( $requesterProfileID, $requestedProfileID ) {
     	//Since permissions are not yet implemented $requseterProfileID is not used in the query.
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_Element_ID, output_ElementType_ID, output_ElementType, output_ElementPackagePath, output_Creator_ID, output_DateCreated, output_ImageFileHash, output_MIMEType, output_File, output_FileSize, output_DateUploaded, output_Uploader, output_FileName, output_ImageDimensionX, output_ImageDimensionY FROM getProfileImageElement($1)');
@@ -237,7 +237,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function removeImage( $userID, $imageDTO ) {
     	//ProfileID needed? needs discussion as to who can remove Images.
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT removeImage($1, $2, $3)');
@@ -256,7 +256,7 @@ class PGSQLImageDAO extends ImageDAO {
     public function removeProfileImageElement( $requesterProfileID, $requestedProfileID ) {
     	//Gets rid of an element so profile_ID is required
     	//Make sure that profile creator is the userID
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT removeProfileImage($1, $2)');
@@ -279,7 +279,7 @@ class PGSQLImageDAO extends ImageDAO {
     	//Make sure user owns profile, then create new element 
     	//Make sure image was uploaded by UserID
     	//Is the userID check nessisary, will users be able to see the imageDTO if they do not own the image
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_Successful, output_Element_ID, output_ElementType_ID, output_ElementType, output_ElementPackagePath FROM setProfileImage($1, $2, $3, $4)');
@@ -312,7 +312,7 @@ class PGSQLImageDAO extends ImageDAO {
      * @return ImageDTO 
      */
     public function storeNewImage( $userID, $imageDTO ) {
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_Successful, output_DateUploaded FROM createNewImageFile($1, $2, $3, $4, $5, $6, $7, $8)');
@@ -332,7 +332,7 @@ class PGSQLImageDAO extends ImageDAO {
      * @return ImageDTO 
      */
     public function getImage( $userID, $imageDTO ) {
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_File, output_FileSize, output_DateUploaded, output_Uploader, output_FileName, output_ImageDimensionX, output_ImageDimensionY FROM getImageFile($1, $2)');
 
@@ -359,7 +359,7 @@ class PGSQLImageDAO extends ImageDAO {
     public function getUserImageList( $userID, $profileID ) {
         //no content on these dto
         $retVal=array();
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   		//Prepare a query for execution
   		$result = pg_prepare( $db_handle, "query", 'SELECT Files.FileHash, Files.MIMEType, Files.FileSize, Files.DateUploaded, Files.Uploader, Files.FileName, ImageFiles.ImageDimensionX, ImageFiles.ImageDimensionY
 													FROM Files 

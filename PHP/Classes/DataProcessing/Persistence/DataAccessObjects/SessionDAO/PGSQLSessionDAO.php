@@ -53,7 +53,7 @@ class PGSQLSessionDAO extends SessionDAO {
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::setSessionData: sessionid = " . $sessionDTO->getSessionID() . $sessionDTO->getUserAgent() . $sessionDTO->getUserID() . $sessionDTO->getSessionData(), eGlooLogger::SESSION );
 		
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT setSession($1, $2, $3, $4)');
@@ -79,7 +79,7 @@ class PGSQLSessionDAO extends SessionDAO {
 
 		 eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::getSessionData: sessionid = " . $sessionID, eGlooLogger::SESSION );
 
-        $db_handle = DBConnectionManager::getConnection();
+        $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT output_session_id, output_user_id, output_useragent, output_sessiondata, output_SessionExists FROM getSession($1)');
@@ -115,7 +115,7 @@ class PGSQLSessionDAO extends SessionDAO {
 
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLSessionDAO::deleteSession: " . $sessionID, eGlooLogger::SESSION );
  		 
- 		$db_handle = DBConnectionManager::getConnection();
+ 		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT deleteSession($1)');
@@ -142,7 +142,7 @@ class PGSQLSessionDAO extends SessionDAO {
 		 * TODO delete sessions that are older than the specified
 		 * amount of time.
 		 */	
-		$db_handle = DBConnectionManager::getConnection();
+		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT deleteOldSessions($1)');
