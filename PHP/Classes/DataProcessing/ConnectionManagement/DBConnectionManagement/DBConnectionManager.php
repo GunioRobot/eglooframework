@@ -68,6 +68,8 @@ final class DBConnectionManager extends ConnectionManager {
 				$retVal = self::getDoctrineConnection();
 			} else if ( $engine_mode === eGlooConfiguration::MYSQL ) {
 				$retVal = self::getMySQLConnection();
+			} else if ( $engine_mode === eGlooConfiguration::MYSQLI ) {
+				$retVal = self::getMySQLiConnection();
 			} else if ( $engine_mode === eGlooConfiguration::POSTGRESQL ) {
 				$retVal = self::getPostgreSQLConnection();
 			} else {
@@ -78,6 +80,8 @@ final class DBConnectionManager extends ConnectionManager {
 				$retVal = self::getDoctrineConnection();
 			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQL ) {
 				$retVal = self::getMySQLConnection();
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLI ) {
+				$retVal = self::getMySQLiConnection();
 			} else if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
 				$retVal = self::getPostgreSQLConnection();
 			} else {
