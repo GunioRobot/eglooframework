@@ -90,7 +90,7 @@ abstract class MultipleQueryReportingRequestProcessor extends BaseReportingReque
 
 	protected function prepareQuery( $preparedQueryString = null ) {
 		$preparedQuery = new QueryTransaction($preparedQueryString);
-		$preparedQuery->setQueryDialect(DialectLibrary::MYSQL);
+		$preparedQuery->setQueryDialect($this->_reportingConnection->getConnectionDialect());
 		return $preparedQuery;
 	}
 
