@@ -43,10 +43,10 @@ class MySQLQueryExecutionRoutine extends QueryExecutionRoutine {
 	public static function executeTransactionWithConnection( $queryTransaction, $connection, $returnResponseResource = false ) {
 		$retVal = null;
 
-		$queryResultResource = mysql_query($queryTransaction->getDataPackageString(), $connection);
+		$queryResultResource = mysql_query($queryTransaction->getDataPackageString(), $connection->getRawConnectionResource());
 
 		if ( !isset($queryResultResource) || !$queryResultResource ) {
-			$error_message = mysql_error($connection);
+			$error_message = mysql_error($connection->getRawConnectionResource());
 
 			if ( $error_message !== '' ) {
 				throw new Exception( 'Query failed with message: ' . $error_message);

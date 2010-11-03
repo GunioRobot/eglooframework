@@ -183,7 +183,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 							$this->_queryExecutionSteps[$subQuery]['cache']) {
 
-							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl'])) {
 								$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
 							} else {
 								$cache_ttl = 30;
@@ -214,7 +214,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 						if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 							$this->_queryExecutionSteps[$subQuery]['cache']) {
 
-							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+							if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl'])) {
 								$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
 							} else {
 								$cache_ttl = 30;
@@ -245,7 +245,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 				if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 					$this->_queryExecutionSteps[$subQuery]['cache']) {
 
-					if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl']) {
+					if (isset($this->_queryExecutionSteps[$subQuery]['cache_ttl'])) {
 						$cache_ttl = $this->_queryExecutionSteps[$subQuery]['cache_ttl'];
 					} else {
 						$cache_ttl = 30;
@@ -263,7 +263,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 	protected function prepareQuery( $preparedQueryString = null ) {
 		$preparedQuery = new QueryTransaction($preparedQueryString);
-		$preparedQuery->setQueryDialect(DialectLibrary::MYSQL);
+		$preparedQuery->setQueryDialect(DBConnectionManager::getConnection()->getConnectionDialect());
 		return $preparedQuery;
 	}
 

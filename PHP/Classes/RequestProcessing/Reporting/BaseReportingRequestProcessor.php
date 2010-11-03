@@ -112,7 +112,7 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 		$constructorArgument = isset($preparedQueryString) ? $preparedQueryString : $this->_preparedQueryString;
 
 		$this->_preparedQuery = new QueryTransaction($constructorArgument);
-		$this->_preparedQuery->setQueryDialect(DialectLibrary::MYSQL);
+		$this->_preparedQuery->setQueryDialect(DBConnectionManager::getConnection()->getConnectionDialect());
 	}
 
 	protected function prepareRawDataReport() {
