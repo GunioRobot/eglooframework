@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLIQueryExecutionRoutine Class File
+ * MySQLiOOPQueryExecutionRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLIQueryExecutionRoutine
+ * MySQLiOOPQueryExecutionRoutine
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLiQueryExecutionRoutine extends QueryExecutionRoutine {
+class MySQLiOOPQueryExecutionRoutine extends QueryExecutionRoutine {
 
 	public static function executeTransaction( $queryTransaction ) {}
 
@@ -47,7 +47,10 @@ class MySQLiQueryExecutionRoutine extends QueryExecutionRoutine {
 
 		$dataPackage = $queryTransaction->getDataPackage();
 
+		$preparedQueryString = $dataPackage['preparedQueryString'];
 		$statement = $dataPackage['preparedStatementObject'];
+
+		$statement->execute();
 
 		$statement->store_result();
 
@@ -76,22 +79,9 @@ class MySQLiQueryExecutionRoutine extends QueryExecutionRoutine {
 		$metadata->close();
 		$statement->close();
 
-		die_r($resultSet);
-		return $resultSet;
+		$queryResultResource = $resultSet;
 
-		$queryResultResource = mysql_query($queryTransaction->getDataPackageString(), $connection);
-
-		if ( !isset($queryResultResource) || !$queryResultResource ) {
-			$error_message = mysql_error($connection);
-
-			if ( $error_message !== '' ) {
-				throw new Exception( 'Query failed with message: ' . $error_message);
-			} else {
-				throw new Exception( 'Query resource unset or was returned null.  No error provided');
-			}
-		}
-
-		$responseResource = new MySQLiQueryResponseResource($queryResultResource);
+		$responseResource = new MySQLiOOPQueryResponseResource($queryResultResource);
 
 		if ($returnResponseResource) {
 			$retVal = $responseResource;
@@ -118,7 +108,7 @@ class MySQLiQueryExecutionRoutine extends QueryExecutionRoutine {
 		}
 
 		$retVal = new QueryResponseTransaction($responseDataPackage);
-		$retVal->setQueryDialect(DialectLibrary::MYSQLI);
+		$retVal->setQueryDialect(DialectLibrary::MYSQLIOOP);
 
 		return $retVal;
 	}

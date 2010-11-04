@@ -45,6 +45,8 @@ final class DBConnectionManager extends ConnectionManager {
 	private static $mysqlConnection		= null;
 	private static $pgConnection		= null;
 
+	private static $connections = array();
+
 	public static function getConnection( $connection_name = 'egPrimary', $engine_mode = null ) {
 		$retVal = null;
 
@@ -65,24 +67,68 @@ final class DBConnectionManager extends ConnectionManager {
 
 		if ($engine_mode !== null) {
 			if ( $engine_mode === eGlooConfiguration::DOCTRINE ) {
+				if (!isset(self::$connections['Doctrine'])){
+					self::$connections['Doctrine'] = array();
+				}
+
 				$retVal = self::getDoctrineConnection();
 			} else if ( $engine_mode === eGlooConfiguration::MYSQL ) {
+				if (!isset(self::$connections['MySQL'])){
+					self::$connections['MySQL'] = array();
+				}
+
 				$retVal = self::getMySQLConnection();
 			} else if ( $engine_mode === eGlooConfiguration::MYSQLI ) {
+				if (!isset(self::$connections['MySQLi'])){
+					self::$connections['MySQLi'] = array();
+				}
+
 				$retVal = self::getMySQLiConnection();
+			} else if ( $engine_mode === eGlooConfiguration::MYSQLIOOP ) {
+				if (!isset(self::$connections['MySQLiOOP'])){
+					self::$connections['MySQLiOOP'] = array();
+				}
+
+				$retVal = self::getMySQLiOOPConnection();
 			} else if ( $engine_mode === eGlooConfiguration::POSTGRESQL ) {
+				if (!isset(self::$connections['PostgreSQL'])){
+					self::$connections['PostgreSQL'] = array();
+				}
+
 				$retVal = self::getPostgreSQLConnection();
 			} else {
 				// No DB engine specified in config or no engine available
 			}
 		} else {
 			if ( $connection_info['engine'] === eGlooConfiguration::DOCTRINE ) {
+				if (!isset(self::$connections['Doctrine'])){
+					self::$connections['Doctrine'] = array();
+				}
+
 				$retVal = self::getDoctrineConnection();
 			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQL ) {
+				if (!isset(self::$connections['MySQL'])){
+					self::$connections['MySQL'] = array();
+				}
+
 				$retVal = self::getMySQLConnection();
 			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLI ) {
+				if (!isset(self::$connections['MySQLi'])){
+					self::$connections['MySQLi'] = array();
+				}
+
 				$retVal = self::getMySQLiConnection();
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLIOOP ) {
+				if (!isset(self::$connections['MySQLiOOP'])){
+					self::$connections['MySQLiOOP'] = array();
+				}
+
+				$retVal = self::getMySQLiOOPConnection();
 			} else if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
+				if (!isset(self::$connections['PostgreSQL'])){
+					self::$connections['PostgreSQL'] = array();
+				}
+
 				$retVal = self::getPostgreSQLConnection();
 			} else {
 				// No DB engine specified in config or no engine available
@@ -101,14 +147,24 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function getDoctrineConnection( $connection_name = 'egPrimary' ) {
-		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+		$retVal = null;
 
-		$dsn = 'pgsql://' . $connection_info['user'] . ':' . $connection_info['password'] .
-			'@' . $connection_info['host'] .':' . $connection_info['port'] . '/' . $connection_info['database'];
+		if (isset(self::$connections['Doctrine'][$connection_name])) {
+			$retVal = self::$connections['Doctrine'][$connection_name];
+		} else {
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
-		$manager = Doctrine_Manager::getInstance();
-		$conn = $manager->connection($dsn, $connection_info['name']);
-		
+			$dsn = 'pgsql://' . $connection_info['user'] . ':' . $connection_info['password'] .
+				'@' . $connection_info['host'] .':' . $connection_info['port'] . '/' . $connection_info['database'];
+
+			$manager = Doctrine_Manager::getInstance();
+			$conn = $manager->connection($dsn, $connection_info['name']);
+			
+			self::$connections['Doctrine'][$connection_name] = new DoctrineDBConnection($conn);
+
+			$retVal = self::$connections['Doctrine'][$connection_name];
+		}
+
 		return $conn;
 	}
 
@@ -121,74 +177,96 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function getMySQLConnection( $connection_name = 'egPrimary' ) {
-		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+		$retVal = null;
 
-		$host 			= $connection_info['host'];
-		$port 			= $connection_info['port'];
-		$dbname 		= $connection_info['database'];
-		$user 			= $connection_info['user'];
-		$password	 	= $connection_info['password'];
-
-		$mysql_conn = mysql_connect($host . ':' . $port, $user, $password, $dbname);
-
-		if (!$mysql_conn) {
-			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLConnection.  Error: ' . mysql_error();
-
-			throw new Exception($exception_message);
+		if (isset(self::$connections['MySQL'][$connection_name])) {
+			$retVal = self::$connections['MySQL'][$connection_name];
 		} else {
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+			$host 			= $connection_info['host'];
+			$port 			= $connection_info['port'];
+			$dbname 		= $connection_info['database'];
+			$user 			= $connection_info['user'];
+			$password	 	= $connection_info['password'];
+
+			$mysql_conn = mysql_connect($host . ':' . $port, $user, $password, $dbname);
+
+			if (!$mysql_conn) {
+				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLConnection.  Error: ' . mysql_error();
+
+				throw new Exception($exception_message);
+			} else {
 			
+			}
+
+			mysql_select_db($dbname, $mysql_conn);
+
+			self::$connections['MySQL'][$connection_name] = new MySQLDBConnection( $mysql_conn );
+			$retVal = self::$connections['MySQL'][$connection_name];
 		}
-
-		mysql_select_db($dbname, $mysql_conn);
-
-		// return $mysql_conn;
-		$retVal = new MySQLDBConnection( $mysql_conn );
 
 		return $retVal;
 	}
 
 	private static function getMySQLiConnection( $connection_name = 'egPrimary' ) {
-		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+		$retVal = null;
 
-		$host 			= $connection_info['host'];
-		$port 			= $connection_info['port'];
-		$dbname 		= $connection_info['database'];
-		$user 			= $connection_info['user'];
-		$password	 	= $connection_info['password'];
+		if (isset(self::$connections['MySQLi'][$connection_name])) {
+			$retVal = self::$connections['MySQLi'][$connection_name];
+		} else {
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
-		$mysqli_conn = mysqli_connect($host, $user, $password, $dbname, $port);
+			$host 			= $connection_info['host'];
+			$port 			= $connection_info['port'];
+			$dbname 		= $connection_info['database'];
+			$user 			= $connection_info['user'];
+			$password	 	= $connection_info['password'];
 
-		if (!$mysqli_conn) {
-			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiConnection.  Error: '
-				. mysqli_connect_error();
+			$mysqli_conn = mysqli_connect($host, $user, $password, $dbname, $port);
 
-			throw new Exception($exception_message);
+			if (!$mysqli_conn) {
+				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiConnection.  Error: '
+					. mysqli_connect_error();
+
+				throw new Exception($exception_message);
+			}
+
+			self::$connections['MySQLi'][$connection_name] = new MySQLiDBConnection( $mysqli_conn );
+			$retVal = self::$connections['MySQLi'][$connection_name];
 		}
-
-		$retVal = new MySQLiDBConnection( $mysqli_conn );
 
 		return $retVal;
 	}
 
 	private static function getMySQLiOOPConnection( $connection_name = 'egPrimary' ) {
-		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+		$retVal = null;
 
-		$host 			= $connection_info['host'];
-		$port 			= $connection_info['port'];
-		$dbname 		= $connection_info['database'];
-		$user 			= $connection_info['user'];
-		$password	 	= $connection_info['password'];
+		if (isset(self::$connections['MySQLiOOP'][$connection_name])) {
+			$retVal = self::$connections['MySQLiOOP'][$connection_name];
+		} else {
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
-		$mysqli = new mysqli($host . ':' . $port, $user, $password, $dbname);
+			$host 			= $connection_info['host'];
+			$port 			= $connection_info['port'];
+			$dbname 		= $connection_info['database'];
+			$user 			= $connection_info['user'];
+			$password	 	= $connection_info['password'];
 
-		if (mysqli_connect_errno()) {
-			$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiOOPConnection.  Error: '
-				. mysqli_connect_error();
+			$mysqli = new mysqli($host . ':' . $port, $user, $password, $dbname);
 
-			throw new Exception($exception_message);
+			if (mysqli_connect_errno()) {
+				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiOOPConnection.  Error: '
+					. mysqli_connect_error();
+
+				throw new Exception($exception_message);
+			}
+
+			self::$connections['MySQLiOOP'][$connection_name] = new MySQLiOOPDBConnection( $mysqli );
+			$retVal = self::$connections['MySQLiOOP'][$connection_name];
 		}
 
-		return $mysqli;
+		return $retVal;
 	}
 
 	private static function getOracleDBConnection( $connection_name = 'egPrimary' ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLiQueryPopulationRoutine Class File
+ * MySQLiOOPQueryPopulationRoutine Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLiQueryPopulationRoutine
+ * MySQLiOOPQueryPopulationRoutine
  *
  * $short_description
  *
@@ -36,16 +36,15 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLiQueryPopulationRoutine extends QueryPopulationRoutine {
+class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 
-	
 	public function populateQuery( $queryTransaction, $queryParameters, $associative = false, $sort = false, $method = 'sprintf' ) {
 		if ( $method === 'stmt' ) {
 			$this->populateQueryWithSTMT( $queryTransaction, $queryParameters, $associative, $sort, $method );
 		} else if ($method === 'sprintf') {
 			$this->populateQueryWithVsprintf( $queryTransaction, $queryParameters, $associative, $sort, $method );
 		} else {
-			throw new Exception('MySQLiQueryPopulationRoutine: Invalid population method requested');
+			throw new Exception('MySQLiOOPQueryPopulationRoutine: Invalid population method requested');
 		}
 	}
 
@@ -68,7 +67,7 @@ class MySQLiQueryPopulationRoutine extends QueryPopulationRoutine {
 					if (is_string($value['value'])) {
 						$processedParameters[] = mysql_real_escape_string($value['value']);
 					} else {
-						throw new Exception('MySQLiQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else if ( $value['type'] === 'integer' ) {
 					if (is_int($value['value'])) {
@@ -77,16 +76,16 @@ class MySQLiQueryPopulationRoutine extends QueryPopulationRoutine {
 						$integer_value = intval($value['value']);
 						$processedParameters[] = $integer_value;
 
-						// throw new Exception('MySQLiQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+						// throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected int, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else if ( $value['type'] === 'float' ) {
 					if (is_float($value['value'])) {
 						$processedParameters[] = $value['value'];
 					} else {
-						throw new Exception('MySQLiQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
+						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
 				} else {
-					throw new Exception('MySQLiQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
+					throw new Exception('MySQLiOOPQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
 				}
 			}
 
@@ -101,7 +100,7 @@ class MySQLiQueryPopulationRoutine extends QueryPopulationRoutine {
 		$connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$statement = $connection->stmt_init();
 
-		if (!$statement->prepare($dataPackageString)) {
+		if (!$statement->prepare($populatedDataPackageString)) {
 			throw new Exception("Could not prepare statement for $statement: " . mysqli_error($connection) );
 		}
 
@@ -133,4 +132,3 @@ class MySQLiQueryPopulationRoutine extends QueryPopulationRoutine {
 	}
 
 }
-

@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLiOOPDBConnection Class File
+ * MySQLiOOPQueryResponseResource Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLiOOPDBConnection
+ * MySQLiOOPQueryResponseResource
  *
  * $short_description
  *
@@ -36,11 +36,41 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLiOOPDBConnection extends DBConnection {
+class MySQLiOOPQueryResponseResource extends QueryResponseResource {
 
-	public function __construct( $rawConnectionResource ) {
-		$this->setConnectionDialect( DialectLibrary::MYSQLIOOP );
-		$this->setRawConnectionResource( $rawConnectionResource );
+	public $index = 0;
+	public $length = null;
+
+	public function getBooleanValue() {
+		return (bool) $this->_rawResponseResource;
+	}
+
+	public function isBooleanValue() {
+		return is_bool($this->_rawResponseResource);
+	}
+
+	public function resetIndex() {
+		$this->index = 0;
+	}
+
+	public function fetchNextRowAssociative() {
+		$retVal = null;
+		
+		if ($this->length === null) {
+			$this->length = count($this->_rawResponseResource);
+		}
+
+		if ( !is_bool($this->_rawResponseResource) ) {
+			if ($this->index < $this->length) {
+				$retVal = $this->_rawResponseResource[$this->index];
+			}
+
+			$this->index += 1;
+		} else {
+			$retVal = $this->_rawResponseResource;
+		}
+
+		return $retVal;
 	}
 
 }

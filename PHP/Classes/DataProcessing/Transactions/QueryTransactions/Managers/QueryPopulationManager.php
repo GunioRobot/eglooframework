@@ -44,6 +44,12 @@ class QueryPopulationManager {
 		if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQL ) {
 			$queryPopulationRoutine = new MySQLQueryPopulationRoutine();
 			$queryPopulationRoutine->populateQuery( $queryTransaction, $queryParameters );
+		} else if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQLI ){
+			$queryPopulationRoutine = new MySQLiQueryPopulationRoutine();
+			$queryPopulationRoutine->populateQuery( $queryTransaction, $queryParameters );
+		} else if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQLIOOP ){
+			$queryPopulationRoutine = new MySQLiOOPQueryPopulationRoutine();
+			$queryPopulationRoutine->populateQuery( $queryTransaction, $queryParameters );
 		}
 
 	}

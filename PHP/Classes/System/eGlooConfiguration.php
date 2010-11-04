@@ -172,6 +172,9 @@ final class eGlooConfiguration {
 				case 'MYSQLI' :
 					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::MYSQLI;
 					break;
+				case 'MYSQLIOOP' :
+					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::MYSQLIOOP;
+					break;
 				case 'POSTGRESQL' :
 					self::$configuration_options['egDatabaseConnections']['egPrimary']['engine'] = self::POSTGRESQL;
 					break;

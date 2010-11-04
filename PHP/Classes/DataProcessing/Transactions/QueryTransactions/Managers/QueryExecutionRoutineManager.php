@@ -46,6 +46,8 @@ class QueryExecutionRoutineManager {
 			$retVal = new MySQLQueryExecutionRoutine();
 		} else if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQLI ) {
 			$retVal = new MySQLiQueryExecutionRoutine();
+		} else if ( $queryTransaction->getQueryDialect() === DialectLibrary::MYSQLIOOP ) {
+			$retVal = new MySQLiOOPQueryExecutionRoutine();
 		}
 
 		return $retVal;

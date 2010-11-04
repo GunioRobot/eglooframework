@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLiOOPDBConnection Class File
+ * DoctrineDBConnection Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * MySQLiOOPDBConnection
+ * DoctrineDBConnection
  *
  * $short_description
  *
@@ -36,10 +36,10 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLiOOPDBConnection extends DBConnection {
+class DoctrineDBConnection extends DBConnection {
 
 	public function __construct( $rawConnectionResource ) {
-		$this->setConnectionDialect( DialectLibrary::MYSQLIOOP );
+		$this->setConnectionDialect( DialectLibrary::DOCTRINE );
 		$this->setRawConnectionResource( $rawConnectionResource );
 	}
 

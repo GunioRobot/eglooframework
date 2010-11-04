@@ -219,10 +219,21 @@ function echo_r( $mixed ) {
 	echo '</pre>';
 }
 
+function echo_d( $mixed ) {
+	echo '<pre>';
+	var_dump($mixed);
+	echo '</pre>';
+}
+
 /**
  * Convenience method
  */
 function die_r( $mixed ) {
 	echo_r($mixed);
+	die;
+}
+
+function die_d( $mixed ) {
+	echo_d($mixed);
 	die;
 }
