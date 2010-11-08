@@ -147,7 +147,7 @@ RewriteRule ^media/(.*(.aac|.dcr|.flv|.mov|.mpg|.mp3|.mp4|.ogg|.swf|.wma|.wmv))$
 # last rule
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)$ index.php?eg_requestClass=$1&eg_requestID=$2&%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)/([a-zA-Z0-9\.\-_&\ ]+=[a-zA-Z0-9\.\-=_&\ ]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3%{QUERY_STRING} [L]
-RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)$ index.php?eg_requestClass=$1&eg_requestID=$2&eg_slug=$3%{QUERY_STRING} [L]
+RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)$ index.php?eg_requestClass=$1&eg_requestID=$2&eg_slug=$3&%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/?$ index.php?eg_requestClass=$1&eg_requestID=index&%{QUERY_STRING} [L]
 RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
 
