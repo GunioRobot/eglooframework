@@ -51,6 +51,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
 	private function populateQueryWithVsprintf( $queryTransaction, $queryParameters, $associative = false, $sort = false ) {
 		// For now we're going to assume string
+		$connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;
 
@@ -65,7 +66,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			foreach($queryParameters as $key => $value) {
 				if ( $value['type'] === 'string' ) {
 					if (is_string($value['value'])) {
-						$processedParameters[] = mysql_real_escape_string($value['value']);
+						$processedParameters[] = $connection->real_escape_string($value['value']);
 					} else {
 						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
@@ -97,7 +98,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			$populatedDataPackageString = $dataPackageString;
 		}
 
-		$connection = DBConnectionManager::getConnection()->getRawConnectionResource();
+		// $connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$statement = $connection->stmt_init();
 
 		if (!$statement->prepare($populatedDataPackageString)) {
