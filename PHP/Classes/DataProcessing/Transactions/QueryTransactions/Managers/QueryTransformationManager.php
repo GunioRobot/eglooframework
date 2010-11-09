@@ -44,6 +44,10 @@ class QueryTransformationManager {
 
 		if ( $queryResponseTransaction->getQueryDialect() === DialectLibrary::MYSQL ) {
 			$retVal = new MySQLQueryResponseTransactionTransformRoutine();
+		} else if ( $queryResponseTransaction->getQueryDialect() === DialectLibrary::MYSQLI ) {
+			$retVal = new MySQLiQueryResponseTransactionTransformRoutine();
+		} else if ( $queryResponseTransaction->getQueryDialect() === DialectLibrary::MYSQLIOOP ) {
+			$retVal = new MySQLiOOPQueryResponseTransactionTransformRoutine();
 		}
 
 		return $retVal;

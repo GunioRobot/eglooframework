@@ -62,15 +62,25 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 		$this->prepareQueryParameters();
 		$this->populateQuery();
 
-		if ($this->_cache &&
-			($cachedResponse = $cacheGateway->getObject( md5($this->getPopulatedQuery()->getDataPackage()), 'array' )) != null) {
+		$dataPackage = $this->getPopulatedQuery()->getDataPackage();
+
+		if (is_array($dataPackage) && isset($dataPackage['preparedQueryString'])) {
+			$dataPackageString = $dataPackage['preparedQueryString'];
+		} else if (is_string($dataPackage)) {
+			$dataPackageString = $dataPackage;
+		} else {
+			$dataPackageString = null;
+		}
+
+		if ($this->_cache && $dataPackageString &&
+			($cachedResponse = $cacheGateway->getObject( md5($dataPackageString), 'array' )) != null) {
 			$this->setExecutedQueryResponseTransaction( $cachedResponse );
 		} else {
 			$this->executeQuery();
 
-			if ($this->_cache) {
+			if ($this->_cache && $dataPackageString) {
 				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( md5($this->getPopulatedQuery()->getDataPackage()), $this->getExecutedQueryResponseTransaction(), 'array', $this->_cache_ttl );
+				$cacheGateway->storeObject( md5($dataPackageString), $this->getExecutedQueryResponseTransaction(), 'array', $this->_cache_ttl );
 			}
 		}
 
