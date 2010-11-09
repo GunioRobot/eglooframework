@@ -56,27 +56,30 @@ class MySQLiOOPQueryExecutionRoutine extends QueryExecutionRoutine {
 
 		$metadata = $statement->result_metadata();
 
-		while($column = $metadata->fetch_field()) {
-			$var = $column->name;
-			$$var = NULL;
-			$refResults[] = &$$var;
-			$columns[] = $column->name;
-		}
-
-		call_user_func_array(array($statement, 'bind_result'), $refResults);
-
-		while($statement->fetch()) {
-			$i = 0;
-
-			foreach($columns as $value) {
-				$result[$value]  = $refResults[$i];
-				$i++;
+		if (isset($metadata) && !empty($metadata)) {
+			while($column = $metadata->fetch_field()) {
+				$var = $column->name;
+				$$var = NULL;
+				$refResults[] = &$$var;
+				$columns[] = $column->name;
 			}
 
-			$resultSet[] = $result;
+			call_user_func_array(array($statement, 'bind_result'), $refResults);
+
+			while($statement->fetch()) {
+				$i = 0;
+
+				foreach($columns as $value) {
+					$result[$value]  = $refResults[$i];
+					$i++;
+				}
+
+				$resultSet[] = $result;
+			}
+
+			$metadata->close();
 		}
 
-		$metadata->close();
 		$statement->close();
 
 		$queryResultResource = $resultSet;
