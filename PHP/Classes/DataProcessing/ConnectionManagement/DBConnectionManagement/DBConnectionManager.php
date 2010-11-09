@@ -253,7 +253,7 @@ final class DBConnectionManager extends ConnectionManager {
 			$user 			= $connection_info['user'];
 			$password	 	= $connection_info['password'];
 
-			$mysqli = new mysqli($host . ':' . $port, $user, $password, $dbname);
+			$mysqli = new mysqli($host, $user, $password, $dbname, $port);
 
 			if (mysqli_connect_errno()) {
 				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiOOPConnection.  Error: '
