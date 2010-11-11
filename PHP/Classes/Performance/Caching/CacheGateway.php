@@ -117,8 +117,14 @@ class CacheGateway {
 		return $this->_active;
 	}
 
-	public function deleteObject( $id ) {
+	public function deleteObject( $id, $namespace = null ) {
 		$retVal = null;
+
+		if ( !$namespace ) {
+			$namespace = 'egDefault';
+		}
+
+		$id = $namespace . '::' . $id;
 
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
@@ -126,14 +132,14 @@ class CacheGateway {
 					apc_delete($id);
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->delete( $id );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );				 
+						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 				$retVal = $this->_filecache[$id];
@@ -144,9 +150,15 @@ class CacheGateway {
 		return $retVal;
 	}
 
-	public function getObject( $id, $type ) {
+	public function getObject( $id, $namespace = null ) {
 		// TODO extensive error checking and input validation
 		$retVal = null;
+
+		if ( !$namespace ) {
+			$namespace = 'egDefault';
+		}
+
+		$id = $namespace . '::' . $id;
 
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
@@ -190,19 +202,37 @@ class CacheGateway {
 
 	public function getStats() {
 		$retVal = null;
-		
+
 		if ($this->_cache_tiers & self::USE_MEMCACHE) {
 			$retVal = $this->_memcache->getStats();
 		} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 			
 		}
-		
+
 		return $retVal;
 	}
 
-	public function storeObject( $id, $obj, $type, $ttl = 0 ) {
+	public function storeObject( $id, $obj, $namespace = null, $ttl = 0 ) {
 		// TODO extensive error checking and input validation
 		$retVal = null;
+
+		if ( !$namespace ) {
+			$namespace = 'egDefault';
+		}
+
+		$id = $namespace . '::' . $id;
+
+		// $egCacheMetadata = array(	'Applications' => array(),
+		// 							'Configuration' => array(),
+		// 							'Garbage' => array(),
+		// 							'History' => array(),
+		// 							'Log' => array(),
+		// 							'Namespaces' => array(),
+		// 							'Servers' => array(),
+		// 							'Statistics' => array(),
+		// 						);
+		// 
+		// $namespace = 
 
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
@@ -210,20 +240,20 @@ class CacheGateway {
 					$retVal = apc_store( $id, $obj, $ttl );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );							
+							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
 				$cache_pack = array();
-				
+
 				$blob = $obj;
-				
+
 				if (is_array($obj) || is_object($obj)) {
 					$cache_pack['serialized'] = true;
 					$cache_pack['base64'] = false;
@@ -355,8 +385,8 @@ class CacheGateway {
 			// TODO Add a check for this.  It's unlikely that someone will be switching
 			// applications or bundles and not want to invalidate application/bundle level
 			// caches, but who knows.
-			$egLastApplication = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', 'CoreeGloo');
-			$egLastUIBundle = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', 'CoreeGloo');
+			$egLastApplication = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', 'Runtime');
+			$egLastUIBundle = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', 'Runtime');
 			
 			$currentApplication = eGlooConfiguration::getApplicationName();
 			$currentBundle = eGlooConfiguration::getUIBundleName();
@@ -371,8 +401,8 @@ class CacheGateway {
 				$cacheGateway->flushUIBundleCache();
 			}
 
-			$egLastApplication = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', $currentApplication, 'CoreeGloo');
-			$egLastUIBundle = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', $currentBundle, 'CoreeGloo');
+			$egLastApplication = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', $currentApplication, 'Runtime');
+			$egLastUIBundle = $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', $currentBundle, 'Runtime');
 		}
 	}
 

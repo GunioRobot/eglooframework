@@ -109,7 +109,7 @@ class XHTMLBuilder extends TemplateBuilder {
 		} else {
 			$cacheGateway = CacheGateway::getCacheGateway();
 
-			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'string');
+			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'HardCache');
 
 		    if ( $retVal != null ) {
 				$this->output = $retVal;
@@ -147,7 +147,7 @@ class XHTMLBuilder extends TemplateBuilder {
 			try {
 				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'string', $this->ttl);
+				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
 			} catch (Exception $e) {
 				echo_r($e->getMessage());
 				die;

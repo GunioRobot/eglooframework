@@ -90,7 +90,7 @@ class JavascriptBuilder extends TemplateBuilder {
 		} else {
 			$cacheGateway = CacheGateway::getCacheGateway();
 
-			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'string');
+			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'HardCache');
 
 		    if ( $retVal != null ) {
 				$this->output = $retVal;
@@ -129,7 +129,7 @@ class JavascriptBuilder extends TemplateBuilder {
 			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 
 			$cacheGateway = CacheGateway::getCacheGateway();
-			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'string', $this->ttl);
+			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
 		} else {
 			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 		}

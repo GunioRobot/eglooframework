@@ -59,7 +59,7 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
 		 */
 		$cacheGateway = CacheGateway::getCacheGateway();
         
-        if ( ( $genericPLSelectQuery = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $genericQueryKeyLookup, '<type>' ) ) == null ) {
+        if ( ( $genericPLSelectQuery = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $genericQueryKeyLookup, 'GenericDAOQueries' ) ) == null ) {
 
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "PGSQLGenericPLFunctionDAO::selectGenericData - GenericPLSelectQuery $genericQueryKeyLookup, has not been made yet, building from XML" );
 
@@ -248,7 +248,7 @@ class PGSQLGenericPLFunctionDAO extends GenericPLFunctionDAO {
  		//cache this object
  		$genericQueryKeyLookup = $queryName;
 		$cacheGateway = CacheGateway::getCacheGateway();
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $genericQueryKeyLookup, $genericPLSelectQuery, '<type>' );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $genericQueryKeyLookup, $genericPLSelectQuery, 'GenericDAOQueries' );
 		
 		return $genericPLSelectQuery;
  		

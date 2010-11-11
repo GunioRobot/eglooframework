@@ -97,10 +97,10 @@ class CSVDispatcher extends TemplateDispatcher {
         if ( !isset(self::$singletonDispatcher) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', '<type>' ) ) == null ) {
+            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', 'ContentDispatching' ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new CSVDispatcher( $application, $interfaceBundle );
-                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', self::$singletonDispatcher, '<type>' );
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Singleton pulled from cache" );
             }

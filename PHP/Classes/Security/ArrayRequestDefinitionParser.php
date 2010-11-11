@@ -111,10 +111,10 @@ final class ArrayRequestDefinitionParser extends eGlooRequestDefinitionParser {
         if ( !isset(self::$singletonArrayRequestDefinitionParser) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonArrayRequestDefinitionParser = $cacheGateway->getObject( 'ArrayRequestDefinitionParserNodes', '<type>' ) ) == null ) {
+            if ( (self::$singletonArrayRequestDefinitionParser = $cacheGateway->getObject( 'ArrayRequestDefinitionParserNodes', 'RequestValidation' ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "ArrayRequestDefinitionParser: Building Singleton", 'Security' );
                 self::$singletonArrayRequestDefinitionParser = new ArrayRequestDefinitionParser( $webapp, $uibundle );
-                $cacheGateway->storeObject( 'ArrayRequestDefinitionParserNodes', self::$singletonArrayRequestDefinitionParser, '<type>' );
+                $cacheGateway->storeObject( 'ArrayRequestDefinitionParserNodes', self::$singletonArrayRequestDefinitionParser, 'RequestValidation' );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "ArrayRequestDefinitionParser: Singleton pulled from cache", 'Security' );
             }

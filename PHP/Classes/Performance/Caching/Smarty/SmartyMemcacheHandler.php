@@ -57,7 +57,7 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
     switch ($action) {
         case 'read':
             // read cache from shared memory
-            $cache_content = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $memcache_id, '<type>' );
+            $cache_content = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $memcache_id, 'SmartyMemcacheHandler' );
 
             $return = true;
             break;
@@ -67,7 +67,7 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
             $attributes = unserialize($split[1]);
             $ttl = $attributes['expires'] - time();
 
-            $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $memcache_id, $cache_content, '<type>', $ttl );
+            $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $memcache_id, $cache_content, 'SmartyMemcacheHandler', $ttl );
             $return = true;
             break;
         case 'clear':
@@ -77,7 +77,7 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
                 $results = false; 
                 //$results = mysql_query("delete from CACHE_PAGES"); 
             } else {
-                $cacheGateway->deleteObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $cache_id );
+                $cacheGateway->deleteObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $cache_id, 'SmartyMemcacheHandler' );
             }
              
             if(!$results) { 

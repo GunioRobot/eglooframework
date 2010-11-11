@@ -48,7 +48,7 @@ function __autoload($class_name) {
 
     $cacheGateway = CacheGateway::getCacheGateway();
 
-    if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'array' ) ) != null ) {
+    if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime' ) ) != null ) {
         if ( isset( $autoload_hash[$class_name] ) ) {
             include( $autoload_hash[$class_name] );
             return;
@@ -105,7 +105,7 @@ function __autoload($class_name) {
             if ( $realPath !== null ) {
                 include( $realPath );
                 $autoload_hash[$class_name] = realpath( $realPath );
-                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'array' );                
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );                
                 break;
             }
         }

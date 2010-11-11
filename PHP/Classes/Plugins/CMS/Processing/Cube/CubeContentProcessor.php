@@ -107,7 +107,7 @@ class CubeContentProcessor extends ContentProcessor {
 		 */
 		$cacheGateway = CacheGateway::getCacheGateway();
         
-        if ( ( $requestXMLObject = $cacheGateway->getObject( $path, '<type>' ) ) == null ) {
+        if ( ( $requestXMLObject = $cacheGateway->getObject( $path, 'Cubes' ) ) == null ) {
 
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "CubeContentProcessor::loadXML -  $path, has not been loaded yet, reading the xml" );
 
@@ -117,7 +117,7 @@ class CubeContentProcessor extends ContentProcessor {
 			 */	
 			$requestXMLObject = simplexml_load_file( $path )->asXML(); 	
 			
-			$cacheGateway->storeObject( $path, $requestXMLObject, '<type>' );
+			$cacheGateway->storeObject( $path, $requestXMLObject, 'Cubes' );
 			
         } else {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "CubeContentProcessor::loadXML - $path Grabbed from cache!" );

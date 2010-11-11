@@ -94,8 +94,8 @@ class JavascriptRequestProcessor extends RequestProcessor {
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, $output, '<type>' );
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, 'Content-type: text/javascript', '<type>' );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, $output, 'HardCache' );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, 'Content-type: text/javascript', 'HardCache' );
 
         header('Content-type: text/javascript');
 

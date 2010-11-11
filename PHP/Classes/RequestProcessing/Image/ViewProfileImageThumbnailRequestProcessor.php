@@ -48,7 +48,7 @@ class ViewProfileImageThumbnailRequestProcessor extends RequestProcessor {
         $cacheID = 'ProfileImageThumb|' . $requestedProfileID . '|' . $requestedProfileImageHash;
 
         $cacheGateway = CacheGateway::getCacheGateway();
-        $profileImageThumbnailDTO = $cacheGateway->getObject( $cacheID, '<type>' );
+        $profileImageThumbnailDTO = $cacheGateway->getObject( $cacheID, 'Content' );
         
         // FIX We probably shouldn't be caching these using the requested hash if it doesn't match
         // the real hash...
@@ -95,7 +95,7 @@ class ViewProfileImageThumbnailRequestProcessor extends RequestProcessor {
 	        $profileImageThumbnailDTO->setImageFileHash( $imageDTO->getImageFileHash() );
 	        $profileImageThumbnailDTO->setImageContent( MagickGetImageBlob( $magickWand ) );
 
-            $cacheGateway->storeObject( $cacheID, $profileImageThumbnailDTO, '<type>', 3600 );
+            $cacheGateway->storeObject( $cacheID, $profileImageThumbnailDTO, 'Content', 3600 );
             eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Thumbnail Pulled from DB' );
         } else {
             eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Profile Image Thumbnail Pulled from Cache' );

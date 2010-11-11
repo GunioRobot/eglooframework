@@ -67,7 +67,7 @@ class eGlooRequestLibrary {
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$requestNodes = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes', '<type>' );
+		$requestNodes = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes', 'RequestValidation' );
 
 		if ( $requestNodes == null ) {
 			

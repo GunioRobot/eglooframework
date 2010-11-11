@@ -175,7 +175,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 						$this->_queryExecutionSteps[$subQuery]['cache'] &&
-						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'array' )) != null) {
+						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
 						$queryResponseTransaction = $cachedResponse;
 					} else {
 						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -190,7 +190,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 							}
 
 							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'array', $cache_ttl );
+							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
 						}
 					}
 
@@ -206,7 +206,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 						$this->_queryExecutionSteps[$subQuery]['cache'] &&
-						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'array' )) != null) {
+						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
 						$queryResponseTransaction = $cachedResponse;
 					} else {
 						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -221,7 +221,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 							}
 
 							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'array', $cache_ttl );
+							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
 						}
 					}
 
@@ -237,7 +237,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 			if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 				$this->_queryExecutionSteps[$subQuery]['cache'] &&
-				($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'array' )) != null) {
+				($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
 				$queryResponseTransaction = $cachedResponse;
 			} else {
 				$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -252,7 +252,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					}
 
 					$cacheGateway = CacheGateway::getCacheGateway();
-					$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'array', $cache_ttl );
+					$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
 				}
 			}
 

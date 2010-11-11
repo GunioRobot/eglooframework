@@ -191,11 +191,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$cacheGateway = CacheGateway::getCacheGateway();
 			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
-				$uniqueKey, $requestAttributeSets[$attributeSetID], '<type>' );
+				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation' );
 		}
 
 		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
-			$this->attributeSets, '<type>' );
+			$this->attributeSets, 'RequestValidation' );
 
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
@@ -453,15 +453,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				$cacheGateway = CacheGateway::getCacheGateway();
 				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], '<type>' );
+					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation' );
             }
         }
 
 		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
-			$this->requestNodes, '<type>' );
+			$this->requestNodes, 'RequestValidation' );
 
 		$cacheGateway = CacheGateway::getCacheGateway();
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, '<type>' );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation' );
 
 		// unset($this->requestNodes);
 	}
@@ -522,21 +522,21 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 		$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-			$requestLookup, '<type>' );
+			$requestLookup, 'RequestValidation' );
 
         if ( $requestNode == null ) {
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
 			$allNodesCached = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
-				'XML2ArrayRequestDefinitionParser::NodesCached', '<type>' );
+				'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
 
 			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
 				// We didn't find the request node and we are cached, so let's see if this request class has a request ID default cached
 				if ( $useRequestIDDefaultHandler) {
 					$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-						$requestClass . self::$_requestIDWildcard, '<type>' );
+						$requestClass . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
 						$requestInfoBean->setWildCardRequest( true );
@@ -548,7 +548,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				if ( $requestNode == null && $useRequestClassDefaultHandler ) {
 					// Still no request node, let's see if there's a generic set in cache
 					$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-						self::$_requestClassWildcard . self::$_requestIDWildcard, '<type>' );
+						self::$_requestClassWildcard . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
 						$requestInfoBean->setWildCardRequest( true );

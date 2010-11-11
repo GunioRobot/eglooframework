@@ -58,8 +58,8 @@ $hardCacheHeaderID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' 
 
 $cacheGateway = CacheGateway::getCacheGateway();
 
-if (($output = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, '<type>' )) != null) {
-	header( $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, '<type>' ) );
+if (($output = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, 'HardCache' )) != null) {
+	header( $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, 'HardCache' ) );
 	echo $output;
 } else {
 	// Validate this request and update the info bean accordingly
