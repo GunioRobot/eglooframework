@@ -155,6 +155,25 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
 			}
 
+			$requestAttributeSets[$attributeSetID]['attributes']['complexArguments'] = array();
+
+			foreach( $attributeSet->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
+				$newComplexArgument = array();
+
+				$newComplexArgument['id'] = (string) $complexArgument['id'];
+				$newComplexArgument['type'] = strtolower( (string) $complexArgument['type'] );
+				$newComplexArgument['required'] = strtolower( (string) $complexArgument['required'] );
+				$newComplexArgument['validator'] = (string) $complexArgument['validator'];
+
+				if ( isset($complexArgument['scalarType']) ) {
+					$newComplexArgument['scalarType'] =  (string) $complexArgument['scalarType'];
+				} else if ( isset($complexArgument['complexType']) ) {
+					$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
+				}
+
+				$requestAttributeSets[$attributeSetID]['attributes']['complexArguments'][$newComplexArgument['id']] = $newComplexArgument;
+			}
+
 			$requestAttributeSets[$attributeSetID]['attributes']['depends'] = array();
 
 			foreach( $attributeSet->xpath( 'child::Depend' ) as $depend ) {
@@ -300,6 +319,25 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
 				}
 
+				$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'] = array();
+
+				foreach( $request->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
+					$newComplexArgument = array();
+
+					$newComplexArgument['id'] = (string) $complexArgument['id'];
+					$newComplexArgument['type'] = strtolower( (string) $complexArgument['type'] );
+					$newComplexArgument['required'] = strtolower( (string) $complexArgument['required'] );
+					$newComplexArgument['validator'] = (string) $complexArgument['validator'];
+
+					if ( isset($complexArgument['scalarType']) ) {
+						$newComplexArgument['scalarType'] =  (string) $complexArgument['scalarType'];
+					} else if ( isset($complexArgument['complexType']) ) {
+						$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
+					}
+
+					$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$newComplexArgument['id']] = $newComplexArgument;
+				}
+
 				$requestClasses[$requestClassID]['requests'][$requestID]['depends'] = array();
 
 				foreach( $request->xpath( 'child::Depend' ) as $depend ) {
@@ -354,6 +392,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$boolArguments = $requestAttributeSet['attributes']['boolArguments'];
 					$selectArguments = $requestAttributeSet['attributes']['selectArguments'];
 					$variableArguments = $requestAttributeSet['attributes']['variableArguments'];
+					$complexArguments = $requestAttributeSet['attributes']['complexArguments'];
 					$depends = $requestAttributeSet['attributes']['depends'];
 					$decorators = $requestAttributeSet['attributes']['decorators'];
 
@@ -404,6 +443,23 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
 						} else {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence variable argument ' . $variableArgument['id'] .
+								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
+						}
+					}
+
+					foreach( $complexArguments as $complexArgument ) {
+						if ( !isset($requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting complex argument ' . $complexArgument['id'] .
+								' from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']] = $complexArgument;
+						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority']) &&
+							 	$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority'] < $priority ) {
+
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence complex argument ' . $complexArgument['id'] .
+								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
+							$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']] = $complexArgument;
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence complex argument ' . $complexArgument['id'] .
 								' exists.  Skipping for ' . $requestAttributeSetID, 'Security' );
 						}
 					}
@@ -621,7 +677,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		
 		//check variable arguments
 		if( !$this->validateVariableArguments( $requestNode, $requestInfoBean ) ) return false;
-		
+
+		//check complex arguments
+		if( !$this->validateComplexArguments( $requestNode, $requestInfoBean ) ) return false;
+
 		//check select arguments
 		if( !$this->validateSelectArguments( $requestNode, $requestInfoBean ) ) return false;
 		
@@ -746,7 +805,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * @return true if all variable arguments pass the test, false otherwise
 	 */
 	private function validateVariableArguments( $requestNode, $requestInfoBean ){
-
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		 
 		 foreach( $requestNode['variableArguments'] as $variableArg ) {
@@ -980,8 +1038,252 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		
 		return true;
 	}
-	
 
+	/**
+	 * validate complex parameters
+	 * 
+	 * @return true if all complex arguments pass the test, false otherwise
+	 */
+	private function validateComplexArguments( $requestNode, $requestInfoBean ) {
+		$retVal = false;
+
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
+		 
+		 foreach( $requestNode['complexArguments'] as $complexArg ) {
+			// die_r($complexArg);
+			if( $complexArg['type'] === 'get' ){
+
+				if( !isset( $_GET[ $complexArg['id'] ] ) ){
+					
+					//check if required
+					if( $complexArg['required'] === "true") {
+						$errorMessage = "Required complex parameter: " . $complexArg['id'] . 
+                            " is not set in GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					} else if (isset($complexArg['default'])) {
+						if ( isset($complexArg['scalarType']) ) {
+							if ( $complexArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setGET( $complexArg['id'],  intval($complexArg['default']));
+							} else if ( $complexArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setGET( $complexArg['id'],  floatval($complexArg['default']));
+							}
+						} else {
+							$requestInfoBean->setGET( $complexArg['id'],  $complexArg['default'] );
+						}
+					}
+				} else {
+					$complexValue = $_GET[ $complexArg['id'] ];
+
+					$validator = $complexArg['validator'];
+					$validatorObj = new $validator();
+
+					if (isset($complexArg['complexType'])) {
+						$complexType = $complexArg['complexType'];
+					} else if ( isset($complexArg['scalarType']) ) {
+						$scalarType = $complexArg['scalarType'];
+
+						// TODO enforce scalar type
+
+						// We don't use a complexType here
+						$complexType = null;
+					}
+
+					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
+
+					if ( isset($validatedInput) && $validatedInput ) {
+						$requestInfoBean->setGET( $complexArg['id'],  $validatedInput );
+					} else {
+						$errorMessage = "Complex parameter: " . $complexArg['id'] . 
+							" with value '" . $complexValue . "' is not valid" .
+							" in GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				}
+			} else if ( $complexArg['type'] === 'getarray' ) {
+				if( !isset( $_GET[ $complexArg['id'] ] ) ){
+					//check if required
+					if( $complexArg['required'] === "true") {
+						$errorMessage = "Required variable parameter: " . $complexArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				} else {
+					//check if correctly formatted
+					$complexValues = $_GET[ $complexArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-GET array variable as an array
+					if (!is_array($complexValues)) {
+						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $complexArg['id'] . '\' is type \'' .
+							gettype($complexValues) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
+					$validator = $complexArg['validator'];
+					$validatorObj = new $validator();
+
+					if (isset($complexArg['complexType'])) {
+						$complexType = $complexArg['complexType'];
+					} else if ( isset($complexArg['scalarType']) ) {
+						$scalarType = $complexArg['scalarType'];
+
+						// TODO enforce scalar type
+
+						// We don't use a complexType here
+						$complexType = null;
+					}
+
+					$validatedInput = $validatorObj->validate( $complexValues, $complexType );
+
+					if ( isset($validatedInput) && $validatedInput ) {
+						$requestInfoBean->setGET( $complexArg['id'],  $validatedInput );
+					} else {
+						$errorMessage = "Complex parameter: " . $complexArg['id'] . 
+							" with value '" . $complexValues . "' is not valid" .
+							" in GET request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				}
+			} else if ( $complexArg['type'] === 'post' ) {
+				if( !isset( $_POST[ $complexArg['id'] ] ) ){
+					//check if required
+					if( $complexArg['required'] === "true") {
+						$errorMessage = "Required complex parameter: " . $complexArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					} else if (isset($complexArg['default'])) {
+						if ( isset($complexArg['scalarType']) ) {
+							if ( $complexArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setPOST( $variableArg['id'],  intval($complexArg['default']));
+							} else if ( $complexArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setPOST( $complexArg['id'],  floatval($complexArg['default']));
+							}
+						} else {
+							$requestInfoBean->setPOST( $complexArg['id'],  $complexArg['default'] );
+						}
+					}
+				} else {
+					//check if correctly formatted
+					$complexValue = $_POST[ $complexArg['id'] ];
+					$validator = $complexArg['validator'];
+					$validatorObj = new $validator();
+
+					if (isset($complexArg['complexType'])) {
+						$complexType = $complexArg['complexType'];
+					} else if ( isset($complexArg['scalarType']) ) {
+						$scalarType = $complexArg['scalarType'];
+
+						// TODO enforce scalar type
+
+						// We don't use a complexType here
+						$complexType = null;
+					}
+
+					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
+
+					if ( isset($validatedInput) && $validatedInput ) {
+						$requestInfoBean->setPOST( $complexArg['id'],  $validatedInput );
+					} else {
+						$errorMessage = "Complex parameter: " . $complexArg['id'] . 
+							" with value '" . $complexValue . "' is not valid" .
+							" in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				}
+			} else if ( $complexArg['type'] === 'postarray') {
+				if( !isset( $_POST[ $complexArg['id'] ] ) ){
+					//check if required
+					if( $complexArg['required'] === "true") {
+						$errorMessage = "Required complex parameter: " . $complexArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+				} else {
+					$complexValues = $_POST[ $complexArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-post array variable as an array
+					if (!is_array($complexValues)) {
+						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $complexArg['id'] . '\' is type \'' .
+							gettype($complexValues) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
+					$validator = $complexArg['validator'];
+					$validatorObj = new $validator();
+
+					if (isset($complexArg['complexType'])) {
+						$complexType = $complexArg['complexType'];
+					} else if ( isset($complexArg['scalarType']) ) {
+						$scalarType = $complexArg['scalarType'];
+
+						// TODO enforce scalar type
+
+						// We don't use a complexType here
+						$complexType = null;
+					}
+
+					$validatedInput = $validatorObj->validate( $complexValues, $complexType );
+
+					if ( isset($validatedInput) && $validatedInput ) {
+						$requestInfoBean->setPOST( $complexArg['id'],  $validatedInput );
+					} else {
+						$errorMessage = "Complex parameter: " . $complexArg['id'] . 
+							" with value '" . $complexValues . "' is not valid" .
+							" in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+							throw new ErrorException($errorMessage);
+						}
+
+						return false;
+					}
+
+				}
+			}
+		} 
+		
+		return true;
+	}
 
 	/**
 	 * validate select arguments
