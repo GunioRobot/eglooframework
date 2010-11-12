@@ -38,15 +38,29 @@
  */
 class RuntimeCacheRegionHandler extends CacheRegionHandler {
 
-	public static function getAllCacheEntries() {
+	private static $_egCacheMetadataNamespace = 'Runtime';
+
+	public function getAllCacheEntries() {
+		$retVal = array();
+
+		$cacheGateway = CacheGateway::getCacheGateway();
+		
+		$metadata = $cacheGateway->getObject( 'egCacheMetadata', 'egCacheManagement' );
+
+		if ($metadata == null) {
+			$metadata = array();
+		}
+
+		$retVal = $metadata['Regions'][self::$_egCacheMetadataNamespace]['Entries'];
+
+		return $retVal;
+	}
+
+	public function getAllCacheEntriesByNamespace() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 	}
 
-	public static function getAllCacheEntriesByNamespace() {
-		$cacheGateway = CacheGateway::getCacheGateway();
-	}
-
-	public static function getObject( $key, $namespace = 'Runtime' ) {
+	public function getObject( $key, $namespace = 'Runtime' ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
@@ -56,18 +70,28 @@ class RuntimeCacheRegionHandler extends CacheRegionHandler {
 		return $retVal;
 	}
 
-	public static function storeObject( $key, $value, $namespace = 'Runtime', $ttl = 0 ) {
+	public function storeObject( $key, $value, $namespace = 'Runtime', $ttl = 0 ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
+		$metadata = $cacheGateway->getObject( 'egCacheMetadata', 'egCacheManagement' );
+
+		if ($metadata == null) {
+			$metadata = array('Regions' => array(self::$_egCacheMetadataNamespace => array('Entries' => array())));
+		}
+
+		$metadata['Regions'][self::$_egCacheMetadataNamespace]['Entries'][$key] = 
+			array('key' => $key, 'value' => $value, 'ttl' => $ttl, 'lastUpdated' => time());
 
 		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl );
+		
+		$cacheGateway->storeObject( 'egCacheMetadata', $metadata, 'egCacheManagement' );
 
 		return $retVal;
 	}
 
-	public static function deleteObject( $key, $namespace = 'Runtime' ) {
+	public function deleteObject( $key, $namespace = 'Runtime' ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
@@ -77,27 +101,27 @@ class RuntimeCacheRegionHandler extends CacheRegionHandler {
 		return $retVal;
 	}
 
-	public static function getStats() {
+	public function getStats() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 
 		return $cacheGateway->getStats();
 	}
 
-	public static function getHistory() {
+	public function getHistory() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 	}
 
-	public static function getLogging() {
+	public function getLogging() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 	}
 
-	public static function initialize() {
+	public function initialize() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 		
 		return $cacheGateway->initialize();
 	}
 
-	public static function flush() {
+	public function flush() {
 		$cacheGateway = CacheGateway::getCacheGateway();
 		
 		return $cacheGateway->flushAllCache();

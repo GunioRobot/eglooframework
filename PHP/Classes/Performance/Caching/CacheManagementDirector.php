@@ -39,17 +39,17 @@
 class CacheManagementDirector {
 
 	private static $_cacheRegions = array(
-		'Configuration',
-		'Content',
-		'DataProcessing',
-		'Dispatches',
-		'History',
-		'Logging',
-		'RequestProcessing',
+		// 'Configuration',
+		// 'Content',
+		// 'DataProcessing',
+		// 'Dispatches',
+		// 'History',
+		// 'Logging',
+		// 'RequestProcessing',
 		'Runtime',
-		'Session',
-		'Static',
-		'Templating',
+		// 'Session',
+		// 'Static',
+		// 'Templating',
 	);
 
 	public static function getCacheRegionHandler( $region ) {
@@ -128,7 +128,10 @@ class CacheManagementDirector {
 		$retVal = array();
 
 		foreach(self::$_cacheRegions as $cacheRegion) {
-			$retVal[$cacheRegion] = array(array('key' => 'foo', 'value' => 'bar', 'ttl' => 99, 'lastUpdated' => 971918));
+			$handler = self::getCacheRegionHandler($cacheRegion);
+			
+			$retVal[$cacheRegion] = $handler->getAllCacheEntries();
+			// $retVal[$cacheRegion] = array(array('key' => 'foo', 'value' => 'bar', 'ttl' => 99, 'lastUpdated' => 971918));
 		}
 
 		return $retVal;

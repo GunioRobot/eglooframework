@@ -46,6 +46,18 @@ if ( !class_exists( 'CacheGateway', false ) ) {
 	include( 'PHP/Classes/Performance/Caching/CacheGateway.php' );
 }
 
+if ( !class_exists( 'CacheManagementDirector', false ) ) {
+	include( 'PHP/Classes/Performance/Caching/CacheManagementDirector.php' );
+}
+
+if ( !class_exists( 'CacheRegionHandler', false ) ) {
+	include( 'PHP/Classes/Performance/Caching/RegionHandlers/CacheRegionHandler.php' );
+}
+
+if ( !class_exists( 'RuntimeCacheRegionHandler', false ) ) {
+	include( 'PHP/Classes/Performance/Caching/RegionHandlers/RuntimeCacheRegionHandler.php' );
+}
+
 // CacheGateway::initialize();
 
 // Register eGloo Autoloader
@@ -78,9 +90,10 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
  * @param string $class_name class or interface to load
  */
 function eglooAutoload($class_name) {
-	$cacheGateway = CacheGateway::getCacheGateway();
+	// $cacheGateway = CacheGateway::getCacheGateway();
+	$runtimeCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Runtime');
 
-	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime' ) ) != null ) {
+	if ( ( $autoload_hash = $runtimeCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime' ) ) != null ) {
 		if ( isset( $autoload_hash[$class_name] ) ) {
 			// Make sure we didn't just mark this as "not found"
 			if ( $autoload_hash[$class_name] !== false ) {
@@ -195,7 +208,7 @@ function eglooAutoload($class_name) {
 
 				include( $realPath );
 				$autoload_hash[$class_name] = realpath( $realPath );
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
+				$runtimeCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
 				break;
 			}
 		}
@@ -205,7 +218,7 @@ function eglooAutoload($class_name) {
 	// TODO In the future, we should branch on this depending on deployment type
 	if ( $realPath === null ) {
 		$autoload_hash[$class_name] = false;
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
+		$runtimeCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
 	}
 
 }

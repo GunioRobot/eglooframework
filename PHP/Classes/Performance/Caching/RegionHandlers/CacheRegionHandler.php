@@ -38,25 +38,25 @@
  */
 abstract class CacheRegionHandler {
 
-	abstract public static function getAllCacheEntries();
+	abstract public function getAllCacheEntries();
 
-	abstract public static function getAllCacheEntriesByNamespace();
+	abstract public function getAllCacheEntriesByNamespace();
 
-	abstract public static function getObject( $key, $namespace );
+	abstract public function getObject( $key, $namespace );
 
-	abstract public static function storeObject( $key, $value, $namespace, $ttl );
+	abstract public function storeObject( $key, $value, $namespace, $ttl );
 
-	abstract public static function deleteObject( $key, $namespace );
+	abstract public function deleteObject( $key, $namespace );
 
-	abstract public static function getStats();
+	abstract public function getStats();
 
-	abstract public static function getHistory();
+	abstract public function getHistory();
 
-	abstract public static function getLogging();
+	abstract public function getLogging();
 
-	abstract public static function initialize();
+	abstract public function initialize();
 
-	abstract public static function flush();
+	abstract public function flush();
 
 }
 

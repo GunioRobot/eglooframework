@@ -60,10 +60,54 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 		// $systemActions = $systemInfoBean->getValue('SystemActions');
 		$cacheData = CacheManagementDirector::getAllCacheEntries();
 		$cacheRegionLabels = CacheManagementDirector::getAllCacheRegionLabels();
+// highlighted_entry
+
+		if ( $this->requestInfoBean->issetGET('action') ) {
+			$action = $this->requestInfoBean->getGET('action');
+		} else {
+			$action = null;
+		}
+
+		if ( $this->requestInfoBean->issetGET('region') ) {
+			$region = $this->requestInfoBean->getGET('region');
+		} else {
+			$region = null;
+		}
+
+		if ( $this->requestInfoBean->issetGET('cacheKey') ) {
+			$cacheKey = $this->requestInfoBean->getGET('cacheKey');
+		} else {
+			$cacheKey = null;
+		}
+
+		$highlighted_entry = array();
+
+		if ( $action && $region && $cacheKey ) {
+			
+
+			$highlighted_entry['key'] = $cacheKey;
+			$highlighted_entry['value'] = $cacheData[$region][$cacheKey]['value'];
+			$highlighted_entry['ttl'] = $cacheData[$region][$cacheKey]['ttl'];
+			$highlighted_entry['lastUpdated'] = $cacheData[$region][$cacheKey]['lastUpdated'];
+
+			switch($action) {
+				case 'view' :
+					break;
+				case 'edit' :
+					break;
+				case 'delete' :
+					break;
+				default :
+					break;
+			}
+		}
+
+		$this->setTemplateVariable('highlighted_entry', $highlighted_entry);
 
 		$this->setTemplateVariable('cacheData', $cacheData);
 		$this->setTemplateVariable('cacheRegionLabels', $cacheRegionLabels);
 		$this->setTemplateVariable('systemActions', array());
+		$this->setTemplateVariable('requestURI', $this->requestInfoBean->getFullyQualifiedRequestString(array('action','region','cacheKey')));
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}
