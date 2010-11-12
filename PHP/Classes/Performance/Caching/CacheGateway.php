@@ -222,6 +222,20 @@ class CacheGateway {
 
 		$id = $namespace . '::' . $id;
 
+/*
+'Configuration',
+'Content',
+'DataProcessing',
+'Dispatches',
+'History',
+'Logging',
+'RequestProcessing',
+'Runtime',
+'Session',
+'Static',
+'Templating',
+
+*/
 		// $egCacheMetadata = array(	'Applications' => array(),
 		// 							'Configuration' => array(),
 		// 							'Garbage' => array(),

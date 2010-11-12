@@ -38,5 +38,106 @@
  */
 class CacheManagementDirector {
 
+	private static $_cacheRegions = array(
+		'Configuration',
+		'Content',
+		'DataProcessing',
+		'Dispatches',
+		'History',
+		'Logging',
+		'RequestProcessing',
+		'Runtime',
+		'Session',
+		'Static',
+		'Templating',
+	);
+
+	public static function getCacheRegionHandler( $region ) {
+		$retVal = null;
+
+		switch($region) {
+			case 'Configuration' :
+				$retVal = new ConfigurationCacheRegionHandler();
+				break;
+			case 'Content' :
+				$retVal = new ContentCacheRegionHandler();
+				break;
+			case 'DataProcessing' :
+				$retVal = new DataProcessingCacheRegionHandler();
+				break;
+			case 'Dispatches' :
+				$retVal = new DispatchesCacheRegionHandler();
+				break;
+			case 'History' :
+				$retVal = new HistoryCacheRegionHandler();
+				break;
+			case 'Logging' :
+				$retVal = new LoggingCacheRegionHandler();
+				break;
+			case 'RequestProcessing' :
+				$retVal = new RequestProcessingCacheRegionHandler();
+				break;
+			case 'Runtime' :
+				$retVal = new RuntimeCacheRegionHandler();
+				break;
+			case 'Session' :
+				$retVal = new SessionCacheRegionHandler();
+				break;
+			case 'Static' :
+				$retVal = new StaticCacheRegionHandler();
+				break;
+			case 'Templating' :
+				$retVal = new TemplatingCacheRegionHandler();
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
+	public static function getCacheGatewayNamespaces() {
+		
+	}
+
+	public static function getCacheGatewayKeysByNamespace() {
+		
+	}
+
+	public static function getAllCacheGatewayKeys() {
+		
+	}
+
+	public static function getAllCacheRegionLabels() {
+		return self::$_cacheRegions;
+	}
+
+	public static function getAllCacheRegionMetadata() {
+		
+	}
+
+	public static function getAllCacheEntriesByRegion() {
+
+	}
+
+	public static function getAllCacheEntriesByRegionAndNamespace() {
+
+	}
+
+	public static function getAllCacheEntries() {
+		$retVal = array();
+
+		foreach(self::$_cacheRegions as $cacheRegion) {
+			$retVal[$cacheRegion] = array(array('key' => 'foo', 'value' => 'bar', 'ttl' => 99, 'lastUpdated' => 971918));
+		}
+
+		return $retVal;
+	}
+
+	// Not sure why you'd ever need this, but if you do, we'll let you eventually
+	public static function getAllCacheRegions() {
+		
+	}
+
 }
 

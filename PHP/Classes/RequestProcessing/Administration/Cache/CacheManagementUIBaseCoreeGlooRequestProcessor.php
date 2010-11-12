@@ -58,7 +58,11 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 
 		// $systemInfoBean = SystemInfoBean::getInstance();
 		// $systemActions = $systemInfoBean->getValue('SystemActions');
-		
+		$cacheData = CacheManagementDirector::getAllCacheEntries();
+		$cacheRegionLabels = CacheManagementDirector::getAllCacheRegionLabels();
+
+		$this->setTemplateVariable('cacheData', $cacheData);
+		$this->setTemplateVariable('cacheRegionLabels', $cacheRegionLabels);
 		$this->setTemplateVariable('systemActions', array());
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processRequest()" );

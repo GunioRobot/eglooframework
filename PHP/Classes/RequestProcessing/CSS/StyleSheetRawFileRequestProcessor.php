@@ -62,7 +62,8 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 
 		$matches = array();
 		preg_match('~^([^/]*)?/?([^/]*)$~', $file_name, $matches);
-		
+
+		// TODO fix this so it can handle multi-level deep
 		if (trim($matches[2]) === '') {
 			$file_name = $matches[1];
 			$user_agent_hash = '';
