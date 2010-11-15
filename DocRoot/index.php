@@ -70,8 +70,14 @@ if (($output = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceId
 		$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
 		$requestProcessor->processRequest();
 	} else {
-		// We probably want to do something a bit more... elegant here.  Eventually
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );
+		$errorRequestProcessor = RequestProcessorFactory::getErrorRequestProcessor( $requestInfoBean );
+		
+		if ($errorRequestProcessor) {
+			$errorRequestProcessor->processErrorRequest();
+		} else {
+			// We probably want to do something a bit more... elegant here.  Eventually
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );
+		}
 	}
 }
 

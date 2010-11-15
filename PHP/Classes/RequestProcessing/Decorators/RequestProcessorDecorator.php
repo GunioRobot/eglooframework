@@ -49,6 +49,13 @@ abstract class RequestProcessorDecorator extends RequestProcessor {
 		
 	}
 
+	public function processErrorRequest() {
+		if( $this->errorRequestPreProcessing() ){
+			$this->childRequestProcessor->processErrorRequest();
+		}
+		$this->errorRequestPostProcessing();
+	}
+
 	public function setRequestInfoBean( $requestInfoBean ){
 		$this->childRequestProcessor->setRequestInfoBean( $requestInfoBean );
 	}
@@ -60,14 +67,21 @@ abstract class RequestProcessorDecorator extends RequestProcessor {
    /**
 	* override if needed in sub classes of the this decorator
 	*/
-   abstract protected function requestPreProcessing();
+	abstract protected function requestPreProcessing();
 
    /**
 	* override if needed in sub classes of the this decorator
 	*/
-   abstract protected function requestPostProcessing();
+	abstract protected function requestPostProcessing();
    
-	
+	protected function errorRequestPreProcessing() {
+		
+	}
+
+	protected function errorRequestPostProcessing() {
+		
+	}
+
   }
  
  

@@ -60,6 +60,31 @@ final class RequestProcessorFactory {
         return $requestProcessor;
     }
 
+    public static function getErrorRequestProcessor( $requestInfoBean ) {
+        $errorRequestProcessorID = $requestInfoBean->getErrorRequestProcessorID();
+        $errorRequestProcessor = null;
+
+		$errorRequestProcessorID = (string) $errorRequestProcessorID;
+
+		if ( $errorRequestProcessorID !== null ) {
+			$errorRequestProcessor = new $errorRequestProcessorID;
+
+			//now add the decorators
+			foreach( $requestInfoBean->getDecoratorArray() as $decoratorID ){
+				$requestDecorator = new $decoratorID;
+
+				$requestDecorator->setChildRequestProcessor( $errorRequestProcessor );
+
+				//now set this decorator as the request processor
+				$errorRequestProcessor = $requestDecorator;
+			}
+		}
+
+        $errorRequestProcessor->setRequestInfoBean( $requestInfoBean );
+
+        return $errorRequestProcessor;
+    }
+
 }
  
 ?>

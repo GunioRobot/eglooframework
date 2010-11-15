@@ -258,6 +258,15 @@ class RequestInfoBean {
 		return $this->requestProcessorID;
 	}	
 
+	public function setErrorRequestProcessorID( $errorRequestProcessorID ) {
+		$this->errorRequestProcessorID = $errorRequestProcessorID;
+	}
+	
+	public function getErrorRequestProcessorID() {
+		return $this->errorRequestProcessorID;
+	}	
+
+
 	public function getFullyQualifiedRequestString( $keys_to_ignore = array() ) {
 		$retVal = $this->requestClass . '/' . $this->requestID . '?';
 

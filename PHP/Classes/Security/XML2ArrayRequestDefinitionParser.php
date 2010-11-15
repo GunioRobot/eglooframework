@@ -228,6 +228,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
             foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
 				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
 				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
+				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
 
 				if ( !$requestID || trim($requestID) === '' ) {
 					throw new ErrorException("No request ID specified in request class: '" . $requestClassID .
@@ -241,7 +242,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				// Request Properties
 				$requestClasses[$requestClassID]['requests'][$requestID] =
-					array('requestClass' => $requestClassID, 'requestID' => $requestID, 'processorID' => $processorID );
+					array('requestClass' => $requestClassID, 'requestID' => $requestID, 'processorID' => $processorID, 'errorProcessorID' => $errorProcessorID );
 
 				// Arguments
 				$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'] = array();
@@ -667,6 +668,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$processorID = $requestNode[ self::PROCESSOR_ID_KEY ];
 		$requestInfoBean->setRequestProcessorID( $processorID );
 
+		$errorProcessorID = $requestNode[ self::ERROR_PROCESSOR_ID_KEY ];
+		$requestInfoBean->setErrorRequestProcessorID( $errorProcessorID );
+
 		/**
 		 * Now verify the contents of the request before we hand this off 
 		 * for further processing
@@ -722,7 +726,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -740,7 +744,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not in correct 'true' or 'false' format in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -763,7 +767,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -781,7 +785,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not in correct 'true' or 'false' format in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -818,7 +822,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -849,7 +853,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -877,7 +881,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -930,7 +934,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -961,7 +965,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -989,7 +993,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1061,7 +1065,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1104,7 +1108,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1119,7 +1123,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1159,7 +1163,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1174,7 +1178,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1217,7 +1221,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1232,7 +1236,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1271,7 +1275,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1304,7 +1308,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1339,7 +1343,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             "GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1368,7 +1372,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1405,7 +1409,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             "POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 							throw new ErrorException($errorMessage);
 						}
 
@@ -1454,7 +1458,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 									"' on the GET request which is not set in request with id: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 									throw new ErrorException($errorMessage);
 								}
 
@@ -1471,7 +1475,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                                     "' on the POST request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 									throw new ErrorException($errorMessage);
 								}
 
@@ -1501,7 +1505,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                                     "' on the GET request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 									throw new ErrorException($errorMessage);
 								}
 
@@ -1520,7 +1524,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                                     "' on the POST request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
 									throw new ErrorException($errorMessage);
 								}
 

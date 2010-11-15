@@ -44,6 +44,7 @@ abstract class eGlooRequestDefinitionParser {
 	const REQUEST_ID_KEY = "eg_requestID";
 	const REQUEST_CLASS_KEY = "eg_requestClass";
 	const PROCESSOR_ID_KEY = "processorID";
+	const ERROR_PROCESSOR_ID_KEY = "processorID";
 
 	// We DO NOT declare this so that child classes will define it and will be responsible
 	// for containing their own singletons.  This is a performance boost

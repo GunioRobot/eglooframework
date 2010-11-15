@@ -112,6 +112,11 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processRequest()" );
 	}
 
+	public function processErrorRequest() {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered processInvalidRequest()" );
+echo_r("lhwere");
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processInvalidRequest()" );
+	}
 }
 
 
