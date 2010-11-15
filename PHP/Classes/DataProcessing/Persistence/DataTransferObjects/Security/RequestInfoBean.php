@@ -42,11 +42,23 @@ class RequestInfoBean {
 	private $_wildCardRequestClass = null;
 	private $_wildCardRequestID = null;
 
-
+	// Sanitized
 	private $COOKIES = null;
 	private $FILES = null;
 	private $GET = null; 
 	private $POST = null;
+	
+	// Unset Required
+	private $UNSET_COOKIES = null;
+	private $UNSET_FILES = null;
+	private $UNSET_GET = null; 
+	private $UNSET_POST = null;
+	
+	// Invalid provided
+	private $INVALID_COOKIES = null;
+	private $INVALID_FILES = null;
+	private $INVALID_GET = null; 
+	private $INVALID_POST = null;
 	
 	private $decoratorArray = array();
 
@@ -84,6 +96,16 @@ class RequestInfoBean {
 		$this->FILES = array();
 		$this->GET = array();
 		$this->POST = array();
+		
+		$this->UNSET_COOKIES = array();
+		$this->UNSET_FILES = array();
+		$this->UNSET_GET = array();
+		$this->UNSET_POST = array();
+
+		$this->INVALID_COOKIES = array();
+		$this->INVALID_FILES = array();
+		$this->INVALID_GET = array();
+		$this->INVALID_POST = array();
 	}
 
 	public function issetCOOKIE( $key ) {
@@ -158,6 +180,26 @@ class RequestInfoBean {
 		return $retVal;
 	}
 
+	public function issetInvalidGET( $key ) {
+		$retVal = false;
+		
+		if ( isset( $this->INVALID_GET[$key] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function isRequiredGETUnset( $key ) {
+		$retVal = false;
+		
+		if ( isset( $this->UNSET_GET[$key] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
 	public function getGET( $key ) {
 		if ( !isset( $this->GET[$key] ) ) {
 			trigger_error( 'SECURITY ALERT: Attempted to access unset GET with unvalidated key \'' . $key . '\'', E_USER_ERROR );
@@ -170,6 +212,22 @@ class RequestInfoBean {
 		return $this->GET;
 	}
 
+	public function getInvalidGET( $key ) {
+		if ( !isset( $this->INVALID_GET[$key] ) ) {
+			trigger_error( 'Programmer Error: Requested GET key \'' . $key . '\' not found in invalid GET list', E_USER_ERROR );
+		}
+
+		return $this->INVALID_GET[$key];
+	}
+
+	public function getInvalidGETArray() {
+		return $this->INVALID_GET;
+	}
+
+	public function getUnsetGETArray() {
+		return $this->UNSET_GET;
+	}
+
 	public function setGET( $key, $value ) {
 		if ( !isset( $this->GET[$key] ) ) {
 			$this->GET[$key] = $value;
@@ -177,12 +235,40 @@ class RequestInfoBean {
 			throw new RequestInfoException( 'Programmer Error: Attempted to change GET key \'' . 
 				$key . '\' (value = \'' . $this->GET[$key] . '\') to \'' . $value . '\'' );
 		}	 
-	}	 
+	}
+
+	public function setInvalidGET( $key, $value ) {
+		$this->INVALID_GET[$key] = $value;
+	}
+
+	public function setUnsetRequiredGET( $key ) {
+		$this->UNSET_GET[$key] = $key;
+	}
 
 	public function issetPOST( $key ) {
 		$retVal = false;
 		
 		if ( isset( $this->POST[$key] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function issetInvalidPOST( $key ) {
+		$retVal = false;
+		
+		if ( isset( $this->INVALID_POST[$key] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function isRequiredPOSTUnset( $key ) {
+		$retVal = false;
+		
+		if ( isset( $this->UNSET_POST[$key] ) ) {
 			$retVal = true;
 		}
 
@@ -201,6 +287,22 @@ class RequestInfoBean {
 		return $this->POST;
 	}
 
+	public function getInvalidPOST( $key ) {
+		if ( !isset( $this->INVALID_POST[$key] ) ) {
+			trigger_error( 'Programmer Error: Requested POST key \'' . $key . '\' not found in invalid POST list', E_USER_ERROR );
+		}
+
+		return $this->INVALID_POST[$key];
+	}
+
+	public function getInvalidPOSTArray() {
+		return $this->INVALID_POST;
+	}
+
+	public function getUnsetPOSTArray() {
+		return $this->UNSET_POST;
+	}
+
 	public function setPOST( $key, $value ) {
 		if ( !isset( $this->POST[$key] ) ) {
 			$this->POST[$key] = $value;
@@ -209,7 +311,15 @@ class RequestInfoBean {
 				$key . '\' (value = \'' . $this->POST[$key] . '\') to \'' . $value . '\'' );
 		}	 
 	}
-	
+
+	public function setInvalidPOST( $key, $value ) {
+		$this->INVALID_POST[$key] = $value;
+	}
+
+	public function setUnsetRequiredPOST( $key ) {
+		$this->UNSET_POST[$key] = $key;
+	}
+
 	public function setRequestClass( $requestClass ) {
 		$this->requestClass = $requestClass;
 	}

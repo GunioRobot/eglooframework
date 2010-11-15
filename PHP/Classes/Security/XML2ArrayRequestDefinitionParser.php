@@ -676,20 +676,52 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * for further processing
 		 */
 
+		$retVal = true;
+
 		//check boolean arguments
-		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) return false;
-		
+		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		//check variable arguments
-		if( !$this->validateVariableArguments( $requestNode, $requestInfoBean ) ) return false;
+		if( !$this->validateVariableArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
 
 		//check complex arguments
-		if( !$this->validateComplexArguments( $requestNode, $requestInfoBean ) ) return false;
+		if( !$this->validateComplexArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
 
 		//check select arguments
-		if( !$this->validateSelectArguments( $requestNode, $requestInfoBean ) ) return false;
-		
+		if( !$this->validateSelectArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		//check depend arguments
-		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) return false;
+		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
 
 		//build decorator array and set it in the requestInfoBean
 		$this->buildDecoratorArray( $requestNode, $requestInfoBean);
@@ -701,7 +733,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 $_POST = null;
 		 $_GET = null;
 
-        return true;
+        return $retVal;
 	}
 
 // TODO Change array access to references	
@@ -712,7 +744,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 */
 	private function validateBooleanArguments( &$requestNode, $requestInfoBean ){
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
-		 
+		$retVal = true;
+
 		 foreach( $requestNode['boolArguments'] as $boolArg ) {
 			
 			if( $boolArg['type'] === "get" ){
@@ -726,17 +759,21 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $boolArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($boolArg['default'])) {
 						$requestInfoBean->setGET( $boolArg['id'],  $boolArg['default'] );
 					}
-
 				} else {
-					
 					//check if correctly formatted (true vs false)
 					$boolVal = $_GET[ $boolArg['id'] ];
 					if( $boolVal !== "false" && $boolVal !== "true" ){
@@ -744,19 +781,22 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not in correct 'true' or 'false' format in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
+
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidGET( $boolArg['id'],  $boolVal );
+							$retVal = false;
 						}
-
-						return false;
+					} else {
+						//set argument in the request info bean
+						$requestInfoBean->setGET( $boolArg['id'],  $boolVal );
 					}
-
-					//set argument in the request info bean
-					$requestInfoBean->setGET( $boolArg['id'],  $boolVal );
-					
 				}
-
-				
 			} else if ( $boolArg['type'] === "post" ) {
 
 				if( !isset( $_POST[ $boolArg['id'] ] ) ){
@@ -767,15 +807,20 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $boolArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($boolArg['default'])) {
 						$requestInfoBean->setPOST( $boolArg['id'],  $boolArg['default'] );
 					}
-
 				} else {
 					
 					//check if correctly formatted (true vs false)
@@ -785,24 +830,28 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not in correct 'true' or 'false' format in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
+
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $boolArg['id'],  $boolVal );
+							$retVal = false;
 						}
-
-						return false;
+					} else {
+						//set argument in the request info bean
+						$requestInfoBean->setPOST( $boolArg['id'],  $boolVal );
 					}
-
-					//set argument in the request info bean
-					$requestInfoBean->setPOST( $boolArg['id'],  $boolVal );
-
 				}
 			}
 		} 
-		
-		return true;
+
+		return $retVal;
 	}
-	
-	
+
 	/**
 	 * validate variable parameters
 	 * 
@@ -810,7 +859,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 */
 	private function validateVariableArguments( $requestNode, $requestInfoBean ){
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
-		 
+		$retVal = true;
+
 		 foreach( $requestNode['variableArguments'] as $variableArg ) {
 			if( $variableArg['type'] === 'get' ){
 
@@ -822,11 +872,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $variableArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($variableArg['default'])) {
 						if ( isset($variableArg['scalarType']) ) {
 							if ( $variableArg['scalarType'] === 'integer' ) {
@@ -853,25 +909,29 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
-					}
-
-					//set argument in the request info bean
-					if ( isset($variableArg['scalarType']) ) {
-						if ( $variableArg['scalarType'] === 'integer' ) {
-							$requestInfoBean->setGET( $variableArg['id'],  intval($variableValue));
-						} else if ( $variableArg['scalarType'] === 'float' ) {
-							$requestInfoBean->setGET( $variableArg['id'],  floatval($variableValue));
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidGET( $variableArg['id'] );
+							$retVal = false;
 						}
 					} else {
-						$requestInfoBean->setGET( $variableArg['id'],  $variableValue);
+						//set argument in the request info bean
+						if ( isset($variableArg['scalarType']) ) {
+							if ( $variableArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setGET( $variableArg['id'],  intval($variableValue));
+							} else if ( $variableArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setGET( $variableArg['id'],  floatval($variableValue));
+							}
+						} else {
+							$requestInfoBean->setGET( $variableArg['id'],  $variableValue);
+						}
 					}
-
-					// $requestInfoBean->setGET( $variableArg['id'],  $variableValue );
 				}
 			} else if ( $variableArg['type'] === 'getarray' ) {
 				if( !isset( $_GET[ $variableArg['id'] ] ) ){
@@ -881,11 +941,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $variableArg['id'] );
+							$retVal = false;
+						}
 					}
 				} else {
 					//check if correctly formatted
@@ -934,11 +1000,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $variableArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($variableArg['default'])) {
 						if ( isset($variableArg['scalarType']) ) {
 							if ( $variableArg['scalarType'] === 'integer' ) {
@@ -965,25 +1037,29 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
-					}
-
-					//set argument in the request info bean
-					if ( isset($variableArg['scalarType']) ) {
-						if ( $variableArg['scalarType'] === 'integer' ) {
-							$requestInfoBean->setPOST( $variableArg['id'],  intval($variableValue));
-						} else if ( $variableArg['scalarType'] === 'float' ) {
-							$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableValue));
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $variableArg['id'] );
+							$retVal = false;
 						}
 					} else {
-						$requestInfoBean->setPOST( $variableArg['id'],  $variableValue);
+						//set argument in the request info bean
+						if ( isset($variableArg['scalarType']) ) {
+							if ( $variableArg['scalarType'] === 'integer' ) {
+								$requestInfoBean->setPOST( $variableArg['id'],  intval($variableValue));
+							} else if ( $variableArg['scalarType'] === 'float' ) {
+								$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableValue));
+							}
+						} else {
+							$requestInfoBean->setPOST( $variableArg['id'],  $variableValue);
+						}
 					}
-
-					// $requestInfoBean->setPOST( $variableArg['id'],  $variableValue );
 				}
 			} else if ( $variableArg['type'] === 'postarray') {
 				if( !isset( $_POST[ $variableArg['id'] ] ) ){
@@ -993,11 +1069,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $variableArg['id'] );
+							$retVal = false;
+						}
 					}
 				} else {
 					//check if correctly formatted
@@ -1010,7 +1092,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 
 					$regexFormat = $variableArg['regex'];
-					
 					$sanitizedValues = array();
 
 					foreach($variableValues as $key => $variableValue) {
@@ -1039,8 +1120,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				}
 			}
 		} 
-		
-		return true;
+
+		return $retVal;
 	}
 
 	/**
@@ -1049,10 +1130,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * @return true if all complex arguments pass the test, false otherwise
 	 */
 	private function validateComplexArguments( $requestNode, $requestInfoBean ) {
-		$retVal = false;
-
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
-		 
+		$retVal = true;
+
 		 foreach( $requestNode['complexArguments'] as $complexArg ) {
 			// die_r($complexArg);
 			if( $complexArg['type'] === 'get' ){
@@ -1065,11 +1145,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $complexArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($complexArg['default'])) {
 						if ( isset($complexArg['scalarType']) ) {
 							if ( $complexArg['scalarType'] === 'integer' ) {
@@ -1108,11 +1194,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 				}
 			} else if ( $complexArg['type'] === 'getarray' ) {
@@ -1123,11 +1215,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 				} else {
 					//check if correctly formatted
@@ -1163,11 +1261,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 				}
 			} else if ( $complexArg['type'] === 'post' ) {
@@ -1178,11 +1282,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $complexArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($complexArg['default'])) {
 						if ( isset($complexArg['scalarType']) ) {
 							if ( $complexArg['scalarType'] === 'integer' ) {
@@ -1221,11 +1331,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 				}
 			} else if ( $complexArg['type'] === 'postarray') {
@@ -1236,11 +1352,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" is not set in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 				} else {
 					$complexValues = $_POST[ $complexArg['id'] ];
@@ -1275,18 +1397,24 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							" in post request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$retVal = false;
+						}
 					}
 
 				}
 			}
 		} 
 		
-		return true;
+		return $retVal;
 	}
 
 	/**
@@ -1296,8 +1424,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 */
 	private function validateSelectArguments( $requestNode, $requestInfoBean ){
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
-		 
-		 
+		$retVal = true;
+
 		 foreach( $requestNode['selectArguments'] as $selectArg ) {
 			if( $selectArg['type'] === "get" ){
 				if( !isset( $_GET[ $selectArg['id'] ] ) ){
@@ -1308,11 +1436,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $selectArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($selectArg['default'])) {
 						if ( isset($selectArg['scalarType']) ) {
 							if ( $selectArg['scalarType'] === 'integer' ) {
@@ -1343,11 +1477,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             "GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidGET( $selectArg['id'] );
+							$retVal = false;
+						}
 					}
 
 					//set argument in the request info bean
@@ -1372,11 +1512,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             " is not set in POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $selectArg['id'] );
+							$retVal = false;
+						}
 					} else if (isset($selectArg['default'])) {
 						if ( isset($selectArg['scalarType']) ) {
 							if ( $selectArg['scalarType'] === 'integer' ) {
@@ -1409,11 +1555,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
                             "POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
-						if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
-							throw new ErrorException($errorMessage);
-						}
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
 
-						return false;
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $selectArg['id'] );
+							$retVal = false;
+						}
 					}
 
 					//set argument in the request info bean
@@ -1430,7 +1582,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		} 
 		
-		return true;
+		return $retVal;
 	}
 
 	/**
@@ -1439,8 +1591,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * @return true if all depend arguments pass the test, false otherwise
 	 */
 	private function validateDependArguments( $requestNode, $requestInfoBean ){
-		$requestID = $_GET[ self::REQUEST_ID_KEY ]; 
-	
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
+		$retVal = true;
+
 		foreach( $requestNode['depends'] as $dependArg ) {
 			
 			if( $dependArg['type'] === "get" ){
@@ -1540,7 +1693,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				}
 			}
 		}
-		return true;
+
+		return $retVal;
 	}
 	
 	/**

@@ -75,7 +75,7 @@ abstract class RequestProcessorDecorator extends RequestProcessor {
 	abstract protected function requestPostProcessing();
    
 	protected function errorRequestPreProcessing() {
-		
+		return true;
 	}
 
 	protected function errorRequestPostProcessing() {

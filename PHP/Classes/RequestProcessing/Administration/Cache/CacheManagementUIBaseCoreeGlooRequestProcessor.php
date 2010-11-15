@@ -51,7 +51,7 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 	 * @access public
 	 */
 	public function populateTemplateVariables() {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered populateTemplateVariables()" );
 
 		// $cacheGateway = CacheGateway::getCacheGateway();
 		// $cacheGateway->flushAllCache();
@@ -102,20 +102,30 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 			}
 		}
 
+		$this->setTemplateVariable('errors', array());
 		$this->setTemplateVariable('highlighted_entry', $highlighted_entry);
-
 		$this->setTemplateVariable('cacheData', $cacheData);
 		$this->setTemplateVariable('cacheRegionLabels', $cacheRegionLabels);
 		$this->setTemplateVariable('systemActions', array());
 		$this->setTemplateVariable('requestURI', $this->requestInfoBean->getFullyQualifiedRequestString(array('action','region','cacheKey')));
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processRequest()" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting populateTemplateVariables()" );
 	}
 
-	public function processErrorRequest() {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered processInvalidRequest()" );
-echo_r("lhwere");
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting processInvalidRequest()" );
+	public function populateErrorTemplateVariables() {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered populateErrorTemplateVariables()" );
+		// echo_r($this->requestInfoBean->getUnsetGETArray());
+		// echo_r($this->requestInfoBean->getUnsetPOSTArray());
+		// Test
+
+		$this->setTemplateVariable('errors', array('error1', 'error2'));
+		$this->setTemplateVariable('highlighted_entry', array());
+		$this->setTemplateVariable('cacheData', array());
+		$this->setTemplateVariable('cacheRegionLabels', array());
+		$this->setTemplateVariable('systemActions', array());
+		$this->setTemplateVariable('requestURI', $this->requestInfoBean->getFullyQualifiedRequestString(array('action','region','cacheKey')));
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Exiting populateErrorTemplateVariables()" );
 	}
 }
 

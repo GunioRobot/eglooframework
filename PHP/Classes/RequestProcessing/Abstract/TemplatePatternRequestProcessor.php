@@ -82,6 +82,33 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Exiting processRequest()" );
 	}
 
+	public function processErrorRequest() {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Entered processErrorRequest()" );
+
+		$this->setTemplateBuilder();
+
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
+		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder() );
+		$templateDirector->preProcessTemplate();
+
+		$this->populateErrorTemplateVariables();
+
+		$templateDirector->setTemplateVariables( $this->getTemplateVariables(), $this->useSystemVariables() );            
+
+		$output = $templateDirector->processTemplate();
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Echoing Response" );
+
+		if ($this->decoratorInfoBean->issetNamespace('ManagedOutput')) {
+			$this->decoratorInfoBean->setValue('Output', $output, 'ManagedOutput');
+		} else {
+			$this->setOutputHeaders();
+			echo $output;        
+		}
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Exiting processErrorRequest()" );
+	}
+
 	// Defaults to text/html - override as needed
 	protected function setOutputHeaders() {
 		header("Content-type: text/html; charset=UTF-8");
@@ -149,6 +176,10 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 	}
 
 	protected function populateTemplateVariables() {
+		// Override this to make changes to $this->_templateVariables
+	}
+
+	protected function populateErrorTemplateVariables() {
 		// Override this to make changes to $this->_templateVariables
 	}
 
