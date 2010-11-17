@@ -1,10 +1,8 @@
 <?php
 /**
- * XHTMLDispatcher Class File
+ * XHTMLXML2ArrayDispatcher Class File
  *
- * Contains the class definition for the XHTMLDispatcher, a final
- * class responsible for dispatching XHTML requests to the appropriate
- * XHTML template file for parsing.
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -12,29 +10,33 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *		  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *  
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Template
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * XHTMLDispatcher
- * 
- * Provides a class definition for the XHTMLDispatcher.
+ * XHTMLXML2ArrayDispatcher
  *
- * @package Template
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class XHTMLDispatcher extends TemplateDispatcher {
+class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 
 	/**
 	 * Static Constants
@@ -44,7 +46,7 @@ class XHTMLDispatcher extends TemplateDispatcher {
 	/**
 	 * XML Variables
 	 */
-	private $DISPATCH_XML_LOCATION = "Templates/Applications/";
+	private $DISPATCH_XML_LOCATION = null;
 	private $dispatchNodes = array();
 
 
@@ -64,10 +66,10 @@ class XHTMLDispatcher extends TemplateDispatcher {
 	
 	/**
 	 * This method reads the xml file from disk into a document object model.
-	 * It then populates a hash of [XHTMLDispatcher] -> [XHTMLDispatch XML Object]
+	 * It then populates a hash of [XHTMLXML2ArrayDispatcher] -> [XHTMLDispatch XML Object]
 	 */
 	protected function loadDispatchNodes(){
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Processing XML" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
@@ -89,12 +91,12 @@ class XHTMLDispatcher extends TemplateDispatcher {
 		if ( !isset(self::$singletonDispatcher) ) {
 			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new XHTMLDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
+			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Building Singleton" );
+				self::$singletonDispatcher = new XHTMLXML2ArrayDispatcher( $application, $interfaceBundle );
+				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Singleton pulled from cache" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Singleton pulled from cache" );
 			}
 		}
 
@@ -109,14 +111,14 @@ class XHTMLDispatcher extends TemplateDispatcher {
 		$userRequestClass = $requestInfoBean->getRequestClass();
 		$userRequestID = $requestInfoBean->getRequestID();
 		$requestLookup = $userRequestClass . $userRequestID;
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLDispatcher: Request lookup "' . $requestLookup . '"');
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
 		
 		/**
 		 * Ensure that there is a request that corresponds to this request class
 		 * and id, if not, return false.
 		 */
 		if ( !isset( $this->dispatchNodes[ $requestLookup ]) ) {
-			$error_message = "XHTMLDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = "XHTMLXML2ArrayDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -155,19 +157,12 @@ class XHTMLDispatcher extends TemplateDispatcher {
 				}
 			}
 		}
-/*
-		if ( $localizationNode !== null ) {
-			$dispatchPath = (string) $localizationNode;
-		} else {
-			// TODO throw exception
-		}
-*/
 
 		// TODO move this drilling code, along with the code from the CSS and JS Dispatch, into
 		// a utility class.	 No sense duplicating lines
 		if ( $localizationNode !== null ) {
 			if ( (string) $localizationNode['variesOnUserAgent'] === 'true' ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLDispatcher: Processing Clients" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing Clients" );
 				
 				foreach( $localizationNode->xpath( 'child::Client' ) as $client ) {
 					$matchFormat = (string) $client['matches'];
@@ -196,15 +191,14 @@ class XHTMLDispatcher extends TemplateDispatcher {
 		} else {
 			// TODO throw exception
 		}
-		
-		
+
 		$dispatchPath = $this->DISPATCH_XML_LOCATION . $this->application . '/InterfaceBundles/' . 
 			$this->interfaceBundle . '/XHTML/' . (string) $requestNode['path'] . '/' . $dispatchPath;
 
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
-			$error_message = "XHTMLDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = "XHTMLXML2ArrayDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

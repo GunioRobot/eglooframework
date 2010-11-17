@@ -1,10 +1,8 @@
 <?php
 /**
- * StyleSheetDispatcher Class File
+ * StyleSheetXML2ArrayDispatcher Class File
  *
- * Contains the class definition for the StyleSheetDispatcher, a final
- * class responsible for dispatching style sheet requests to the appropriate
- * style sheet template file for parsing.
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -12,29 +10,33 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *		  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *  
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Template
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * StyleSheetDispatcher
- * 
- * Provides a class definition for the StyleSheetDispatcher.
+ * StyleSheetXML2ArrayDispatcher
  *
- * @package Template
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class StyleSheetDispatcher extends TemplateDispatcher {
+class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 
 	/**
 	 * Static Constants
@@ -44,7 +46,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 	/**
 	 * XML Variables
 	 */
-	private $DISPATCH_XML_LOCATION = '';
+	private $DISPATCH_XML_LOCATION = null;
 	private $dispatchNodes = array();
 
 	private $application = null;
@@ -63,18 +65,18 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 	
 	/**
 	 * This method reads the xml file from disk into a document object model.
-	 * It then populates a hash of [StyleSheetDispatcher]->[StyleSheetDispatch
+	 * It then populates a hash of [StyleSheetXML2ArrayDispatcher]->[StyleSheetDispatch
 	 * XML Object]
 	 */
 	protected function loadDispatchNodes(){
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Processing XML" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSS/Dispatch.xml'  );
 
 		foreach( $requestXMLObject->xpath( '/eGlooStyleSheet:Clients' ) as $styleSheetClients ) {
-				$uniqueKey = ( 'StyleSheetDispatcher' );
+				$uniqueKey = ( 'StyleSheetXML2ArrayDispatcher' );
 				$this->dispatchNodes[ $uniqueKey  ] = $styleSheetClients->asXML();
 		}
 	}
@@ -86,12 +88,12 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		if ( !isset(self::$singletonDispatcher) ) {
 			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new StyleSheetDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
+			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Building Singleton" );
+				self::$singletonDispatcher = new StyleSheetXML2ArrayDispatcher( $application, $interfaceBundle );
+				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Singleton pulled from cache" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Singleton pulled from cache" );
 			}
 		}
 		
@@ -107,8 +109,8 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		 * Ensure that there is a request that corresponds to this request class
 		 * and id, if not, return false.
 		 */
-		if ( !isset( $this->dispatchNodes[ 'StyleSheetDispatcher' ]) ){
-			$error_message = "StyleSheetDispatcher: Dispatch node missing";
+		if ( !isset( $this->dispatchNodes[ 'StyleSheetXML2ArrayDispatcher' ]) ){
+			$error_message = "StyleSheetXML2ArrayDispatcher: Dispatch node missing";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -131,7 +133,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
 		 */
-		$styleSheetClients = simplexml_load_string( $this->dispatchNodes[ 'StyleSheetDispatcher' ] );
+		$styleSheetClients = simplexml_load_string( $this->dispatchNodes[ 'StyleSheetXML2ArrayDispatcher' ] );
 
 		$userClient = null;
 		$userMajorVersion = null;
@@ -157,7 +159,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 				if( $match ) {
 					$userMajorVersion = $majorVersion;
 					break;
-				}			 
+				}
 			}
 		}
 
@@ -232,7 +234,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
-			$error_message = "StyleSheetDispatcher: Dispatch node not found for '" . $userRequestID . ".css'" ;
+			$error_message = "StyleSheetXML2ArrayDispatcher: Dispatch node not found for '" . $userRequestID . ".css'" ;
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

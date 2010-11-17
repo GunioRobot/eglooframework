@@ -208,12 +208,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$uniqueKey = ((string) $attributeSet['id']);
 			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
 
-			$cacheGateway = CacheGateway::getCacheGateway();
-			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
+			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+
+			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
 				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation' );
 		}
 
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
+		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
 			$this->attributeSets, 'RequestValidation' );
 
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
@@ -508,19 +509,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
 
-				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
+				$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+
+				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation' );
             }
         }
 
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
+		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+
+		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
 			$this->requestNodes, 'RequestValidation' );
 
-		$cacheGateway = CacheGateway::getCacheGateway();
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation' );
-
-		// unset($this->requestNodes);
+		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation' );
 	}
 
 	protected function init() {
@@ -577,22 +578,23 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestLookup = $requestClass . $requestID;
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Incoming Request Class and Request ID lookup is: "' . $requestLookup . '"', 'Security' );
 
-		$cacheGateway = CacheGateway::getCacheGateway();
-		$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
+		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+
+		$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 			$requestLookup, 'RequestValidation' );
 
         if ( $requestNode == null ) {
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
-			$allNodesCached = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+			$allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
 				'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
 
 			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
 				// We didn't find the request node and we are cached, so let's see if this request class has a request ID default cached
 				if ( $useRequestIDDefaultHandler) {
-					$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
+					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 						$requestClass . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
@@ -604,7 +606,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				if ( $requestNode == null && $useRequestClassDefaultHandler ) {
 					// Still no request node, let's see if there's a generic set in cache
-					$requestNode = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
+					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 						self::$_requestClassWildcard . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {

@@ -1,10 +1,8 @@
 <?php
 /**
- * StyleSheetDispatcher Class File
+ * JavascriptXML2ArrayDispatcher Class File
  *
- * Contains the class definition for the StyleSheetDispatcher, a final
- * class responsible for dispatching style sheet requests to the appropriate
- * style sheet template file for parsing.
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -12,39 +10,43 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *		  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *  
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Template
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * StyleSheetDispatcher
- * 
- * Provides a class definition for the StyleSheetDispatcher.
+ * JavascriptXML2ArrayDispatcher
  *
- * @package Template
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class StyleSheetDispatcher extends TemplateDispatcher {
+class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 
 	/**
 	 * Static Constants
 	 */
 	private static $singletonDispatcher;
-	
+
 	/**
 	 * XML Variables
 	 */
-	private $DISPATCH_XML_LOCATION = '';
+	private $DISPATCH_XML_LOCATION = null;
 	private $dispatchNodes = array();
 
 	private $application = null;
@@ -57,25 +59,24 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		$this->application = $application;
 		$this->interfaceBundle = $interfaceBundle;
 
-		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';		   
+		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
 		$this->loadDispatchNodes();	 
 	}
-	
+
 	/**
 	 * This method reads the xml file from disk into a document object model.
-	 * It then populates a hash of [StyleSheetDispatcher]->[StyleSheetDispatch
-	 * XML Object]
+	 * It then populates a hash of [JavascriptXML2ArrayDispatcher] -> [JavascriptDispatch XML Object]
 	 */
 	protected function loadDispatchNodes(){
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Processing XML" );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
-			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSS/Dispatch.xml'  );
+			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml'	 );
 
-		foreach( $requestXMLObject->xpath( '/eGlooStyleSheet:Clients' ) as $styleSheetClients ) {
-				$uniqueKey = ( 'StyleSheetDispatcher' );
-				$this->dispatchNodes[ $uniqueKey  ] = $styleSheetClients->asXML();
+		foreach( $requestXMLObject->xpath( '/eGlooJavascript:Clients' ) as $javascriptClients ) {
+				$uniqueKey = ( 'JavascriptXML2ArrayDispatcher' );
+				$this->dispatchNodes[ $uniqueKey  ] = $javascriptClients->asXML();
 		}
 	}
 
@@ -85,13 +86,13 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 	public static function getInstance( $application, $interfaceBundle ) {
 		if ( !isset(self::$singletonDispatcher) ) {
 			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new StyleSheetDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
+			
+			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject(	eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Building Singleton" );
+				self::$singletonDispatcher = new JavascriptXML2ArrayDispatcher( $application, $interfaceBundle );
+				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetDispatcher: Singleton pulled from cache" );
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Singleton pulled from cache" );
 			}
 		}
 		
@@ -102,13 +103,12 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 	 * Only functional method available to the public.	
 	 */
 	public function dispatch($requestInfoBean, $userRequestID = null) {
-				
 		/**
 		 * Ensure that there is a request that corresponds to this request class
 		 * and id, if not, return false.
 		 */
-		if ( !isset( $this->dispatchNodes[ 'StyleSheetDispatcher' ]) ){
-			$error_message = "StyleSheetDispatcher: Dispatch node missing";
+		if ( !isset( $this->dispatchNodes[ 'JavascriptXML2ArrayDispatcher' ]) ){
+			$error_message = "JavascriptXML2ArrayDispatcher: Dispatch node missing";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -131,19 +131,21 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
 		 */
-		$styleSheetClients = simplexml_load_string( $this->dispatchNodes[ 'StyleSheetDispatcher' ] );
+		$javascriptClients = simplexml_load_string( $this->dispatchNodes[ 'JavascriptXML2ArrayDispatcher' ] );
 
 		$userClient = null;
 		$userMajorVersion = null;
 		$userMinorVersion = null;
 		$userPlatform = null;
 		$dispatchPath = null;
+		$processTemplate = 'false';
 		
-		foreach( $styleSheetClients->xpath( 'child::Client' ) as $client ) {
+		foreach( $javascriptClients->xpath( 'child::Client' ) as $client ) {
 			$matchFormat = (string) $client['matches'];
 			$match = preg_match ( $matchFormat, $userAgent ); 
-
+			
 			if( $match ) {
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptXML2ArrayDispatcher: Matched ' . (string) $client['id']);
 				$userClient = $client;
 				break;
 			}
@@ -186,24 +188,27 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 			foreach( $userPlatform->xpath( 'child::DispatchMap' ) as $map ) {	 
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
 					break;
 				}
 			}
 		}
-   
+	
 		if ( $dispatchPath === null && $userMinorVersion !== null ) {
 			foreach( $userMinorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
 					break;
 				}
 			}			 
 		}
-	  
+		
 		if ( $dispatchPath === null && $userMajorVersion !== null ) {
 			foreach( $userMajorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
 					break;
 				}
 			}			 
@@ -213,15 +218,17 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 			foreach( $userClient->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
 					break;
 				}
-			}
+			}						 
 		}
 
 		if ( $dispatchPath === null ) {
-			foreach( $styleSheetClients->xpath( 'Client[@id=\'Default\']/child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+			foreach( $javascriptClients->xpath( 'Client[@id=\'Default\']/child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
 					break;
 				}
 			}
@@ -232,7 +239,7 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
-			$error_message = "StyleSheetDispatcher: Dispatch node not found for '" . $userRequestID . ".css'" ;
+			$error_message = "JavascriptXML2ArrayDispatcher: Dispatch node not found for '" . $userRequestID . ".js'" ;
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -240,6 +247,18 @@ class StyleSheetDispatcher extends TemplateDispatcher {
 			}
 
 			return false;
+		}
+
+		$this->dispatchPath = $dispatchPath;
+
+		switch(trim(strtolower($processTemplate))) {
+			case 'true' :
+				$this->processTemplate = true;
+				break;
+			case 'false' :
+			default :
+				$this->processTemplate = false;
+				break;
 		}
 
 		return $dispatchPath;
