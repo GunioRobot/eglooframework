@@ -10,14 +10,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *		  http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *	
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -52,9 +52,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
 	protected function loadRequestNodes(){
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Processing XML", 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Processing XML", 'Security' );
 
-        //read the xml onces... global location to do this... it looks like it does this once per request.
+		//read the xml onces... global location to do this... it looks like it does this once per request.
 		$this->REQUESTS_XML_LOCATION =
 			eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
 
@@ -74,7 +74,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$attributeSetID = isset($attributeSet['id']) ? (string) $attributeSet['id'] : NULL;
 
 			if ( !$attributeSetID || trim($attributeSetID) === '' ) {
-				throw new ErrorException("No ID specified in request attribute set.  Please review your Requests.xml");
+				throw new ErrorException("No ID specified in request attribute set.	 Please review your Requests.xml");
 			}
 
 			$requestAttributeSets[$attributeSetID] = array('attributeSet' => $attributeSetID, 'attributes' => array());
@@ -110,7 +110,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
 
 				if ( isset($selectArgument['scalarType']) ) {
-					$newSelectArgument['scalarType'] =  strtolower( (string) $selectArgument['scalarType'] );
+					$newSelectArgument['scalarType'] =	strtolower( (string) $selectArgument['scalarType'] );
 				}
 
 				$newSelectArgument['values'] = array();
@@ -166,7 +166,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$newComplexArgument['validator'] = (string) $complexArgument['validator'];
 
 				if ( isset($complexArgument['scalarType']) ) {
-					$newComplexArgument['scalarType'] =  (string) $complexArgument['scalarType'];
+					$newComplexArgument['scalarType'] =	 (string) $complexArgument['scalarType'];
 				} else if ( isset($complexArgument['complexType']) ) {
 					$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
 				}
@@ -221,24 +221,24 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
 
 			if ( !$requestClassID || trim($requestClassID) === '' ) {
-				throw new ErrorException("No ID specified in request class.  Please review your Requests.xml");
+				throw new ErrorException("No ID specified in request class.	 Please review your Requests.xml");
 			}
 
 			$requestClasses[$requestClassID] = array('requestClass' => $requestClassID, 'requests' => array());
 
-            foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
+			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
 				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
 				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
 				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
 
 				if ( !$requestID || trim($requestID) === '' ) {
 					throw new ErrorException("No request ID specified in request class: '" . $requestClassID .
-						"'.  Please review your Requests.xml");
+						"'.	 Please review your Requests.xml");
 				}
 
 				if ( !$processorID || trim($processorID) === '' ) {
 					throw new ErrorException("No processor ID specified in request ID: '" . $requestID .
-					"'.  Please review your Requests.xml");
+					"'.	 Please review your Requests.xml");
 				}
 
 				// Request Properties
@@ -332,7 +332,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newComplexArgument['validator'] = (string) $complexArgument['validator'];
 
 					if ( isset($complexArgument['scalarType']) ) {
-						$newComplexArgument['scalarType'] =  (string) $complexArgument['scalarType'];
+						$newComplexArgument['scalarType'] =	 (string) $complexArgument['scalarType'];
 					} else if ( isset($complexArgument['complexType']) ) {
 						$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
 					}
@@ -404,7 +404,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
 							$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']] = $boolArgument;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence bool argument ' . $boolArgument['id'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -421,7 +421,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
 							$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']] = $selectArgument;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence select argument ' . $selectArgument['id'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -438,7 +438,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
 							$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence variable argument ' . $variableArgument['id'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -455,7 +455,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
 							$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']] = $complexArgument;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence complex argument ' . $complexArgument['id'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -472,7 +472,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 								' from attribute set ' . $requestAttributeSetID , 'Security' );
 							$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']] = $depend;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend['id']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence depend ' . $depend['id'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -493,7 +493,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$decorator['order'] += $existingDecoratorCount;
 							$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
 						} else if ( isset($requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority']) &&
-							 	$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority'] < $priority ) {
+								$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority'] < $priority ) {
 
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence decorator ' . $decorator['decoratorID'] .
 								' with higher precedence from attribute set ' . $requestAttributeSetID , 'Security' );
@@ -513,8 +513,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation' );
-            }
-        }
+			}
+		}
 
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
@@ -529,7 +529,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	}
 
 	/**
-	 * Only functional method available to the public.  
+	 * Only functional method available to the public.	
 	 * This method ensures that this is valid request, by checking arguments 
 	 * against the expectant values in the request XML object. if it is a valid 
 	 * request, the request processor id needed process this request is populated
@@ -548,7 +548,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * any request processor...
 		 */
 		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
-			$errorMessage = 'Request class not set in request.  ' . "\n" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
+			$errorMessage = 'Request class not set in request.	' . "\n" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -559,11 +559,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 }
 
 		/**
-		 * Check if there is a request id.  If there isn't, return not setting
+		 * Check if there is a request id.	If there isn't, return not setting
 		 * any request processor...
 		 */
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
-			$errorMessage = 'Request ID not set in request.  ' . "\n\t" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
+			$errorMessage = 'Request ID not set in request.	 ' . "\n\t" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -583,7 +583,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 			$requestLookup, 'RequestValidation' );
 
-        if ( $requestNode == null ) {
+		if ( $requestNode == null ) {
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
@@ -630,7 +630,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestNode = $this->requestNodes[ $requestClass . self::$_requestIDWildcard ];
 					$requestInfoBean->setWildCardRequest( true );
 					$requestInfoBean->setWildCardRequestID( $requestID );
-			        $requestInfoBean->setRequestID( self::$_requestIDWildcard );			        
+					$requestInfoBean->setRequestID( self::$_requestIDWildcard );					
 				} else if ( $useRequestClassDefaultHandler && isset($this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ]) ) {
 					$requestNode = $this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ];
 					$requestInfoBean->setWildCardRequest( true );
@@ -735,7 +735,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 $_POST = null;
 		 $_GET = null;
 
-        return $retVal;
+		return $retVal;
 	}
 
 // TODO Change array access to references	
@@ -806,7 +806,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if required
 					if( $boolArg['required'] === "true") {
 						$errorMessage = "Required boolean parameter: " . $boolArg['id'] . 
-                            " is not set in post request with id: " . $requestID;
+							" is not set in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -821,7 +821,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$retVal = false;
 						}
 					} else if (isset($boolArg['default'])) {
-						$requestInfoBean->setPOST( $boolArg['id'],  $boolArg['default'] );
+						$requestInfoBean->setPOST( $boolArg['id'],	$boolArg['default'] );
 					}
 				} else {
 					
@@ -829,7 +829,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$boolVal = $_POST[ $boolArg['id'] ];
 					if( $boolVal !== "false" && $boolVal !== "true" ){
 						$errorMessage = "Boolean parameter: " . $boolArg['id'] . 
-                            " is not in correct 'true' or 'false' format in post request with id: " . $requestID;
+							" is not in correct 'true' or 'false' format in post request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -845,7 +845,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					} else {
 						//set argument in the request info bean
-						$requestInfoBean->setPOST( $boolArg['id'],  $boolVal );
+						$requestInfoBean->setPOST( $boolArg['id'],	$boolVal );
 					}
 				}
 			}
@@ -871,7 +871,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if required
 					if( $variableArg['required'] === "true") {
 						$errorMessage = "Required variable parameter: " . $variableArg['id'] . 
-                            " is not set in GET request with request ID: " . $requestID;
+							" is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -907,8 +907,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					
 					if( ! $match ){
 						$errorMessage = "Variable parameter: " . $variableArg['id'] . 
-                            " with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
-                            " in GET request with request ID: " . $requestID;
+							" with value '" . $variableValue . "' is not in a correct format of " . $regexFormat . 
+							" in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1016,12 +1016,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					} else if (isset($variableArg['default'])) {
 						if ( isset($variableArg['scalarType']) ) {
 							if ( $variableArg['scalarType'] === 'integer' ) {
-								$requestInfoBean->setPOST( $variableArg['id'],  intval($variableArg['default']));
+								$requestInfoBean->setPOST( $variableArg['id'],	intval($variableArg['default']));
 							} else if ( $variableArg['scalarType'] === 'float' ) {
-								$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableArg['default']));
+								$requestInfoBean->setPOST( $variableArg['id'],	floatval($variableArg['default']));
 							}
 						} else {
-							$requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
+							$requestInfoBean->setPOST( $variableArg['id'],	$variableArg['default'] );
 						}
 
 						// $requestInfoBean->setPOST( $variableArg['id'],  $variableArg['default'] );
@@ -1054,12 +1054,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						//set argument in the request info bean
 						if ( isset($variableArg['scalarType']) ) {
 							if ( $variableArg['scalarType'] === 'integer' ) {
-								$requestInfoBean->setPOST( $variableArg['id'],  intval($variableValue));
+								$requestInfoBean->setPOST( $variableArg['id'],	intval($variableValue));
 							} else if ( $variableArg['scalarType'] === 'float' ) {
-								$requestInfoBean->setPOST( $variableArg['id'],  floatval($variableValue));
+								$requestInfoBean->setPOST( $variableArg['id'],	floatval($variableValue));
 							}
 						} else {
-							$requestInfoBean->setPOST( $variableArg['id'],  $variableValue);
+							$requestInfoBean->setPOST( $variableArg['id'],	$variableValue);
 						}
 					}
 				}
@@ -1118,7 +1118,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 
 					//set argument in the request info bean
-					$requestInfoBean->setPOST( $variableArg['id'],  $sanitizedValues );
+					$requestInfoBean->setPOST( $variableArg['id'],	$sanitizedValues );
 				}
 			}
 		} 
@@ -1144,7 +1144,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if required
 					if( $complexArg['required'] === "true") {
 						$errorMessage = "Required complex parameter: " . $complexArg['id'] . 
-                            " is not set in GET request with request ID: " . $requestID;
+							" is not set in GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1298,7 +1298,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					} else if (isset($complexArg['default'])) {
 						if ( isset($complexArg['scalarType']) ) {
 							if ( $complexArg['scalarType'] === 'integer' ) {
-								$requestInfoBean->setPOST( $variableArg['id'],  intval($complexArg['default']));
+								$requestInfoBean->setPOST( $variableArg['id'],	intval($complexArg['default']));
 							} else if ( $complexArg['scalarType'] === 'float' ) {
 								$requestInfoBean->setPOST( $complexArg['id'],  floatval($complexArg['default']));
 							}
@@ -1435,7 +1435,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if required
 					if( $selectArg['required'] === "true") {
 						$errorMessage = "Required select argument: " . $selectArg['id'] . 
-                            " is not set in GET request with id: " . $requestID;
+							" is not set in GET request with id: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1452,15 +1452,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					} else if (isset($selectArg['default'])) {
 						if ( isset($selectArg['scalarType']) ) {
 							if ( $selectArg['scalarType'] === 'integer' ) {
-								$requestInfoBean->setGET( $selectArg['id'],  intval($selectArg['default']));
+								$requestInfoBean->setGET( $selectArg['id'],	 intval($selectArg['default']));
 							} else if ( $selectArg['scalarType'] === 'float' ) {
-								$requestInfoBean->setGET( $selectArg['id'],  floatval($selectArg['default']));
+								$requestInfoBean->setGET( $selectArg['id'],	 floatval($selectArg['default']));
 							}
 						} else {
-							$requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
+							$requestInfoBean->setGET( $selectArg['id'],	 $selectArg['default'] );
 						}
 
-						// $requestInfoBean->setGET( $selectArg['id'],  $selectArg['default'] );
+						// $requestInfoBean->setGET( $selectArg['id'],	$selectArg['default'] );
 					}
 				} else {
 					//check if value is one of the allowable values
@@ -1475,8 +1475,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 					if( !$match ){
 						$errorMessage = "Select argument: " . $selectArg['id'] . 
-                            " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "GET request with request ID: " . $requestID;
+							" with specified value '" . $selectVal . "' does not match required set of variables in " . 
+							"GET request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1495,12 +1495,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//set argument in the request info bean
 					if ( isset($selectArg['scalarType']) ) {
 						if ( $selectArg['scalarType'] === 'integer' ) {
-							$requestInfoBean->setGET( $selectArg['id'],  intval($selectVal));
+							$requestInfoBean->setGET( $selectArg['id'],	 intval($selectVal));
 						} else if ( $selectArg['scalarType'] === 'float' ) {
-							$requestInfoBean->setGET( $selectArg['id'],  floatval($selectVal));
+							$requestInfoBean->setGET( $selectArg['id'],	 floatval($selectVal));
 						}
 					} else {
-						$requestInfoBean->setGET( $selectArg['id'],  $selectVal);
+						$requestInfoBean->setGET( $selectArg['id'],	 $selectVal);
 					}
 				}
 
@@ -1511,7 +1511,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					//check if required
 					if( $selectArg['required'] === "true") {
 						$errorMessage = "Required select argument: " . $selectArg['id'] . 
-                            " is not set in POST request with request ID: " . $requestID;
+							" is not set in POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1536,7 +1536,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
 						}
 
-						// $requestInfoBean->setPOST( $selectArg['id'],  $selectArg['default'] );
+						// $requestInfoBean->setPOST( $selectArg['id'],	 $selectArg['default'] );
 					}
 
 				} else {
@@ -1545,16 +1545,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$selectVal = $_POST[ $selectArg['id'] ];
 					$match = false;
 
-					foreach( $selectArg['values'] as $validValue ){
-						if( $validValue === $selectVal ){
+					foreach( $selectArg['values'] as $validValue ) {
+						if( $validValue === $selectVal ) {
 							$match = true;
 						}
 					}
 					
 					if( ! $match ){
 						$errorMessage = "Select argument: " . $selectArg['id'] . 
-                            " with specified value '" . $selectVal . "' does not match required set of variables in " . 
-                            "POST request with request ID: " . $requestID;
+							" with specified value '" . $selectVal . "' does not match required set of variables in " . 
+							"POST request with request ID: " . $requestID;
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 						if ( !isset($requestNode['errorProcessorID']) ) {
@@ -1626,8 +1626,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
 								$errorMessage = "Argument '" . $dependArg['id'] . 
-                                    "' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with request ID: " . $requestID;
+									"' in the Get request is dependent on an argument: '" . $childDependency['id'] . 
+									"' on the POST request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
@@ -1639,7 +1639,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							
 							//set argument in the request info bean
 							$childVal = $_POST[ $childDependency['id'] ];	
-							$requestInfoBean->setPOST( $childDependency['id'],  $childVal);
+							$requestInfoBean->setPOST( $childDependency['id'],	$childVal);
 							
 						}
 					}
@@ -1656,8 +1656,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						if( $childDependency['type'] === "get" ){
 							if( !isset( $_GET[ $childDependency['id'] ] ) ){
 								$errorMessage = "Argument '" . $dependArg['id'] . 
-                                    "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the GET request which is not set in request with request ID: " . $requestID;
+									"' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
+									"' on the GET request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
@@ -1675,8 +1675,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						} else if( $childDependency['type'] === "post" ){
 							if( !isset( $_POST[ $childDependency['id'] ] ) ){
 								$errorMessage = "Argument '" . $dependArg['id'] . 
-                                    "' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
-                                    "' on the POST request which is not set in request with request ID: " . $requestID;
+									"' in the POST request is dependent on an argument: '" . $childDependency['id'] . 
+									"' on the POST request which is not set in request with request ID: " . $requestID;
 								eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
 
 								if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT && !isset($requestNode['errorProcessorID'])) {
@@ -1688,7 +1688,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 							//set argument in the request info bean
 							$childVal = $_POST[ $childDependency['id'] ];	
-							$requestInfoBean->setPOST( $childDependency['id'],  $childVal);
+							$requestInfoBean->setPOST( $childDependency['id'],	$childVal);
 
 						}
 					}

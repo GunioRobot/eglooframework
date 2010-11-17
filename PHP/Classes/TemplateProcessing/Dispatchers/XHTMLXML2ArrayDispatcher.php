@@ -42,13 +42,12 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 	 * Static Constants
 	 */
 	private static $singletonDispatcher;
-	
+
 	/**
 	 * XML Variables
 	 */
 	private $DISPATCH_XML_LOCATION = null;
 	private $dispatchNodes = array();
-
 
 	private $application = null;
 	private $interfaceBundle = null;
@@ -59,29 +58,28 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 	private function __construct( $application, $interfaceBundle ) {
 		$this->application = $application;
 		$this->interfaceBundle = $interfaceBundle;
-		
-		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
-		$this->loadDispatchNodes();	 
 	}
-	
+
 	/**
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [XHTMLXML2ArrayDispatcher] -> [XHTMLDispatch XML Object]
 	 */
 	protected function loadDispatchNodes(){
+		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
+
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/XHTML/Dispatch.xml'	);
-		
+
 		foreach( $requestXMLObject->xpath( '/eGlooXHTML:Requests/RequestClass' ) as $requestClass ) {
 			foreach( $requestClass->xpath( 'child::Request' ) as $request ){
 				$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
 				$this->dispatchNodes[ $uniqueKey  ] = $request->asXML();
 			}
 		}
-		
+
 	}
 
 	/**
@@ -89,15 +87,8 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 	 */
 	public static function getInstance( $application, $interfaceBundle ) {
 		if ( !isset(self::$singletonDispatcher) ) {
-			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new XHTMLXML2ArrayDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
-			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Singleton pulled from cache" );
-			}
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Building Singleton" );
+			self::$singletonDispatcher = new XHTMLXML2ArrayDispatcher( $application, $interfaceBundle );
 		}
 
 		return self::$singletonDispatcher;
@@ -107,12 +98,14 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 	 * Only functional method available to the public.	
 	 */
 	public function dispatch( $requestInfoBean ) {
-
 		$userRequestClass = $requestInfoBean->getRequestClass();
 		$userRequestID = $requestInfoBean->getRequestID();
 		$requestLookup = $userRequestClass . $userRequestID;
+
+		$this->loadDispatchNodes();
+
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
-		
+
 		/**
 		 * Ensure that there is a request that corresponds to this request class
 		 * and id, if not, return false.
@@ -186,6 +179,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 					// TODO throw exception
 				}
 			} else {
+				
 				$dispatchPath = (string) $localizationNode;
 			}
 		} else {
