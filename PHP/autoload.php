@@ -242,11 +242,20 @@ function echo_d( $mixed ) {
  * Convenience method
  */
 function die_r( $mixed ) {
+	// workaround for http://pecl.php.net/bugs/bug.php?id=16721
+	if ( isset($_SESSION) ) {
+		session_write_close();
+	}
 	echo_r($mixed);
 	die;
 }
 
 function die_d( $mixed ) {
+	// workaround for http://pecl.php.net/bugs/bug.php?id=16721
+	if ( isset($_SESSION) ) {
+		session_write_close();
+	}
+	session_write_close();
 	echo_d($mixed);
 	die;
 }
