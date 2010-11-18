@@ -255,7 +255,6 @@ function die_d( $mixed ) {
 	if ( isset($_SESSION) ) {
 		session_write_close();
 	}
-	session_write_close();
 	echo_d($mixed);
 	die;
 }
