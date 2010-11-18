@@ -81,7 +81,9 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 
 			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
 				$requestIDString = (string) $request['id'];
-				$dispatches[$requestClassString][$requestIDString] = array('Localizations' => array());
+				$dispatchPathPrepend = (string) $request['path'];
+
+				$dispatches[$requestClassString][$requestIDString] = array('Localizations' => array(), 'path' => $dispatchPathPrepend);
 
 				foreach( $request->xpath( 'child::Localization' ) as $localization ) {
 					$newLocalization = array();
@@ -163,8 +165,6 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 		}
 
-		die_r($this->dispatchNodes);
-
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
 
 		/**
@@ -193,7 +193,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
 		 */
-		$requestNode = simplexml_load_string( $this->dispatchNodes[ $requestLookup ] );
+		$requestNode = $this->dispatchNodes[ $requestLookup ];
 
 		$countryCode	= '';
 		$languageCode	= '';
@@ -201,25 +201,29 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$dispatchPath		= null;
 		$localizationNode	= null;
 
-		foreach( $requestNode->xpath( 'child::Localization' ) as $localization ) {
-			if ( $countryCode === (string) $localization['countryCode'] ) {
+		$dispatchPathPrepend = isset($requestNode[$userRequestClass][$userRequestID]['path']) ? $requestNode[$userRequestClass][$userRequestID]['path'] : '';
+
+		foreach( $requestNode[$userRequestClass][$userRequestID]['Localizations'] as $localization ) {
+			if ( $countryCode === $localization['countryCode'] ) {
 				$localizationNode = $localization;
-				
-				if ( $languageCode === (string) $localization['languageCode'] ) {
+
+				if ( $languageCode === $localization['languageCode'] ) {
 					$localizationNode = $localization;
 					break;
 				}
 			}
 		}
 
+		// die_r($localizationNode);
+
 		// TODO move this drilling code, along with the code from the CSS and JS Dispatch, into
 		// a utility class.	 No sense duplicating lines
 		if ( $localizationNode !== null ) {
-			if ( (string) $localizationNode['variesOnUserAgent'] === 'true' ) {
+			if ( $localizationNode['variesOnUserAgent'] ) {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing Clients" );
 				
-				foreach( $localizationNode->xpath( 'child::Client' ) as $client ) {
-					$matchFormat = (string) $client['matches'];
+				foreach( $localizationNode['Clients'] as $client ) {
+					$matchFormat = $client['matches'];
 					$match = preg_match ( $matchFormat, $userAgent ); 
 		
 					if( $match ) {
@@ -229,26 +233,25 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 				}
 
 				if ( $userClient !== null ) {
-					foreach( $userClient->xpath( 'child::DefaultDispatchMap' ) as $map ) {	  
-						if ( isset( $map['path'] ) ) {
-							$dispatchPath = (string) $map['path'] . '/' . (string) $map;
+					if ( isset($userClient['defaultDispatchMap']) ) {
+						if ( isset( $userClient['path'] ) ) {
+							$dispatchPath = $dispatchPathPrepend . $userClient['path'] . '/' . $userClient['defaultDispatchMap'];
 						} else {
-							$dispatchPath = (string) $map;
+							$dispatchPath = $dispatchPathPrepend . $userClient['defaultDispatchMap'];
 						}
 					}
 				} else {
 					// TODO throw exception
 				}
 			} else {
-				
-				$dispatchPath = (string) $localizationNode;
+				$dispatchPath = $dispatchPathPrepend . $localizationNode['dispatchPath'];
 			}
 		} else {
 			// TODO throw exception
 		}
 
-		$dispatchPath = $this->DISPATCH_XML_LOCATION . $this->application . '/InterfaceBundles/' . 
-			$this->interfaceBundle . '/XHTML/' . (string) $requestNode['path'] . '/' . $dispatchPath;
+		$dispatchPath = eGlooConfiguration::getApplicationsPath() . '/' . $this->application . '/InterfaceBundles/' . 
+			$this->interfaceBundle . '/XHTML/' . $dispatchPath;
 
 		$dispatchPath = trim( $dispatchPath );
 
