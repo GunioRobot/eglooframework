@@ -121,7 +121,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 							$newLocalization['Clients'][] = $newClient;
 						}
 					} else {
-						$newLocalization['dispatchPath'] = (string) $localizationNode;
+						$newLocalization['dispatchPath'] = (string) $localization;
 					}
 
 					$dispatches[$requestClassString][$requestIDString]['Localizations'][] = $newLocalization;
