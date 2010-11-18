@@ -73,13 +73,62 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/XHTML/Dispatch.xml'	);
 
+		$dispatches = array();
+
 		foreach( $requestXMLObject->xpath( '/eGlooXHTML:Requests/RequestClass' ) as $requestClass ) {
-			foreach( $requestClass->xpath( 'child::Request' ) as $request ){
+			$requestClassString = (string) $requestClass['id'];
+			$dispatches[$requestClassString] = array();
+
+			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
+				$requestIDString = (string) $request['id'];
+				$dispatches[$requestClassString][$requestIDString] = array('Localizations' => array());
+
+				foreach( $request->xpath( 'child::Localization' ) as $localization ) {
+					$newLocalization = array();
+
+					$newLocalization['countryCode'] = (string) $localization['countryCode'];
+					$newLocalization['languageCode'] = (string) $localization['languageCode'];
+					$newLocalization['variesOnUserAgent'] = (string) $localization['variesOnUserAgent'] === 'true' ? true : false;
+
+					if ( $newLocalization['variesOnUserAgent'] ) {
+						$newLocalization['Clients'] = array();
+
+						foreach( $localization->xpath( 'child::Client' ) as $client ) {
+							$defaultDispatchMapArray = $client->xpath( 'child::DefaultDispatchMap' );
+
+							$newClient = array(
+								'id' => (string) $client['id'],
+								'matches' => (string) $client['matches'],
+								'path' => (string) $client['path']
+							);
+
+							if (empty($defaultDispatchMapArray)) {
+								$newClient['dispatch'] = trim( (string) $client );
+							} else {
+								foreach( $defaultDispatchMapArray as $map ) {
+									if ( isset( $map['path'] ) ) {
+										$defaultDispatchMap = (string) $map['path'] . '/' . (string) $map;
+									} else {
+										$defaultDispatchMap = (string) $map;
+									}
+									
+									$newClient['defaultDispatchMap'] = trim( $defaultDispatchMap );
+								}
+							}
+
+							$newLocalization['Clients'][] = $newClient;
+						}
+					} else {
+						$newLocalization['dispatchPath'] = (string) $localizationNode;
+					}
+
+					$dispatches[$requestClassString][$requestIDString]['Localizations'][] = $newLocalization;
+				}
+
 				$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
-				$this->dispatchNodes[ $uniqueKey  ] = $request->asXML();
+				$this->dispatchNodes[ $uniqueKey  ] = $dispatches;
 			}
 		}
-
 	}
 
 	/**
@@ -102,7 +151,19 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$userRequestID = $requestInfoBean->getRequestID();
 		$requestLookup = $userRequestClass . $userRequestID;
 
-		$this->loadDispatchNodes();
+		// TODO only if not cache
+		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
+		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes';
+		
+		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'ContentDispatching' ) ) == null ) {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
+			$this->loadDispatchNodes();
+			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->dispatchNodes, 'ContentDispatching' );
+		} else {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
+		}
+
+		die_r($this->dispatchNodes);
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
 
