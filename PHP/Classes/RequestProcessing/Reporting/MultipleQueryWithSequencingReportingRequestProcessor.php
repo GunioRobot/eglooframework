@@ -173,9 +173,11 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
 
+					$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
 					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 						$this->_queryExecutionSteps[$subQuery]['cache'] &&
-						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
+						($cachedResponse = $dataProcessingCacheRegionHandler->getObject( md5(serialize($preparedQuery->getDataPackage())), 'Reporting' )) != null) {
 						$queryResponseTransaction = $cachedResponse;
 					} else {
 						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -189,8 +191,9 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 								$cache_ttl = 30;
 							}
 
-							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
+							$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+							$dataProcessingCacheRegionHandler->storeObject( md5(serialize($preparedQuery->getDataPackage())), $queryResponseTransaction, 'Reporting', $cache_ttl );
 						}
 					}
 
@@ -204,9 +207,11 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 					$this->populateQuery( $preparedQuery, $subQueryParameters );
 
+					$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
 					if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 						$this->_queryExecutionSteps[$subQuery]['cache'] &&
-						($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
+						($cachedResponse = $dataProcessingCacheRegionHandler->getObject( md5(serialize($preparedQuery->getDataPackage())), 'Reporting' )) != null) {
 						$queryResponseTransaction = $cachedResponse;
 					} else {
 						$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -220,8 +225,9 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 								$cache_ttl = 30;
 							}
 
-							$cacheGateway = CacheGateway::getCacheGateway();
-							$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
+							$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+							$dataProcessingCacheRegionHandler->storeObject( md5(serialize($preparedQuery->getDataPackage())), $queryResponseTransaction, 'Reporting', $cache_ttl );
 						}
 					}
 
@@ -235,9 +241,11 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 			$subQueryParameters = $this->prepareSubQueryParameters($subQuery, $this->_queryExecutionSteps[$subQuery]['parameters']);
 			$this->populateQuery( $preparedQuery, $subQueryParameters );
 
+			$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
 			if (isset($this->_queryExecutionSteps[$subQuery]['cache']) &&
 				$this->_queryExecutionSteps[$subQuery]['cache'] &&
-				($cachedResponse = $cacheGateway->getObject( md5($preparedQuery->getDataPackage()), 'Reporting' )) != null) {
+				($cachedResponse = $dataProcessingCacheRegionHandler->getObject( md5(serialize($preparedQuery->getDataPackage())), 'Reporting' )) != null) {
 				$queryResponseTransaction = $cachedResponse;
 			} else {
 				$queryResponseTransaction = $this->executeQuery( $preparedQuery );
@@ -251,8 +259,9 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 						$cache_ttl = 30;
 					}
 
-					$cacheGateway = CacheGateway::getCacheGateway();
-					$cacheGateway->storeObject( md5($preparedQuery->getDataPackage()), $queryResponseTransaction, 'Reporting', $cache_ttl );
+					$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+					$dataProcessingCacheRegionHandler->storeObject( md5(serialize($preparedQuery->getDataPackage())), $queryResponseTransaction, 'Reporting', $cache_ttl );
 				}
 			}
 

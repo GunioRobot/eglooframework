@@ -79,6 +79,8 @@ class RuntimeCacheRegionHandler extends CacheRegionHandler {
 
 		if ($metadata == null) {
 			$metadata = array('Regions' => array(self::$_egCacheMetadataNamespace => array('Entries' => array())));
+		} else if (!isset($metadata['Regions'][self::$_egCacheMetadataNamespace])) {
+			$metadata['Regions'][self::$_egCacheMetadataNamespace] = array('Entries' => array());
 		}
 
 		$metadata['Regions'][self::$_egCacheMetadataNamespace]['Entries'][$key] = 

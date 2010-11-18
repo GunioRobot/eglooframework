@@ -1,6 +1,6 @@
 <?php
 /**
- * CSVDispatcher Class File
+ * CSVXML2ArrayDispatcher Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * CSVDispatcher
+ * CSVXML2ArrayDispatcher
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CSVDispatcher extends TemplateDispatcher {
+class CSVXML2ArrayDispatcher extends TemplateDispatcher {
 
     /**
      * Static Constants
@@ -66,10 +66,10 @@ class CSVDispatcher extends TemplateDispatcher {
     
     /**
      * This method reads the xml file from disk into a document object model.
-     * It then populates a hash of [CSVDispatcher] -> [CSVDispatch XML Object]
+     * It then populates a hash of [CSVXML2ArrayDispatcher] -> [CSVDispatch XML Object]
      */
     protected function loadDispatchNodes(){
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Processing XML" );
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Processing XML" );
 
 		$applicationCSVDispatchXML = $this->DISPATCH_XML_LOCATION . 
             $this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSV/Dispatch.xml';
@@ -97,12 +97,12 @@ class CSVDispatcher extends TemplateDispatcher {
         if ( !isset(self::$singletonDispatcher) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Building Singleton" );
-                self::$singletonDispatcher = new CSVDispatcher( $application, $interfaceBundle );
-                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
+            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Building Singleton" );
+                self::$singletonDispatcher = new CSVXML2ArrayDispatcher( $application, $interfaceBundle );
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
             } else {
-                eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Singleton pulled from cache" );
+                eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Singleton pulled from cache" );
             }
         }
         
@@ -117,14 +117,14 @@ class CSVDispatcher extends TemplateDispatcher {
         $userRequestClass = $requestInfoBean->getRequestClass();
         $userRequestID = $requestInfoBean->getRequestID();
         $requestLookup = $userRequestClass . $userRequestID;
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, 'CSVDispatcher: Request lookup "' . $requestLookup . '"');
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, 'CSVXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
         
         /**
          * Ensure that there is a request that corresponds to this request class
          * and id, if not, return false.
          */
         if ( !isset( $this->dispatchNodes[ $requestLookup ]) ) {
-			$error_message = "CSVDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = "CSVXML2ArrayDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
@@ -175,7 +175,7 @@ class CSVDispatcher extends TemplateDispatcher {
         // a utility class.  No sense duplicating lines
         if ( $localizationNode !== null ) {
         	if ( (string) $localizationNode['variesOnUserAgent'] === 'true' ) {
-		        eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVDispatcher: Processing Clients" );
+		        eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Processing Clients" );
         		
         		foreach( $localizationNode->xpath( 'child::Client' ) as $client ) {
 		            $matchFormat = (string) $client['matches'];
@@ -211,7 +211,7 @@ class CSVDispatcher extends TemplateDispatcher {
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
-			$error_message = "CSVDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = "CSVXML2ArrayDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

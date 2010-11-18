@@ -41,11 +41,11 @@ class CacheManagementDirector {
 	private static $_cacheRegions = array(
 		// 'Configuration',
 		// 'Content',
-		// 'DataProcessing',
-		// 'Dispatches',
+		'DataProcessing',
+		'Dispatches',
 		// 'History',
 		// 'Logging',
-		// 'RequestProcessing',
+		'RequestProcessing',
 		'Runtime',
 		// 'Session',
 		// 'Static',
@@ -66,7 +66,7 @@ class CacheManagementDirector {
 				$retVal = new DataProcessingCacheRegionHandler();
 				break;
 			case 'Dispatches' :
-				$retVal = new DispatchesCacheRegionHandler();
+				$retVal = new DispatchCacheRegionHandler();
 				break;
 			case 'History' :
 				$retVal = new HistoryCacheRegionHandler();

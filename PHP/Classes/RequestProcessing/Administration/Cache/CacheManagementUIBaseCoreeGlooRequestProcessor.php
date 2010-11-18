@@ -53,14 +53,21 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 	public function populateTemplateVariables() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered populateTemplateVariables()" );
 
-		// $cacheGateway = CacheGateway::getCacheGateway();
-		// $cacheGateway->flushAllCache();
 
 		// $systemInfoBean = SystemInfoBean::getInstance();
 		// $systemActions = $systemInfoBean->getValue('SystemActions');
 		$cacheData = CacheManagementDirector::getAllCacheEntries();
 		$cacheRegionLabels = CacheManagementDirector::getAllCacheRegionLabels();
-// highlighted_entry
+
+		foreach( $cacheData as $cacheRegionKey => $cacheRegion ) {
+			foreach( $cacheRegion as $cacheKey => $cacheEntry ) {
+				$cacheData[$cacheRegionKey][$cacheKey]['key'] = substr(print_r($cacheEntry['key'], true), 0, 30) . '...';
+
+				if ( is_array($cacheEntry['value']) || is_object($cacheEntry['value']) ) {
+					$cacheData[$cacheRegionKey][$cacheKey]['value'] = substr(print_r($cacheEntry['value'], true), 0, 30) . '...';
+				}
+			}
+		}
 
 		if ( $this->requestInfoBean->issetGET('action') ) {
 			$action = $this->requestInfoBean->getGET('action');
@@ -83,8 +90,6 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 		$highlighted_entry = array();
 
 		if ( $action && $region && $cacheKey ) {
-			
-
 			$highlighted_entry['key'] = $cacheKey;
 			$highlighted_entry['value'] = $cacheData[$region][$cacheKey]['value'];
 			$highlighted_entry['ttl'] = $cacheData[$region][$cacheKey]['ttl'];
@@ -114,11 +119,19 @@ class CacheManagementUIBaseCoreeGlooRequestProcessor extends TemplatePatternRequ
 
 	public function populateErrorTemplateVariables() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "CacheManagementUIBaseCoreeGlooRequestProcessor: Entered populateErrorTemplateVariables()" );
+		
+		$unsetArguments = $this->requestInfoBean->getUnsetGETArray();
+		$errors = array();
+
+		foreach( $unsetArguments as $argument ) {
+			$errors[] = 'Required parameter \'' . $argument . '\' not provided';
+		}
+
 		// echo_r($this->requestInfoBean->getUnsetGETArray());
 		// echo_r($this->requestInfoBean->getUnsetPOSTArray());
 		// Test
 
-		$this->setTemplateVariable('errors', array('error1', 'error2'));
+		$this->setTemplateVariable('errors', $errors);
 		$this->setTemplateVariable('highlighted_entry', array());
 		$this->setTemplateVariable('cacheData', array());
 		$this->setTemplateVariable('cacheRegionLabels', array());
