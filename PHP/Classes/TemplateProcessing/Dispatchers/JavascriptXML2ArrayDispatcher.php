@@ -58,9 +58,6 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	private function __construct( $application, $interfaceBundle ) {
 		$this->application = $application;
 		$this->interfaceBundle = $interfaceBundle;
-
-		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
-		$this->loadDispatchNodes();	 
 	}
 
 	/**
@@ -71,13 +68,125 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
-		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
+		$requestXMLObject = simplexml_load_file( eGlooConfiguration::getApplicationsPath() . '/' . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml'	 );
 
 		foreach( $requestXMLObject->xpath( '/eGlooJavascript:Clients' ) as $javascriptClients ) {
 				$uniqueKey = ( 'JavascriptXML2ArrayDispatcher' );
 				$this->dispatchNodes[ $uniqueKey  ] = $javascriptClients->asXML();
 		}
+
+		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
+
+		/**
+		 * If this is a valid request class/id, get the request denoted 
+		 * by this request class and id.
+		 */
+		$javascriptClients = simplexml_load_string( $this->dispatchNodes[ 'JavascriptXML2ArrayDispatcher' ] );
+
+		$userClient = null;
+		$userMajorVersion = null;
+		$userMinorVersion = null;
+		$userPlatform = null;
+		$dispatchPath = null;
+		$processTemplate = 'false';
+		
+		foreach( $javascriptClients->xpath( 'child::Client' ) as $client ) {
+			$matchFormat = (string) $client['matches'];
+			$match = preg_match ( $matchFormat, $userAgent ); 
+			
+			if( $match ) {
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptXML2ArrayDispatcher: Matched ' . (string) $client['id']);
+				$userClient = $client;
+				break;
+			}
+		}
+
+		if ( $userClient !== null ) {
+			foreach( $userClient->xpath( 'child::MajorVersion' ) as $majorVersion ) {
+				$matchFormat = (string) $majorVersion['matches'];
+				$match = preg_match ( $matchFormat, $userAgent ); 
+	
+				if( $match ) {
+					$userMajorVersion = $majorVersion;
+					break;
+				}			 
+			}
+		}
+
+		if ( $userMajorVersion !== null ) {
+			foreach( $userMajorVersion->xpath( 'child::MinorVersion' ) as $minorVersion ) {
+				$matchFormat = (string) $minorVersion['matches'];
+				$match = preg_match ( $matchFormat, $userAgent ); 
+	
+				if( $match ) {
+					$userMinorVersion = $minorVersion;
+					break;
+				}
+			}
+		}
+
+		if ( $userMinorVersion !== null ) {
+			foreach( $userMinorVersion->xpath( 'child::Platform' ) as $platform ) {	   
+				if( $userAgent === (string) $platform->UserAgent ) {
+					$userPlatform = $platform;
+					break;
+				}
+			}
+		}
+
+		if ( $userPlatform !== null ) {
+			foreach( $userPlatform->xpath( 'child::DispatchMap' ) as $map ) {	 
+				if( $userRequestID === (string) $map['id'] ) {
+					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
+					break;
+				}
+			}
+		}
+	
+		if ( $dispatchPath === null && $userMinorVersion !== null ) {
+			foreach( $userMinorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+				if( $userRequestID === (string) $map['id'] ) {
+					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
+					break;
+				}
+			}			 
+		}
+		
+		if ( $dispatchPath === null && $userMajorVersion !== null ) {
+			foreach( $userMajorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+				if( $userRequestID === (string) $map['id'] ) {
+					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
+					break;
+				}
+			}			 
+		}
+
+		if ( $dispatchPath === null && $userClient !== null ) {
+			foreach( $userClient->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+				if( $userRequestID === (string) $map['id'] ) {
+					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
+					break;
+				}
+			}						 
+		}
+
+		if ( $dispatchPath === null ) {
+			foreach( $javascriptClients->xpath( 'Client[@id=\'Default\']/child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+				if( $userRequestID === (string) $map['id'] ) {
+					$dispatchPath = (string) $map;
+					$processTemplate = (string) $map['process'];
+					break;
+				}
+			}
+		} else {
+			// TODO throw exception
+		}
+
 	}
 
 	/**
@@ -85,17 +194,10 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	 */
 	public static function getInstance( $application, $interfaceBundle ) {
 		if ( !isset(self::$singletonDispatcher) ) {
-			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-			
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject(	eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new JavascriptXML2ArrayDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
-			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Singleton pulled from cache" );
-			}
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Building Singleton" );
+			self::$singletonDispatcher = new JavascriptXML2ArrayDispatcher( $application, $interfaceBundle );
 		}
-		
+
 		return self::$singletonDispatcher;
 	}
 
@@ -124,9 +226,9 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		} else {
 			$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		}
-		
+
 		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
-		
+
 		/**
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
