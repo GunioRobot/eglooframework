@@ -102,7 +102,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		$statement = $connection->stmt_init();
 
 		if (!$statement->prepare($populatedDataPackageString)) {
-			throw new Exception("Could not prepare statement for $statement: " . mysqli_error($connection) );
+			throw new Exception("Could not prepare statement for $populatedDataPackageString: " . mysqli_error($connection) );
 		}
 
 		$queryTransaction->setDataPackage(array('preparedQueryString' => $populatedDataPackageString, 'preparedStatementObject' => $statement));
@@ -114,7 +114,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		$statement = $connection->stmt_init();
 
 		if (!$statement->prepare($dataPackageString)) {
-			throw new Exception("Could not prepare statement for $statement: " . mysqli_error($connection) );
+			throw new Exception("Could not prepare statement for $dataPackageString: " . mysqli_error($connection) );
 		}
 
 		if (!empty($queryParameters)) {
