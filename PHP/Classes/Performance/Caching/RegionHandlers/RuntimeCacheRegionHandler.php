@@ -49,9 +49,26 @@ class RuntimeCacheRegionHandler extends CacheRegionHandler {
 
 		if ($metadata == null) {
 			$metadata = array();
+		} else if (!isset($metadata['Regions'][self::$_egCacheMetadataNamespace])) {
+			$metadata['Regions'][self::$_egCacheMetadataNamespace] = 
+				array('Extents' => 
+					array(
+						array('key' => 'egCacheMetadata::' . self::$_egCacheMetadataNamespace, 'namespace' => 'egCacheManagement', 'Entries' => array())
+						)
+					);
 		}
 
-		$retVal = $metadata['Regions'][self::$_egCacheMetadataNamespace]['Entries'];
+		$cacheGateway->storeObject( 'egCacheMetadata', $metadata, 'egCacheManagement' );
+
+		$extents = $metadata['Regions'][self::$_egCacheMetadataNamespace]['Extents'];
+
+		foreach($extents as $extent) {
+			$extentMetadata = $cacheGateway->getObject( $extent['key'], $extent['namespace'] );
+
+			if ($extentMetadata && is_array($extentMetadata) && isset($extentMetadata['Entries'])) {
+				$retVal = array_merge($retVal, $extentMetadata['Entries']);
+			}
+		}
 
 		return $retVal;
 	}
@@ -75,20 +92,41 @@ class RuntimeCacheRegionHandler extends CacheRegionHandler {
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$metadata = $cacheGateway->getObject( 'egCacheMetadata', 'egCacheManagement' );
-
-		if ($metadata == null) {
-			$metadata = array('Regions' => array(self::$_egCacheMetadataNamespace => array('Entries' => array())));
-		} else if (!isset($metadata['Regions'][self::$_egCacheMetadataNamespace])) {
-			$metadata['Regions'][self::$_egCacheMetadataNamespace] = array('Entries' => array());
-		}
-
-		$metadata['Regions'][self::$_egCacheMetadataNamespace]['Entries'][$key] = 
-			array('key' => $key, 'value' => $value, 'ttl' => $ttl, 'lastUpdated' => time());
-
 		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl );
-		
-		$cacheGateway->storeObject( 'egCacheMetadata', $metadata, 'egCacheManagement' );
+
+		if ($retVal) {
+			$metadata = $cacheGateway->getObject( 'egCacheMetadata', 'egCacheManagement' );
+
+			if ($metadata == null) {
+				$metadata = array('Regions' => array(self::$_egCacheMetadataNamespace => 
+					array('Extents' => 
+						array(
+							array('key' => 'egCacheMetadata::' . self::$_egCacheMetadataNamespace, 'namespace' => 'egCacheManagement', 'Entries' => array())
+							)
+						)));
+			} else if (!isset($metadata['Regions'][self::$_egCacheMetadataNamespace])) {
+				$metadata['Regions'][self::$_egCacheMetadataNamespace] = 
+					array('Extents' => 
+						array(
+							array('key' => 'egCacheMetadata::' . self::$_egCacheMetadataNamespace, 'namespace' => 'egCacheManagement', 'Entries' => array())
+							)
+						);
+			}
+
+			$extents = $metadata['Regions'][self::$_egCacheMetadataNamespace]['Extents'];
+
+			foreach($extents as $extentID => $extent) {
+				$extentMetadata = $cacheGateway->getObject( $extent['key'], $extent['namespace'] );
+
+				if ($extentMetadata && is_array($extentMetadata) && isset($extentMetadata['Entries'])) {
+					$extentMetadata['Entries'][$key] = array('key' => $key, 'value' => $value, 'ttl' => $ttl, 'lastUpdated' => time());
+				} else {
+					$extentMetadata = array('Entries' => array($key => array('key' => $key, 'value' => $value, 'ttl' => $ttl, 'lastUpdated' => time())));
+				}
+
+				$cacheGateway->storeObject( $extent['key'], $extentMetadata, $extent['namespace'] );
+			}
+		}
 
 		return $retVal;
 	}
