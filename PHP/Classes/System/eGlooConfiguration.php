@@ -77,8 +77,6 @@ final class eGlooConfiguration {
 				self::writeRuntimeCache();
 			}
 		}
-		// echo "foo1";
-		// die;
 
 		// Set the rewrite base
 		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
@@ -86,13 +84,8 @@ final class eGlooConfiguration {
 			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
 			self::$rewriteBase = $matches[1];
 		}
-		echo "foo2";
-		die;
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
-		echo "foo3";
-		die;
-
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
