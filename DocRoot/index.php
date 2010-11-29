@@ -34,6 +34,8 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 	// Setup the OOP autoloader
 	include( 'PHP/autoload.php' );
 }
+echo "here";
+die;
 
 // Check for Memcache
 if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
