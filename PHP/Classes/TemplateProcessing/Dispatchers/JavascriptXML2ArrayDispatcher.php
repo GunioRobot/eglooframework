@@ -47,7 +47,7 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	 * XML Variables
 	 */
 	private $DISPATCH_XML_LOCATION = null;
-	private $dispatchNodes = array();
+	private $dispatchNodes = null;
 
 	private $application = null;
 	private $interfaceBundle = null;
@@ -58,9 +58,6 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	private function __construct( $application, $interfaceBundle ) {
 		$this->application = $application;
 		$this->interfaceBundle = $interfaceBundle;
-
-		$this->DISPATCH_XML_LOCATION = eGlooConfiguration::getApplicationsPath() . '/';
-		$this->loadDispatchNodes();	 
 	}
 
 	/**
@@ -71,13 +68,81 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
-		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
+		$requestXMLObject = simplexml_load_file( eGlooConfiguration::getApplicationsPath() . '/' . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/Javascript/Dispatch.xml'	 );
 
+		$dispatches = array();
+
 		foreach( $requestXMLObject->xpath( '/eGlooJavascript:Clients' ) as $javascriptClients ) {
-				$uniqueKey = ( 'JavascriptXML2ArrayDispatcher' );
-				$this->dispatchNodes[ $uniqueKey  ] = $javascriptClients->asXML();
+			$newDispatch = array('Clients' => array());
+
+			foreach( $javascriptClients->xpath( 'child::Client' ) as $client ) {
+				$newClient = array( 'id' => (string) $client['id'], 'matches' => (string) $client['matches'] );
+
+				$majorVersions = array();
+
+				foreach( $client->xpath( 'child::MajorVersion' ) as $majorVersion ) {
+					$newMajorVersion = array( 'id' => (string) $majorVersion['id'], 'matches' => (string) $majorVersion['matches'] );
+
+					$minorVersions = array();
+
+					foreach( $majorVersion->xpath( 'child::MinorVersion' ) as $minorVersion ) {
+						$newMinorVersion = array( 'id' => (string) $minorVersion['id'], 'matches' => (string) $minorVersion['matches'] );
+
+						$platforms = array();
+
+						foreach( $minorVersion->xpath( 'child::Platform' ) as $platform ) {
+							$newPlatform = array( 'id' => (string) $platform['id'], 'matches' => (string) $platform['matches'], 'userAgent' => trim((string) $platform->UserAgent) );
+							$newPlatform['DispatchMaps'] = array();
+
+							foreach( $platform->xpath( 'child::DispatchMap' ) as $map ) {
+								$newDispatchMap = array( 'id' => (string) $map['id'], 'process' => $this->shouldProcess((string) $map['process']), 'dispatchPath' => trim((string) $map) );
+								$newPlatform['DispatchMaps'][$newDispatchMap['id']] = $newDispatchMap;
+							}
+
+							$platforms[$newPlatform['id']] = $newPlatform;
+						}
+
+						$newMinorVersion['Platforms'] = $platforms;
+
+						$newMinorVersion['DispatchMaps'] = array();
+
+						foreach( $minorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+							$newDispatchMap = array( 'id' => (string) $map['id'], 'process' => $this->shouldProcess((string) $map['process']), 'dispatchPath' => trim((string) $map) );
+							$newMinorVersion['DispatchMaps'][$newDispatchMap['id']] = $newDispatchMap;
+						}
+
+						$minorVersions[$newMinorVersion['id']] = $newMinorVersion;
+					}
+
+					$newMajorVersion['MinorVersions'] = $minorVersions;
+
+					$newMajorVersion['DispatchMaps'] = array();
+
+					foreach( $majorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+						$newDispatchMap = array( 'id' => (string) $map['id'], 'process' => $this->shouldProcess((string) $map['process']), 'dispatchPath' => trim((string) $map) );
+						$newMajorVersion['DispatchMaps'][$newDispatchMap['id']] = $newDispatchMap;
+					}
+
+					$majorVersions[$newMajorVersion['id']] = $newMajorVersion;
+				}
+
+				$newClient['MajorVersions'] = $majorVersions;
+
+				$newClient['DispatchMaps'] = array();
+
+				foreach( $client->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+					$newDispatchMap = array( 'id' => (string) $map['id'], 'process' => $this->shouldProcess((string) $map['process']), 'dispatchPath' => trim((string) $map) );
+					$newClient['DispatchMaps'][$newDispatchMap['id']] = $newDispatchMap;
+				}
+
+				$newDispatch['Clients'][$newClient['id']] = $newClient;
+			}
+
+			$dispatches = $newDispatch;
 		}
+
+		$this->dispatchNodes = $dispatches;
 	}
 
 	/**
@@ -85,17 +150,10 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	 */
 	public static function getInstance( $application, $interfaceBundle ) {
 		if ( !isset(self::$singletonDispatcher) ) {
-			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-			
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject(	eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', 'ContentDispatching' ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Building Singleton" );
-				self::$singletonDispatcher = new JavascriptXML2ArrayDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
-			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Singleton pulled from cache" );
-			}
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Building Singleton" );
+			self::$singletonDispatcher = new JavascriptXML2ArrayDispatcher( $application, $interfaceBundle );
 		}
-		
+
 		return self::$singletonDispatcher;
 	}
 
@@ -103,19 +161,16 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	 * Only functional method available to the public.	
 	 */
 	public function dispatch($requestInfoBean, $userRequestID = null) {
-		/**
-		 * Ensure that there is a request that corresponds to this request class
-		 * and id, if not, return false.
-		 */
-		if ( !isset( $this->dispatchNodes[ 'JavascriptXML2ArrayDispatcher' ]) ){
-			$error_message = "JavascriptXML2ArrayDispatcher: Dispatch node missing";
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
-
-			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
-				throw new ErrorException($error_message);
-			}
-
-			return false;
+		// TODO only if not cache
+		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
+		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcher';
+		
+		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'ContentDispatching' ) ) == null ) {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
+			$this->loadDispatchNodes();
+			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->dispatchNodes, 'ContentDispatching' );
+		} else {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 		}
 
 		if ( !isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
@@ -124,23 +179,23 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		} else {
 			$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		}
-		
+
 		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
-		
+
 		/**
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
 		 */
-		$javascriptClients = simplexml_load_string( $this->dispatchNodes[ 'JavascriptXML2ArrayDispatcher' ] );
+		$javascriptClients = $this->dispatchNodes;
 
 		$userClient = null;
 		$userMajorVersion = null;
 		$userMinorVersion = null;
 		$userPlatform = null;
 		$dispatchPath = null;
-		$processTemplate = 'false';
+		$processTemplate = false;
 		
-		foreach( $javascriptClients->xpath( 'child::Client' ) as $client ) {
+		foreach( $javascriptClients['Clients'] as $clientID => $client ) {
 			$matchFormat = (string) $client['matches'];
 			$match = preg_match ( $matchFormat, $userAgent ); 
 			
@@ -152,19 +207,19 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( $userClient !== null ) {
-			foreach( $userClient->xpath( 'child::MajorVersion' ) as $majorVersion ) {
+			foreach( $userClient['MajorVersions'] as $majorVersion ) {
 				$matchFormat = (string) $majorVersion['matches'];
 				$match = preg_match ( $matchFormat, $userAgent ); 
 	
 				if( $match ) {
 					$userMajorVersion = $majorVersion;
 					break;
-				}			 
+				}
 			}
 		}
 
 		if ( $userMajorVersion !== null ) {
-			foreach( $userMajorVersion->xpath( 'child::MinorVersion' ) as $minorVersion ) {
+			foreach( $userMajorVersion['MinorVersions'] as $minorVersion ) {
 				$matchFormat = (string) $minorVersion['matches'];
 				$match = preg_match ( $matchFormat, $userAgent ); 
 	
@@ -176,7 +231,7 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( $userMinorVersion !== null ) {
-			foreach( $userMinorVersion->xpath( 'child::Platform' ) as $platform ) {	   
+			foreach( $userMinorVersion['Platforms'] as $platform ) {	   
 				if( $userAgent === (string) $platform->UserAgent ) {
 					$userPlatform = $platform;
 					break;
@@ -185,60 +240,60 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( $userPlatform !== null ) {
-			foreach( $userPlatform->xpath( 'child::DispatchMap' ) as $map ) {	 
+			foreach( $userPlatform['DispatchMaps'] as $map ) {	 
 				if( $userRequestID === (string) $map['id'] ) {
-					$dispatchPath = (string) $map;
-					$processTemplate = (string) $map['process'];
+					$dispatchPath = (string) $map['dispatchPath'];
+					$processTemplate = $map['process'];
 					break;
 				}
 			}
 		}
-	
+
 		if ( $dispatchPath === null && $userMinorVersion !== null ) {
-			foreach( $userMinorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+			foreach( $userMinorVersion['DispatchMaps'] as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
-					$dispatchPath = (string) $map;
-					$processTemplate = (string) $map['process'];
+					$dispatchPath = (string) $map['dispatchPath'];
+					$processTemplate = $map['process'];
 					break;
 				}
-			}			 
+			}
 		}
-		
+
 		if ( $dispatchPath === null && $userMajorVersion !== null ) {
-			foreach( $userMajorVersion->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+			foreach( $userMajorVersion['DispatchMaps'] as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
-					$dispatchPath = (string) $map;
-					$processTemplate = (string) $map['process'];
+					$dispatchPath = (string) $map['dispatchPath'];
+					$processTemplate = $map['process'];
 					break;
 				}
-			}			 
+			}
 		}
 
 		if ( $dispatchPath === null && $userClient !== null ) {
-			foreach( $userClient->xpath( 'child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
+			foreach( $userClient['DispatchMaps'] as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
-					$dispatchPath = (string) $map;
-					$processTemplate = (string) $map['process'];
-					break;
-				}
-			}						 
-		}
-
-		if ( $dispatchPath === null ) {
-			foreach( $javascriptClients->xpath( 'Client[@id=\'Default\']/child::DefaultDispatchMap/child::DispatchMap' ) as $map ) {
-				if( $userRequestID === (string) $map['id'] ) {
-					$dispatchPath = (string) $map;
-					$processTemplate = (string) $map['process'];
+					$dispatchPath = (string) $map['dispatchPath'];
+					$processTemplate = $map['process'];
 					break;
 				}
 			}
-		} else {
-			// TODO throw exception
 		}
 
-		$dispatchPath = trim( $dispatchPath );
+		// if ( $dispatchPath === null ) {
+		// 	if (isset($javascriptClients['Default'])) {
+		// 		foreach( $javascriptClients['Default'] as $map ) {
+		// 			if( $userRequestID === (string) $map['id'] ) {
+		// 				$dispatchPath = (string) $map['dispatchPath'];
+		// 				$processTemplate = (string) $map['process'];
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// } else {
+		// 	// TODO throw exception
+		// }
 
-		if ( $dispatchPath === '' ) {
+		if ( !$dispatchPath || $dispatchPath === '' ) {
 			$error_message = "JavascriptXML2ArrayDispatcher: Dispatch node not found for '" . $userRequestID . ".js'" ;
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
@@ -250,18 +305,26 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		$this->dispatchPath = $dispatchPath;
+		$this->processTemplate = $processTemplate;
 
-		switch(trim(strtolower($processTemplate))) {
+		return $dispatchPath;
+	}
+
+	// Convenience method to convert process value of true/false as string to type bool
+	private function shouldProcess( $stringValue ) {
+		$retVal = false;
+
+		switch(trim(strtolower($stringValue))) {
 			case 'true' :
-				$this->processTemplate = true;
+				$retVal = true;
 				break;
 			case 'false' :
 			default :
-				$this->processTemplate = false;
+				$retVal = false;
 				break;
 		}
 
-		return $dispatchPath;
+		return $retVal;
 	}
 
 }

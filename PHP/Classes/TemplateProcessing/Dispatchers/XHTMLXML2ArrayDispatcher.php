@@ -73,13 +73,64 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$requestXMLObject = simplexml_load_file( $this->DISPATCH_XML_LOCATION . 
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/XHTML/Dispatch.xml'	);
 
+		$dispatches = array();
+
 		foreach( $requestXMLObject->xpath( '/eGlooXHTML:Requests/RequestClass' ) as $requestClass ) {
-			foreach( $requestClass->xpath( 'child::Request' ) as $request ){
+			$requestClassString = (string) $requestClass['id'];
+			$dispatches[$requestClassString] = array();
+
+			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
+				$requestIDString = (string) $request['id'];
+				$dispatchPathPrepend = (string) $request['path'];
+
+				$dispatches[$requestClassString][$requestIDString] = array('Localizations' => array(), 'path' => $dispatchPathPrepend);
+
+				foreach( $request->xpath( 'child::Localization' ) as $localization ) {
+					$newLocalization = array();
+
+					$newLocalization['countryCode'] = (string) $localization['countryCode'];
+					$newLocalization['languageCode'] = (string) $localization['languageCode'];
+					$newLocalization['variesOnUserAgent'] = (string) $localization['variesOnUserAgent'] === 'true' ? true : false;
+
+					if ( $newLocalization['variesOnUserAgent'] ) {
+						$newLocalization['Clients'] = array();
+
+						foreach( $localization->xpath( 'child::Client' ) as $client ) {
+							$defaultDispatchMapArray = $client->xpath( 'child::DefaultDispatchMap' );
+
+							$newClient = array(
+								'id' => (string) $client['id'],
+								'matches' => (string) $client['matches'],
+								'path' => (string) $client['path']
+							);
+
+							if (empty($defaultDispatchMapArray)) {
+								$newClient['dispatch'] = trim( (string) $client );
+							} else {
+								foreach( $defaultDispatchMapArray as $map ) {
+									if ( isset( $map['path'] ) ) {
+										$defaultDispatchMap = (string) $map['path'] . '/' . (string) $map;
+									} else {
+										$defaultDispatchMap = (string) $map;
+									}
+									
+									$newClient['defaultDispatchMap'] = trim( $defaultDispatchMap );
+								}
+							}
+
+							$newLocalization['Clients'][] = $newClient;
+						}
+					} else {
+						$newLocalization['dispatchPath'] = (string) $localization;
+					}
+
+					$dispatches[$requestClassString][$requestIDString]['Localizations'][] = $newLocalization;
+				}
+
 				$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id']  );
-				$this->dispatchNodes[ $uniqueKey  ] = $request->asXML();
+				$this->dispatchNodes[ $uniqueKey  ] = $dispatches;
 			}
 		}
-
 	}
 
 	/**
@@ -102,7 +153,17 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$userRequestID = $requestInfoBean->getRequestID();
 		$requestLookup = $userRequestClass . $userRequestID;
 
-		$this->loadDispatchNodes();
+		// TODO only if not cache
+		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
+		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XHTMLXML2ArrayDispatcherNodes';
+		
+		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'ContentDispatching' ) ) == null ) {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
+			$this->loadDispatchNodes();
+			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->dispatchNodes, 'ContentDispatching' );
+		} else {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
+		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'XHTMLXML2ArrayDispatcher: Request lookup "' . $requestLookup . '"');
 
@@ -132,7 +193,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.
 		 */
-		$requestNode = simplexml_load_string( $this->dispatchNodes[ $requestLookup ] );
+		$requestNode = $this->dispatchNodes[ $requestLookup ];
 
 		$countryCode	= '';
 		$languageCode	= '';
@@ -140,25 +201,29 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$dispatchPath		= null;
 		$localizationNode	= null;
 
-		foreach( $requestNode->xpath( 'child::Localization' ) as $localization ) {
-			if ( $countryCode === (string) $localization['countryCode'] ) {
+		$dispatchPathPrepend = isset($requestNode[$userRequestClass][$userRequestID]['path']) ? $requestNode[$userRequestClass][$userRequestID]['path'] : '';
+
+		foreach( $requestNode[$userRequestClass][$userRequestID]['Localizations'] as $localization ) {
+			if ( $countryCode === $localization['countryCode'] ) {
 				$localizationNode = $localization;
-				
-				if ( $languageCode === (string) $localization['languageCode'] ) {
+
+				if ( $languageCode === $localization['languageCode'] ) {
 					$localizationNode = $localization;
 					break;
 				}
 			}
 		}
 
+		// die_r($localizationNode);
+
 		// TODO move this drilling code, along with the code from the CSS and JS Dispatch, into
 		// a utility class.	 No sense duplicating lines
 		if ( $localizationNode !== null ) {
-			if ( (string) $localizationNode['variesOnUserAgent'] === 'true' ) {
+			if ( $localizationNode['variesOnUserAgent'] ) {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing Clients" );
 				
-				foreach( $localizationNode->xpath( 'child::Client' ) as $client ) {
-					$matchFormat = (string) $client['matches'];
+				foreach( $localizationNode['Clients'] as $client ) {
+					$matchFormat = $client['matches'];
 					$match = preg_match ( $matchFormat, $userAgent ); 
 		
 					if( $match ) {
@@ -168,26 +233,25 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 				}
 
 				if ( $userClient !== null ) {
-					foreach( $userClient->xpath( 'child::DefaultDispatchMap' ) as $map ) {	  
-						if ( isset( $map['path'] ) ) {
-							$dispatchPath = (string) $map['path'] . '/' . (string) $map;
+					if ( isset($userClient['defaultDispatchMap']) ) {
+						if ( isset( $userClient['path'] ) ) {
+							$dispatchPath = $dispatchPathPrepend . $userClient['path'] . '/' . $userClient['defaultDispatchMap'];
 						} else {
-							$dispatchPath = (string) $map;
+							$dispatchPath = $dispatchPathPrepend . $userClient['defaultDispatchMap'];
 						}
 					}
 				} else {
 					// TODO throw exception
 				}
 			} else {
-				
-				$dispatchPath = (string) $localizationNode;
+				$dispatchPath = $dispatchPathPrepend . $localizationNode['dispatchPath'];
 			}
 		} else {
 			// TODO throw exception
 		}
 
-		$dispatchPath = $this->DISPATCH_XML_LOCATION . $this->application . '/InterfaceBundles/' . 
-			$this->interfaceBundle . '/XHTML/' . (string) $requestNode['path'] . '/' . $dispatchPath;
+		$dispatchPath = eGlooConfiguration::getApplicationsPath() . '/' . $this->application . '/InterfaceBundles/' . 
+			$this->interfaceBundle . '/XHTML/' . $dispatchPath;
 
 		$dispatchPath = trim( $dispatchPath );
 

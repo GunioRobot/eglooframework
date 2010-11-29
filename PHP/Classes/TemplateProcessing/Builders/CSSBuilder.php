@@ -113,8 +113,8 @@ class CSSBuilder extends TemplateBuilder {
     }
 
     public function setDispatchPath() {
-        $templateDispatcher =
-			StyleSheetDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
+		$templateDispatcher =
+			StyleSheetXML2ArrayDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
         $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean, $this->userRequestID );
     }

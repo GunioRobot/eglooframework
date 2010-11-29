@@ -85,6 +85,8 @@ class JavascriptRawFileRequestProcessor extends RequestProcessor {
 
         $templateDirector->preProcessTemplate();
 
+		$templateDirector->setTemplateVariables(array(), true);
+
 		$output = $templateDirector->processTemplate();
 
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptRawFileRequestProcessor: Echoing Response" );

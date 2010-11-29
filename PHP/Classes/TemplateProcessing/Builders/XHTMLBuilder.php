@@ -128,8 +128,11 @@ class XHTMLBuilder extends TemplateBuilder {
     }
     
     public function setDispatchPath() {
+		// $templateDispatcher =
+		// 	XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
+
 		$templateDispatcher =
-			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
+			XHTMLXML2ArrayDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
 		$this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
     }
