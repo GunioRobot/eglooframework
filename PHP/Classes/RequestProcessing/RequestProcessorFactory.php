@@ -64,8 +64,6 @@ final class RequestProcessorFactory {
         $errorRequestProcessorID = $requestInfoBean->getErrorRequestProcessorID();
         $errorRequestProcessor = null;
 
-		$errorRequestProcessorID = (string) $errorRequestProcessorID;
-
 		if ( $errorRequestProcessorID !== null ) {
 			$errorRequestProcessor = new $errorRequestProcessorID;
 
@@ -78,9 +76,9 @@ final class RequestProcessorFactory {
 				//now set this decorator as the request processor
 				$errorRequestProcessor = $requestDecorator;
 			}
-		}
 
-        $errorRequestProcessor->setRequestInfoBean( $requestInfoBean );
+			$errorRequestProcessor->setRequestInfoBean( $requestInfoBean );
+		}
 
         return $errorRequestProcessor;
     }

@@ -580,6 +580,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
+		$allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+			'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
 		$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 			$requestLookup, 'RequestValidation' );
 
@@ -587,8 +589,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
-			$allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
-				'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
+			// $allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+			// 	'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
 
 			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
