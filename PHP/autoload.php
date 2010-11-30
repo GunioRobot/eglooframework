@@ -46,20 +46,6 @@ if ( !class_exists( 'CacheGateway', false ) ) {
 	include( 'PHP/Classes/Performance/Caching/CacheGateway.php' );
 }
 
-// if ( !class_exists( 'CacheManagementDirector', false ) ) {
-// 	include( 'PHP/Classes/Performance/Caching/CacheManagementDirector.php' );
-// }
-// 
-// if ( !class_exists( 'CacheRegionHandler', false ) ) {
-// 	include( 'PHP/Classes/Performance/Caching/RegionHandlers/CacheRegionHandler.php' );
-// }
-// 
-// if ( !class_exists( 'RuntimeCacheRegionHandler', false ) ) {
-// 	include( 'PHP/Classes/Performance/Caching/RegionHandlers/RuntimeCacheRegionHandler.php' );
-// }
-
-// CacheGateway::initialize();
-
 // Register eGloo Autoloader
 spl_autoload_register('eglooAutoload');
 
@@ -91,7 +77,6 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
  */
 function eglooAutoload($class_name) {
 	$cacheGateway = CacheGateway::getCacheGateway();
-	// $runtimeCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Runtime');
 
 	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime' ) ) != null ) {
 		if ( isset( $autoload_hash[$class_name] ) ) {

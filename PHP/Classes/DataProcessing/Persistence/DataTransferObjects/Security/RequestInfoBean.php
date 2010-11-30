@@ -36,6 +36,7 @@ class RequestInfoBean {
 
 	private $arguments = null;
 	private $requestProcessorID = null;
+	private $errorRequestProcessorID = null;
 	private $requestClass = null;
 	private $requestID = null;
 	private $_wildCardRequest = false;
