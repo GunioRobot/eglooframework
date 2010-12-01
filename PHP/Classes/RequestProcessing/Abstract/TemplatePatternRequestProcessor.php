@@ -42,6 +42,8 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 	protected $_templateBuilder = null;
 	protected $_templateVariables = array();
 	protected $_useSystemVariables = true;
+	protected $_requestClassOverride = null;
+	protected $_requestIDOverride = null;
 
     /**
      * Concrete implementation of the abstract RequestProcessor method
@@ -58,10 +60,12 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 	public function processRequest() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Entered processRequest()" );
 
+		$this->preProcessing();
 		$this->setTemplateBuilder();
+		$this->setCustomDispatch();
 
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
-		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder() );
+		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder(), $this->_requestIDOverride, $this->_requestClassOverride );
 		$templateDirector->preProcessTemplate();
 
 		$this->populateTemplateVariables();
@@ -78,6 +82,8 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 			$this->setOutputHeaders();
 			echo $output;        
 		}
+
+		$this->postProcessing();
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Exiting processRequest()" );
 	}
@@ -175,12 +181,32 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 		return $this->_useSystemVariables;
 	}
 
+	protected function postProcessing() {
+		// Override this to make changes before we work on template building
+	}
+
+	protected function preProcessing() {
+		// Override this to make changes after we work on template building
+	}
+
 	protected function populateTemplateVariables() {
 		// Override this to make changes to $this->_templateVariables
 	}
 
 	protected function populateErrorTemplateVariables() {
 		// Override this to make changes to $this->_templateVariables
+	}
+
+	protected function setCustomDispatch() {
+		// Override this to make changes to dispatch
+	}
+
+	protected function setRequestClassOverride( $requestClassOverride ) {
+		$this->_requestClassOverride = $requestClassOverride;
+	}
+
+	protected function setRequestIDOverride( $requestIDOverride ) {
+		$this->_requestIDOverride = $requestIDOverride;
 	}
 
 }

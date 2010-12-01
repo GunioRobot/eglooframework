@@ -148,9 +148,9 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 	/**
 	 * Only functional method available to the public.	
 	 */
-	public function dispatch( $requestInfoBean ) {
-		$userRequestClass = $requestInfoBean->getRequestClass();
-		$userRequestID = $requestInfoBean->getRequestID();
+	public function dispatch( $requestInfoBean, $userRequestIDOverride = null, $userRequestClassOverride = null ) {
+		$userRequestClass = $userRequestClassOverride !== null ? $userRequestIDOverride : $requestInfoBean->getRequestClass();
+		$userRequestID = $userRequestIDOverride !== null ? $userRequestIDOverride : $requestInfoBean->getRequestID();
 		$requestLookup = $userRequestClass . $userRequestID;
 
 		// TODO only if not cache

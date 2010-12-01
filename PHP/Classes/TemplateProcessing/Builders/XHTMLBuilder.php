@@ -134,7 +134,7 @@ class XHTMLBuilder extends TemplateBuilder {
 		$templateDispatcher =
 			XHTMLXML2ArrayDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-		$this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
+		$this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean, $this->userRequestID, $this->userRequestClass );
     }
 
     public function setTemplateEngine() {

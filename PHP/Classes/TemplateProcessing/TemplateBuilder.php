@@ -44,6 +44,7 @@ abstract class TemplateBuilder {
 	protected $ttl = null;
 	protected $processTemplate = true;
 	protected $userRequestID = null;
+	protected $userRequestClass = null;
 
 	public function setApplication( $application ) {
 		$this->application = $application;
@@ -59,6 +60,14 @@ abstract class TemplateBuilder {
 
 	public function getUserRequestID() {
 		return $this->userRequestID;
+	}
+
+	public function setUserRequestClass( $userRequestClass ) {
+		$this->userRequestClass = $userRequestClass;
+	}
+
+	public function getUserRequestClass() {
+		return $this->userRequestClass;
 	}
 
 	abstract public function setDispatchPath();

@@ -195,13 +195,17 @@ class eGlooInterfaceDirector extends TemplateDirector {
         $this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
     }
     
-    public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null ) {
+    public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null, $userRequestClass = null ) {
         $this->templateBuilder = $templateBuilder;
         // TODO uncomment this as part of refactoring for hard caching
         $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
 
 		if ($userRequestID !== null) {
 			$this->templateBuilder->setUserRequestID($userRequestID);
+		}
+
+		if ($userRequestClass !== null) {
+			$this->templateBuilder->setUserRequestClass($userRequestClass);
 		}
 
         $this->templateBuilder->setTemplateEngine();
