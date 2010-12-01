@@ -91,7 +91,9 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 	public function processErrorRequest() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Entered processErrorRequest()" );
 
+		$this->preProcessing();
 		$this->setTemplateBuilder();
+		$this->setCustomDispatch();
 
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
 		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder() );
@@ -111,6 +113,8 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 			$this->setOutputHeaders();
 			echo $output;        
 		}
+
+		$this->postProcessing();
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Exiting processErrorRequest()" );
 	}
