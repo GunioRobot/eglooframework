@@ -586,6 +586,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$requestLookup, 'RequestValidation' );
 
 		if ( $requestNode == null ) {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache, checking wildcards: ' . $requestLookup, 'Security' );
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
@@ -595,23 +596,31 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
 				// We didn't find the request node and we are cached, so let's see if this request class has a request ID default cached
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache, but cache was populated: ' . $requestLookup, 'Security' );
+
 				if ( $useRequestIDDefaultHandler) {
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Checking for requestID wildcard in cache: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 						$requestClass . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, 'RequestID wildcard found in cache: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
 						$requestInfoBean->setWildCardRequest( true );
 						$requestInfoBean->setWildCardRequestID( $requestID );
 						$requestInfoBean->setRequestID( self::$_requestIDWildcard );
+					} else {
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, 'RequestID wildcard not found in cache: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
 					}
 				}
 
 				if ( $requestNode == null && $useRequestClassDefaultHandler ) {
 					// Still no request node, let's see if there's a generic set in cache
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Checking for default request wildcard in cache: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
 						self::$_requestClassWildcard . self::$_requestIDWildcard, 'RequestValidation' );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Default request wildcard found in cache: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
 						$requestInfoBean->setWildCardRequest( true );
 						$requestInfoBean->setWildCardRequestClass( $requestClass );
 						$requestInfoBean->setWildCardRequestID( $requestID );
@@ -627,13 +636,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				// Same logic as above, except we're checking what we loaded from XML
 				if ( isset($this->requestNodes[ $requestLookup ]) ) {
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node found in XML: ' . $requestLookup, 'Security' );
 					$requestNode = $this->requestNodes[ $requestLookup ];
 				} else if ( $useRequestIDDefaultHandler && isset($this->requestNodes[ $requestClass . self::$_requestIDWildcard ]) ) {
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, using requestID wildcard: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $this->requestNodes[ $requestClass . self::$_requestIDWildcard ];
 					$requestInfoBean->setWildCardRequest( true );
 					$requestInfoBean->setWildCardRequestID( $requestID );
 					$requestInfoBean->setRequestID( self::$_requestIDWildcard );					
 				} else if ( $useRequestClassDefaultHandler && isset($this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ]) ) {
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, using wildcard default: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ];
 					$requestInfoBean->setWildCardRequest( true );
 					$requestInfoBean->setWildCardRequestClass( $requestClass );
@@ -641,6 +653,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestInfoBean->setRequestClass( self::$_requestClassWildcard );
 					$requestInfoBean->setRequestID( self::$_requestIDWildcard );
 				} else {
+					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, wildcards disabled: ' . $requestLookup, 'Security' );
 					$requestNode = null;
 				}
 
