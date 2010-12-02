@@ -301,13 +301,13 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 			// We might sort in the future, but for now let's assume it's coming in ordered
 			foreach( $parametersNeeded as $parameter ) {
 				if ( $parameter['source'] === 'GET' ) {
-					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getGET($parameter['value']));
+					$newParameter = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getGET($parameter['value']));
 				} else if ( $parameter['source'] === 'POST' ) {
-					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getPOST($parameter['value']));
+					$newParameter = array('type' => $parameter['type'], 'value' => $this->requestInfoBean->getPOST($parameter['value']));
 				} else if ( $parameter['source'] === 'const' ) {
-					$queryParameters[] = array('type' => $parameter['type'], 'value' => $parameter['value']);
+					$newParameter = array('type' => $parameter['type'], 'value' => $parameter['value']);
 				} else if ( $parameter['source'] === 'this' ) {
-					$queryParameters[] = array('type' => $parameter['type'], 'value' => $this->getAvailableRequestQueryParameter($parameter['value']));
+					$newParameter = array('type' => $parameter['type'], 'value' => $this->getAvailableRequestQueryParameter($parameter['value']));
 				} else if ( $parameter['source'] === $loopsOn ) {
 					$source = $parameter['source'];
 
@@ -315,16 +315,16 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 						if ( $loopColumn && isset($this->_executedQueriesInFeederForm[$source][$loopColumn]) ) { 
 							if ( isset($this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex]) ) {
 								$loopValue = $this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex];
-								$queryParameters[] = array('type' => $parameter['type'], 'value' => $loopValue);
+								$newParameter = array('type' => $parameter['type'], 'value' => $loopValue);
 							}
 						} else if ( !$loopColumn ) {
 							if ( isset($this->_executedQueriesInFeederForm[$source][$loopIndex]) ) {
 								$loopValue = $this->_executedQueriesInFeederForm[$source][$loopIndex];
 
 								if (isset($parameter['value']) && isset($loopValue[$parameter['value']])) {
-									$queryParameters[] = array('type' => $parameter['type'], 'value' => $loopValue[$parameter['value']]);
+									$newParameter = array('type' => $parameter['type'], 'value' => $loopValue[$parameter['value']]);
 								} else {
-									$queryParameters[] = array('type' => $parameter['type'], 'value' => $loopValue);
+									$newParameter = array('type' => $parameter['type'], 'value' => $loopValue);
 								}
 							}
 						}
@@ -338,7 +338,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 							
 							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
 
-							$queryParameters[] = array('type' => $parameter['type'], 'value' => $feederStringForm);
+							$newParameter = array('type' => $parameter['type'], 'value' => $feederStringForm);
 						}
 					} else {
 						$lookupIndexSource = $parameter['lookupIndexSource']['source'];
@@ -362,21 +362,20 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 							$feederArrayForm = $this->_executedQueriesInFeederForm[$parameter['source']][$lookupIndexColumnValue];
 							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
-							$queryParameters[] = array('type' => $parameter['type'], 'value' => $feederStringForm);
+							$newParameter = array('type' => $parameter['type'], 'value' => $feederStringForm);
 						} else {
 							
 						}
 						// $this->_executedQueries[$lookupIndexSource]['loopResultSets'][];
 					}
-					//  else {
-					// 	$lookupIndexSource = $parameter['lookupIndexSource'];
-					// 	if (!isset($this->_executedQueriesInFeederForm[$lookupIndexSource['source']])) {
-					// 		$this->_executedQueriesInFeederForm[$lookupIndexSource['source']] = $this->getTransformedFeederQueryString()
-					// 	}
-					// }
+
 				} else {
 					throw new Exception('Invalid query parameter source specified');
 				}
+
+				$newParameter['quote'] = isset($parameter['quote']) ? $parameter['quote'] : false;
+
+				$queryParameters[] = $newParameter;
 			}
 		}
 
