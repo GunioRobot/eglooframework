@@ -55,6 +55,9 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Query to prepare: ' . "\n" . $dataPackageString, 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Parameters: ' . "\n" . print_r($queryParameters, true), 'Security' );
+
 		// Check if we're doing string replacement or if we can just use sprintf (for now)
 		if (!$associative && !empty($queryParameters)) {
 			if ($sort) {
@@ -101,7 +104,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			// Means we don't want to do vsprintf on this, just return the prepared query string
 			$populatedDataPackageString = $dataPackageString;
 		}
-		
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Prepared query: ' . "\n" . $populatedDataPackageString, 'Security' );
 
 		// $connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$statement = $connection->stmt_init();
