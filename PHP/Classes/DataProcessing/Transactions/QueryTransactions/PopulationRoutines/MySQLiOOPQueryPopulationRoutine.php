@@ -55,8 +55,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Query to prepare: ' . "\n" . $dataPackageString, 'Security' );
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Parameters: ' . "\n" . print_r($queryParameters, true), 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Query to prepare: ' . "\n" . $dataPackageString, 'DataProcessing' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Parameters: ' . "\n" . print_r($queryParameters, true), 'DataProcessing' );
 
 		// Check if we're doing string replacement or if we can just use sprintf (for now)
 		if (!$associative && !empty($queryParameters)) {
@@ -105,7 +105,7 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			$populatedDataPackageString = $dataPackageString;
 		}
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Prepared query: ' . "\n" . $populatedDataPackageString, 'Security' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Prepared query: ' . "\n" . $populatedDataPackageString, 'DataProcessing' );
 
 		// $connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$statement = $connection->stmt_init();
