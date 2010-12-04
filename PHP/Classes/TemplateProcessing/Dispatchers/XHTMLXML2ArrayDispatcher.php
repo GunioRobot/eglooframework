@@ -201,7 +201,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		$dispatchPath		= null;
 		$localizationNode	= null;
 
-		$dispatchPathPrepend = isset($requestNode[$userRequestClass][$userRequestID]['path']) ? $requestNode[$userRequestClass][$userRequestID]['path'] : '';
+		$dispatchPathPrepend = isset($requestNode[$userRequestClass][$userRequestID]['path']) ? $requestNode[$userRequestClass][$userRequestID]['path'] . '/' : '';
 
 		foreach( $requestNode[$userRequestClass][$userRequestID]['Localizations'] as $localization ) {
 			if ( $countryCode === $localization['countryCode'] ) {
