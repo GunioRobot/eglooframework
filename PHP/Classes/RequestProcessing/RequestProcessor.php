@@ -60,6 +60,10 @@ abstract class RequestProcessor {
 
 	abstract public function processRequest();
 
+	public function processErrorRequest() {
+		echo "Please implement processErrorRequest()";
+	}
+
     // TODO we need to make a templated method for processing
     // both the header information and then the content information
     // to guarantee that by default we handle content headers and

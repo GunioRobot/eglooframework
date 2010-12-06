@@ -964,7 +964,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $variableArg['id'] );
+							$requestInfoBean->setInvalidGET( $variableArg['id'], $variableValue );
 							$retVal = false;
 						}
 					} else {
@@ -1092,7 +1092,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $variableArg['id'] );
+							$requestInfoBean->setInvalidPOST( $variableArg['id'], $variableValue );
 							$retVal = false;
 						}
 					} else {
@@ -1249,7 +1249,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$requestInfoBean->setInvalidGET( $complexArg['id'], $complexValue );
 							$retVal = false;
 						}
 					}
@@ -1316,7 +1316,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$requestInfoBean->setInvalidGET( $complexArg['id'], $complexValues );
 							$retVal = false;
 						}
 					}
@@ -1386,7 +1386,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$requestInfoBean->setInvalidPOST( $complexArg['id'], $complexValue );
 							$retVal = false;
 						}
 					}
@@ -1452,7 +1452,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$requestInfoBean->setInvalidPOST( $complexArg['id'], $complexValues );
 							$retVal = false;
 						}
 					}
@@ -1532,13 +1532,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $selectArg['id'] );
+							$requestInfoBean->setInvalidGET( $selectArg['id'], $selectVal );
 							$retVal = false;
 						}
-					}
-
-					//set argument in the request info bean
-					if ( isset($selectArg['scalarType']) ) {
+					} else if ( isset($selectArg['scalarType']) ) {
 						if ( $selectArg['scalarType'] === 'integer' ) {
 							$requestInfoBean->setGET( $selectArg['id'],	 intval($selectVal));
 						} else if ( $selectArg['scalarType'] === 'float' ) {
@@ -1610,13 +1607,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $selectArg['id'] );
+							$requestInfoBean->setInvalidPOST( $selectArg['id'], $selectVal );
 							$retVal = false;
 						}
-					}
-
-					//set argument in the request info bean
-					if ( isset($selectArg['scalarType']) ) {
+					} else if ( isset($selectArg['scalarType']) ) {
 						if ( $selectArg['scalarType'] === 'integer' ) {
 							$requestInfoBean->setPOST( $selectArg['id'],  intval($selectVal));
 						} else if ( $selectArg['scalarType'] === 'float' ) {
