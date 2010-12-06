@@ -62,6 +62,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			. $this->REQUESTS_XML_LOCATION, 'Security' );
 
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
+		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 		if (!$requestXMLObject) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
