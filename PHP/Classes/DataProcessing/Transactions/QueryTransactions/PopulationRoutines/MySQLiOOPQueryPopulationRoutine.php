@@ -55,6 +55,9 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		$dataPackageString = $queryTransaction->getDataPackageString();
 		$populatedDataPackageString = null;
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Query to prepare: ' . "\n" . $dataPackageString, 'DataProcessing' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Parameters: ' . "\n" . print_r($queryParameters, true), 'DataProcessing' );
+
 		// Check if we're doing string replacement or if we can just use sprintf (for now)
 		if (!$associative && !empty($queryParameters)) {
 			if ($sort) {
@@ -66,7 +69,11 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			foreach($queryParameters as $key => $value) {
 				if ( $value['type'] === 'string' ) {
 					if (is_string($value['value'])) {
-						$processedParameters[] = $connection->real_escape_string($value['value']);
+						if (isset($value['quote']) && $value['quote']) {
+							$processedParameters[] = '\'' . $connection->real_escape_string($value['value']) . '\'';
+						} else {
+							$processedParameters[] = $connection->real_escape_string($value['value']);
+						}
 					} else {
 						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected string, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
@@ -91,12 +98,14 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 			}
 
 			$populatedDataPackageString = vsprintf($dataPackageString, $processedParameters);
-			
+
 			self::$numberOfQueriesPopulated += 1;
 		} else if ( empty($queryParameters) ) {
 			// Means we don't want to do vsprintf on this, just return the prepared query string
 			$populatedDataPackageString = $dataPackageString;
 		}
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Prepared query: ' . "\n" . $populatedDataPackageString, 'DataProcessing' );
 
 		// $connection = DBConnectionManager::getConnection()->getRawConnectionResource();
 		$statement = $connection->stmt_init();

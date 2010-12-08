@@ -153,7 +153,7 @@ RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)$ index.php?eg_requestC
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)/([a-zA-Z0-9\.\-_&\ ]+=[a-zA-Z0-9\.\-=_&\ ]*)$ index.php?eg_requestClass=$1&eg_requestID=$2&$3%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)/([a-zA-Z0-9\.\-_&\ ]+)$ index.php?eg_requestClass=$1&eg_requestID=$2&eg_slug=$3&%{QUERY_STRING} [L]
 RewriteRule ^([a-zA-Z0-9\.\-_\ ]+)/?$ index.php?eg_requestClass=$1&eg_requestID=index&%{QUERY_STRING} [L]
-RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase [L]
+RewriteRule ^$ index.php?eg_requestClass=externalMainPage&eg_requestID=extMainViewBase&%{QUERY_STRING} [L]
 
 # Forbid anything that doesn't fit one of the preceding patterns
 # Should redirect to 404.  Currently redirects to /

@@ -62,6 +62,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			. $this->REQUESTS_XML_LOCATION, 'Security' );
 
 		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
+		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 		if (!$requestXMLObject) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
@@ -211,11 +212,11 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
-				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation' );
+				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation', 0, true );
 		}
 
 		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
-			$this->attributeSets, 'RequestValidation' );
+			$this->attributeSets, 'RequestValidation', 0, true );
 
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
@@ -512,16 +513,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation' );
+					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation', 0, true );
 			}
 		}
 
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
-			$this->requestNodes, 'RequestValidation' );
+			$this->requestNodes, 'RequestValidation', 0, true );
 
-		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation' );
+		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
 	}
 
 	protected function init() {
@@ -576,14 +577,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestClass = $_GET[ self::REQUEST_CLASS_KEY ];
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
 		$requestLookup = $requestClass . $requestID;
+
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Incoming Request Class and Request ID lookup is: "' . $requestLookup . '"', 'Security' );
 
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 		$allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
-			'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
+			'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation', true );
 		$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-			$requestLookup, 'RequestValidation' );
+			$requestLookup, 'RequestValidation', true );
 
 		if ( $allNodesCached && !$requestNode ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache, checking wildcards: ' . $requestLookup, 'Security' );
@@ -601,7 +603,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				if ( $useRequestIDDefaultHandler) {
 					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Checking for requestID wildcard in cache: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-						$requestClass . self::$_requestIDWildcard, 'RequestValidation' );
+						$requestClass . self::$_requestIDWildcard, 'RequestValidation', true );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, 'RequestID wildcard found in cache: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
@@ -617,7 +619,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					// Still no request node, let's see if there's a generic set in cache
 					eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Checking for default request wildcard in cache: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
 					$requestNode = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-						self::$_requestClassWildcard . self::$_requestIDWildcard, 'RequestValidation' );
+						self::$_requestClassWildcard . self::$_requestIDWildcard, 'RequestValidation', true );
 
 					if ( $requestNode != null && is_array($requestNode) ) {
 						eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Default request wildcard found in cache: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
@@ -963,7 +965,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $variableArg['id'] );
+							$requestInfoBean->setInvalidGET( $variableArg['id'], $variableValue );
 							$retVal = false;
 						}
 					} else {
@@ -1091,7 +1093,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $variableArg['id'] );
+							$requestInfoBean->setInvalidPOST( $variableArg['id'], $variableValue );
 							$retVal = false;
 						}
 					} else {
@@ -1248,7 +1250,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$requestInfoBean->setInvalidGET( $complexArg['id'], $complexValue );
 							$retVal = false;
 						}
 					}
@@ -1315,7 +1317,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $complexArg['id'] );
+							$requestInfoBean->setInvalidGET( $complexArg['id'], $complexValues );
 							$retVal = false;
 						}
 					}
@@ -1385,7 +1387,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$requestInfoBean->setInvalidPOST( $complexArg['id'], $complexValue );
 							$retVal = false;
 						}
 					}
@@ -1451,7 +1453,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $complexArg['id'] );
+							$requestInfoBean->setInvalidPOST( $complexArg['id'], $complexValues );
 							$retVal = false;
 						}
 					}
@@ -1531,13 +1533,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidGET( $selectArg['id'] );
+							$requestInfoBean->setInvalidGET( $selectArg['id'], $selectVal );
 							$retVal = false;
 						}
-					}
-
-					//set argument in the request info bean
-					if ( isset($selectArg['scalarType']) ) {
+					} else if ( isset($selectArg['scalarType']) ) {
 						if ( $selectArg['scalarType'] === 'integer' ) {
 							$requestInfoBean->setGET( $selectArg['id'],	 intval($selectVal));
 						} else if ( $selectArg['scalarType'] === 'float' ) {
@@ -1609,13 +1608,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							return false;
 						} else {
 							//set invalid argument in the request info bean
-							$requestInfoBean->setInvalidPOST( $selectArg['id'] );
+							$requestInfoBean->setInvalidPOST( $selectArg['id'], $selectVal );
 							$retVal = false;
 						}
-					}
-
-					//set argument in the request info bean
-					if ( isset($selectArg['scalarType']) ) {
+					} else if ( isset($selectArg['scalarType']) ) {
 						if ( $selectArg['scalarType'] === 'integer' ) {
 							$requestInfoBean->setPOST( $selectArg['id'],  intval($selectVal));
 						} else if ( $selectArg['scalarType'] === 'float' ) {

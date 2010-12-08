@@ -45,11 +45,15 @@ class CacheGateway {
 	private $_cache_file_path = '';
 	private $_cache_tiers = 0x0;
 
+	private $_piping_hot_cache = array();
+
 	const USE_APCCACHE		= 0x1;		// 0000 0001
 	const USE_FILECACHE		= 0x2;		// 0000 0010
 	const USE_MEMCACHE		= 0x4;		// 0000 0100
 
 	private static $_singleton;
+
+	private $_memcache_servers = array();
 
 	const MEMCACHED_HOST = '127.0.0.1';
 	const MEMCACHED_PORT = 11211;
@@ -59,8 +63,6 @@ class CacheGateway {
 	private function loadMemcache() {
 		if ($this->_active) {
 			try {
-				$this->_memcache = new Memcache();
-
 				$persist_connection = true;
 				$weight = 1;
 				$timeout = 1;
@@ -68,7 +70,124 @@ class CacheGateway {
 				$status = true; // Server is considered online
 				$failure_callback = array('CacheGateway', 'serverFailure');
 
-				for ($i = 0; $i <= 10; $i++) {
+				$i = 0;
+
+				// Runtime
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = 0; $i <= 0; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Runtime'] = $newMemcacheServer;
+
+				// Configuration
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 1; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Configuration'] = $newMemcacheServer;
+
+				// Request Validation / Request Processing
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 2; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['RequestValidation'] = $newMemcacheServer;
+
+				// Dispatching
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 3; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Dispatching'] = $newMemcacheServer;
+
+				// Session
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 4; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Session'] = $newMemcacheServer;
+
+				// Data Processing
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 5; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['DataProcessing'] = $newMemcacheServer;
+
+				// Content
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 6; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Content'] = $newMemcacheServer;
+
+				// Static
+				$this->_memcache = new Memcache();
+
+				for ($i = $i; $i <= 7; $i++) {
 					$this->_memcache->addServer( 	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
 													$persist_connection,
@@ -78,6 +197,38 @@ class CacheGateway {
 													$status,
 													$failure_callback );
 				}
+
+				// Templating
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 8; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Templating'] = $newMemcacheServer;
+
+				// Other
+				$newMemcacheServer = new Memcache();
+				
+				for ($i = $i; $i <= 9; $i++) {
+					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
+													self::MEMCACHED_PORT + $i,
+													$persist_connection,
+													$weight,
+													$timeout,
+													$retry_interval,
+													$status,
+													$failure_callback );
+				}
+
+				$this->_memcache_servers['Other'] = $newMemcacheServer;
 
 			} catch ( Exception $exception ) {
 				eGlooLogger::writeLog( eGlooLogger::ERROR, 
@@ -117,7 +268,7 @@ class CacheGateway {
 		return $this->_active;
 	}
 
-	public function deleteObject( $id, $namespace = null ) {
+	public function deleteObject( $id, $namespace = null, $kept_hot = false ) {
 		$retVal = null;
 
 		if ( !$namespace ) {
@@ -125,6 +276,10 @@ class CacheGateway {
 		}
 
 		$id = $namespace . '::' . $id;
+
+		if ( $kept_hot && isset($this->_piping_hot_cache[$id]) ) {
+			unset($this->_piping_hot_cache[$id]);
+		}
 
 		if ($this->_active) {
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
@@ -136,7 +291,15 @@ class CacheGateway {
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
-					$retVal = $this->_memcache->delete( $id );
+					$memcacheServer = null;
+
+					if (isset($this->_memcache_servers[$namespace])) {
+						$memcacheServer = $this->_memcache_servers[$namespace];
+					} else {
+						$memcacheServer = $this->_memcache_servers['Other'];
+					}
+
+					$retVal = $memcacheServer->delete( $id );
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
@@ -150,53 +313,71 @@ class CacheGateway {
 		return $retVal;
 	}
 
-	public function getObject( $id, $namespace = null ) {
+	public function getObject( $id, $namespace = null, $keep_hot = false ) {
 		// TODO extensive error checking and input validation
 		$retVal = null;
 
-		if ( !$namespace ) {
-			$namespace = 'egDefault';
-		}
-
-		$id = $namespace . '::' . $id;
-
 		if ($this->_active) {
-			if ($this->_cache_tiers & self::USE_APCCACHE) {
-				try {
-					$retVal = apc_fetch($id);
-				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
-				}
-			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
-				try {
-					$retVal = $this->_memcache->get( $id );
-				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
-						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
-				}
-			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
-				if (isset($this->_filecache[$id])) {
-					$cache_pack = $this->_filecache[$id];
-					$blob = $cache_pack['blob'];
-					
-					if ($cache_pack['base64']) {
-						$blob = base64_decode($blob);
-					}
+			if ( !$namespace ) {
+				$namespace = 'egDefault';
+			}
 
-					if ($cache_pack['serialized']) {
-						$blob = unserialize($blob);
-					}
+			$id = $namespace . '::' . $id;
 
-					if ( (time() - $cache_pack['pack_time']) > $cache_pack['ttl'] ) {
-						unset($this->_filecache[$id]);
-					}
+			if ( $keep_hot && isset($this->_piping_hot_cache[$id]) ) {
+				$retVal = $this->_piping_hot_cache[$id];
+			} else {
+				if ($this->_cache_tiers & self::USE_APCCACHE) {
+					try {
+						$retVal = apc_fetch($id);
 
-					$retVal = $blob;
+						$this->_piping_hot_cache[$id] = $retVal;
+					} catch ( Exception $exception ) {
+						eGlooLogger::writeLog( eGlooLogger::ERROR, 
+							'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+					}
+				} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
+					try {
+						$memcacheServer = null;
+
+						if (isset($this->_memcache_servers[$namespace])) {
+							$memcacheServer = $this->_memcache_servers[$namespace];
+						} else {
+							$memcacheServer = $this->_memcache_servers['Other'];
+						}
+
+						$retVal = $memcacheServer->get( $id );
+
+						$this->_piping_hot_cache[$id] = $retVal;
+					} catch ( Exception $exception ) {
+						eGlooLogger::writeLog( eGlooLogger::ERROR, 
+							'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
+					}
+				} else if ($this->_cache_tiers & self::USE_FILECACHE) {
+					if (isset($this->_filecache[$id])) {
+						$cache_pack = $this->_filecache[$id];
+						$blob = $cache_pack['blob'];
+
+						if ($cache_pack['base64']) {
+							$blob = base64_decode($blob);
+						}
+
+						if ($cache_pack['serialized']) {
+							$blob = unserialize($blob);
+						}
+
+						if ( (time() - $cache_pack['pack_time']) > $cache_pack['ttl'] ) {
+							unset($this->_filecache[$id]);
+						}
+
+						$retVal = $blob;
+
+						$this->_piping_hot_cache[$id] = $retVal;
+					}
 				}
 			}
 		}
-		
+
 		return $retVal;
 	} 
 
@@ -212,43 +393,21 @@ class CacheGateway {
 		return $retVal;
 	}
 
-	public function storeObject( $id, $obj, $namespace = null, $ttl = 0 ) {
+	public function storeObject( $id, $obj, $namespace = null, $ttl = 0, $keep_hot = false ) {
 		// TODO extensive error checking and input validation
 		$retVal = null;
 
-		if ( !$namespace ) {
-			$namespace = 'egDefault';
-		}
-
-		$id = $namespace . '::' . $id;
-
-/*
-'Configuration',
-'Content',
-'DataProcessing',
-'Dispatches',
-'History',
-'Logging',
-'RequestProcessing',
-'Runtime',
-'Session',
-'Static',
-'Templating',
-
-*/
-		// $egCacheMetadata = array(	'Applications' => array(),
-		// 							'Configuration' => array(),
-		// 							'Garbage' => array(),
-		// 							'History' => array(),
-		// 							'Log' => array(),
-		// 							'Namespaces' => array(),
-		// 							'Servers' => array(),
-		// 							'Statistics' => array(),
-		// 						);
-		// 
-		// $namespace = 
-
 		if ($this->_active) {
+			if ( !$namespace ) {
+				$namespace = 'egDefault';
+			}
+
+			$id = $namespace . '::' . $id;
+
+			if ( $keep_hot ) {
+				$retVal = $this->_piping_hot_cache[$id] = $obj;
+			}
+
 			if ($this->_cache_tiers & self::USE_APCCACHE) {
 				try {
 					$retVal = apc_store( $id, $obj, $ttl );
@@ -258,7 +417,15 @@ class CacheGateway {
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
-					$retVal = $this->_memcache->set( $id, $obj, false, $ttl ); 
+					$memcacheServer = null;
+
+					if (isset($this->_memcache_servers[$namespace])) {
+						$memcacheServer = $this->_memcache_servers[$namespace];
+					} else {
+						$memcacheServer = $this->_memcache_servers['Other'];
+					}
+
+					$retVal = $memcacheServer->set( $id, $obj, false, $ttl ); 
 				} catch ( Exception $exception ) {
 					eGlooLogger::writeLog( eGlooLogger::ERROR, 
 							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );

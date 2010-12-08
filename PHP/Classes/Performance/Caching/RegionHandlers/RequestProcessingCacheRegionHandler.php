@@ -75,22 +75,22 @@ class RequestProcessingCacheRegionHandler extends CacheRegionHandler {
 		$cacheGateway = CacheGateway::getCacheGateway();
 	}
 
-	public function getObject( $key, $namespace = 'RequestProcessing' ) {
+	public function getObject( $key, $namespace = 'RequestProcessing', $keep_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$retVal = $cacheGateway->getObject( $key, $namespace );
+		$retVal = $cacheGateway->getObject( $key, $namespace, $keep_hot );
 
 		return $retVal;
 	}
 
-	public function storeObject( $key, $value, $namespace = 'RequestProcessing', $ttl = 0 ) {
+	public function storeObject( $key, $value, $namespace = 'RequestProcessing', $ttl = 0, $keep_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl );
+		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl, $keep_hot );
 
 		if ($retVal) {
 			$metadata = $cacheGateway->getObject( 'egCacheMetadata', 'egCacheManagement' );
@@ -131,12 +131,12 @@ class RequestProcessingCacheRegionHandler extends CacheRegionHandler {
 		return $retVal;
 	}
 
-	public function deleteObject( $key, $namespace = 'RequestProcessing' ) {
+	public function deleteObject( $key, $namespace = 'RequestProcessing', $kept_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$retVal = $cacheGateway->deleteObject( $key, $namespace );
+		$retVal = $cacheGateway->deleteObject( $key, $namespace, $kept_hot );
 
 		return $retVal;
 	}

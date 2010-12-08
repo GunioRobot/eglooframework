@@ -85,10 +85,10 @@ class JavascriptDispatcher extends TemplateDispatcher {
 		if ( !isset(self::$singletonDispatcher) ) {
 			$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 			
-			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject(	eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptDispatcherNodes', 'ContentDispatching' ) ) == null ) {
+			if ( (self::$singletonDispatcher = $dispatchCacheRegionHandler->getObject(	eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptDispatcherNodes', 'ContentDispatching', true ) ) == null ) {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Building Singleton" );
 				self::$singletonDispatcher = new JavascriptDispatcher( $application, $interfaceBundle );
-				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching' );
+				$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching', 0, true );
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptDispatcher: Singleton pulled from cache" );
 			}

@@ -78,7 +78,7 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
 function eglooAutoload($class_name) {
 	$cacheGateway = CacheGateway::getCacheGateway();
 
-	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime' ) ) != null ) {
+	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime', true ) ) != null ) {
 		if ( isset( $autoload_hash[$class_name] ) ) {
 			// Make sure we didn't just mark this as "not found"
 			if ( $autoload_hash[$class_name] !== false ) {
@@ -193,7 +193,7 @@ function eglooAutoload($class_name) {
 
 				include( $realPath );
 				$autoload_hash[$class_name] = realpath( $realPath );
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
+				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 				break;
 			}
 		}
@@ -203,7 +203,7 @@ function eglooAutoload($class_name) {
 	// TODO In the future, we should branch on this depending on deployment type
 	if ( $realPath === null ) {
 		$autoload_hash[$class_name] = false;
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime' );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 	}
 
 }
