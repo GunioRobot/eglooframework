@@ -46,33 +46,33 @@ class GenericCacheRegionHandler extends CacheRegionHandler {
 		$cacheGateway = CacheGateway::getCacheGateway();
 	}
 
-	public static function getObject( $key, $namespace = 'egDefault' ) {
+	public static function getObject( $key, $namespace = 'egDefault', $keep_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$retVal = $cacheGateway->getObject( $key, $namespace );
+		$retVal = $cacheGateway->getObject( $key, $namespace, $keep_hot );
 
 		return $retVal;
 	}
 
-	public static function storeObject( $key, $value, $namespace = 'egDefault', $ttl = 0 ) {
+	public static function storeObject( $key, $value, $namespace = 'egDefault', $ttl = 0, $keep_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
 
-		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl );
+		$retVal = $cacheGateway->storeObject( $key, $value, $namespace, $ttl, $keep_hot );
 
 		return $retVal;
 	}
 
-	public static function deleteObject( $key, $namespace = 'egDefault' ) {
+	public static function deleteObject( $key, $namespace = 'egDefault', $kept_hot = false ) {
 		$retVal = null;
 
 		$cacheGateway = CacheGateway::getCacheGateway();
 
-		$retVal = $cacheGateway->deleteObject( $key, $namespace );
+		$retVal = $cacheGateway->deleteObject( $key, $namespace, $kept_hot );
 
 		return $retVal;
 	}

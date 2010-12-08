@@ -165,10 +165,10 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcher';
 		
-		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'ContentDispatching' ) ) == null ) {
+		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'ContentDispatching', true ) ) == null ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 			$this->loadDispatchNodes();
-			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->dispatchNodes, 'ContentDispatching' );
+			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->dispatchNodes, 'ContentDispatching', 0, true );
 		} else {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 		}

@@ -42,11 +42,11 @@ abstract class CacheRegionHandler {
 
 	abstract public function getAllCacheEntriesByNamespace();
 
-	abstract public function getObject( $key, $namespace );
+	abstract public function getObject( $key, $namespace, $keep_hot );
 
-	abstract public function storeObject( $key, $value, $namespace, $ttl );
+	abstract public function storeObject( $key, $value, $namespace, $ttl, $keep_hot );
 
-	abstract public function deleteObject( $key, $namespace );
+	abstract public function deleteObject( $key, $namespace, $kept_hot );
 
 	abstract public function getStats();
 
