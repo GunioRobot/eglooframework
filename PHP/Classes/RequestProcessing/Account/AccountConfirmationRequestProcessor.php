@@ -53,7 +53,7 @@ class AccountConfirmationRequestProcessor extends RequestProcessor {
  	    $inputValues[ 'inviteduser_id' ] = $userID;
  	    $inputValues[ 'confirmation_id' ] = $confirmationID;
  	    	 	    	
- 	    $daoFactory = DAOFactory::getInstance();
+ 	    $daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		

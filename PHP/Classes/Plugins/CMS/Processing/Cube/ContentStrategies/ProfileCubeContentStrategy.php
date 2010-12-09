@@ -40,7 +40,7 @@ class ProfileCubeContentStrategy extends CubeContentStrategy {
 		
 		$loggedInProfileID = $_SESSION['MAIN_PROFILE_ID'];
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
         $userProfileDAO = $daoFactory->getUserProfileDAO();
         $userProfileDTO = $userProfileDAO->getProfile( $viewingProfileID );
         
@@ -89,7 +89,7 @@ class ProfileCubeContentStrategy extends CubeContentStrategy {
 		
 		$loggedInProfileID = $_SESSION['MAIN_PROFILE_ID'];
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
         $userProfileDAO = $daoFactory->getUserProfileDAO();
         $userProfileDTO = $userProfileDAO->getProfile( $loggedInProfileID );
         

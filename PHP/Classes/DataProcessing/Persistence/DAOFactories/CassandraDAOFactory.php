@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CassandraDAOFactory extends DAOFactory {
+class CassandraDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a CassandraSQLSessionDAO

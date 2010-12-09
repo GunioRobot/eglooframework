@@ -40,7 +40,7 @@ class BlogCubeContentStrategy extends CubeContentStrategy {
 		
 		$loggedInProfileID = $_SESSION['MAIN_PROFILE_ID'];
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
         $blogDTOArray = $daoFactory->getBlogDAO()->viewBlogEntryList( $viewingProfileID, $loggedInProfileID  );
 
         $this->_templateEngine->assign( 'blogDTOArray', $blogDTOArray );

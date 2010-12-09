@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class OracleDBDAOFactory extends DAOFactory {
+class OracleDBDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a OracleDBSQLSessionDAO

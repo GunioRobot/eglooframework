@@ -49,7 +49,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
         $requestedPassword = $this->requestInfoBean->getPOST('userRequestedAccountPassword');
         $confirmedPassword = $this->requestInfoBean->getPOST('userConfirmedAccountPassword');
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$userInvitesDAO = $daoFactory->getUserInvitesDAO();
 
 
@@ -111,7 +111,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
         $birthYear = $this->requestInfoBean->getPOST('userBirthYear');
         $referralCode = $this->requestInfoBean->getPOST('userReferralCode');
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$accountDAO = $daoFactory->getAccountDAO();
 		$accountDTO = $accountDAO->registerNewAccount( 	$accountName, $password, $userEmail, 
 														$firstName, $lastName, $gender, 
@@ -143,7 +143,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
  	    	$inputValues[ 'inviteduser_id' ] = $userDTO->getUserID();
  	    	$inputValues[ 'confirmation_id' ] = $confirmationCode;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			
@@ -202,7 +202,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
      */
     private function setNumberOfInvites( $userID ){
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$userInvitesDAO = $daoFactory->getUserInvitesDAO();
 		$userAssociationLevel = $userInvitesDAO->getUserAssociationLevel( $userID );
 	
@@ -245,7 +245,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 		$inputValues = array();
  	    $inputValues[ 'confirmation_id' ] = $confirmationId;	
 	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
  	    

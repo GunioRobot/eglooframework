@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class RESTDAOFactory extends DAOFactory {
+class RESTDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a RESTSQLSessionDAO

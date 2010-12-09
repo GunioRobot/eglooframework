@@ -46,7 +46,7 @@ class EditBlogRequestProcessor extends RequestProcessor {
     	$inputValues[ 'inputBlogTitle' ] = $this->requestInfoBean->getPOST( 'newBlogTitle' );
     	$inputValues[ 'inputBlogContent' ] = $this->requestInfoBean->getPOST( 'newBlogContent' );
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
         

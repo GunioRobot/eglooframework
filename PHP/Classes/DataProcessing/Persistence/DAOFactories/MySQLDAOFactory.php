@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MySQLDAOFactory extends DAOFactory {
+class MySQLDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a MySQLSQLSessionDAO

@@ -54,7 +54,7 @@ class EditBlogEntryRequestProcessor extends RequestProcessor {
             
             $profileID = $_SESSION['MAIN_PROFILE_ID'];
             
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $blogDTO = $daoFactory->getBlogDAO()->editBlogEntry( $profileID, $blogEntryID, $blogEntryTitle, $blogEntryContent );
             header("Content-type: text/html; charset=UTF-8");
             //header("Content-type: application/xml; charset=UTF-8");
@@ -67,7 +67,7 @@ class EditBlogEntryRequestProcessor extends RequestProcessor {
         } else {
             $profileID = $_SESSION['MAIN_PROFILE_ID'];
             
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $blogDTO = $daoFactory->getBlogDAO()->viewBlogEntry( $profileID, $blogEntryID );
 
             $this->_templateEngine->assign( 'blogEntryID', $blogEntryID );

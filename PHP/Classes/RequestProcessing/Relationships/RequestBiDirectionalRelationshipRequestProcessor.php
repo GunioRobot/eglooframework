@@ -53,7 +53,7 @@ class RequestBiDirectionalRelationshipRequestProcessor extends RequestProcessor 
     	$inputValues[ 'accepterProfileID' ] = $accepterProfileID;
     	$inputValues[ 'relationshipType' ] = $relationshipType;
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 

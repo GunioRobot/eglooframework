@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class RedBeanDAOFactory extends DAOFactory {
+class RedBeanDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a RedBeanSQLSessionDAO

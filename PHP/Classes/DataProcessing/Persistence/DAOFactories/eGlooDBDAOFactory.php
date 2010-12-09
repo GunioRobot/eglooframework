@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooDBDAOFactory extends DAOFactory {
+class eGlooDBDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a eGlooDBSQLSessionDAO

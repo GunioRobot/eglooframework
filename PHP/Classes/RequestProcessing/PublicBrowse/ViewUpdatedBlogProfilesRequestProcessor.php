@@ -65,7 +65,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 		$inputValues[ 'start_index' ] = $startIndex;
 		$inputValues[ 'profile_count' ] = $length;
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction, $inputValues );
 
@@ -78,7 +78,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 		$daoFunction = 'getProfileImage';
 		$inputValues = array();
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		foreach ( $gqDTOArray as $blogProfile ) {
@@ -94,7 +94,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 		
 		$daoFunction = 'getBlog';
 		$inputValues = array();
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		foreach ( $gqDTOArray as $blogProfile ) {
@@ -108,7 +108,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 		$inputValues = array();
 		$inputValues[ 'profile_count' ] = '6';
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction, $inputValues );
 		
@@ -128,7 +128,7 @@ class ViewUpdatedBlogProfilesRequestProcessor extends RequestProcessor {
 			$inputValues = array();
  	    	$inputValues[ 'profileID' ] = $viewingProfileID;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
             $viewingUserProfileName = $gqDTO->get_output_profile_name();

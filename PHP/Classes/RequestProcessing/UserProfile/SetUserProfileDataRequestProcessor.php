@@ -43,7 +43,7 @@ class SetUserProfileDataRequestProcessor extends RequestProcessor {
 		//TODO:check profileID matches session profileid
 		
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $userProfileDAO = $daoFactory->getUserProfileDAO();
         $userProfileDTO = new UserProfileDTO();
         

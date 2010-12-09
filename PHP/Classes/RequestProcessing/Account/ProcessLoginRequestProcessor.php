@@ -46,7 +46,7 @@ class ProcessLoginRequestProcessor extends RequestProcessor {
 		$username = $this->requestInfoBean->getPOST('username');
 		$password = hash(self::STRONG_HASH, $this->requestInfoBean->getPOST('password') );
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$accountDAO = $daoFactory->getAccountDAO();
 		$userDTO = $accountDAO->userLogin($username, $password, '129.21.140.168', 'useragent');
 

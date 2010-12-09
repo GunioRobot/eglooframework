@@ -42,7 +42,7 @@ class ViewInformationBoardMusicBaseContentProcessor extends ContentProcessor {
     public function prepareContent() {
         // simulate DB connect
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $informationBoardMusicBaseDTO = $daoFactory->getInformationBoardMusicDAO()->getInformationBoardMusicBase();
 
         $this->_templateEngine->assign( 'resultColumns', $informationBoardMusicBaseDTO->getInfoBoardColumns() );

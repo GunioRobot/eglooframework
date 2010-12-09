@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class OutletDAOFactory extends DAOFactory {
+class OutletDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a OutletSQLSessionDAO

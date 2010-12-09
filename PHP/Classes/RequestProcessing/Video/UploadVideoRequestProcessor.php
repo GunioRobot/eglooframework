@@ -61,7 +61,7 @@ class UploadVideoRequestProcessor extends RequestProcessor {
             $videoDTO->setVideoFileSize($fileSize);
             $videoDTO->setVideoContent(file_get_contents($tempFileName));
             
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $videoDAO = $daoFactory->getVideoDAO();
             $videoDAO->storeNewVideo($userID, $videoDTO);
             

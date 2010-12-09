@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ActiveRecordDAOFactory extends DAOFactory {
+class ActiveRecordDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a ActiveRecordSQLSessionDAO

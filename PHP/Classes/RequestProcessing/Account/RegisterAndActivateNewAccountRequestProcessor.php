@@ -84,7 +84,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
         $requestedPassword = $this->requestInfoBean->getPOST('userRequestedAccountPassword');
         $confirmedPassword = $this->requestInfoBean->getPOST('userConfirmedAccountPassword');
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$userInvitesDAO = $daoFactory->getUserInvitesDAO();
 
         if ( $this->requestInfoBean->getRequestID() !== 'registerAndActivateNewAccount' ) {
@@ -116,7 +116,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 	        $birthDay = $this->requestInfoBean->getPOST('userBirthDay');
 	        $birthYear = $this->requestInfoBean->getPOST('userBirthYear');
 	
-			$daoFactory = DAOFactory::getInstance();
+			$daoFactory = AbstractDAOFactory::getInstance();
 			$accountDAO = $daoFactory->getAccountDAO();
 			$accountDTO = $accountDAO->registerNewAccount( 	$accountName, $password, $userEmail, 
 															$firstName, $lastName, $gender, 
@@ -148,7 +148,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 	 	    	$inputValues[ 'inviteduser_id' ] = $userDTO->getUserID();
 	 	    	$inputValues[ 'confirmation_id' ] = $confirmationCode;
 	 	    	 	    	
-	 	    	$daoFactory = DAOFactory::getInstance();
+	 	    	$daoFactory = AbstractDAOFactory::getInstance();
 				$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 				$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 				
@@ -166,7 +166,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 		 	    $inputValues[ 'inviteduser_id' ] = $userID;
 		 	    $inputValues[ 'confirmation_id' ] = $confirmationID;
 		 	    	 	    	
-		 	    $daoFactory = DAOFactory::getInstance();
+		 	    $daoFactory = AbstractDAOFactory::getInstance();
 				$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 				$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 				
@@ -245,7 +245,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 	}
 
 	private function processDaoRequest($daoFunction, $inputValues){
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		return $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 	}
@@ -257,7 +257,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
      */
     private function setNumberOfInvites( $userID ){
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$userInvitesDAO = $daoFactory->getUserInvitesDAO();
 		$userAssociationLevel = $userInvitesDAO->getUserAssociationLevel( $userID );
 	
@@ -299,7 +299,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 		$inputValues = array();
  	    $inputValues[ 'confirmation_id' ] = $confirmationId;	
 	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
  	    

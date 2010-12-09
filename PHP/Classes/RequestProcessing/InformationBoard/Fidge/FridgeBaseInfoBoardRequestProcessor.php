@@ -46,7 +46,7 @@ class FridgeBaseInfoBoardRequestProcessor extends RequestProcessor {
  		$profileID = $_SESSION['MAIN_PROFILE_ID'];
 
 		//TODO: redo as a generic DB Call
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
         $fridgeDTOArray = $daoFactory->getFridgeDAO()->getFridgeItemList( $profileID );
         $templateVariables['fridgeCubes'] = $fridgeDTOArray;
         

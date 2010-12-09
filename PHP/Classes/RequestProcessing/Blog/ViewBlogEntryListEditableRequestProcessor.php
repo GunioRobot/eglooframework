@@ -60,7 +60,7 @@ class ViewBlogEntryListEditableRequestProcessor extends RequestProcessor {
 //        if ( !$templateDirector->isCached() ) {
             $templateVariables = array();
     
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $blogDTOArray = $daoFactory->getBlogDAO()->viewBlogEntryList( $loggedInProfileID, $loggedInProfileID  );
     
      		$templateVariables['blogDTOArray'] = $blogDTOArray;

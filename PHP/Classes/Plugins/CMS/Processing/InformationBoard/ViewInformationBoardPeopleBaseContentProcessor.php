@@ -39,7 +39,7 @@ class ViewInformationBoardPeopleBaseContentProcessor extends ContentProcessor {
     public function __construct() {}
 
     public function prepareContent() {
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $informationBoardPeopleBaseDTO = $daoFactory->getInformationBoardPeopleDAO()->getInformationBoardPeopleBase();
 
         $this->_templateEngine->assign( 'resultColumns', $informationBoardPeopleBaseDTO->getInfoBoardColumns() );

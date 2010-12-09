@@ -59,7 +59,7 @@ class EditBlogFormRequestProcessor extends RequestProcessor {
 		$inputValues = array();
     	$inputValues[ 'inputBlogID' ] = $this->requestInfoBean->getGET('blogID');
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 	
@@ -71,7 +71,7 @@ class EditBlogFormRequestProcessor extends RequestProcessor {
 		$inputValues = array();
     	$inputValues[ 'profileID' ] = $mainProfileID;
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		

@@ -63,7 +63,7 @@ class ResetForgottenPasswordRequestProcessor extends RequestProcessor {
 		$inputValues[ 'passwordresetref' ] = $confirmationID;
  	    $inputValues[ 'newuserpasswordhash' ] = hash(self::STRONG_HASH, $password1 );
 		
- 	    $daoFactory = DAOFactory::getInstance();
+ 	    $daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		$success = $gqDTO->get_output_successful();

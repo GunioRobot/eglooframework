@@ -54,7 +54,7 @@ class GetUserProfilePageElementsRequestProcessor extends RequestProcessor {
 
         $profileID = $this->requestInfoBean->getGET( 'profileID' );
         
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $userProfilePageDAO = $daoFactory->getUserProfilePageDAO();
         $userProfilePageDTO = $userProfilePageDAO->getProfile( $profileID );
 

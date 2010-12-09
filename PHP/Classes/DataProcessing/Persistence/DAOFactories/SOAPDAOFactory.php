@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class SOAPDAOFactory extends DAOFactory {
+class SOAPDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a SOAPSQLSessionDAO

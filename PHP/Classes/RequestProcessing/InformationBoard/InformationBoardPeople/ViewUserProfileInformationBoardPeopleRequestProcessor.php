@@ -54,7 +54,7 @@ class ViewUserProfileInformationBoardPeopleRequestProcessor extends RequestProce
         if ( !$templateDirector->isCached() ) {
             $profilesHaveRelationship = false;
     
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $userProfileDAO = $daoFactory->getUserProfileDAO();
             $relationshipDAO = $daoFactory->getRelationshipDAO();
     
@@ -73,7 +73,7 @@ class ViewUserProfileInformationBoardPeopleRequestProcessor extends RequestProce
             $inputValues = array();
 			$inputValues[ 'profileID' ] = $_SESSION['MAIN_PROFILE_ID'];
  	    	 	    	
-			$daoFactory = DAOFactory::getInstance();
+			$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$relationshipDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			

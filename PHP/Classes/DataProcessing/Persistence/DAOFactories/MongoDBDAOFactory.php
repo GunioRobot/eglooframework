@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MongoDBDAOFactory extends DAOFactory {
+class MongoDBDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a MongoDBSQLSessionDAO

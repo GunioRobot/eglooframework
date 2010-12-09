@@ -59,7 +59,7 @@ class SendPasswordResetConfRequestProcessor extends RequestProcessor {
  	    $inputValues[ 'emailaddress' ] = $emailAddress;
 		$inputValues[ 'passwordresetref' ] = $confirmationCode;
  	    
- 	    $daoFactory = DAOFactory::getInstance();
+ 	    $daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		$userID = $gqDTO->get_output_user_id();

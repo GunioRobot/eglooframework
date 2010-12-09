@@ -1,6 +1,6 @@
 <?php
 /**
- * DAOFactory Class File
+ * AbstractDAOFactory Class File
  *
  * Needs to be commented
  * 
@@ -27,18 +27,18 @@
  */
 
 /**
- * DAOFactory
+ * AbstractDAOFactory
  * 
- * This class defines an abstract DAOFactory.  It determines the appropriate
- * concrete DAOFactory.	 And then returns the correct requested DAO by calling
- * the appropriate functions on the concrete DAOFactory.
+ * This class defines an abstract AbstractDAOFactory.  It determines the appropriate
+ * concrete AbstractDAOFactory.	 And then returns the correct requested DAO by calling
+ * the appropriate functions on the concrete AbstractDAOFactory.
  * 
  * Details of this pattern can be seen on the following website:
  * http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html
  * 
  * @package Persistence
  */
-class DAOFactory {
+class AbstractDAOFactory {
 
 	// Protected Data Members
 	protected $_connection_name = null;
@@ -52,13 +52,13 @@ class DAOFactory {
 	}
 
 	/**
-	 * Singleton access to this DAOFactory
+	 * Singleton access to this AbstractDAOFactory
 	 * 
-	 * @return DAOFactory the singleton reference of the DAOFactory
+	 * @return AbstractDAOFactory the singleton reference of the AbstractDAOFactory
 	 */
 	public static function getInstance() {
 		if ( !isset ( self::$singleton ) ) {
-			self::$singleton = new DAOFactory( null );
+			self::$singleton = new AbstractDAOFactory( null );
 		}
 
 		return self::$singleton;
@@ -68,7 +68,7 @@ class DAOFactory {
 	 * This class returns the appropriate DAO factory as specified by
 	 * an external property
 	 * 
-	 * @return DAOFactory a concrete DAO factory
+	 * @return AbstractDAOFactory a concrete DAO factory
 	 */
 	private function getAppropriateFactory( $connection_name = 'egPrimary' ) {
 		$retVal = null;

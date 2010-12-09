@@ -42,7 +42,7 @@ class RemoveRelationshipRequestProcessor extends RequestProcessor {
 		$profileID = null;
 		$relationshipID = $this->requestInfoBean->getGET('relationshipID'); 
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$relationshipDAO = $daoFactory->getRelationshipDAO();
 		
 		/**

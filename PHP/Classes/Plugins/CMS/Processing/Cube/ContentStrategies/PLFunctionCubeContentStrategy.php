@@ -50,7 +50,7 @@ class PLFunctionCubeContentStrategy extends CubeContentStrategy {
 		$inputValues = array();
 		$inputValues[ 'profileID' ] = $viewingProfileID;
  	    	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqReturnObject = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		

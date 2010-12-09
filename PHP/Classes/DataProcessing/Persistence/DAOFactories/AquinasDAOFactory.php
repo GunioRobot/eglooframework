@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class AquinasDAOFactory extends DAOFactory {
+class AquinasDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a AquinasSQLSessionDAO

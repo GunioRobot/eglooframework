@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class DoctrineDAOFactory extends DAOFactory {
+class DoctrineDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a DoctrineSQLSessionDAO

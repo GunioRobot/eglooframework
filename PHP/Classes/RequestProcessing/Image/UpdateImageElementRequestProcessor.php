@@ -47,7 +47,7 @@ class UpdateImageElementRequestProcessor extends RequestProcessor {
         $imageDTO->setImageFileHash( $imageID );
         $imageDTO->setImageMIMEType( $imageMIMEType );
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $imageDAO = $daoFactory->getImageDAO();
         $imageDAO->getImage( $userID, $imageDTO );
 

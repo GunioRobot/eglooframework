@@ -45,7 +45,7 @@ class AjaxProcessLoginRequestProcessor extends RequestProcessor {
 		$username = $this->requestInfoBean->getGET('username');
 		$password = hash(self::STRONG_HASH, $this->requestInfoBean->getGET('password') );
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$accountDAO = $daoFactory->getAccountDAO();
 		$userDTO = $accountDAO->userLogin($username, $password, '129.21.140.168', 'useragent');
 

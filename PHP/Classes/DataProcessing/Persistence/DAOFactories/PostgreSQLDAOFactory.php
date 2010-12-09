@@ -29,11 +29,11 @@
 /**
  * PostgreSQLDAOFactory
  *
- * Concrete DAOFactory to create PGSQLDAO's
+ * ConcreteDAOFactory subclass to create PGSQLDAO's
  * 
  * @package Persistence
  */
-class PostgreSQLDAOFactory extends DAOFactory {
+class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a PGSQLSessionDAO

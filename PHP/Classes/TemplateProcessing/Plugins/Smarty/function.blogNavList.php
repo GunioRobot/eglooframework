@@ -52,7 +52,7 @@ function smarty_function_blogNavList($params, &$smarty)
 	$inputValues = array();
     $inputValues[ 'profileID' ] = $params['profileID'];
  
-    $daoFactory = DAOFactory::getInstance();
+    $daoFactory = AbstractDAOFactory::getInstance();
 	$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 
 

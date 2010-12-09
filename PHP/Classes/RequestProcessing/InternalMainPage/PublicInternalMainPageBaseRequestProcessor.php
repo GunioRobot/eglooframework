@@ -64,7 +64,7 @@ class PublicInternalMainPageBaseRequestProcessor extends RequestProcessor {
 			$inputValues = array();
  	    	$inputValues[ 'profileID' ] = $viewingProfileID;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
             $viewingUserProfileName = $gqDTO->get_output_profile_name();

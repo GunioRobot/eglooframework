@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class PropelDAOFactory extends DAOFactory {
+class PropelDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a PropelSQLSessionDAO
