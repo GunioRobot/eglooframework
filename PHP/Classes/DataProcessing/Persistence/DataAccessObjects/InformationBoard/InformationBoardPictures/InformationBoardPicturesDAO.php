@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class InformationBoardPicturesDAO {
+abstract class InformationBoardPicturesDAO extends AbstractDAO {
     
     // This is a test method, will not be in production
     abstract public function getInformationBoardPicturesBase();

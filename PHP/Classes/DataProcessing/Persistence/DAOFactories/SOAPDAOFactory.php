@@ -1,8 +1,8 @@
 <?php
 /**
- * PostgreSQLDAOFactory Class File
+ * SOAPDAOFactory Class File
  *
- * Needs to be commented
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -10,117 +10,119 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *		  http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
- * @author Keith Buel
+ *  
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Persistence
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * PostgreSQLDAOFactory
+ * SOAPDAOFactory
  *
- * Concrete DAOFactory to create PGSQLDAO's
- * 
- * @package Persistence
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class PostgreSQLDAOFactory extends DAOFactory {
+class SOAPDAOFactory extends DAOFactory {
 
 	/**
-	 * @return a PGSQLSessionDAO
+	 * @return a SOAPSQLSessionDAO
 	 */
 	public function getSessionDAO() {
-		return new PGSQLSessionDAO( $this->_connection_name ); 
+		return new SOAPSessionDAO( $this->_connection_name ); 
 	}
 
 	public function getGlobalMenuBarDAO() {
-		return new PGSQLGlobalMenuBarDAO( $this->_connection_name );
+		return new SOAPGlobalMenuBarDAO( $this->_connection_name );
 	}
 	
 	public function getInformationBoardIcingDAO() {
-		return new PGSQLInformationBoardIcingDAO( $this->_connection_name );
+		return new SOAPInformationBoardIcingDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardMusicDAO() {
-		return new PGSQLInformationBoardMusicDAO( $this->_connection_name );
+		return new SOAPInformationBoardMusicDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardPeopleDAO() {
-		return new PGSQLInformationBoardPeopleDAO( $this->_connection_name );
+		return new SOAPInformationBoardPeopleDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardPicturesDAO() {
-		return new PGSQLInformationBoardPicturesDAO( $this->_connection_name );
+		return new SOAPInformationBoardPicturesDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardVideoDAO() {
-		return new PGSQLInformationBoardVideoDAO( $this->_connection_name );
+		return new SOAPInformationBoardVideoDAO( $this->_connection_name );
 	}
 
 	public function getAccountDAO() {
-		return new PGSQLAccountDAO( $this->_connection_name );
+		return new SOAPAccountDAO( $this->_connection_name );
 	}
 	
 	public function getUserProfileDAO() {
-		return new PGSQLUserProfileDAO( $this->_connection_name );
+		return new SOAPUserProfileDAO( $this->_connection_name );
 	}
 
 	public function getUserProfilePageDAO() {
-		return new PGSQLUserProfilePageDAO( $this->_connection_name );
+		return new SOAPUserProfilePageDAO( $this->_connection_name );
 	}
 
 	public function getFriendsDAO() {
-		return new PGSQLFriendsDAO( $this->_connection_name );
+		return new SOAPFriendsDAO( $this->_connection_name );
 	}
 	
 	public function getBlogDAO() {
-		return new PGSQLBlogDAO( $this->_connection_name );
+		return new SOAPBlogDAO( $this->_connection_name );
 	}
 
 	public function getCubeDAO() {
-		return new PGSQLCubeDAO( $this->_connection_name );
+		return new SOAPCubeDAO( $this->_connection_name );
 	}
 
 	public function getFridgeDAO() {
-		return new PGSQLFridgeDAO( $this->_connection_name );
+		return new SOAPFridgeDAO( $this->_connection_name );
 	}
 
 	public function getUserInvitesDAO() {
-		return new PGSQLUserInvitesDAO( $this->_connection_name );	
+		return new SOAPUserInvitesDAO( $this->_connection_name );	
 	}
 	
 	public function getSearchDAO() {
-		return new PGSQLSearchDAO( $this->_connection_name );
+		return new SOAPSearchDAO( $this->_connection_name );
 	}
 	
 	public function getRelationshipDAO() {
-		return new PGSQLRelationshipDAO( $this->_connection_name );
+		return new SOAPRelationshipDAO( $this->_connection_name );
 	}
 	
 	public function getImageDAO() {
-		return new PGSQLImageDAO( $this->_connection_name );
+		return new SOAPImageDAO( $this->_connection_name );
 	}
 	
 	public function getGenericCubeDAO() {
-		return new PGSQLGenericCubeDAO( $this->_connection_name );
+		return new SOAPGenericCubeDAO( $this->_connection_name );
 	}
 	
 	public function getAuctionDAO() {
-		return new PGSQLAuctionDAO( $this->_connection_name );
+		return new SOAPAuctionDAO( $this->_connection_name );
 	}
 	
 	public function getGenericPLFunctionDAO() {
-		return new PGSQLGenericPLFunctionDAO( $this->_connection_name );
+		return new SOAPGenericPLFunctionDAO( $this->_connection_name );
 	}
 
 }
-

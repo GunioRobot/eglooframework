@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class BlogDAO {
+abstract class BlogDAO extends AbstractDAO {
     
     /**
      * @return BlogDTO 

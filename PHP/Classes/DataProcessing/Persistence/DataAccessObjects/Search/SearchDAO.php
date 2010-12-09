@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class SearchDAO {
+abstract class SearchDAO extends AbstractDAO {
     
     /**
      * This function searches the database for names and their associated

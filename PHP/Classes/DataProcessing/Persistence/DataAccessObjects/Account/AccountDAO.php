@@ -33,7 +33,7 @@
  * 
  * @package Persistence
  */
-abstract class AccountDAO {
+abstract class AccountDAO extends AbstractDAO {
     
     /**
      * @return AccountDTO 

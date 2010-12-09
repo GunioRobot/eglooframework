@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class RelationshipDAO {
+abstract class RelationshipDAO extends AbstractDAO {
     
     /**
      * This defines the possible relationship types available

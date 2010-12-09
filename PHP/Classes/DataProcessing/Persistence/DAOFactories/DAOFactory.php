@@ -40,13 +40,16 @@
  */
 class DAOFactory {
 
+	// Protected Data Members
+	protected $_connection_name = null;
+
 	//singleton holder
 	private static $singleton;
 
-	/**
-	 * TODO: set this from a properties file telling us where to connect
-	 */
-	// private static $DAO_TYPE = "PostgreSQLDAOFactory";
+
+	public function __construct( $connection_name ) {
+		$this->_connection_name = $connection_name;
+	}
 
 	/**
 	 * Singleton access to this DAOFactory
@@ -55,7 +58,7 @@ class DAOFactory {
 	 */
 	public static function getInstance() {
 		if ( !isset ( self::$singleton ) ) {
-			self::$singleton = new DAOFactory();
+			self::$singleton = new DAOFactory( null );
 		}
 
 		return self::$singleton;
@@ -73,15 +76,15 @@ class DAOFactory {
 		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
 		if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
-			$retVal = new PostgreSQLDAOFactory();
+			$retVal = new PostgreSQLDAOFactory( $connection_name );
 		} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLIOOP ) {
-			$retVal = new PostgreSQLDAOFactory();
+			$retVal = new MySQLiOOPDAOFactory( $connection_name );
 		} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLI ) {
-			$retVal = new PostgreSQLDAOFactory();
+			$retVal = new MySQLiDAOFactory( $connection_name );
 		} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQL ) {
-			$retVal = new PostgreSQLDAOFactory();
+			$retVal = new MySQLDAOFactory( $connection_name );
 		} else if ( $connection_info['engine'] === eGlooConfiguration::DOCTRINE ) {
-			$retVal = new PostgreSQLDAOFactory();
+			$retVal = new DoctrineDAOFactory( $connection_name );
 		} else {
 			// No connection specified and no default given...
 		}

@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class FridgeDAO {
+abstract class FridgeDAO extends AbstractDAO {
     
     /**
      * @return FridgeDTO 

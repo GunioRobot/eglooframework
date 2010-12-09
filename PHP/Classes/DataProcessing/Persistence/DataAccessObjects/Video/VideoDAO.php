@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class VideoDAO {
+abstract class VideoDAO extends AbstractDAO {
 // TODO pre/post conditions, exception notes, proper returns and security checks 
 
     /*

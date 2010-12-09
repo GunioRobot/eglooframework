@@ -1,8 +1,8 @@
 <?php
 /**
- * GenericPLFunctionDAO Abstract Class File
+ * AbstractDAO Class File
  *
- * Needs to be commented
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -18,23 +18,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *  
- * @author Keith Buel
+ * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Persistence
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * GenericPLFunctionDAO
+ * AbstractDAO
  *
- * Needs to be commented
- * 
- * @package Persistence
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
- abstract class GenericPLFunctionDAO extends AbstractDAO {
- 	
- 	abstract public function selectGenericData( $queryName, $inputValues );
- 	
- }
-?>
+abstract class AbstractDAO {
+
+	protected $_connection_name = null;
+
+	public function __construct( $connection_name ) {
+		$this->_connection_name = $connection_name;
+	}
+
+}
+

@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class InternalMainPageDAO {
+abstract class InternalMainPageDAO extends AbstractDAO {
     
     // This is a test method, will not be in production
     abstract public function getPageTitle();

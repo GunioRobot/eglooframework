@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class UserInvitesDAO {
+abstract class UserInvitesDAO extends AbstractDAO {
     
     /**
      * Add a user invite.

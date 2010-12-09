@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class SessionDAO {
+abstract class SessionDAO extends AbstractDAO {
     
     /**
      * A function to write current session data to the
