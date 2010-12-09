@@ -38,4 +38,3 @@ abstract class InformationBoardIcingDAO extends AbstractDAO {
     abstract public function getInformationBoardIcingBase();
 
 }
-?>

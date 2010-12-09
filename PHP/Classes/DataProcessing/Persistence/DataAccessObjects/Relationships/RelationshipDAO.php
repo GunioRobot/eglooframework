@@ -115,5 +115,3 @@ abstract class RelationshipDAO extends AbstractDAO {
 	 */
 	abstract public function getProfilesRelationships( $profileID1, $profileID2 );
 }
- 
-?>

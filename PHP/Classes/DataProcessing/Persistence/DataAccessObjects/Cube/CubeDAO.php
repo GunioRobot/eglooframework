@@ -47,4 +47,4 @@ abstract class CubeDAO extends AbstractDAO {
     abstract public function cubeSingletonExists( $profileID, $cubeTypeID );
     
 }
-?>
+

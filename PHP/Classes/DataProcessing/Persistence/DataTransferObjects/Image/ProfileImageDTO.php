@@ -36,5 +36,3 @@ class ProfileImageDTO extends ImageDTO {
 
 
 }
-
-?>

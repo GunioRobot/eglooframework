@@ -434,4 +434,4 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
     }
 
 }
-?>
+

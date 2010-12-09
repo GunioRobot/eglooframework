@@ -38,4 +38,3 @@ abstract class InformationBoardMusicDAO extends AbstractDAO {
     abstract public function getInformationBoardMusicBase();
 
 }
-?>

@@ -55,4 +55,4 @@ class PGSQLFriendsDAO extends FriendsDAO {
 	}
  
  }
-?>
+

@@ -48,4 +48,4 @@ abstract class SearchDAO extends AbstractDAO {
 	abstract public function getNameAndProfileIDByName( $name, $limit, $offset );
     
 }
-?>
+

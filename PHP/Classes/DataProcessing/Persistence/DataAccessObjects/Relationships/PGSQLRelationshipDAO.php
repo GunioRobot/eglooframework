@@ -319,4 +319,4 @@ class PGSQLRelationshipDAO extends RelationshipDAO {
 		return $relationShipRequests;
 	}	
  }
-?>
+

@@ -67,4 +67,4 @@ abstract class RankingDAO extends AbstractDAO {
     abstract public function getProfileElementRanking( $profileID, $elementID );
     
 }
-?>
+

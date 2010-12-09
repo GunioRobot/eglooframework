@@ -174,4 +174,4 @@ abstract class ImageDAO extends AbstractDAO {
     abstract public function removeProfileImageElement( $requesterProfileID, $requestedProfileID );
 
 }
-?>
+

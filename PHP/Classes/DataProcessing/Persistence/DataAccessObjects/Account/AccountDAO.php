@@ -59,4 +59,4 @@ abstract class AccountDAO extends AbstractDAO {
     abstract public function getUserInformation( $userID );
     
 }
-?>
+

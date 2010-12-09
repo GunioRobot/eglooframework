@@ -158,4 +158,4 @@ class PGSQLUserProfilePageDAO extends UserProfilePageDAO {
 
 }
 
-?>
+

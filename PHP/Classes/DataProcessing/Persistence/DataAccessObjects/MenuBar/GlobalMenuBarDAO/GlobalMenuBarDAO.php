@@ -37,4 +37,4 @@ abstract class GlobalMenuBarDAO extends AbstractDAO {
     abstract public function getMenuButtons();
 
 }
-?>
+

@@ -67,4 +67,4 @@ abstract class SessionDAO extends AbstractDAO {
 	abstract public function deleteOldSessions( $sessionLifeTime );
 
 }
-?>
+

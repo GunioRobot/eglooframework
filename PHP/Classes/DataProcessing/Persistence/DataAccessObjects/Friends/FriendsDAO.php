@@ -51,4 +51,4 @@ abstract class FriendsDAO extends AbstractDAO {
 	abstract public function deleteFriend($userID);
 
 }
-?>
+

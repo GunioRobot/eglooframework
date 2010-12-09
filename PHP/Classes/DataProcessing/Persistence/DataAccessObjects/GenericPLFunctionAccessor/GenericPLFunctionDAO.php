@@ -37,4 +37,4 @@
  	abstract public function selectGenericData( $queryName, $inputValues );
  	
  }
-?>
+

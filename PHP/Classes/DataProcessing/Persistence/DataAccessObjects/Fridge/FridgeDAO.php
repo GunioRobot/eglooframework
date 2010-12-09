@@ -40,4 +40,4 @@ abstract class FridgeDAO extends AbstractDAO {
     abstract public function getFridgeItemList( $userID );
 
 }
-?>
+

@@ -59,4 +59,4 @@ abstract class UserProfileDAO extends AbstractDAO {
     abstract public function setProfileName( $profileID );
 
 }
-?>
+

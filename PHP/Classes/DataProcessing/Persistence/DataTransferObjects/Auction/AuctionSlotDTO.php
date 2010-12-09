@@ -183,4 +183,4 @@ class AuctionSlotDTO extends DataTransferObject {
 	}
 }
 
-?>
+

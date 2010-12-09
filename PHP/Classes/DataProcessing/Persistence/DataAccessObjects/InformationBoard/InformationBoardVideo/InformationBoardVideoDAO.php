@@ -38,4 +38,3 @@ abstract class InformationBoardVideoDAO extends AbstractDAO {
     abstract public function getInformationBoardVideoBase();
 
 }
-?>

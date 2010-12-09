@@ -38,4 +38,4 @@ abstract class InformationBoardPeopleDAO extends AbstractDAO {
     abstract public function getInformationBoardPeopleBase();
 
 }
-?>
+

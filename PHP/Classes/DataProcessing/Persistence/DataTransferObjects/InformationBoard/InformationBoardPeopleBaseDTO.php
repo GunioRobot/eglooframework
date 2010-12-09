@@ -52,4 +52,3 @@ class InformationBoardPeopleBaseDTO extends DataTransferObject {
     
 }
 
-?>

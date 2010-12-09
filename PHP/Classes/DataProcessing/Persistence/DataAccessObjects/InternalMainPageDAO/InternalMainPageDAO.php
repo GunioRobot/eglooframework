@@ -38,4 +38,4 @@ abstract class InternalMainPageDAO extends AbstractDAO {
     abstract public function getPageTitle();
 
 }
-?>
+

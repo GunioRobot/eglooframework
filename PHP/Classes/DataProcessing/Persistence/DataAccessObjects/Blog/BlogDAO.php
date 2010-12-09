@@ -60,4 +60,4 @@ abstract class BlogDAO extends AbstractDAO {
     abstract public function viewBlogEntryList( $viewingProfileID, $loggedInProfileID );
 
 }
-?>
+

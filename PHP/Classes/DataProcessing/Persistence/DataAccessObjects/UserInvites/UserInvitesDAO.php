@@ -98,4 +98,4 @@ abstract class UserInvitesDAO extends AbstractDAO {
 	abstract public function getUserAssociationLevel($userID);
 	
 }
-?>
+

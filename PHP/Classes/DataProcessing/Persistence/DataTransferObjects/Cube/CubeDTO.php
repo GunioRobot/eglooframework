@@ -277,4 +277,4 @@ class CubeDTO extends DataTransferObject implements ElementInterface {
 
 }
  
-?>
+

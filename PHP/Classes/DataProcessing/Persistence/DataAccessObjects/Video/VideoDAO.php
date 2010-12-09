@@ -173,4 +173,4 @@ abstract class VideoDAO extends AbstractDAO {
     abstract public function removeProfileVideoElement( $requesterProfileID, $requestedProfileID );
 
 }
-?>
+

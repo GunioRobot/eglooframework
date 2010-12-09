@@ -152,4 +152,4 @@ class PGSQLCubeDAO extends CubeDAO {
     }
     
 }
-?>
+
