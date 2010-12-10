@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class AuctionDAO {       
+abstract class AuctionDAO extends AbstractDAO {       
     
     /**
  	 * This function gets the bid price and number of bids for each time slot during a given time period
@@ -80,4 +80,3 @@ abstract class AuctionDAO {
      
 }
  
-?>

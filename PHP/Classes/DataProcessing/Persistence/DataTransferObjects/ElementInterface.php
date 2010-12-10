@@ -67,5 +67,3 @@ interface ElementInterface {
     public function setElementPackagePath( $elementPackagePath );
         
 }
-
-?>

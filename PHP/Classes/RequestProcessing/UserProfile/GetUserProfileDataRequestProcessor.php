@@ -43,7 +43,7 @@ class GetUserProfileDataRequestProcessor extends RequestProcessor {
         $format = $this->requestInfoBean->getGET( 'format' );
         $profileID = $this->requestInfoBean->getGET( 'profileID' );
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $userProfileDAO = $daoFactory->getUserProfileDAO();
         $userProfileDTO = $userProfileDAO->getProfile( $profileID );
         

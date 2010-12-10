@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class CubeDAO {
+abstract class CubeDAO extends AbstractDAO {
     
     abstract public function createNewCubeInstance($profileID, $cubeTypeID, $elementSpecificArray);
     
@@ -47,4 +47,4 @@ abstract class CubeDAO {
     abstract public function cubeSingletonExists( $profileID, $cubeTypeID );
     
 }
-?>
+

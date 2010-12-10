@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class VideoDAO {
+abstract class VideoDAO extends AbstractDAO {
 // TODO pre/post conditions, exception notes, proper returns and security checks 
 
     /*
@@ -173,4 +173,4 @@ abstract class VideoDAO {
     abstract public function removeProfileVideoElement( $requesterProfileID, $requestedProfileID );
 
 }
-?>
+

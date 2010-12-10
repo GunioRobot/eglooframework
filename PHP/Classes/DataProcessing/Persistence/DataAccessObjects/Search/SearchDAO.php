@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class SearchDAO {
+abstract class SearchDAO extends AbstractDAO {
     
     /**
      * This function searches the database for names and their associated
@@ -48,4 +48,4 @@ abstract class SearchDAO {
 	abstract public function getNameAndProfileIDByName( $name, $limit, $offset );
     
 }
-?>
+

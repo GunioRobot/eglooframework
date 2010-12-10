@@ -47,5 +47,3 @@ class InformationBoardIcingBaseDTO extends DataTransferObject {
     }
 
 }
-
-?>

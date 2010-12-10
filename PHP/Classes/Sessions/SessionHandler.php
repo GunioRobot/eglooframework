@@ -101,7 +101,7 @@ class SessionHandler {
 		
 		//TODO check cache
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDTO = $sessionDAO->getSessionData($sessionID);
 
@@ -178,7 +178,7 @@ class SessionHandler {
 			$sessionDTO->setUserID( $_SESSION['USER_ID'] );
 		}
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDAO->setSessionData( $sessionDTO );
 
@@ -195,7 +195,7 @@ class SessionHandler {
 	 */
 	function destroy($sessionID) {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::DESTROY sessionid = $sessionID", eGlooLogger::SESSION );
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDAO->deleteSession( $sessionID );
 		return true;
@@ -213,7 +213,7 @@ class SessionHandler {
 		
 		if( $randPercent < 10 ){
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::RUNNING GC CLEAN UP, PERCENT: " . $randPercent, eGlooLogger::SESSION  );
-			$daoFactory = DAOFactory::getInstance();
+			$daoFactory = AbstractDAOFactory::getInstance();
 			$sessionDAO = $daoFactory->getSessionDAO();
 			$sessionDAO->deleteOldSessions( self::$SESSION_LIFETIME );
 		}

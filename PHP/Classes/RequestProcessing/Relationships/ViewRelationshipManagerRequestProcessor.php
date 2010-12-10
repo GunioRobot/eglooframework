@@ -53,7 +53,7 @@ class ViewRelationshipManagerRequestProcessor extends RequestProcessor {
             $requestedProfileID = $_SESSION['MAIN_PROFILE_ID'];;
         }
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $relationshipDAO = $daoFactory->getRelationshipDAO();
         
         /**
@@ -67,7 +67,7 @@ class ViewRelationshipManagerRequestProcessor extends RequestProcessor {
 
 
 
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $imageDAO = $daoFactory->getImageDAO();
 
             $imageDTOList = $imageDAO->getUserImageList($userID, $profileID);

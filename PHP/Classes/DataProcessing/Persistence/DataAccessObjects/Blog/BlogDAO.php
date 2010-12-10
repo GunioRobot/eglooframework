@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class BlogDAO {
+abstract class BlogDAO extends AbstractDAO {
     
     /**
      * @return BlogDTO 
@@ -60,4 +60,4 @@ abstract class BlogDAO {
     abstract public function viewBlogEntryList( $viewingProfileID, $loggedInProfileID );
 
 }
-?>
+

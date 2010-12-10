@@ -49,7 +49,7 @@ class AcceptRelationshipRequestProcessor extends RequestProcessor {
 		$inputValues[ 'relationshipType' ] = $relationshiptType;
 		$inputValues[ 'acceptRelationship' ] = true;
  	    	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 				

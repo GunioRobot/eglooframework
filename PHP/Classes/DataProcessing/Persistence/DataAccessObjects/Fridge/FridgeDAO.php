@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class FridgeDAO {
+abstract class FridgeDAO extends AbstractDAO {
     
     /**
      * @return FridgeDTO 
@@ -40,4 +40,4 @@ abstract class FridgeDAO {
     abstract public function getFridgeItemList( $userID );
 
 }
-?>
+

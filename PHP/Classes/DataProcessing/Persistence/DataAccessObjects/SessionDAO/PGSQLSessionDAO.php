@@ -154,4 +154,4 @@ class PGSQLSessionDAO extends SessionDAO {
 		pg_close( $db_handle );
 	}
  }
-?>
+

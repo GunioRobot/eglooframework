@@ -32,10 +32,10 @@
  * 
  * @package Persistence
  */
-abstract class InformationBoardPeopleDAO {
+abstract class InformationBoardPeopleDAO extends AbstractDAO {
     
     // This is a test method, will not be in production
     abstract public function getInformationBoardPeopleBase();
 
 }
-?>
+

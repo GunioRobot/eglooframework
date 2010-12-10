@@ -46,7 +46,7 @@ class ViewImageManagerRequestProcessor extends RequestProcessor {
         $profileID = $_SESSION['MAIN_PROFILE_ID'];
         $userID = $_SESSION['USER_ID'];        
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $imageDAO = $daoFactory->getImageDAO();
 
         $imageDTOList = $imageDAO->getUserImageList($userID, $profileID);

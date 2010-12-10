@@ -45,4 +45,3 @@ class PGSQLInternalMainPageDAO extends InternalMainPageDAO {
  
 }
 
-?>

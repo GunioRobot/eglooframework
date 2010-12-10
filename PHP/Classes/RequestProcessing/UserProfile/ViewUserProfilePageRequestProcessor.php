@@ -40,7 +40,7 @@ class ViewUserProfilePageRequestProcessor extends RequestProcessor {
 
         $profileID = $this->requestInfoBean->getGET( 'profileID' );
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $userProfilePageDAO = $daoFactory->getUserProfilePageDAO();
         $userProfileName = $userProfilePageDAO->getProfileName( $profileID );
 

@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class RelationshipDAO {
+abstract class RelationshipDAO extends AbstractDAO {
     
     /**
      * This defines the possible relationship types available
@@ -115,5 +115,3 @@ abstract class RelationshipDAO {
 	 */
 	abstract public function getProfilesRelationships( $profileID1, $profileID2 );
 }
- 
-?>

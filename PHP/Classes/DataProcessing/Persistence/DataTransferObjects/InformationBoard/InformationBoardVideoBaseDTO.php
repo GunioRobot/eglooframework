@@ -48,4 +48,3 @@ class InformationBoardVideoBaseDTO extends DataTransferObject {
     
 }
 
-?>

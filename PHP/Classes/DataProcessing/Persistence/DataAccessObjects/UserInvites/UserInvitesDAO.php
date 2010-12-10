@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class UserInvitesDAO {
+abstract class UserInvitesDAO extends AbstractDAO {
     
     /**
      * Add a user invite.
@@ -98,4 +98,4 @@ abstract class UserInvitesDAO {
 	abstract public function getUserAssociationLevel($userID);
 	
 }
-?>
+

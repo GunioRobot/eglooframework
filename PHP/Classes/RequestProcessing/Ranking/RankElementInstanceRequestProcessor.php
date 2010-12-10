@@ -53,7 +53,7 @@ class RankElementInstanceRequestProcessor extends RequestProcessor {
  	    	$inputValues[ 'elementID' ] = $elementID;
  	    	$inputValues[ 'rank' ] = $elementRank;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			

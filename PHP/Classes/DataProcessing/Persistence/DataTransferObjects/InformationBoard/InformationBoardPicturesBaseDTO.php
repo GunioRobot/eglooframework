@@ -48,4 +48,3 @@ class InformationBoardPicturesBaseDTO extends DataTransferObject {
 
 }
 
-?>

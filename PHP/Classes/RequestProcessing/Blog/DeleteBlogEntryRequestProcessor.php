@@ -46,7 +46,7 @@ class DeleteBlogEntryRequestProcessor extends RequestProcessor {
             $blogEntryTitle = $this->requestInfoBean->getPOST('newBlogEntryTitle');
             $blogEntryContent = $this->requestInfoBean->getPOST('newBlogEntryContent');
             
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $blogDTO = $daoFactory->getBlogDAO()->createBlogEntry( $blogEntryTitle, $blogEntryContent );
             header("Content-type: text/html; charset=UTF-8");
             //header("Content-type: application/xml; charset=UTF-8");

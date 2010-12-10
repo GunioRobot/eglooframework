@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class UserProfileDAO {
+abstract class UserProfileDAO extends AbstractDAO {
 
 // TODO Rename this to UserProfileDAO
 
@@ -59,4 +59,4 @@ abstract class UserProfileDAO {
     abstract public function setProfileName( $profileID );
 
 }
-?>
+

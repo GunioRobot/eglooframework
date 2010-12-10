@@ -59,7 +59,7 @@ class ViewBlogRequestProcessor extends RequestProcessor {
 			$inputValues = array();
  	    	$inputValues[ 'inputBlogID' ] = $fullBlogID;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$individualBlogDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$viewingProfileID = $individualBlogDTO->get_output_blogwriter();
@@ -72,7 +72,7 @@ class ViewBlogRequestProcessor extends RequestProcessor {
 				$inputValues = array();
 	 	    	$inputValues[ 'profileID' ] =  $this->requestInfoBean->getGET('profileID');
 	 	    	 	    	
-	 	    	$daoFactory = DAOFactory::getInstance();
+	 	    	$daoFactory = AbstractDAOFactory::getInstance();
 				$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 				$individualBlogDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 				
@@ -99,7 +99,7 @@ class ViewBlogRequestProcessor extends RequestProcessor {
 			$inputValues = array();
  	    	$inputValues[ 'profileID' ] = $viewingProfileID;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
             $viewingUserProfileName = $gqDTO->get_output_profile_name();
@@ -128,7 +128,7 @@ class ViewBlogRequestProcessor extends RequestProcessor {
 		$inputValues = array();
  		$inputValues[ 'blog_id' ] = $fullBlogID;
 	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 	
 		$blogcommentDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );

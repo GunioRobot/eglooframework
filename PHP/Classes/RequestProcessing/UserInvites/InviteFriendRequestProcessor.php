@@ -142,7 +142,7 @@ class InviteFriendRequestProcessor extends RequestProcessor {
 	}
 
 	private function processDaoRequest($daoFunction, $inputValues){
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		return $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 	}

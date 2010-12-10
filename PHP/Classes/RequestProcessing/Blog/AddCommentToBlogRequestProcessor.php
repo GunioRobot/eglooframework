@@ -47,7 +47,7 @@ class AddCommentToBlogRequestProcessor extends RequestProcessor {
     	$inputValues[ 'blogCommentParent' ] = null;
     	$inputValues[ 'blogCommentContent' ] = $this->requestInfoBean->getPOST( 'blogCommentContent' );
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
         

@@ -42,7 +42,7 @@ class GetAllRelationshipRequestsRequestProcessor extends RequestProcessor {
 
 		$profileID = null;
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$relationshipDAO = $daoFactory->getRelationshipDAO();
 		
 		$profileID = $_SESSION['MAIN_PROFILE_ID'];
@@ -53,7 +53,7 @@ class GetAllRelationshipRequestsRequestProcessor extends RequestProcessor {
 		$inputValues = array();
 		$inputValues[ 'profileID' ] = $profileID;
  	    	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$relationshipRequestsDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		        

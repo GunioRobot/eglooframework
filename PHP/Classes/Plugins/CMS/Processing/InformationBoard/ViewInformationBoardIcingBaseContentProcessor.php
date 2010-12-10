@@ -42,7 +42,7 @@ class ViewInformationBoardIcingBaseContentProcessor extends ContentProcessor {
     public function prepareContent() {
         // simulate DB connect
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $informationBoardIcingBaseDTO = $daoFactory->getInformationBoardIcingDAO()->getInformationBoardIcingBase();
 
         $this->_templateEngine->assign( 'resultColumns', $informationBoardIcingBaseDTO->getInfoBoardColumns() );

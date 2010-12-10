@@ -54,7 +54,7 @@ class ViewProfileImageThumbnailRequestProcessor extends RequestProcessor {
         // the real hash...
         
         if ( $profileImageThumbnailDTO == null || $profileImageThumbnailDTO == false ) {
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $imageDAO = $daoFactory->getImageDAO();
             $imageDTO = $imageDAO->getProfileImageElement( $requesterProfileID, $requestedProfileID );
 

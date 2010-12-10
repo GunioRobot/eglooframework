@@ -40,7 +40,7 @@ class GlobalMenuBarContentProcessor extends ContentProcessor {
         // simulate DB connect
         
 		//TODO, don't do this here.... do this in the template, thats what it is there for        
-       // $daoFactory = DAOFactory::getInstance();
+       // $daoFactory = AbstractDAOFactory::getInstance();
        // $globalMenuBarDTO = $daoFactory->getGlobalMenuBarDAO()->getMenuButtons();
          
         //$this->_templateEngine->assign( 'globalMenuBarDTO', $globalMenuBarDTO );

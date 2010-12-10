@@ -43,4 +43,3 @@ class PGSQLInformationBoardMusicDAO extends InformationBoardMusicDAO {
  
 }
 
-?>

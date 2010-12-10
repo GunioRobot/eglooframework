@@ -52,7 +52,7 @@ class CreateImageElementRequestProcessor extends RequestProcessor {
         $imageDTO->setImageElementTitle( $imageElementTitle );
         $imageDTO->setImageElementSummary( $imageElementSummary );
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $imageDAO = $daoFactory->getImageDAO();
         $imageDAO->setImageElement( $userID, $profileID, $profileID, $imageDTO );
     }

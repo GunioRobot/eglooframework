@@ -214,5 +214,3 @@ class VideoDTO extends DataTransferObject implements ElementInterface {
     }
     
 }
-
-?>

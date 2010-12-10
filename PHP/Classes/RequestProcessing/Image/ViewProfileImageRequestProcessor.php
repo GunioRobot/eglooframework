@@ -50,7 +50,7 @@ class ViewProfileImageRequestProcessor extends RequestProcessor {
 //        $imageDTO = $cacheGateway->getObject( $cacheID, '<type>' );
         
         if ( $imageDTO == null || $imageDTO == false ) {
-            $daoFactory = DAOFactory::getInstance();
+            $daoFactory = AbstractDAOFactory::getInstance();
             $imageDAO = $daoFactory->getImageDAO();
             $imageDTO = $imageDAO->getProfileImageElement( $requesterProfileID, $requestedProfileID );
             

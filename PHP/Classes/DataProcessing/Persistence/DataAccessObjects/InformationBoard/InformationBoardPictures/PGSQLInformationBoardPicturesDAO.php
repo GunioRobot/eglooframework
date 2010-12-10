@@ -43,4 +43,3 @@ class PGSQLInformationBoardPicturesDAO extends InformationBoardPicturesDAO {
  
 }
 
-?>

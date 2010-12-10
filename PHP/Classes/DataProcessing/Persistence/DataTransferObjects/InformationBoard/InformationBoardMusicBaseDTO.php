@@ -47,5 +47,3 @@ class InformationBoardMusicBaseDTO extends DataTransferObject {
     }
 
 }
-
-?>

@@ -33,7 +33,7 @@
  * 
  * @package Persistence
  */
-abstract class AccountDAO {
+abstract class AccountDAO extends AbstractDAO {
     
     /**
      * @return AccountDTO 
@@ -59,4 +59,4 @@ abstract class AccountDAO {
     abstract public function getUserInformation( $userID );
     
 }
-?>
+

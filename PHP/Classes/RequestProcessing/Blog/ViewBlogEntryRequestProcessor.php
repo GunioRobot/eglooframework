@@ -46,7 +46,7 @@ class ViewBlogEntryRequestProcessor extends RequestProcessor {
 
         $profileID = $_SESSION['MAIN_PROFILE_ID'];
         
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $blogDTO = $daoFactory->getBlogDAO()->viewBlogEntry( $profileID, $blogEntryID );
 
         $this->_templateEngine->assign( 'blogEntryID', $blogEntryID );

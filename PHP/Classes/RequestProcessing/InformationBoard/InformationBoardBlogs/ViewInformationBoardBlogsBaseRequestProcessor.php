@@ -65,7 +65,7 @@ class ViewInformationBoardBlogsBaseRequestProcessor extends RequestProcessor {
 		$inputValues[ 'start_index' ] = $startIndex;
 		$inputValues[ 'profile_count' ] = $length;
 		
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction, $inputValues );
 
@@ -78,7 +78,7 @@ class ViewInformationBoardBlogsBaseRequestProcessor extends RequestProcessor {
 		$daoFunction = 'getProfileImage';
 		$inputValues = array();
 
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		foreach ( $gqDTOArray as $blogProfile ) {
@@ -93,7 +93,7 @@ class ViewInformationBoardBlogsBaseRequestProcessor extends RequestProcessor {
 		$blogInfoArray = array();
 		
 		$daoFunction = 'getBlog';
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		foreach ( $gqDTOArray as $blogProfile ) {
@@ -125,7 +125,7 @@ class ViewInformationBoardBlogsBaseRequestProcessor extends RequestProcessor {
 //        $this->_templateEngine->assign( 'informationBoardPeopleBaseDTO', $informationBoardPeopleBaseDTO );
 		
 		
-//		$daoFactory = DAOFactory::getInstance();
+//		$daoFactory = AbstractDAOFactory::getInstance();
 //		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 //		$gqDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction, $inputValues );
 //       

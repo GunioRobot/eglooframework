@@ -181,5 +181,3 @@ class PGSQLBlogDAO extends BlogDAO {
     }
 
 }
-
-?>

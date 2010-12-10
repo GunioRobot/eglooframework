@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class FriendsDAO {
+abstract class FriendsDAO extends AbstractDAO {
     
     /**
      * add a friend to the current user
@@ -51,4 +51,4 @@ abstract class FriendsDAO {
 	abstract public function deleteFriend($userID);
 
 }
-?>
+

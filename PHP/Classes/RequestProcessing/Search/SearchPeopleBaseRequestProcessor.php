@@ -48,7 +48,7 @@ class SearchPeopleBaseRequestProcessor extends RequestProcessor {
  	    $inputValues[ 'profile_count' ] = '30';
  	    $inputValues[ 'start_index' ] = '0';
  	    	 	    	
- 	    $daoFactory = DAOFactory::getInstance();
+ 	    $daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		

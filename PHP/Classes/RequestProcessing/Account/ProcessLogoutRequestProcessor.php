@@ -56,7 +56,7 @@ class ProcessLogoutRequestProcessor extends RequestProcessor {
 //        eGlooLogger::writeLog( eGlooLogger::DEBUG, "PASSWORD! " . $password );
 //        
 //        
-//        $daoFactory = DAOFactory::getInstance();
+//        $daoFactory = AbstractDAOFactory::getInstance();
 //        $accountDAO = $daoFactory->getAccountDAO();
 //        $userDTO = $accountDAO->userLogin($username, $password, '1', '2');
 //                

@@ -137,4 +137,3 @@ class BlogDTO extends DataTransferObject {
 
 }
 
-?>

@@ -65,4 +65,3 @@ class PGSQLInformationBoardPeopleDAO extends InformationBoardPeopleDAO {
  
 }
 
-?>

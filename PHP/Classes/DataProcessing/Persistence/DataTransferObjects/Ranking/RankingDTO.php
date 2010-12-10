@@ -101,4 +101,4 @@ class RankingDTO extends DataTransferObject {
     	echo "----------END OBJECT----------<br>";
     }
  }
-?>
+

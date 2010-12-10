@@ -74,7 +74,7 @@ class UploadImageRequestProcessor extends RequestProcessor {
  	    	$inputValues[ 'imagedimensionx' ] = $imageWidth;
  	    	$inputValues[ 'imagedimensiony' ] = $imageHeight;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$success = $gqDTO->get_output_successful();

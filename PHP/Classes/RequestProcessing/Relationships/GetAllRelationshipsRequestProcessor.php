@@ -45,7 +45,7 @@ class GetAllRelationshipsRequestProcessor extends RequestProcessor {
 		$inputValues = array();
 		$inputValues[ 'profileID' ] = $loggedInProfileID;
  	    	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$relationshipDTOArray = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
         

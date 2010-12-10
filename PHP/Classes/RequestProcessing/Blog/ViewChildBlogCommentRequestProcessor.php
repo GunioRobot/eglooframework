@@ -55,7 +55,7 @@ class ViewChildBlogCommentRequestProcessor extends RequestProcessor {
 		$inputValues = array();
     	$inputValues[ 'blogcomment_id' ] = $this->requestInfoBean->getGET( 'blogCommentID' );
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		
 		

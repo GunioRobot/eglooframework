@@ -32,9 +32,9 @@
  * 
  * @package Persistence
  */
-abstract class GlobalMenuBarDAO {
+abstract class GlobalMenuBarDAO extends AbstractDAO {
     
     abstract public function getMenuButtons();
 
 }
-?>
+

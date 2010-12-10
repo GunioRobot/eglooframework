@@ -32,9 +32,9 @@
  * 
  * @package Persistence
  */
- abstract class GenericPLFunctionDAO {
+ abstract class GenericPLFunctionDAO extends AbstractDAO {
  	
  	abstract public function selectGenericData( $queryName, $inputValues );
  	
  }
-?>
+

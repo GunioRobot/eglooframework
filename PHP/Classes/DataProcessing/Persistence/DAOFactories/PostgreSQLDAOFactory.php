@@ -29,97 +29,97 @@
 /**
  * PostgreSQLDAOFactory
  *
- * Concrete DAOFactory to create PGSQLDAO's
+ * ConcreteDAOFactory subclass to create PGSQLDAO's
  * 
  * @package Persistence
  */
-class PostgreSQLDAOFactory extends DAOFactory {
+class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 
 	/**
 	 * @return a PGSQLSessionDAO
 	 */
 	public function getSessionDAO() {
-		return new PGSQLSessionDAO(); 
+		return new PGSQLSessionDAO( $this->_connection_name ); 
 	}
 
 	public function getGlobalMenuBarDAO() {
-		return new PGSQLGlobalMenuBarDAO();
+		return new PGSQLGlobalMenuBarDAO( $this->_connection_name );
 	}
 	
 	public function getInformationBoardIcingDAO() {
-		return new PGSQLInformationBoardIcingDAO();
+		return new PGSQLInformationBoardIcingDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardMusicDAO() {
-		return new PGSQLInformationBoardMusicDAO();
+		return new PGSQLInformationBoardMusicDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardPeopleDAO() {
-		return new PGSQLInformationBoardPeopleDAO();
+		return new PGSQLInformationBoardPeopleDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardPicturesDAO() {
-		return new PGSQLInformationBoardPicturesDAO();
+		return new PGSQLInformationBoardPicturesDAO( $this->_connection_name );
 	}
 
 	public function getInformationBoardVideoDAO() {
-		return new PGSQLInformationBoardVideoDAO();
+		return new PGSQLInformationBoardVideoDAO( $this->_connection_name );
 	}
 
 	public function getAccountDAO() {
-		return new PGSQLAccountDAO();
+		return new PGSQLAccountDAO( $this->_connection_name );
 	}
 	
 	public function getUserProfileDAO() {
-		return new PGSQLUserProfileDAO();
+		return new PGSQLUserProfileDAO( $this->_connection_name );
 	}
 
 	public function getUserProfilePageDAO() {
-		return new PGSQLUserProfilePageDAO();
+		return new PGSQLUserProfilePageDAO( $this->_connection_name );
 	}
 
 	public function getFriendsDAO() {
-		return new PGSQLFriendsDAO();
+		return new PGSQLFriendsDAO( $this->_connection_name );
 	}
 	
 	public function getBlogDAO() {
-		return new PGSQLBlogDAO();
+		return new PGSQLBlogDAO( $this->_connection_name );
 	}
 
 	public function getCubeDAO() {
-		return new PGSQLCubeDAO();
+		return new PGSQLCubeDAO( $this->_connection_name );
 	}
 
 	public function getFridgeDAO() {
-		return new PGSQLFridgeDAO();
+		return new PGSQLFridgeDAO( $this->_connection_name );
 	}
 
 	public function getUserInvitesDAO() {
-		return new PGSQLUserInvitesDAO();	
+		return new PGSQLUserInvitesDAO( $this->_connection_name );	
 	}
 	
 	public function getSearchDAO() {
-		return new PGSQLSearchDAO();
+		return new PGSQLSearchDAO( $this->_connection_name );
 	}
 	
 	public function getRelationshipDAO() {
-		return new PGSQLRelationshipDAO();
+		return new PGSQLRelationshipDAO( $this->_connection_name );
 	}
 	
 	public function getImageDAO() {
-		return new PGSQLImageDAO();
+		return new PGSQLImageDAO( $this->_connection_name );
 	}
 	
 	public function getGenericCubeDAO() {
-		return new PGSQLGenericCubeDAO();
+		return new PGSQLGenericCubeDAO( $this->_connection_name );
 	}
 	
 	public function getAuctionDAO() {
-		return new PGSQLAuctionDAO();
+		return new PGSQLAuctionDAO( $this->_connection_name );
 	}
 	
 	public function getGenericPLFunctionDAO() {
-		return new PGSQLGenericPLFunctionDAO();
+		return new PGSQLGenericPLFunctionDAO( $this->_connection_name );
 	}
 
 }

@@ -32,7 +32,7 @@
  * 
  * @package Persistence
  */
-abstract class UserProfilePageDAO {
+abstract class UserProfilePageDAO extends AbstractDAO {
     
     /**
      * update profile information
@@ -60,4 +60,4 @@ abstract class UserProfilePageDAO {
 	
 }
 
-?>
+

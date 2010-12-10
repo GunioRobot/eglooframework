@@ -68,4 +68,3 @@ class UNIDirectionalRelationshipDTO extends RelationshipDTO {
 	
 }
 
-?>

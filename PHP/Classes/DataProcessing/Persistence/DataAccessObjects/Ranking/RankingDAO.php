@@ -33,7 +33,7 @@
  * 
  * @package Persistence
  */
-abstract class RankingDAO {
+abstract class RankingDAO extends AbstractDAO {
     
     /**
 	 * This function creates a new ranking in the database.
@@ -67,4 +67,4 @@ abstract class RankingDAO {
     abstract public function getProfileElementRanking( $profileID, $elementID );
     
 }
-?>
+

@@ -53,4 +53,3 @@ class GlobalMenuBarDTO extends DataTransferObject {
     }
 }
 
-?>

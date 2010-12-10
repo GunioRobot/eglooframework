@@ -75,7 +75,7 @@ class SetProfileImageRequestProcessor extends RequestProcessor {
  	    	$inputValues[ 'imagedimensionx' ] = $imageWidth;
  	    	$inputValues[ 'imagedimensiony' ] = $imageHeight;
  	    	 	    	
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			
@@ -87,7 +87,7 @@ class SetProfileImageRequestProcessor extends RequestProcessor {
 	    	$inputValues[ 'imagefilehash' ] = $imageHash;
 	    	$inputValues[ 'mimetype' ] = $mimeType;
     		
- 	    	$daoFactory = DAOFactory::getInstance();
+ 	    	$daoFactory = AbstractDAOFactory::getInstance();
 			$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 			$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 			$success = $gqDTO->get_output_successful();

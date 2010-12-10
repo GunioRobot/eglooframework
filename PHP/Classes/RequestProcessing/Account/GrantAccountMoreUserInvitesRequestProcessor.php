@@ -67,7 +67,7 @@ class GrantAccountMoreUserInvitesRequestProcessor extends RequestProcessor {
 	}
 	
 	private function processDAORequest($daoFunction, $inputValues){
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		return $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 	}

@@ -40,7 +40,7 @@ class UpdateUserProfilePageRequestProcessor extends RequestProcessor {
  		$profileID = $_SESSION['MAIN_PROFILE_ID'];
         $pageLayout = $this->requestInfoBean->getPOST( 'pageLayout' );
         
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $userProfilePageDAO = $daoFactory->getUserProfilePageDAO();
 
 		$userProfilePageDAO->deleteAllProfileCubes( $profileID );

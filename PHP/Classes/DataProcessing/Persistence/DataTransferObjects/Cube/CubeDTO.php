@@ -240,7 +240,7 @@ class CubeDTO extends DataTransferObject implements ElementInterface {
     	$inputValues[ 'profileID' ] = $profileID;
     	$inputValues[ 'elementID' ] = $cubeInstanceID;
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		
@@ -262,7 +262,7 @@ class CubeDTO extends DataTransferObject implements ElementInterface {
     	$inputValues[ 'creatorID' ] = $profileID;
     	$inputValues[ 'elementtypeID' ] = $cubeTypeID;
     	 	    	
-    	$daoFactory = DAOFactory::getInstance();
+    	$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );
 		
@@ -277,4 +277,4 @@ class CubeDTO extends DataTransferObject implements ElementInterface {
 
 }
  
-?>
+

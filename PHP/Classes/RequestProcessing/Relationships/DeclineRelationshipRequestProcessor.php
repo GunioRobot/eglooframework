@@ -50,7 +50,7 @@ class DeclineRelationshipRequestProcessor extends RequestProcessor {
 		$inputValues[ 'relationshipType' ] = $relationshiptType;
 		$inputValues[ 'acceptRelationship' ] = 'FALSE';
  	    	 	    	
-		$daoFactory = DAOFactory::getInstance();
+		$daoFactory = AbstractDAOFactory::getInstance();
 		$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 		$gqDTO = $genericPLFunctionDAO->selectGenericData( $daoFunction,  $inputValues );	
 

@@ -40,7 +40,7 @@ class SendProfile2ProfileMessageRequestProcessor extends RequestProcessor {
 
         $searchParam = $this->requestInfoBean->getGET('nameSearchParam');
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $searchDAO = $daoFactory->getSearchDAO();
         
         // Searches for people

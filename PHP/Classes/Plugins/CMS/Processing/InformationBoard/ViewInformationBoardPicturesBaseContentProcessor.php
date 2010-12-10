@@ -42,7 +42,7 @@ class ViewInformationBoardPicturesBaseContentProcessor extends ContentProcessor 
     public function prepareContent() {
         // simulate DB connect
 
-        $daoFactory = DAOFactory::getInstance();
+        $daoFactory = AbstractDAOFactory::getInstance();
         $informationBoardPicturesBaseDTO = $daoFactory->getInformationBoardPicturesDAO()->getInformationBoardPicturesBase();
 
         $this->_templateEngine->assign( 'resultColumns', $informationBoardPicturesBaseDTO->getInfoBoardColumns() );
