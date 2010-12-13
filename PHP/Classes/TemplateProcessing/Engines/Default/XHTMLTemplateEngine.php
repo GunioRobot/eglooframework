@@ -58,11 +58,14 @@ class XHTMLTemplateEngine extends TemplateEngine {
 		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
 			eGlooConfiguration::getApplicationPath() . '/Templates/';
 
+		$extra_template_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . '/' . eGlooConfiguration::getExtraTemplatePath();
+
 		$framework_template_path = 'Templates';
 
 		$this->templateRoots = array(
 			'Application' => $application_template_path,
 			'ApplicationCommon' => $application_common_template_path,
+			'ExtraTemplatePath' => $extra_template_path,
 			'Framework' => $framework_template_path
 		);
 
