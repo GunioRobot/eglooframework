@@ -89,6 +89,7 @@ class AbstractDAOFactory {
 			// No connection specified and no default given...
 		}
 
+		return $retVal;
 	}
 
 	/**
