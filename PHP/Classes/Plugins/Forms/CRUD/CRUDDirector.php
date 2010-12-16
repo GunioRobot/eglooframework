@@ -38,5 +38,35 @@
  */
 class CRUDDirector {
 
+	private static $_singleton = null;
+
+	private function __construct() {
+		
+	}
+
+	public static function getInstance() {
+		if (!self::$singleton) {
+			self::$singleton = new CRUDDirector();
+		}
+
+		return self::$singleton;
+	}
+
+	public function processCreate( $form ) {
+		
+	}
+
+	public function processRead( $form ) {
+		
+	}
+
+	public function processUpdate( $form ) {
+		
+	}
+
+	public function processDestroy( $form ) {
+		
+	}
+
 }
 

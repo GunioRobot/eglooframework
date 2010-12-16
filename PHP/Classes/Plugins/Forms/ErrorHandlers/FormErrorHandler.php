@@ -38,5 +38,9 @@
  */
 class FormErrorHandler {
 
+	public function handle() {
+		
+	}
+
 }
 
