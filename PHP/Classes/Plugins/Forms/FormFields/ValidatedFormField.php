@@ -53,7 +53,8 @@ class ValidatedFormField extends FormField {
 			$retVal = true;
 		}
 
-		// TODO validate this form field itself
+		// TODO validate this form field itself -- pick the right validator to do so.
+		// Should branch?  Validate all children and then self via validator, or just invoke validator?
 
 		return $retVal;
 	}

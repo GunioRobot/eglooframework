@@ -41,6 +41,9 @@ class ValidatedFormFieldSet extends FormFieldSet {
 	public function validate() {
 		$retVal = false;
 
+		// TODO validate this form field set itself -- pick the right validator to do so.
+		// Should branch?  Validate all children and then self via validator, or just invoke validator?
+
 		if ( !empty($this->_formFieldChildren) ) {
 			foreach( $this->_formFieldChildren as $formFieldID => $formField ) {
 				if ( !$formField->validate() ) {
