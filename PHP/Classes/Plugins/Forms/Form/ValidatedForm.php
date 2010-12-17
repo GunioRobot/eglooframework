@@ -38,5 +38,27 @@
  */
 class ValidatedForm extends Form {
 
+	public function validate() {
+		$retVal = false;
+
+		foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
+			if ( !$formFieldSet->validate() ) {
+				$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors()
+			}
+		}
+
+		foreach( $this->_formFields as $formFieldID => $formField ) {
+			if ( !$formField->validate() ) {
+				$this->_formErrors[$formFieldID] = $formField->getErrors()
+			}
+		}
+
+		if ( empty($this->_formErrors) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
 }
 
