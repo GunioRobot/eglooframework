@@ -38,5 +38,17 @@
  */
 class SecureFormField extends ValidatedFormField {
 
+	public function encrypt() {
+		
+	}
+
+	public function decrypt() {
+		
+	}
+
+	public function isSecure() {
+		
+	}
+
 }
 

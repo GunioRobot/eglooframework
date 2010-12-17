@@ -38,5 +38,23 @@
  */
 class ValidatedFormFieldSet extends FormFieldSet {
 
+	public function validate() {
+		$retVal = false;
+
+		if ( !empty($this->_formFieldChildren) ) {
+			foreach( $this->_formFieldChildren as $formFieldID => $formField ) {
+				if ( !$formField->validate() ) {
+					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors()
+				}
+			}
+		}
+
+		if ( empty($this->_formFieldChildErrors) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
 }
 

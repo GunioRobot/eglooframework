@@ -140,11 +140,11 @@ class Form {
 		return $retVal;
 	}
 
-	public function getErrorByFieldID( $field_id ) {
+	public function getErrorsByFieldID( $field_id ) {
 		return $this->_formErrors[$field_id];
 	}
 
-	public function setErrorByFieldID( $field_id, $error_value ) {
+	public function setErrorsByFieldID( $field_id, $error_value ) {
 		$this->_formErrors[$field_id] = $error_value;
 	}
 
