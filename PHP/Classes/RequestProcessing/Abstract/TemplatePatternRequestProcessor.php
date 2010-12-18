@@ -75,7 +75,7 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 		$output = $templateDirector->processTemplate();
 
 		if ( is_array($output) ) {
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true) );
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true), 'Default' );
 			echo "Check log";
 		}
 
@@ -85,7 +85,7 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 			$this->decoratorInfoBean->setValue('Output', $output, 'ManagedOutput');
 		} else {
 			$this->setOutputHeaders();
-			echo $output;        
+			echo $output;
 		}
 
 		$this->postProcessing();
@@ -109,6 +109,11 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 		$templateDirector->setTemplateVariables( $this->getTemplateVariables(), $this->useSystemVariables() );            
 
 		$output = $templateDirector->processTemplate();
+
+		if ( is_array($output) ) {
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true), 'Default' );
+			echo "Check log";
+		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Echoing Response" );
 
