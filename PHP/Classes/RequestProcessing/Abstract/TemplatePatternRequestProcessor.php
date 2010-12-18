@@ -74,7 +74,7 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		$output = $templateDirector->processTemplate();
 
-		if ( is_array($output) || $output === 'Array' ) {
+		if ( is_array($output) || $output === 'Array' || !is_string($output) ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true), 'Default' );
 			echo "Check log";
 		}
@@ -110,7 +110,7 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		$output = $templateDirector->processTemplate();
 
-		if ( is_array($output) || $output === 'Array' ) {
+		if ( is_array($output) || $output === 'Array' || !is_string($output) ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true), 'Default' );
 			echo "Check log";
 		}
