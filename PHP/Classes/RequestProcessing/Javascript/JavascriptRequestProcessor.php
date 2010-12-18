@@ -69,33 +69,11 @@ class JavascriptRequestProcessor extends RequestProcessor {
 
         $templateDirector->setTemplateBuilder( $templateBuilder );
 
-        // TODO Mark a difference between hard caching and soft caching
-        // Soft caching is basically caching the dispatch mappings, but still requiring traversal to pull the correct template
-        // Hard caching takes as little information as is needed in one go and shoots straight to the template cache,
-        // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
-        // is better suited for production
-        
-        // $templateDirector->setCacheID();
-		$templateDirector->setHardCacheID();
-        
-		$templateDirector->useSmartCaching();
-
 		$templateDirector->preProcessTemplate();
 
 		$output = $templateDirector->processTemplate();
 
         eGlooLogger::writeLog( eGlooLogger::DEBUG, 'JavascriptRequestProcessor: Echoing Response' );
-        
-        // TODO move header declarations to a decorator
-        // TODO find out if we need to set a charset here
-
-		$hardCacheOutputID = 'HardCache::' . $this->requestInfoBean->getRequestClass() . '::' . $this->requestInfoBean->getRequestID() . '::OUTPUT';
-		$hardCacheHeaderID = 'HardCache::' . $this->requestInfoBean->getRequestClass() . '::' . $this->requestInfoBean->getRequestID() . '::HEADER';
-
-		$cacheGateway = CacheGateway::getCacheGateway();
-
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, $output, 'HardCache' );
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, 'Content-type: text/javascript', 'HardCache' );
 
         header('Content-type: text/javascript');
 

@@ -65,28 +65,15 @@ class CSSBuilder extends TemplateBuilder {
     }
 
 	public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 ) {
-        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
-        // $this->templateEngine->caching = true;
-        
-        // $this->dispatchPath = $dispatchPath;
 		$this->hardCacheID = '|' . $requestClass . '|' . $requestID . '|' . $cacheID . '|';
 		$this->ttl;
     }
 
-    // public function setHardCacheID( $dispatchPath, $cacheID ) {
-    //     $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
-    //     $this->templateEngine->caching = true;
-    //     
-    //     $this->dispatchPath = $dispatchPath;
-    //     $this->hardCacheID = $cacheID;
-    // }
-    
     public function isCached() {
         return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
     
 	public function isHardCached( $requestClass, $requestID, $cacheID ) {
-    // public function isHardCached( $dispatchPath, $cacheID ) {
 		$retVal = false;
 
 		if ($this->isHardCached && $this->output != null) {
@@ -109,7 +96,6 @@ class CSSBuilder extends TemplateBuilder {
 		}
 
 		return $retVal;
-        // return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
 
     public function setDispatchPath() {

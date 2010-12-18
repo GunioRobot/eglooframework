@@ -58,15 +58,6 @@ class ExternalMainPageBaseRequestProcessor extends RequestProcessor {
 
 		$templateDirector->setTemplateBuilder( $templateBuilder );
 
-        // TODO Mark a difference between hard caching and soft caching
-        // Soft caching is caching the dispatch mappings, but still requiring traversal to pull the correct template
-        // Hard caching takes as little information as is needed in one go and shoots straight to the template cache,
-        // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
-        // is better suited for production
-
-		// $templateDirector->setHardCacheID();
-		// $templateDirector->useSmartCaching();
-
 		$templateDirector->preProcessTemplate();
 
 		$templateVariables['svnVersion'] = '∞';
