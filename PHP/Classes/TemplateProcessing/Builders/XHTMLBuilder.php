@@ -179,7 +179,11 @@ class XHTMLBuilder extends TemplateBuilder {
 		$retVal = null;
 
 		try {
-			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+			if ( $cacheID !== null && is_string($cacheID) ) {
+				$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+			} else {
+				$retVal = $this->templateEngine->fetch( $dispatchPath);
+			}
 		} catch (ErrorException $e) {
 			$matches = array();
 

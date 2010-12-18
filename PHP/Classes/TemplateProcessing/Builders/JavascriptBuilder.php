@@ -143,7 +143,11 @@ class JavascriptBuilder extends TemplateBuilder {
 
 		try {
 			if ($this->processTemplate) {
-				$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+				if ( $cacheID !== null && is_string($cacheID) ) {
+					$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
+				} else {
+					$retVal = $this->templateEngine->fetch( $dispatchPath);
+				}
 			} else {
 				foreach($this->templateEngine->getTemplatePaths() as $path) {
 					if (file_exists($path . $dispatchPath)) {
