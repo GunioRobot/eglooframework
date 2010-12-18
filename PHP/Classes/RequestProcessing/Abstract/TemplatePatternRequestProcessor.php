@@ -74,6 +74,11 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		$output = $templateDirector->processTemplate();
 
+		if ( is_array($output) ) {
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, print_r($output, true) );
+			echo "Check log";
+		}
+
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, static::getClass() . ": Echoing Response" );
 
 		if ($this->decoratorInfoBean->issetNamespace('ManagedOutput')) {
