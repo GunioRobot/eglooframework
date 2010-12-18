@@ -165,25 +165,13 @@ class XHTMLBuilder extends TemplateBuilder {
 		}
 
         return $retVal;
-
-        // if ( $this->cacheID !== null ) {
-        //     $output = $this->templateEngine->fetch( $this->dispatchPath, $this->cacheID );
-        // } else {
-        //     $output = $this->templateEngine->fetch( $this->dispatchPath );
-        // }
-        // 
-        // return $output;        
     }
 
 	private function __fetch($dispatchPath, $cacheID) {
 		$retVal = null;
 
 		try {
-			if ( $cacheID !== null && is_string($cacheID) ) {
-				$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
-			} else {
-				$retVal = $this->templateEngine->fetch( $dispatchPath);
-			}
+			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
 		} catch (ErrorException $e) {
 			$matches = array();
 

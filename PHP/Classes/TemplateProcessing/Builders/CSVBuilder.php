@@ -155,11 +155,7 @@ class CSVBuilder extends TemplateBuilder {
 		$retVal = null;
 
 		try {
-			if ( $cacheID !== null && is_string($cacheID) ) {
-				$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
-			} else {
-				$retVal = $this->templateEngine->fetch( $dispatchPath);
-			}
+			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
 		} catch (ErrorException $e) {
 			$matches = array();
 
