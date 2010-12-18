@@ -185,6 +185,8 @@ class JavascriptBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on Javascript engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

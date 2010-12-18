@@ -167,6 +167,8 @@ class CSSBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on CSS engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

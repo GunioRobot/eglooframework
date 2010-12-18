@@ -189,6 +189,8 @@ class CSVBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on CSV engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

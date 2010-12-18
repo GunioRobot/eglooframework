@@ -213,6 +213,8 @@ class XHTMLBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on XHTML engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 
