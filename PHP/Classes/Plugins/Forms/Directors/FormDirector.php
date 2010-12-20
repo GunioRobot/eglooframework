@@ -92,7 +92,7 @@ final class FormDirector {
 			} else if ($formNodeLocalized === 'false') {
 				$formNodeLocalized = false;
 			} else {
-				throw new ErrorException("Invalid localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml");
+				throw new ErrorException('Invalid localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
 			$formNodeValidated = isset( $formNode['validated'] ) ? strtolower( (string) $formNode['validated'] ) : NULL;
@@ -104,7 +104,7 @@ final class FormDirector {
 			} else if ($formNodeValidated === 'false') {
 				$formNodeValidated = false;
 			} else {
-				throw new ErrorException("Invalid validation setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml");
+				throw new ErrorException('Invalid validation setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
 			$formNodeSecure = isset( $formNode['secure'] ) ? strtolower( (string) $formNode['secure'] ) : NULL;
@@ -116,7 +116,7 @@ final class FormDirector {
 			} else if ($formNodeSecure === 'false') {
 				$formNodeSecure = false;
 			} else {
-				throw new ErrorException("Invalid secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml");
+				throw new ErrorException('Invalid secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
 			$formNodeDAO = isset($formNode['dao']) ? (string) $formNode['dao'] : NULL;
@@ -180,7 +180,7 @@ final class FormDirector {
 				} else if ($formFieldSetNodeLocalized === 'false') {
 					$formFieldSetNodeLocalized = false;
 				} else {
-					throw new ErrorException("Invalid localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml");
+					throw new ErrorException('Invalid localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 				}
 
 				$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : NULL;
@@ -192,7 +192,7 @@ final class FormDirector {
 				} else if ($formFieldSetNodeValidated === 'false') {
 					$formFieldSetNodeValidated = false;
 				} else {
-					throw new ErrorException("Invalid validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml");
+					throw new ErrorException('Invalid validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 				}
 
 				$formFieldSetNodeSecure = isset( $formFieldSet['secure'] ) ? strtolower( (string) $formFieldSet['secure'] ) : NULL;
@@ -204,7 +204,7 @@ final class FormDirector {
 				} else if ($formFieldSetNodeSecure === 'false') {
 					$formFieldSetNodeSecure = false;
 				} else {
-					throw new ErrorException("Invalid secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml");
+					throw new ErrorException('Invalid secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 				}
 
 				$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
@@ -217,9 +217,9 @@ final class FormDirector {
 											'formFields' => array()
 										);
 
-				foreach( $formFieldSet->xpath( 'child::FormField' ) as $formField ) {
-					$newFormField = array();
+				$formFieldSetFormFields = array();
 
+				foreach( $formFieldSet->xpath( 'child::FormField' ) as $formField ) {
 					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
 
 					if ( !$formFieldID || trim($formFieldID) === '' ) {
@@ -227,12 +227,122 @@ final class FormDirector {
 							"'.	 Please review your Forms.xml");
 					}
 
-					$newFormField['id'] = $formFieldID;
+					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 
-					$formNodes[$formNodeID]['formFieldSets']['formFields'][] = $newFormField;
+					if ( !$formFieldType || trim($formFieldType) === '' ) {
+						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
+							'\'.	 Please review your Forms.xml');
+					}
+
+					$formFieldNodeLocalized = isset( $formField['localized'] ) ? strtolower( (string) $formField['localized'] ) : NULL;
+
+					if ($formFieldNodeLocalized === 'true') {
+						$formFieldNodeLocalized = true;
+					} else if ($formFieldNodeLocalized === 'false') {
+						$formFieldNodeLocalized = false;
+					} else if ($formFieldType === 'hidden') {
+						$formFieldNodeLocalized = false;
+					} else if (isset($formFieldSetNodeLocalized)) {
+						$formFieldNodeLocalized = $formFieldSetNodeLocalized;
+					} else {
+						$formFieldNodeLocalized = false;
+					}
+
+					$containerChildren = array();
+
+					if ($formFieldType === 'container') {
+						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
+							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+
+							if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
+								throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
+									'\'.	 Please review your Forms.xml');
+							}
+
+							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
+
+							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
+								throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
+									"'.	 Please review your Forms.xml");
+							} else if ($formFieldChildType === 'container') {
+								throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+							}
+
+							$formFieldChildNodeLocalized = isset( $formFieldChild['localized'] ) ? strtolower( (string) $formFieldChild['localized'] ) : NULL;
+
+							if ($formFieldChildNodeLocalized === 'true') {
+								$formFieldChildNodeLocalized = true;
+							} else if ($formFieldChildNodeLocalized === 'false') {
+								$formFieldChildNodeLocalized = false;
+							} else if ($formFieldChildNodeLocalized === 'hidden') {
+								$formFieldChildNodeLocalized = false;
+							} else if (isset($formFieldNodeLocalized)) {
+								$formFieldChildNodeLocalized = $formFieldNodeLocalized;
+							} else {
+								$formFieldChildNodeLocalized = false;
+							}
+
+							$childDisplayLabel = null;
+							$childErrorMessage = null;
+							$childErrorHandler = null;
+
+							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
+								$childDisplayLabel = (string) $childDisplayLabelNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
+								$childErrorMessage = (string) $childErrorMessageNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
+								$childErrorHandler = (string) $childErrorHandlerNode;
+							}
+
+							$newChildFormField = array(	'id' => $formFieldChildID,
+													'type' => $formFieldChildType,
+													'localized' => $formFieldChildNodeLocalized,
+													'displayLabel' => $childDisplayLabel,
+													'errorMessage' => $childErrorMessage,
+													'errorHandler' => $childErrorHandler,
+												);
+
+							$containerChildren[$formFieldChildID] = $newChildFormField;
+						}
+					}
+
+					$displayLabel = null;
+					$errorMessage = null;
+					$errorHandler = null;
+
+					foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
+						$displayLabel = (string) $displayLabelNode;
+					}
+
+					foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
+						$errorMessage = (string) $errorMessageNode;
+					}
+
+					foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
+						$errorHandler = (string) $errorHandlerNode;
+					}
+
+					$newFormField = array(	'id' => $formFieldID,
+											'type' => $formFieldType,
+											'localized' => $formFieldNodeLocalized,
+											'displayLabel' => $displayLabel,
+											'errorMessage' => $errorMessage,
+											'errorHandler' => $errorHandler,
+										);
+
+					if (!empty($containerChildren)) {
+						$newFormField['children'] = $containerChildren;
+					}
+
+					$formFieldSetFormFields[$formFieldID] = $newFormField;
 				}
 				
-				$formNodes[$formNodeID]['formFieldSets'][] = $newFormFieldSet;
+				$newFormFieldSet['formFields'] = $formFieldSetFormFields;
+				$formNodes[$formNodeID]['formFieldSets'][$formFieldSetID] = $newFormFieldSet;
 			}
 
 			$this->_formNodes = $formNodes;
@@ -244,6 +354,10 @@ final class FormDirector {
 		// 
 		// $dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes',
 		// 	$this->_formNodes, 'Dispatching', 0, true );
+	}
+
+	private function loadFormFieldNodeDefinition() {
+		
 	}
 
 	public function buildForm( $form_name, $parameters = null ) {
