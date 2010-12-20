@@ -66,7 +66,6 @@ class CSVBuilder extends TemplateBuilder {
     }
 
     public function setCacheID( $cacheID, $ttl = 3600 ) {
-        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
         $this->templateEngine->caching = 2; // lifetime is per cache
         
         $this->templateEngine->cache_lifetime = $ttl;
@@ -75,10 +74,6 @@ class CSVBuilder extends TemplateBuilder {
     }
 
 	public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 ) {
-        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
-        // $this->templateEngine->caching = true;
-
-        // $this->dispatchPath = $dispatchPath;
 		$this->hardCacheID = '|' . $requestClass . '|' . $requestID . '|' . $cacheID . '|';
 		$this->ttl;
     }
@@ -110,14 +105,9 @@ class CSVBuilder extends TemplateBuilder {
 		}
 
 		return $retVal;
-        // return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
     
     public function setDispatchPath() {
-		// $templateDispatcher =
-		// 	CSVDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
-		// 
-		// $this->dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
 		$this->dispatchPath = eGlooConfiguration::getFrameworkRootPath() . '/Templates/Core/Generic/CSV/GenericCSV.tpl';
     }
 
@@ -185,6 +175,8 @@ class CSVBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on CSV engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

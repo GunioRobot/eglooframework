@@ -38,5 +38,108 @@
  */
 class FormFieldSet {
 
+	protected $_formFieldSetID = null;
+	protected $_formFieldSetLegend = null;
+
+	protected $_formFieldSetDefinition = null;
+
+	protected $_formFieldChildErrors = array();
+
+	protected $_formFieldChildren = array();
+	protected $_formFieldChildData = array();
+
+	protected $_renderedFormFieldSet = null;
+	protected $_renderedErrors = null;
+
+	public function __construct( $formFieldSetID = null, $formFieldSetLegend = null ) {
+		$this->_formFieldSetID = $formFieldSetID;
+		$this->_formFieldSetLegend = $formFieldSetLegend;
+	}
+
+	public function addChildFormField( $child_form_field_id, $formField ) {
+		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
+			$this->_formFieldChildren[$child_form_field_id] = $formField;
+			$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+		} else {
+			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
+		}
+	}
+
+	public function getChildFormField( $child_form_field_id ) {
+		return $this->_formFieldChildren[$child_form_field_id];
+	}
+	
+	public function getChildFormFieldData( $child_form_field_id ) {
+		return $this->_formFieldChildData[$child_form_field_id];
+	}
+
+	public function setChildFormField( $child_form_field_id, $formField ) {
+		$this->_formFieldChildren[$child_form_field_id] = $formField;
+		$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+	}
+
+	public function removeChildFormField( $child_form_field_id ) {
+		unset($this->_formFieldChildren[$child_form_field_id]);
+		unset($this->_formFieldChildData[$child_form_field_id]);
+	}
+
+	public function getLegend() {
+		return $this->_formFieldSetLegend;
+	}
+
+	public function setLegend( $formFieldSetLegend ) {
+		$this->_formFieldSetLegend = $formFieldSetLegend;
+	}
+
+	public function getChildErrors() {
+		return $this->_formFieldChildErrors;
+	}
+
+	public function getChildren() {
+		return $this->_formFieldChildren;
+	}
+
+	public function hasChildren() {
+		$retVal = false;
+		
+		if ( !empty($this->_formFieldChildren) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function getID() {
+		return $this->_formFieldSetID;
+	}
+
+	public function render( $render_legend = true, $render_children = true, $render_child_labels = true, $render_frameset = true ) {
+		$retVal = null;
+
+		
+
+		return $retVal;
+	}
+
+	public function renderErrors() {
+		$retVal = null;
+
+		
+
+		return $retVal;
+	}
+
+	public function getErrorsByChildID( $child_field_id ) {
+		return $this->_formFieldChildErrors[$child_field_id];
+	}
+
+	public function setErrorsByChildID( $child_field_id, $error_value ) {
+		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+	}
+
+	public function __destruct() {
+		
+	}
+
 }
 

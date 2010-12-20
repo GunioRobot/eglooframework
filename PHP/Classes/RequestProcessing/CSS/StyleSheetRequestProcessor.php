@@ -68,26 +68,8 @@ class StyleSheetRequestProcessor extends RequestProcessor {
 
         $templateDirector->setTemplateBuilder( $templateBuilder );
 
-        // TODO Mark a difference between hard caching and soft caching
-        // Soft caching is basically caching the dispatch mappings, but still requiring traversal to pull the correct template
-        // Hard caching takes as little information as is needed in one go and shoots straight to the template cache,
-        // avoiding the dispatch mapper entirely if possible.  The former is good for development work, the latter
-        // is better suited for production
-        
-        // $templateDirector->setCacheID();
-		$templateDirector->setHardCacheID();
+		$templateDirector->preProcessTemplate();
 
-		//         $templateDirector->preProcessTemplate();
-		//         
-		// $output = $templateDirector->processTemplate();
-		
-		$templateDirector->useSmartCaching();
-		
-		// if ( !$templateDirector->isHardCached( $this->requestInfoBean->getRequestID(), $cacheID ) ) {
-	        $templateDirector->preProcessTemplate();
-		// } else {
-		// 	$templateDirector->setHardCacheID( $this->requestInfoBean->getRequestID(), $cacheID );
-		// }
 		$templateDirector->setTemplateVariables(array(), true);
 
 		$output = $templateDirector->processTemplate();

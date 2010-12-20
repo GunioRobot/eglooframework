@@ -69,10 +69,6 @@ class JavascriptBuilder extends TemplateBuilder {
     }
 
 	public function setHardCacheID( $requestClass, $requestID, $cacheID, $ttl = 3600 ) {
-        // $this->templateEngine->cache_handler_func = 'smarty_cache_memcache';
-        // $this->templateEngine->caching = true;
-        
-        // $this->dispatchPath = $dispatchPath;
 		$this->hardCacheID = '|' . $requestClass . '|' . $requestID . '|' . $cacheID . '|';
 		$this->ttl;
     }
@@ -82,7 +78,6 @@ class JavascriptBuilder extends TemplateBuilder {
     }
 
 	public function isHardCached( $requestClass, $requestID, $cacheID ) {
-    // public function isHardCached( $dispatchPath, $cacheID ) {
 		$retVal = false;
 
 		if ($this->isHardCached && $this->output != null) {
@@ -105,7 +100,6 @@ class JavascriptBuilder extends TemplateBuilder {
 		}
 
 		return $retVal;
-        // return $this->templateEngine->is_cached( $this->dispatchPath, $this->cacheID );
     }
     
     public function setDispatchPath() {
@@ -181,6 +175,8 @@ class JavascriptBuilder extends TemplateBuilder {
 						throw $e;
 					}
 				}
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on Javascript engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

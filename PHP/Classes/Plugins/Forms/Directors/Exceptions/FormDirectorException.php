@@ -1,6 +1,6 @@
 <?php
 /**
- * ValidatedForm Class File
+ * FormDirectorException Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ValidatedForm
+ * FormDirectorException
  *
  * $short_description
  *
@@ -36,32 +36,21 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ValidatedForm extends Form {
+final class FormDirectorException extends Exception {
 
-	public function validate() {
-		$retVal = false;
-
-		// TODO validate this form itself -- pick the right validator to do so.
-		// Should branch?  Validate all children and then self via validator, or just invoke validator?
-
-		foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
-			if ( !$formFieldSet->validate() ) {
-				$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors()
-			}
-		}
-
-		foreach( $this->_formFields as $formFieldID => $formField ) {
-			if ( !$formField->validate() ) {
-				$this->_formErrors[$formFieldID] = $formField->getErrors()
-			}
-		}
-
-		if ( empty($this->_formErrors) ) {
-			$retVal = true;
-		}
-
-		return $retVal;
-	}
+   /**
+    * FormDirectorException constructor.  Takes a message and a code and invokes
+    * the parent (Exception) constructor.  May eventually contain additional code,
+    * but for now acts as a means of determining the exact type of exception thrown
+    * so it is possible to track down what threw it.
+    *
+    * @param $message   the message that this exception will contain
+    * @param $code      the optional code of this exception (unused)
+    * @returns          a FormDirectorException
+    */
+   public function __construct( $message, $code = 0 ) {
+       // Call parent constructor
+       parent::__construct( $message, $code );
+   }
 
 }
-

@@ -1,6 +1,6 @@
 <?php
 /**
- * RegistrationDataFormatter Class File
+ * RegistrationFormDataFormatter Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * RegistrationDataFormatter
+ * RegistrationFormDataFormatter
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class RegistrationDataFormatter {
+class RegistrationFormDataFormatter extends FormDataFormatter {
 
 }
 

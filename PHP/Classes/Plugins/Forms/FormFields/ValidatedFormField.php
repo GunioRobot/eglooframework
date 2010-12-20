@@ -38,5 +38,26 @@
  */
 class ValidatedFormField extends FormField {
 
+	public function validate() {
+		$retVal = false;
+
+		if ( !empty($this->_formFieldChildren) ) {
+			foreach( $this->_formFieldChildren as $formFieldID => $formField ) {
+				if ( !$formField->validate() ) {
+					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors()
+				}
+			}
+		}
+
+		if ( empty($this->_formFieldChildErrors) ) {
+			$retVal = true;
+		}
+
+		// TODO validate this form field itself -- pick the right validator to do so.
+		// Should branch?  Validate all children and then self via validator, or just invoke validator?
+
+		return $retVal;
+	}
+
 }
 

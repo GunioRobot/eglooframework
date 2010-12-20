@@ -97,10 +97,10 @@ class CSVXML2ArrayDispatcher extends TemplateDispatcher {
         if ( !isset(self::$singletonDispatcher) ) {
             $cacheGateway = CacheGateway::getCacheGateway();
             
-            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', 'ContentDispatching', true ) ) == null ) {
+            if ( (self::$singletonDispatcher = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', 'Dispatching', true ) ) == null ) {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Building Singleton" );
                 self::$singletonDispatcher = new CSVXML2ArrayDispatcher( $application, $interfaceBundle );
-                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'ContentDispatching', 0, true );
+                $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'CSVXML2ArrayDispatcherNodes', self::$singletonDispatcher, 'Dispatching', 0, true );
             } else {
                 eGlooLogger::writeLog( eGlooLogger::DEBUG, "CSVXML2ArrayDispatcher: Singleton pulled from cache" );
             }

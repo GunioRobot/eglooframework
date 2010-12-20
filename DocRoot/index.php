@@ -53,31 +53,21 @@ if ( !$requestValidator->initializeInfoBean($requestInfoBean) ) {
 	exit;
 }
 
-$hardCacheOutputID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::OUTPUT';
-$hardCacheHeaderID = 'HardCache::' . $requestInfoBean->getRequestClass() . '::' . $requestInfoBean->getRequestID() . '::HEADER';
+// Validate this request and update the info bean accordingly
+$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
 
-$cacheGateway = CacheGateway::getCacheGateway();
-
-if (($output = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheOutputID, 'HardCache' )) != null) {
-	header( $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $hardCacheHeaderID, 'HardCache' ) );
-	echo $output;
+// If the request is valid, process it.  Otherwise, log it and die
+if ( $isValidRequest ) {
+	$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
+	$requestProcessor->processRequest();
 } else {
-	// Validate this request and update the info bean accordingly
-	$isValidRequest = $requestValidator->validateAndProcess( $requestInfoBean );
-
-	// If the request is valid, process it.  Otherwise, log it and die
-	if ( $isValidRequest ) {
-		$requestProcessor = RequestProcessorFactory::getRequestProcessor( $requestInfoBean );
-		$requestProcessor->processRequest();
+	$errorRequestProcessor = RequestProcessorFactory::getErrorRequestProcessor( $requestInfoBean );
+	
+	if ($errorRequestProcessor) {
+		$errorRequestProcessor->processErrorRequest();
 	} else {
-		$errorRequestProcessor = RequestProcessorFactory::getErrorRequestProcessor( $requestInfoBean );
-		
-		if ($errorRequestProcessor) {
-			$errorRequestProcessor->processErrorRequest();
-		} else {
-			// We probably want to do something a bit more... elegant here.  Eventually
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );
-		}
+		// We probably want to do something a bit more... elegant here.  Eventually
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'INVALID request!', 'RequestValidation', 'Security' );
 	}
 }
 

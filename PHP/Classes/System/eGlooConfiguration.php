@@ -86,8 +86,6 @@ final class eGlooConfiguration {
 		}
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
-		// echo 'here';
-		// die;
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
