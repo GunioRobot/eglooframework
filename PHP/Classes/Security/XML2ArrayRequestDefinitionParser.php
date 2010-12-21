@@ -532,7 +532,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	protected function init() {}
 
 	/**
-	 * Method to validate and process a request, and populate the RequestInfoBean for the runtime
+	 * Method to validate and process a request, and populate the RequestInfoBean for the runtime.
 	 *
 	 * This method ensures that this is valid request, by checking arguments against the expectant
 	 * values in the loaded request and request attribute set definition nodes.  If it is a valid 
@@ -569,10 +569,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 *							AND the current deployment mode is DEVELOPMENT.  Otherwise, the error is logged
 	 *							and the method returns false
 	 *
-	 * @return true if this is a valid request, or false if it is not
+	 * @return					true if this is a valid request, or false if it is not
 	 */
 	public function validateAndProcess( $requestInfoBean ) {
-		// Check if there is a request class.  If there isn't, return not setting any request processor.
+		// Check if there is a RequestClass.  If there isn't, return not setting any RequestProcessor.
 		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
 			$errorMessage = 'Request class not set in request.	' . "\n" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
@@ -584,7 +584,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			return false;
 		 }
 
-		// Check if there is a request id.  If there isn't, return not setting any request processor.
+		// Check if there is a RequestID.  If there isn't, return not setting any RequestProcessor.
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
 			$errorMessage = 'Request ID not set in request.	 ' . "\n\t" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
@@ -625,7 +625,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 
-			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
+			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor this later.  Maybe.
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
 				// We didn't find the request node and we are cached, so let's see if this request class has a request ID default cached
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache, but cache was populated: ' . $requestLookup, 'Security' );
