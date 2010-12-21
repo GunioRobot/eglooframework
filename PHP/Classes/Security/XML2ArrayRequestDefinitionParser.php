@@ -29,11 +29,7 @@
 /**
  * XML2ArrayRequestDefinitionParser
  * 
- * Validates requests against xml requests definition
- * 
- * In future can call multiple classes in the security package to validate the request.
- * Fills the RequestInfoBean with validated Request info or nothing if the request is invalid.
- * Returns true if request is valid, or false if there a problem has been detected.
+ * Validates requests against specification from requests definition file (Requests.xml)
  *
  * @package RequestProcessing
  * @subpackage Security
@@ -51,7 +47,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * This method reads the xml file from disk into a document object model.
 	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
 	 */
-	protected function loadRequestNodes(){
+	protected function loadRequestNodes() {
+		// TODO comment this method
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Processing XML", 'Security' );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
@@ -522,32 +519,60 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
 			$this->requestNodes, 'RequestValidation', 0, true );
 
-		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
-	}
-
-	protected function init() {
-		// static::loadRequestNodes();
+		$requestProcessingCacheRegionHandler->storeObject( 
+			eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
 	}
 
 	/**
-	 * Only functional method available to the public.	
-	 * This method ensures that this is valid request, by checking arguments 
-	 * against the expectant values in the request XML object. if it is a valid 
-	 * request, the request processor id needed process this request is populated
-	 * in the request info bean.
-	 * 
+	 * Empty init method invoked in constructor
+	 *
+	 * The eGlooRequestDefinitionParser parent class requires us to implement this method in case we
+	 * want to do something useful during construction of our singleton instance.  For now, do nothing.
+	 */
+	protected function init() {}
+
+	/**
+	 * Method to validate and process a request, and populate the RequestInfoBean for the runtime
+	 *
+	 * This method ensures that this is valid request, by checking arguments against the expectant
+	 * values in the loaded request and request attribute set definition nodes.  If it is a valid 
+	 * request, the RequestProcessor ID needed to process this request is populated in the RequestInfoBean.
+	 *
+	 * All valid and invalid request parameters are marked in the RequestInfoBean for later inspection.
+	 * For instance, SelectArguments are compared against the list of allowed values, VariableArguments
+	 * are compared against the defined regular expression, BoolArguments are checked for a value of true
+	 * or false, argument dependencies are checked and enforced.  If any arguments fail validation, the
+	 * request is marked as being in error and the result of the validateAndProcess method is to return
+	 * false after populating the RequestInfoBean accordingly.
+	 *
+	 * If ComplexArguments are supplied, the validators specified in the request definition are invoked
+	 * to test the provided values and perform any additional processing required. ComplexArgumentValidators
+	 * can be provided with a ComplexArgument class type as a hint from the Requests.xml for what sort of
+	 * data is being provided and what should be returned.  After the ComplexArgumentValidator has completed
+	 * validation, it returns the validated input in whatever format (array, object, string, etc) its
+	 * validation method specifies.  Failure of ComplexArgument validation, like any other argument type,
+	 * results in the request argument being set as invalid in the RequestInfoBean and the result of the
+	 * validateAndProcess method returning as false.
+	 *
+	 * All decorators for the supplied request are built into an array and set in the RequestInfoBean
+	 * to later by constructed by the RequestProcessorFactory and wrapped as an onion around the
+	 * RequestProcess defined to handle the given request.
+	 *
+	 * Finally, if wildcard support is turned on and the supplied RequestClass/RequestID pair is not found
+	 * in our request definitions, we check to see if a wildcard handler is available, first for the RequestID
+	 * within the RequestClass, then for the RequestClass, then for egDefault/egDefault (default wildcard pair).
+	 *
+	 * @param $requestInfoBean	the RequestInfoBean singleton to be populated through the validation process
+	 *
+	 * @throws ErrorException	if the provided RequestClass or RequestID are not found in the $_GET array or
+	 *							if the RequestClass/RequestID pair is not found in the loaded request nodes
+	 *							AND the current deployment mode is DEVELOPMENT.  Otherwise, the error is logged
+	 *							and the method returns false
+	 *
 	 * @return true if this is a valid request, or false if it is not
 	 */
-	public function validateAndProcess($requestInfoBean) {
-		/**
-		 * TODO: figure out what really should be done if a request ID or 
-		 * request Class is not set
-		 */
-
-		/**
-		 * Check if there is a request class.  If there isn't, return not setting
-		 * any request processor...
-		 */
+	public function validateAndProcess( $requestInfoBean ) {
+		// Check if there is a request class.  If there isn't, return not setting any request processor.
 		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
 			$errorMessage = 'Request class not set in request.	' . "\n" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
@@ -559,10 +584,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			return false;
 		 }
 
-		/**
-		 * Check if there is a request id.	If there isn't, return not setting
-		 * any request processor...
-		 */
+		// Check if there is a request id.  If there isn't, return not setting any request processor.
 		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
 			$errorMessage = 'Request ID not set in request.	 ' . "\n\t" . 'Verify that mod_rewrite is active and its rules are correct in your .htaccess';
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $errorMessage, 'Security' );
@@ -574,13 +596,24 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			return false;
 		}
 
+		// We found a specified RequestClass and RequestID, so let's grab them for use in processing and validating this request
 		$requestClass = $_GET[ self::REQUEST_CLASS_KEY ];
 		$requestID = $_GET[ self::REQUEST_ID_KEY ];
+
+		// Set the request lookup ID so that we can quickly grab the request node from the request nodes array ($this->requestNodes)
 		$requestLookup = $requestClass . $requestID;
 
+		// If we're in DEVELOPMENT mode, log what request we're getting so we can trace runtime flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Incoming Request Class and Request ID lookup is: "' . $requestLookup . '"', 'Security' );
 
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+		// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+		// and do more granulated inspection and cache clearing
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+
+
+		///////////////// TODO update comments below here
+
 
 		$allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
 			'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation', true );
@@ -591,9 +624,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache, checking wildcards: ' . $requestLookup, 'Security' );
 			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
 			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
-
-			// $allNodesCached = $requestProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
-			// 	'XML2ArrayRequestDefinitionParser::NodesCached', 'RequestValidation' );
 
 			// We have already parsed the XML once, so let's check down our wildcard options.  I want to refactor thi
 			if ( $allNodesCached && ($useRequestIDDefaultHandler || $useRequestClassDefaultHandler) ) {
