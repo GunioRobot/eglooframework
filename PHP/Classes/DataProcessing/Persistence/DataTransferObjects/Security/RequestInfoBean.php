@@ -135,7 +135,7 @@ class RequestInfoBean {
 		if ( !isset( $this->COOKIES[$key] ) ) {
 			$this->COOKIES[$key] = $value;
 		} else if ( $this->COOKIES[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change COOKIE key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change COOKIE key \'' . 
 				$key . '\' (value = \'' . $this->COOKIES[$key] . '\') to \'' . $value . '\'' );
 		}
 	}
@@ -166,7 +166,7 @@ class RequestInfoBean {
 		if ( !isset( $this->FILES[$key] ) ) {
 			$this->FILES[$key] = $value;
 		} else if ( $this->FILES[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change FILES key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change FILES key \'' . 
 				$key . '\' (value = \'' . $this->FILES[$key] . '\') to \'' . $value . '\'' );
 		}		 
 	}
@@ -233,7 +233,7 @@ class RequestInfoBean {
 		if ( !isset( $this->GET[$key] ) ) {
 			$this->GET[$key] = $value;
 		} else if ( $this->GET[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change GET key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change GET key \'' . 
 				$key . '\' (value = \'' . $this->GET[$key] . '\') to \'' . $value . '\'' );
 		}	 
 	}
@@ -308,7 +308,7 @@ class RequestInfoBean {
 		if ( !isset( $this->POST[$key] ) ) {
 			$this->POST[$key] = $value;
 		} else if ( $this->POST[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change POST key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change POST key \'' . 
 				$key . '\' (value = \'' . $this->POST[$key] . '\') to \'' . $value . '\'' );
 		}	 
 	}

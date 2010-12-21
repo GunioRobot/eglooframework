@@ -632,34 +632,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				}
 			}
-			// else {
-			// 	// We haven't found anything in cache, so let's read in the XML and recheck for the request class/ID pair
-			// 	eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in cache: ' . $requestLookup, 'Security' );
-			// 	$this->loadRequestNodes();
-			// 
-			// 	// Same logic as above, except we're checking what we loaded from XML
-			// 	if ( isset($this->requestNodes[ $requestLookup ]) ) {
-			// 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node found in XML: ' . $requestLookup, 'Security' );
-			// 		$requestNode = $this->requestNodes[ $requestLookup ];
-			// 	} else if ( $useRequestIDDefaultHandler && isset($this->requestNodes[ $requestClass . self::$_requestIDWildcard ]) ) {
-			// 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, using requestID wildcard: ' . $requestClass . self::$_requestIDWildcard, 'Security' );
-			// 		$requestNode = $this->requestNodes[ $requestClass . self::$_requestIDWildcard ];
-			// 		$requestInfoBean->setWildCardRequest( true );
-			// 		$requestInfoBean->setWildCardRequestID( $requestID );
-			// 		$requestInfoBean->setRequestID( self::$_requestIDWildcard );					
-			// 	} else if ( $useRequestClassDefaultHandler && isset($this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ]) ) {
-			// 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, using wildcard default: ' . self::$_requestClassWildcard . self::$_requestIDWildcard, 'Security' );
-			// 		$requestNode = $this->requestNodes[ self::$_requestClassWildcard . self::$_requestIDWildcard ];
-			// 		$requestInfoBean->setWildCardRequest( true );
-			// 		$requestInfoBean->setWildCardRequestClass( $requestClass );
-			// 		$requestInfoBean->setWildCardRequestID( $requestID );
-			// 		$requestInfoBean->setRequestClass( self::$_requestClassWildcard );
-			// 		$requestInfoBean->setRequestID( self::$_requestIDWildcard );
-			// 	} else {
-			// 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request node not found in XML, wildcards disabled: ' . $requestLookup, 'Security' );
-			// 		$requestNode = null;
-			// 	}
-			// }
 		} else if ($allNodesCached == null) {
 			// We haven't found anything in cache, so let's read in the XML and recheck for the request class/ID pair
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request nodes not cached, loading: ' . $requestLookup, 'Security' );
@@ -691,8 +663,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		} else {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "Invalid state: '" . $requestClass . "' and request ID '" . $requestID . "'", 'Security' );
 		}
-
-		// FIX $this->requestNodes will NOT be set here if Memcache is off
 
 		/**
 		 * Ensure that there is a request that corresponds to this request class
@@ -1738,7 +1708,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		return $retVal;
 	}
-	
+
 	/**
 	 * build the decorator array
 	 */
