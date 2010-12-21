@@ -40,7 +40,7 @@
  */
 abstract class eGlooRequestDefinitionParser {
 
-	/* Static Data Members */
+	// Static Data Members
 	const REQUEST_ID_KEY = "eg_requestID";
 	const REQUEST_CLASS_KEY = "eg_requestClass";
 	const PROCESSOR_ID_KEY = "processorID";
@@ -50,32 +50,60 @@ abstract class eGlooRequestDefinitionParser {
 	// for containing their own singletons.  This is a performance boost
 	// protected static $singleton;
 
-	/**
-	 * XML Variables
-	 */
+	// The location of the Requests.xml we're concerned with parsing
 	protected $REQUESTS_XML_LOCATION = '';
+
+	// An array representing the RequestAttributeSet definitions parsed out of the Requests.xml
 	protected $attributeSets = array();
+
+	// An array representing the Request node definitions parsed out of the Requests.xml
 	protected $requestNodes = array();
 
+	// Local data members for subclasses to reference which eGloo application and UI bundle we're working with
 	protected $webapp;
 	protected $uibundle;
 
+	/**
+	 * eGlooRequestDefinitionParser Constructor
+	 *
+	 * We create a final private constructor so that no class that inherits from this abstract class
+	 * can instantiate objects without implementing the singleton pattern.  We enforce this pattern
+	 * because no eGlooRequestDefinitionParser needs to have more than one object instantiated at any
+	 * time.
+	 * 
+	 * The constructor takes two arguments: the eGloo app to parse requests for and the relevant UI bundle.
+	 * The UI bundle is not used for validation purposes, but is stored in the RequestInfoBean for quick
+	 * access in the invoked RequestProcessor later in the runtime.
+	 *
+	 * @param $webapp a string containing the name of the eGloo application whose Requests.xml we're parsing
+	 * @param $uibundle a string containing the name of the UI bundle for the eGloo application in question
+	 *
+	 * @throws eGlooRequestDefinitionParserException if attempting to construct a second instance of this class 
+	 */
 	final private function __construct( $webapp, $uibundle ) {
-		$calledDefinitionParser = get_called_class();
-
+		// Make sure we haven't already constructed a singleton instance.  Throw exception if we have
 		if ( isset(static::$singleton) ) {
-			throw new Exception('Attempted __construct(): An instance of ' . get_called_class() . ' already exists');
+			throw new eGlooRequestDefinitionParserException('Attempted __construct(): An instance of ' . get_called_class() . ' already exists');
 		} else {
 			$this->webapp = $webapp;
 			$this->uibundle = $uibundle;
 		}
 
-		// $this injected; magic method invocation
+		// $this is injected; magic method invocation
 		static::init();
 	}
 
 	/**
-	 * See if we can do coolness here with late static binding
+	 * A final static method for getting a singleton instance of this class that all subclasses can reference
+	 *
+	 * To enforce the singleton pattern down the inheritance tree we provide the getInstance method for getting
+	 * a singleton instance of the relevant subclass being invoked.  Because we can get away with using late
+	 * static binding, this method is left as final and no subclass should override it.
+	 *
+	 * @param $webapp a string containing the name of the eGloo application whose Requests.xml we're parsing
+	 * @param $uibundle a string containing the name of the UI bundle for the eGloo application in question
+	 *
+	 * @return the instantiated singleton of whichever subclass this method was invoked in using late static binding
 	 */
 	final public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
 		$calledDefinitionParser = get_called_class();
@@ -90,32 +118,28 @@ abstract class eGlooRequestDefinitionParser {
 	/**
 	 * A method to initialize the request info bean
 	 *
+	 * This method takes a fresh RequestInfoBean and sets its initial state before request validation occurs
+	 *
 	 * @param $requestInfoBean the info bean to initialize
+	 *
+	 * @return true on successful initialization, false otherwise
 	 */
-	public function initializeInfoBean($requestInfoBean) {
+	public function initializeInfoBean( $requestInfoBean ) {
 		$retVal = true;
 
-		/**
-		 * Set the web application and UI bundle
-		 */
-		$requestInfoBean->setApplication($this->webapp);
-		$requestInfoBean->setInterfaceBundle($this->uibundle);
+		// Set the web application and UI bundle
+		$requestInfoBean->setApplication( $this->webapp );
+		$requestInfoBean->setInterfaceBundle( $this->uibundle );
 
-		/**
-		 * Check if there is a request class.  If there isn't, return not setting
-		 * any request processor...
-		 */
-		 if( !isset( $_GET[ self::REQUEST_CLASS_KEY ] )){
+		// Check if there is a request class.  If there isn't, log it and return not setting any request processor
+		 if ( !isset( $_GET[ self::REQUEST_CLASS_KEY ] ) ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request class not set in request.  ' . "\n" .
 				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
 			$retVal = false;
 		 }
 
-		/**
-		 * Check if there is a request id.  If there isn't, return not setting
-		 * any request processor...
-		 */
-		if( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ){
+		// Check if there is a request id.  If there isn't, log it and return not setting any request processor
+		if ( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n" .
 				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
 			$retVal = false;
@@ -134,13 +158,13 @@ abstract class eGlooRequestDefinitionParser {
 	 * request, the request processor id needed process this request is populated
 	 * in the request info bean.
 	 * 
-	 * @return true if this is a valid request, or false if it is not
+	 * @return true if this is a valid request, false otherwise
 	 */
 	abstract public function validateAndProcess($requestInfoBean);
 
 	/**
-	 * A definition parser must include this method to handle loading request
-	 * nodes from the requests definition XML
+	 * A definition parser must include this method to handle loading  and processing request
+	 * nodes and requests attribute sets from the requests definition XML (Requests.xml)
 	 */
 	abstract protected function loadRequestNodes();
 
@@ -154,9 +178,11 @@ abstract class eGlooRequestDefinitionParser {
 
 	/**
 	 * We disallow object cloning to enforce the singleton pattern
+	 *
+	 * @throws eGlooRequestDefinitionParserException if this method is invoked
 	 */
 	final private function __clone() {
-		throw new Exception('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
+		throw new eGlooRequestDefinitionParserException('Attempted __clone(): An instance of ' . get_called_class() . ' already exists');
 	}
 
 }
