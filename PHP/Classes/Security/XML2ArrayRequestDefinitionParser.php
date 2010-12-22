@@ -30,6 +30,7 @@
  * XML2ArrayRequestDefinitionParser
  * 
  * Validates requests against specification from requests definition file (Requests.xml)
+ * This is a specific subclass implementation of the eGlooRequestDefinitionParser.
  *
  * @package RequestProcessing
  * @subpackage Security
@@ -114,15 +115,20 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				'XML2ArrayRequestDefinitionParser: simplexml_load_file( "' . $requests_xml_path . '" ): ' . libxml_get_errors() );
 		}
 
+		// Setup an array to hold all of our processed request attribute set definitions
 		$requestClasses = array();
 
+		// Iterate over the RequestAttributeSet nodes so that we can parse each request attribute set definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestAttributeSet' ) as $attributeSet ) {
+			// Grab the ID for this particular RequestAttributeSet
 			$attributeSetID = isset($attributeSet['id']) ? (string) $attributeSet['id'] : NULL;
 
+			// If no ID is set for this RequestAttributeSet, this is not a valid Requests.xml and we should get out of here
 			if ( !$attributeSetID || trim($attributeSetID) === '' ) {
 				throw new ErrorException("No ID specified in request attribute set.	 Please review your Requests.xml");
 			}
 
+			// Assign an array to hold this RequestAttributeSet node definition.  Associative key is the RequestAttributeSet ID
 			$requestAttributeSets[$attributeSetID] = array('attributeSet' => $attributeSetID, 'attributes' => array());
 
 			// Arguments
@@ -1262,7 +1268,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		$retVal = true;
 
 		 foreach( $requestNode['complexArguments'] as $complexArg ) {
-			// die_r($complexArg);
 			if( $complexArg['type'] === 'get' ){
 
 				if( !isset( $_GET[ $complexArg['id'] ] ) ){
