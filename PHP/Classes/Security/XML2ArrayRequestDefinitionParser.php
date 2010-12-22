@@ -39,31 +39,79 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	/**
 	 * Static Data Members
 	 */
+
+	// Singleton data member to enforce the singleton pattern for eGlooRequestDefinitionParser subclasses
 	protected static $singleton;
+
+	// Variables representing the reserved keywords for default RequestClass and RequestID wildcard lookups
 	protected static $_requestClassWildcard = 'egDefault';
 	protected static $_requestIDWildcard = 'egDefault';
 
 	/**
-	 * This method reads the xml file from disk into a document object model.
-	 * It then populates a hash of [requestClassID + RequestID] -> [ Request XML Object ]
+	 * Method to load request nodes and request attribute sets from Requests.xml definitions file
+	 * 
+	 * Request node definitions and request attribute set definitions are defined in a Requests.xml
+	 * file for every eGloo application.  This method is invoked in order to parse that definition file
+	 * and structure information about valid requests, request attribute sets, their arguments, decorators,
+	 * dependencies and associated RequestProcessors into a fast and cacheable hash map of node ID to
+	 * node definition.
+	 *
+	 * This method will first parse request attribute sets, which are inheritable definitions for arguments,
+	 * decorators and dependencies that a request definition can include rather than explicitly repeating
+	 * commonly defined definition sets for multiple request nodes.  After the request attribute sets have
+	 * been processed and stored, request definitions themselves are processed.  Once request node definitions
+	 * are processed, their listed included request attribute sets are merged in to a flat format as a single
+	 * definition for that request node.  Request attribute sets are a priority based logical include
+	 * (with RequestAttributeSet includes specifying priority), but the end result is effectively a lexical
+	 * XML node include with duplicate nodes ignored.
+	 *
+	 * Once all parsing has been completed, the generated request definition nodes are cached through the
+	 * RequestProcessing cache region handler so that subsequent requests to the eGloo runtime can avoid
+	 * parsing the Requests.xml file and building the definition structure.  The form of this caching is
+	 * as follows:
+	 *
+	 * (1)	One entry that represents the entire processed request definition hash, including the "merged"
+	 *		request attribute set components
+	 * (2)	One entry that represents the parsed and processed request attribute set definitions.  This
+	 *		data structure is not currently referenced again in the runtime, but is left available for
+	 *		inspection.
+	 * (3)	An entry per RequestClass/RequestID pair, using the concatenated pair name as the hash key. This
+	 *		form of the structure exists so that a memcache lookup for the request node definition returns only
+	 *		information critical to the specified request.
+	 * (4)	A marker to indicate that nodes have been properly cached in the caching system.  The reason this
+	 *		exists is so that if the lookup for a particular node combo doesn't exist, we can determine if
+	 *		this occurred because the node does not exist or if nodes were never cached and need to be processed
+	 *		with loadRequestNodes().  This is also used as a hint to branch on RequestClass/RequestID wildcards.
+	 *		RequestClass/ID pairs are documented inline and are covered in supplementary examples.
+	 *
+	 * @throws ErrorException	if definition file cannot be read, has syntax errors, is missing
+	 *							required values or provides invalid values
 	 */
 	protected function loadRequestNodes() {
-		// TODO comment this method
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Processing XML", 'Security' );
+		// Mark entrance into this method so that when debugging we can more accurately trace control flow
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Entered loadRequestNodes()", 'Security' );
 
-		//read the xml onces... global location to do this... it looks like it does this once per request.
-		$this->REQUESTS_XML_LOCATION =
-			eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
+		// Grab the absolute file system path to the Requests.xml we're concerned with.  $this->webapp is set
+		// during construction of this XML2ArrayRequestDefinitionParser singleton.  See eGlooReqeuestDefinitionParser
+		// for details.
+		$requests_xml_path = eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
 
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Loading "
-			. $this->REQUESTS_XML_LOCATION, 'Security' );
+		// Mark that we are now attempting to load the specified Requests.xml
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Loading " . $requests_xml_path, 'Security' );
 
-		$requestXMLObject = simplexml_load_file( $this->REQUESTS_XML_LOCATION );
+		// Attempt to load the specified Requests.xml file
+		$requestXMLObject = simplexml_load_file( $requests_xml_path );
+
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+		// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+		// and do more granulated inspection and cache clearing
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
-		if (!$requestXMLObject) {
+		// If reading the Requests.xml file failed, log the error
+		// TODO determine if we should throw an exception here...
+		if ( !$requestXMLObject ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
-				'XML2ArrayRequestDefinitionParser: simplexml_load_file( "' . $this->REQUESTS_XML_LOCATION . '" ): ' . libxml_get_errors() );
+				'XML2ArrayRequestDefinitionParser: simplexml_load_file( "' . $requests_xml_path . '" ): ' . libxml_get_errors() );
 		}
 
 		$requestClasses = array();
@@ -206,34 +254,57 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$uniqueKey = ((string) $attributeSet['id']);
 			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
 
+			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+			// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+			// and do more granulated inspection and cache clearing
 			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
 				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation', 0, true );
 		}
 
+		// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
+		// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
 		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
 			$this->attributeSets, 'RequestValidation', 0, true );
 
+		// Iterate over the RequestClass nodes so that we can parse each request definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
+			// Grab the ID for this particular RequestClass
 			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
 
+			// If no ID is set for this RequestClass, this is not a valid Requests.xml and we should get out of here
 			if ( !$requestClassID || trim($requestClassID) === '' ) {
 				throw new ErrorException("No ID specified in request class.	 Please review your Requests.xml");
 			}
 
+			// Assign an array to hold this RequestClass node definition.  Associative key is the RequestClass ID
 			$requestClasses[$requestClassID] = array('requestClass' => $requestClassID, 'requests' => array());
 
+			// Iterate over the Request nodes for this RequestClass so that we can parse each request definition
 			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
+				// Grab the ID for this particular Request
 				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
+
+				// Grab the name of the RequestProcessor specified to handle this particular Request
+				// Example:
+				// $requestProcessor = new $processorID();
+				// $requestProcessor->processRequest();
 				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
+
+				// Grab the name of the RequestProcessor specified to handle errors for this particular Request
+				// Example:
+				// $requestProcessor = new $processorID();
+				// $requestProcessor->processErrorRequest();
 				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
 
+				// If no ID is set for this Request, this is not a valid Requests.xml and we should get out of here
 				if ( !$requestID || trim($requestID) === '' ) {
 					throw new ErrorException("No request ID specified in request class: '" . $requestClassID .
 						"'.	 Please review your Requests.xml");
 				}
 
+				// If no RequestProcessor is specified, this is not a valid Requests.xml and we should get out of here
 				if ( !$processorID || trim($processorID) === '' ) {
 					throw new ErrorException("No processor ID specified in request ID: '" . $requestID .
 					"'.	 Please review your Requests.xml");
@@ -507,6 +578,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
 
+				// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+				// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+				// and do more granulated inspection and cache clearing
 				$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
@@ -514,6 +588,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+		// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+		// and do more granulated inspection and cache clearing
 		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
 		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
@@ -521,6 +598,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$requestProcessingCacheRegionHandler->storeObject( 
 			eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
+
+		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Requests.xml successfully processed", 'Security' );
 	}
 
 	/**
@@ -1230,6 +1310,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						// We don't use a complexType here
 						$complexType = null;
+					} else {
+						$complexType = null;
 					}
 
 					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
@@ -1296,6 +1378,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						// TODO enforce scalar type
 
 						// We don't use a complexType here
+						$complexType = null;
+					} else {
 						$complexType = null;
 					}
 
@@ -1367,6 +1451,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						// We don't use a complexType here
 						$complexType = null;
+					} else {
+						$complexType = null;
 					}
 
 					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
@@ -1432,6 +1518,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						// TODO enforce scalar type
 
 						// We don't use a complexType here
+						$complexType = null;
+					} else {
 						$complexType = null;
 					}
 
