@@ -300,8 +300,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 				// Grab the name of the RequestProcessor specified to handle errors for this particular Request
 				// Example:
-				// $requestProcessor = new $processorID();
-				// $requestProcessor->processErrorRequest();
+				// $errorRequestProcessor = new $errorProcessorID();
+				// $errorRequestProcessor->processErrorRequest();
 				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
 
 				// If no ID is set for this Request, this is not a valid Requests.xml and we should get out of here
