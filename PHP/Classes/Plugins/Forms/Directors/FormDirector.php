@@ -74,7 +74,12 @@ final class FormDirector {
 				'FormDirector: simplexml_load_file( "' . $forms_xml_location . '" ): ' . libxml_get_errors() );
 		}
 
-		$forms = array();
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for Form definitions
+		// we can also write some information to the caching system to better keep track of what is cached for the Form processing system
+		// and do more granulated inspection and cache clearing
+		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
+
+		$formNodes = array();
 
 		foreach( $formsXMLObject->xpath( '/tns:Forms/Form' ) as $formNode ) {
 			$formNodeID = isset($formNode['id']) ? (string) $formNode['id'] : NULL;
@@ -176,6 +181,14 @@ final class FormDirector {
 			$appendHTML = null;
 			$cssClasses = null;
 
+			$formLegend = null;
+			$formLegendLocalizationToken = null;
+
+			foreach( $formNode->xpath( 'child::Legend' ) as $legend ) {
+				$formLegend = (string) $legend;
+				$formLegendLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+			}
+
 			foreach( $formNode->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
 				$prependHTML = (string) $childPrependHTMLNode;
 			}
@@ -189,6 +202,8 @@ final class FormDirector {
 			}
 
 			$formNodes[$formNodeID] = array(	'formID' => $formNodeID,
+												'legend' => $formLegend,
+												'legendToken' => $formLegendLocalizationToken,
 												'displayLocalized' => $formNodeDisplayLocalized,
 												'displayLocalizer' => $formNodeDisplayLocalizer,
 												'inputLocalized' => $formNodeInputLocalized,
@@ -217,7 +232,7 @@ final class FormDirector {
 				}
 
 				// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
-				// of the attribute set
+				// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 				//
 				// $formFieldSetNodeDisplayLocalized = isset( $formFieldSet['displayLocalized'] ) ? strtolower( (string) $formFieldSet['displayLocalized'] ) : NULL;
 				// 
@@ -257,11 +272,21 @@ final class FormDirector {
 
 				$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
 
+				$formFieldSetLegend = null;
+				$formFieldSetLegendLocalizationToken = null;
+
+				foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
+					$formFieldSetLegend = (string) $legend;
+					$formFieldSetLegendLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+				}
+
 				$newFormFieldSet = array(	'id' => $formFieldSetID,
 											// 'displayLocalized' => $formFieldSetNodeDisplayLocalized,
 											'validated' => $formFieldSetNodeValidated,
 											'secure' => $formFieldSetNodeSecure,
 											'validator' => $formFieldSetNodeValidator,
+											'legend' => $formFieldSetLegend,
+											'localizationToken' => $formFieldSetLegendLocalizationToken,
 											'formFields' => array()
 										);
 
@@ -283,7 +308,7 @@ final class FormDirector {
 					}
 
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
-					// of the attribute set
+					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
 					// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
 					// 
@@ -301,6 +326,7 @@ final class FormDirector {
 
 					$containerChildren = array();
 
+					// Let's process the children of any FormField that fancies itself a container
 					if ($formFieldType === 'container') {
 						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
 							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
@@ -320,7 +346,7 @@ final class FormDirector {
 							}
 
 							// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
-							// of the attribute set
+							// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 							//
 							// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
 							// 
@@ -343,12 +369,19 @@ final class FormDirector {
 							$childAppendHTML = null;
 							$childCSSClasses = null;
 
+							$childDisplayLabelLocalizationToken = null;
+							$childErrorMessageLocalizationToken = null;
+
 							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 								$childDisplayLabel = (string) $childDisplayLabelNode;
+								$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
+									(string) $childDisplayLabelNode['localizationToken'] : NULL;
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 								$childErrorMessage = (string) $childErrorMessageNode;
+								$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
+									(string) $childErrorMessageNode['localizationToken'] : NULL;
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -371,7 +404,9 @@ final class FormDirector {
 													'type' => $formFieldChildType,
 													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
+													'displayLabelToken' => $childDisplayLabelLocalizationToken,
 													'errorMessage' => $childErrorMessage,
+													'errorMessageToken' => $childErrorMessageLocalizationToken,
 													'errorHandler' => $childErrorHandler,
 													'prependHTML' => $childPrependHTML,
 													'appendHTML' => $childAppendHTML,
@@ -389,12 +424,19 @@ final class FormDirector {
 					$appendHTML = null;
 					$cssClasses = null;
 
+					$displayLabelLocalizationToken = null;
+					$errorMessageLocalizationToken = null;
+
 					foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 						$displayLabel = (string) $displayLabelNode;
+						$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
+							(string) $displayLabelNode['localizationToken'] : NULL;
 					}
 
 					foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 						$errorMessage = (string) $errorMessageNode;
+						$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
+							(string) $errorMessageNode['localizationToken'] : NULL;
 					}
 
 					foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -417,7 +459,9 @@ final class FormDirector {
 											'type' => $formFieldType,
 											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
+											'displayLabelToken' => $displayLabelLocalizationToken,
 											'errorMessage' => $errorMessage,
+											'errorMessageToken' => $errorMessageLocalizationToken,
 											'errorHandler' => $errorHandler,
 											'prependHTML' => $prependHTML,
 											'appendHTML' => $appendHTML,
@@ -460,7 +504,7 @@ final class FormDirector {
 				}
 
 				// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
-				// of the attribute set
+				// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 				//
 				// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
 				// 
@@ -497,7 +541,7 @@ final class FormDirector {
 						}
 
 						// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
-						// of the attribute set
+						// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 						//
 						// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
 						// 
@@ -520,12 +564,19 @@ final class FormDirector {
 						$childAppendHTML = null;
 						$childCSSClasses = null;
 
+						$childDisplayLabelLocalizationToken = null;
+						$childErrorMessageLocalizationToken = null;
+
 						foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 							$childDisplayLabel = (string) $childDisplayLabelNode;
+							$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
+								(string) $childDisplayLabelNode['localizationToken'] : NULL;
 						}
 
 						foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 							$childErrorMessage = (string) $childErrorMessageNode;
+							$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
+								(string) $childErrorMessageNode['localizationToken'] : NULL;
 						}
 
 						foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -548,7 +599,9 @@ final class FormDirector {
 												'type' => $formFieldChildType,
 												// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 												'displayLabel' => $childDisplayLabel,
+												'displayLabelToken' => $childDisplayLabelLocalizationToken,
 												'errorMessage' => $childErrorMessage,
+												'errorMessageToken' => $childErrorMessageLocalizationToken,
 												'errorHandler' => $childErrorHandler,
 												'prependHTML' => $childPrependHTML,
 												'appendHTML' => $childAppendHTML,
@@ -566,12 +619,19 @@ final class FormDirector {
 				$appendHTML = null;
 				$cssClasses = null;
 
+				$displayLabelLocalizationToken = null;
+				$errorMessageLocalizationToken = null;
+
 				foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 					$displayLabel = (string) $displayLabelNode;
+					$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
+						(string) $displayLabelNode['localizationToken'] : NULL;
 				}
 
 				foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 					$errorMessage = (string) $errorMessageNode;
+					$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
+						(string) $errorMessageNode['localizationToken'] : NULL;
 				}
 
 				foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -594,7 +654,9 @@ final class FormDirector {
 										'type' => $formFieldType,
 										// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 										'displayLabel' => $displayLabel,
+										'displayLabelToken' => $displayLabelLocalizationToken,
 										'errorMessage' => $errorMessage,
+										'errorMessageToken' => $errorMessageLocalizationToken,
 										'errorHandler' => $errorHandler,
 										'prependHTML' => $prependHTML,
 										'appendHTML' => $appendHTML,
@@ -608,15 +670,19 @@ final class FormDirector {
 				$formNodes[$formNodeID]['formFields'][$formFieldID] = $newFormField;
 			}
 
-			$this->_formNodes = $formNodes;
+			$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes::' . $formNodeID,
+				$formNodes[$formNodeID], 'Dispatching', 0, true );
+			;
 		}
 
-		die_r($this->_formNodes);
+		die_r($formNodes);
 
-		// $dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-		// 
-		// $dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes',
-		// 	$this->_formNodes, 'Dispatching', 0, true );
+		$this->_formNodes = $formNodes;
+
+		// TODO implement FormAttributeSets for hot
+
+		$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes',
+			$this->_formNodes, 'Dispatching', 0, true );
 	}
 
 	private function loadFormFieldNodeDefinition() {
@@ -627,6 +693,30 @@ final class FormDirector {
 		$retVal = null;
 
 		$formNode = $this->getFormNodeDefinition( $form_name );
+
+		$newFormObj = null;
+
+		if ( isset($formNode['secure']) && $formNode['secure'] ) {
+			$newFormObj = new SecureForm();
+		} else if ( isset($formNode['validated']) && $formNode['validated'] ) {
+			$newFormObj = new ValidatedForm();
+		} else {
+			$newFormObj = new SecureForm();
+		}
+
+		foreach( $formNode['formFieldSets'] as $formFieldSet ) {
+			$newFormFieldSetObj = null;
+
+			if ( isset($formFieldSet['secure']) && $formFieldSet['secure'] ) {
+				// $newFormFieldSetObj = new SecureFormFieldSet( $formFieldSet['id'], );
+			} else if ( isset($formFieldSet['validated']) && $formFieldSet['validated'] ) {
+				// $newFormFieldSetObj = new ValidatedFormFieldSet( $formFieldSet['id'], );
+			} else {
+				// $newFormFieldSetObj = new FormFieldSet( $formFieldSet['id'], );
+			}
+
+			// $newFormObj->addFormFieldSet( $formFieldSet['id'])
+		}
 
 		return $retVal;
 	}
@@ -651,6 +741,8 @@ final class FormDirector {
 
 		// TODO valid / decrypt form
 
+		$formNode = $retVal;
+
 		return $retVal;
 	}
 
@@ -674,7 +766,7 @@ final class FormDirector {
 
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes';
-		
+
 		if ( ($this->_formNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'Dispatching', true ) ) == null ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: Form Definition Nodes pulled from cache" );
 			$this->loadFormDirectors();
