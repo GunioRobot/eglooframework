@@ -83,16 +83,39 @@ final class FormDirector {
 				throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
 			}
 
-			$formNodeLocalized = isset( $formNode['localized'] ) ? strtolower( (string) $formNode['localized'] ) : NULL;
+			$formNodeDisplayLocalized = isset( $formNode['displayLocalized'] ) ? strtolower( (string) $formNode['displayLocalized'] ) : NULL;
+			$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? strtolower( (string) $formNode['displayLocalizer'] ) : NULL;
 
-			if ( !$formNodeLocalized || trim($formNodeLocalized) === '' ) {
-				throw new ErrorException('No localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
-			} else if ($formNodeLocalized === 'true') {
-				$formNodeLocalized = true;
-			} else if ($formNodeLocalized === 'false') {
-				$formNodeLocalized = false;
+			if ( !$formNodeDisplayLocalized || trim($formNodeDisplayLocalized) === '' ) {
+				throw new ErrorException('No display localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			} else if ($formNodeDisplayLocalized === 'true') {
+				$formNodeDisplayLocalized = true;
+			} else if ($formNodeDisplayLocalized === 'false') {
+				$formNodeDisplayLocalized = false;
 			} else {
-				throw new ErrorException('Invalid localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+				throw new ErrorException('Invalid display localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			}
+
+			// NOTE: If no DisplayLocalizer is specified, token replacement is based on DisplayLabels in Forms.xml
+			// If no alternate DisplayLabel for a localization exists, the default is returned
+
+			$formNodeInputLocalized = isset( $formNode['inputLocalized'] ) ? strtolower( (string) $formNode['inputLocalized'] ) : NULL;
+
+			if ( !$formNodeInputLocalized || trim($formNodeInputLocalized) === '' ) {
+				throw new ErrorException('No input localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			} else if ($formNodeInputLocalized === 'true') {
+				$formNodeInputLocalized = true;
+			} else if ($formNodeInputLocalized === 'false') {
+				$formNodeInputLocalized = false;
+			} else {
+				throw new ErrorException('Invalid input localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			}
+
+			$formNodeInputLocalizer = isset( $formNode['inputLocalizer'] ) ? strtolower( (string) $formNode['inputLocalizer'] ) : NULL;
+
+			// NOTE: If the Form states it needs InputLocalization support, but doesn't specify an InputLocalizer, it's in error
+			if ( $formNodeDisplayLocalized && (!$formNodeInputLocalizer || trim($formNodeInputLocalizer) === '') ) {
+				throw new ErrorException('No input localizer specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
 			$formNodeValidated = isset( $formNode['validated'] ) ? strtolower( (string) $formNode['validated'] ) : NULL;
@@ -150,7 +173,10 @@ final class FormDirector {
 			}
 
 			$formNodes[$formNodeID] = array(	'formID' => $formNodeID,
-												'localized' => $formNodeLocalized,
+												'displayLocalized' => $formNodeDisplayLocalized,
+												'displayLocalizer' => $formNodeDisplayLocalizer,
+												'inputLocalized' => $formNodeInputLocalized,
+												'inputLocalizer' => $formNodeInputLocalizer,
 												'validated' => $formNodeValidated,
 												'secure' => $formNodeSecure,
 												'DAO' => $formNodeDAO,
@@ -171,17 +197,20 @@ final class FormDirector {
 						"'.	 Please review your Forms.xml");
 				}
 
-				$formFieldSetNodeLocalized = isset( $formFieldSet['localized'] ) ? strtolower( (string) $formFieldSet['localized'] ) : NULL;
-
-				if ( !$formFieldSetNodeLocalized || trim($formFieldSetNodeLocalized) === '' ) {
-					throw new ErrorException('No localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
-				} else if ($formFieldSetNodeLocalized === 'true') {
-					$formFieldSetNodeLocalized = true;
-				} else if ($formFieldSetNodeLocalized === 'false') {
-					$formFieldSetNodeLocalized = false;
-				} else {
-					throw new ErrorException('Invalid localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
-				}
+				// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
+				// of the attribute set
+				//
+				// $formFieldSetNodeDisplayLocalized = isset( $formFieldSet['displayLocalized'] ) ? strtolower( (string) $formFieldSet['displayLocalized'] ) : NULL;
+				// 
+				// if ( !$formFieldSetNodeDisplayLocalized || trim($formFieldSetNodeDisplayLocalized) === '' ) {
+				// 	throw new ErrorException('No localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
+				// } else if ($formFieldSetNodeDisplayLocalized === 'true') {
+				// 	$formFieldSetNodeDisplayLocalized = true;
+				// } else if ($formFieldSetNodeDisplayLocalized === 'false') {
+				// 	$formFieldSetNodeDisplayLocalized = false;
+				// } else {
+				// 	throw new ErrorException('Invalid localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
+				// }
 
 				$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : NULL;
 
@@ -210,7 +239,7 @@ final class FormDirector {
 				$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
 
 				$newFormFieldSet = array(	'id' => $formFieldSetID,
-											'localized' => $formFieldSetNodeLocalized,
+											// 'displayLocalized' => $formFieldSetNodeDisplayLocalized,
 											'validated' => $formFieldSetNodeValidated,
 											'secure' => $formFieldSetNodeSecure,
 											'validator' => $formFieldSetNodeValidator,
@@ -234,19 +263,22 @@ final class FormDirector {
 							'\'.	 Please review your Forms.xml');
 					}
 
-					$formFieldNodeLocalized = isset( $formField['localized'] ) ? strtolower( (string) $formField['localized'] ) : NULL;
-
-					if ($formFieldNodeLocalized === 'true') {
-						$formFieldNodeLocalized = true;
-					} else if ($formFieldNodeLocalized === 'false') {
-						$formFieldNodeLocalized = false;
-					} else if ($formFieldType === 'hidden') {
-						$formFieldNodeLocalized = false;
-					} else if (isset($formFieldSetNodeLocalized)) {
-						$formFieldNodeLocalized = $formFieldSetNodeLocalized;
-					} else {
-						$formFieldNodeLocalized = false;
-					}
+					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
+					// of the attribute set
+					//
+					// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
+					// 
+					// if ($formFieldNodeDisplayLocalized === 'true') {
+					// 	$formFieldNodeDisplayLocalized = true;
+					// } else if ($formFieldNodeDisplayLocalized === 'false') {
+					// 	$formFieldNodeDisplayLocalized = false;
+					// } else if ($formFieldType === 'hidden') {
+					// 	$formFieldNodeDisplayLocalized = false;
+					// } else if (isset($formFieldSetNodeDisplayLocalized)) {
+					// 	$formFieldNodeDisplayLocalized = $formFieldSetNodeDisplayLocalized;
+					// } else {
+					// 	$formFieldNodeDisplayLocalized = false;
+					// }
 
 					$containerChildren = array();
 
@@ -268,19 +300,22 @@ final class FormDirector {
 								throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
 							}
 
-							$formFieldChildNodeLocalized = isset( $formFieldChild['localized'] ) ? strtolower( (string) $formFieldChild['localized'] ) : NULL;
-
-							if ($formFieldChildNodeLocalized === 'true') {
-								$formFieldChildNodeLocalized = true;
-							} else if ($formFieldChildNodeLocalized === 'false') {
-								$formFieldChildNodeLocalized = false;
-							} else if ($formFieldChildNodeLocalized === 'hidden') {
-								$formFieldChildNodeLocalized = false;
-							} else if (isset($formFieldNodeLocalized)) {
-								$formFieldChildNodeLocalized = $formFieldNodeLocalized;
-							} else {
-								$formFieldChildNodeLocalized = false;
-							}
+							// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
+							// of the attribute set
+							//
+							// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
+							// 
+							// if ($formFieldChildNodeDisplayLocalized === 'true') {
+							// 	$formFieldChildNodeDisplayLocalized = true;
+							// } else if ($formFieldChildNodeDisplayLocalized === 'false') {
+							// 	$formFieldChildNodeDisplayLocalized = false;
+							// } else if ($formFieldChildNodeDisplayLocalized === 'hidden') {
+							// 	$formFieldChildNodeDisplayLocalized = false;
+							// } else if (isset($formFieldNodeDisplayLocalized)) {
+							// 	$formFieldChildNodeDisplayLocalized = $formFieldNodeDisplayLocalized;
+							// } else {
+							// 	$formFieldChildNodeDisplayLocalized = false;
+							// }
 
 							$childDisplayLabel = null;
 							$childErrorMessage = null;
@@ -300,7 +335,7 @@ final class FormDirector {
 
 							$newChildFormField = array(	'id' => $formFieldChildID,
 													'type' => $formFieldChildType,
-													'localized' => $formFieldChildNodeLocalized,
+													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
 													'errorMessage' => $childErrorMessage,
 													'errorHandler' => $childErrorHandler,
@@ -328,7 +363,7 @@ final class FormDirector {
 
 					$newFormField = array(	'id' => $formFieldID,
 											'type' => $formFieldType,
-											'localized' => $formFieldNodeLocalized,
+											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
 											'errorMessage' => $errorMessage,
 											'errorHandler' => $errorHandler,
