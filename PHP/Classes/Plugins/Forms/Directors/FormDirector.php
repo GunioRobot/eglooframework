@@ -84,7 +84,7 @@ final class FormDirector {
 			}
 
 			$formNodeDisplayLocalized = isset( $formNode['displayLocalized'] ) ? strtolower( (string) $formNode['displayLocalized'] ) : NULL;
-			$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? strtolower( (string) $formNode['displayLocalizer'] ) : NULL;
+			$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? (string) $formNode['displayLocalizer'] : NULL;
 
 			if ( !$formNodeDisplayLocalized || trim($formNodeDisplayLocalized) === '' ) {
 				throw new ErrorException('No display localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -111,7 +111,7 @@ final class FormDirector {
 				throw new ErrorException('Invalid input localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
-			$formNodeInputLocalizer = isset( $formNode['inputLocalizer'] ) ? strtolower( (string) $formNode['inputLocalizer'] ) : NULL;
+			$formNodeInputLocalizer = isset( $formNode['inputLocalizer'] ) ? (string) $formNode['inputLocalizer'] : NULL;
 
 			// NOTE: If the Form states it needs InputLocalization support, but doesn't specify an InputLocalizer, it's in error
 			if ( $formNodeDisplayLocalized && (!$formNodeInputLocalizer || trim($formNodeInputLocalizer) === '') ) {
@@ -172,6 +172,22 @@ final class FormDirector {
 				throw new ErrorException('No display formatter specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
+			$prependHTML = null;
+			$appendHTML = null;
+			$cssClasses = null;
+
+			foreach( $formNode->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
+				$prependHTML = (string) $childPrependHTMLNode;
+			}
+
+			foreach( $formNode->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
+				$appendHTML = (string) $childAppendHTMLNode;
+			}
+
+			foreach( $formNode->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
+				$cssClasses = (string) $childCSSClassesNode;
+			}
+
 			$formNodes[$formNodeID] = array(	'formID' => $formNodeID,
 												'displayLocalized' => $formNodeDisplayLocalized,
 												'displayLocalizer' => $formNodeDisplayLocalizer,
@@ -186,7 +202,10 @@ final class FormDirector {
 												'displayFormatter' => $formNodeDisplayFormatter,
 												'formFieldSets' => array(),
 												'formFields' => array(),
-												'CRUDInfo' => array()
+												'CRUDInfo' => array(),
+												'prependHTML' => $prependHTML,
+												'appendHTML' => $appendHTML,
+												'cssClasses' => $cssClasses,
 											);
 
 			foreach( $formNode->xpath( 'child::FormFieldSet' ) as $formFieldSet ) {
@@ -320,6 +339,9 @@ final class FormDirector {
 							$childDisplayLabel = null;
 							$childErrorMessage = null;
 							$childErrorHandler = null;
+							$childPrependHTML = null;
+							$childAppendHTML = null;
+							$childCSSClasses = null;
 
 							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 								$childDisplayLabel = (string) $childDisplayLabelNode;
@@ -333,12 +355,27 @@ final class FormDirector {
 								$childErrorHandler = (string) $childErrorHandlerNode;
 							}
 
+							foreach( $formFieldChild->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
+								$childPrependHTML = (string) $childPrependHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
+								$childAppendHTML = (string) $childAppendHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
+								$childCSSClasses = (string) $childCSSClassesNode;
+							}
+
 							$newChildFormField = array(	'id' => $formFieldChildID,
 													'type' => $formFieldChildType,
 													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
 													'errorMessage' => $childErrorMessage,
 													'errorHandler' => $childErrorHandler,
+													'prependHTML' => $childPrependHTML,
+													'appendHTML' => $childAppendHTML,
+													'cssClasses' => $childCSSClasses,
 												);
 
 							$containerChildren[$formFieldChildID] = $newChildFormField;
@@ -348,6 +385,9 @@ final class FormDirector {
 					$displayLabel = null;
 					$errorMessage = null;
 					$errorHandler = null;
+					$prependHTML = null;
+					$appendHTML = null;
+					$cssClasses = null;
 
 					foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 						$displayLabel = (string) $displayLabelNode;
@@ -361,12 +401,27 @@ final class FormDirector {
 						$errorHandler = (string) $errorHandlerNode;
 					}
 
+					foreach( $formField->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
+						$prependHTML = (string) $childPrependHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
+						$appendHTML = (string) $childAppendHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
+						$cssClasses = (string) $childCSSClassesNode;
+					}
+
 					$newFormField = array(	'id' => $formFieldID,
 											'type' => $formFieldType,
 											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
 											'errorMessage' => $errorMessage,
 											'errorHandler' => $errorHandler,
+											'prependHTML' => $prependHTML,
+											'appendHTML' => $appendHTML,
+											'cssClasses' => $cssClasses,
 										);
 
 					if (!empty($containerChildren)) {
@@ -378,6 +433,179 @@ final class FormDirector {
 				
 				$newFormFieldSet['formFields'] = $formFieldSetFormFields;
 				$formNodes[$formNodeID]['formFieldSets'][$formFieldSetID] = $newFormFieldSet;
+			}
+/////////
+
+
+
+
+
+
+
+
+
+			foreach( $formNode->xpath( 'child::FormField' ) as $formField ) {
+				$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
+
+				if ( !$formFieldID || trim($formFieldID) === '' ) {
+					throw new ErrorException("No FormField ID specified in FormField: '" . $formField .
+						"'.	 Please review your Forms.xml");
+				}
+
+				$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
+
+				if ( !$formFieldType || trim($formFieldType) === '' ) {
+					throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
+						'\'.	 Please review your Forms.xml');
+				}
+
+				// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
+				// of the attribute set
+				//
+				// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
+				// 
+				// if ($formFieldNodeDisplayLocalized === 'true') {
+				// 	$formFieldNodeDisplayLocalized = true;
+				// } else if ($formFieldNodeDisplayLocalized === 'false') {
+				// 	$formFieldNodeDisplayLocalized = false;
+				// } else if ($formFieldType === 'hidden') {
+				// 	$formFieldNodeDisplayLocalized = false;
+				// } else if (isset($formFieldSetNodeDisplayLocalized)) {
+				// 	$formFieldNodeDisplayLocalized = $formFieldSetNodeDisplayLocalized;
+				// } else {
+				// 	$formFieldNodeDisplayLocalized = false;
+				// }
+
+				$containerChildren = array();
+
+				if ($formFieldType === 'container') {
+					foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
+						$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+
+						if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
+							throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
+								'\'.	 Please review your Forms.xml');
+						}
+
+						$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
+
+						if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
+							throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
+								"'.	 Please review your Forms.xml");
+						} else if ($formFieldChildType === 'container') {
+							throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+						}
+
+						// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
+						// of the attribute set
+						//
+						// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
+						// 
+						// if ($formFieldChildNodeDisplayLocalized === 'true') {
+						// 	$formFieldChildNodeDisplayLocalized = true;
+						// } else if ($formFieldChildNodeDisplayLocalized === 'false') {
+						// 	$formFieldChildNodeDisplayLocalized = false;
+						// } else if ($formFieldChildNodeDisplayLocalized === 'hidden') {
+						// 	$formFieldChildNodeDisplayLocalized = false;
+						// } else if (isset($formFieldNodeDisplayLocalized)) {
+						// 	$formFieldChildNodeDisplayLocalized = $formFieldNodeDisplayLocalized;
+						// } else {
+						// 	$formFieldChildNodeDisplayLocalized = false;
+						// }
+
+						$childDisplayLabel = null;
+						$childErrorMessage = null;
+						$childErrorHandler = null;
+						$childPrependHTML = null;
+						$childAppendHTML = null;
+						$childCSSClasses = null;
+
+						foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
+							$childDisplayLabel = (string) $childDisplayLabelNode;
+						}
+
+						foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
+							$childErrorMessage = (string) $childErrorMessageNode;
+						}
+
+						foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
+							$childErrorHandler = (string) $childErrorHandlerNode;
+						}
+
+						foreach( $formFieldChild->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
+							$childPrependHTML = (string) $childPrependHTMLNode;
+						}
+
+						foreach( $formFieldChild->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
+							$childAppendHTML = (string) $childAppendHTMLNode;
+						}
+
+						foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
+							$childCSSClasses = (string) $childCSSClassesNode;
+						}
+
+						$newChildFormField = array(	'id' => $formFieldChildID,
+												'type' => $formFieldChildType,
+												// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
+												'displayLabel' => $childDisplayLabel,
+												'errorMessage' => $childErrorMessage,
+												'errorHandler' => $childErrorHandler,
+												'prependHTML' => $childPrependHTML,
+												'appendHTML' => $childAppendHTML,
+												'cssClasses' => $childCSSClasses,
+											);
+
+						$containerChildren[$formFieldChildID] = $newChildFormField;
+					}
+				}
+
+				$displayLabel = null;
+				$errorMessage = null;
+				$errorHandler = null;
+				$prependHTML = null;
+				$appendHTML = null;
+				$cssClasses = null;
+
+				foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
+					$displayLabel = (string) $displayLabelNode;
+				}
+
+				foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
+					$errorMessage = (string) $errorMessageNode;
+				}
+
+				foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
+					$errorHandler = (string) $errorHandlerNode;
+				}
+
+				foreach( $formField->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
+					$prependHTML = (string) $childPrependHTMLNode;
+				}
+
+				foreach( $formField->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
+					$appendHTML = (string) $childAppendHTMLNode;
+				}
+
+				foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
+					$cssClasses = (string) $childCSSClassesNode;
+				}
+
+				$newFormField = array(	'id' => $formFieldID,
+										'type' => $formFieldType,
+										// 'displayLocalized' => $formFieldNodeDisplayLocalized,
+										'displayLabel' => $displayLabel,
+										'errorMessage' => $errorMessage,
+										'errorHandler' => $errorHandler,
+										'prependHTML' => $prependHTML,
+										'appendHTML' => $appendHTML,
+										'cssClasses' => $cssClasses,
+									);
+
+				if (!empty($containerChildren)) {
+					$newFormField['children'] = $containerChildren;
+				}
+
+				$formNodes[$formNodeID]['formFields'][$formFieldID] = $newFormField;
 			}
 
 			$this->_formNodes = $formNodes;
