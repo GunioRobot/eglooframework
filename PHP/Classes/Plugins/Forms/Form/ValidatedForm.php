@@ -46,13 +46,13 @@ class ValidatedForm extends Form {
 
 		foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
 			if ( !$formFieldSet->validate() ) {
-				$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors()
+				$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors();
 			}
 		}
 
 		foreach( $this->_formFields as $formFieldID => $formField ) {
 			if ( !$formField->validate() ) {
-				$this->_formErrors[$formFieldID] = $formField->getErrors()
+				$this->_formErrors[$formFieldID] = $formField->getErrors();
 			}
 		}
 

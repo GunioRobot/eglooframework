@@ -186,7 +186,7 @@ final class FormDirector {
 
 			foreach( $formNode->xpath( 'child::Legend' ) as $legend ) {
 				$formLegend = (string) $legend;
-				$formLegendLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+				$formLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
 			}
 
 			foreach( $formNode->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
@@ -277,7 +277,7 @@ final class FormDirector {
 
 				foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
 					$formFieldSetLegend = (string) $legend;
-					$formFieldSetLegendLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+					$formFieldSetLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
 				}
 
 				$newFormFieldSet = array(	'id' => $formFieldSetID,
@@ -286,7 +286,7 @@ final class FormDirector {
 											'secure' => $formFieldSetNodeSecure,
 											'validator' => $formFieldSetNodeValidator,
 											'legend' => $formFieldSetLegend,
-											'localizationToken' => $formFieldSetLegendLocalizationToken,
+											'legendToken' => $formFieldSetLegendLocalizationToken,
 											'formFields' => array()
 										);
 
@@ -675,8 +675,6 @@ final class FormDirector {
 			;
 		}
 
-		die_r($formNodes);
-
 		$this->_formNodes = $formNodes;
 
 		// TODO implement FormAttributeSets for hot
@@ -697,27 +695,130 @@ final class FormDirector {
 		$newFormObj = null;
 
 		if ( isset($formNode['secure']) && $formNode['secure'] ) {
-			$newFormObj = new SecureForm();
+			$newFormObj = new SecureForm( $formNode['formID'] );
 		} else if ( isset($formNode['validated']) && $formNode['validated'] ) {
-			$newFormObj = new ValidatedForm();
+			$newFormObj = new ValidatedForm( $formNode['formID'] );
+			$newFormObj->setValidator( $formNode['validator'] );
 		} else {
-			$newFormObj = new SecureForm();
+			$newFormObj = new SecureForm( $formNode['formID'] );
 		}
+
+		// TODO "valid for" length of time in validation
+		// Not just checksum
+		$newFormObj->setDataFormatter( $formNode['dataFormatter'] );
+		$newFormObj->setDisplayFormatter( $formNode['displayFormatter'] );
+
+		$newFormObj->setDisplayLocalized( $formNode['displayLocalized'] );
+		$newFormObj->setDisplayLocalizer( $formNode['displayLocalizer'] );
+
+		$newFormObj->setInputLocalized( $formNode['inputLocalized'] );
+		$newFormObj->setInputLocalizer( $formNode['inputLocalizer'] );
+
+		$newFormObj->setAppendHTML( $formNode['appendHTML'] );
+		$newFormObj->setPrependHTML( $formNode['prependHTML'] );
+		$newFormObj->setCSSClasses( $formNode['cssClasses']);
+
+		$newFormObj->setFormLegend( $formNode['legend'] );
+		$newFormObj->setFormLegendToken( $formNode['legendToken'] );
+
+		$newFormObj->setFormDAO( $formNode['DAO'] );
+		$newFormObj->setFormDTO( $formNode['DTO'] );
 
 		foreach( $formNode['formFieldSets'] as $formFieldSet ) {
 			$newFormFieldSetObj = null;
 
 			if ( isset($formFieldSet['secure']) && $formFieldSet['secure'] ) {
-				// $newFormFieldSetObj = new SecureFormFieldSet( $formFieldSet['id'], );
+				$newFormFieldSetObj = new SecureFormFieldSet( $formFieldSet['id'] );
 			} else if ( isset($formFieldSet['validated']) && $formFieldSet['validated'] ) {
-				// $newFormFieldSetObj = new ValidatedFormFieldSet( $formFieldSet['id'], );
+				$newFormFieldSetObj = new ValidatedFormFieldSet( $formFieldSet['id'] );
+
+				// If this FormFieldSet has its own validator, attach it.  The Form validator
+				// gets invoked regardless
+				if ( isset($formFieldSet['validator']) ) {
+					$newFormFieldSetObj->setValidator( $formFieldSet['validator'] );
+				}
 			} else {
-				// $newFormFieldSetObj = new FormFieldSet( $formFieldSet['id'], );
+				$newFormFieldSetObj = new FormFieldSet( $formFieldSet['id'] );
 			}
 
-			// $newFormObj->addFormFieldSet( $formFieldSet['id'])
+			if ( isset($formFieldSet['legend']) ) {
+				$newFormFieldSetObj->setLegend( $formFieldSet['legend'] );
+			}
+
+			if ( isset($formFieldSet['legendToken']) ) {
+				$newFormFieldSetObj->setLegendToken( $formFieldSet['legendToken'] );
+			}
+
+			foreach( $formFieldSet['formFields'] as $formField ) {
+				/*
+				[id] => address_id
+                [type] => hidden
+                [displayLabel] => 
+                [displayLabelToken] => 
+                [errorMessage] => 
+                [errorMessageToken] => address_attention
+                [errorHandler] => FormErrorHandler
+                [prependHTML] => 
+                [appendHTML] => 
+                [cssClasses] => egloo-form-field
+				*/
+				
+				// If container... child has:
+				
+				/*
+				[children] => Array
+                    (
+                        [address_line_one] => Array
+                            (
+                                [id] => address_line_one
+                                [type] => text
+                                [displayLabel] => Address 1
+                                [displayLabelToken] => address_line_one
+                                [errorMessage] => Please enter a valid address
+                                [errorMessageToken] => address_line_one_error
+                                [errorHandler] => 
+                                [prependHTML] => 
+                                [appendHTML] => 
+                                [cssClasses] => egloo-form-field
+                            )
+				*/
+			}
+
+			$newFormObj->addFormFieldSet( $formFieldSet['id'], $newFormFieldSetObj );
 		}
 
+		foreach( $formNode['formFields'] as $formField ) {
+			$newFormFieldObj = null;
+
+			if ( isset($formField['secure']) && $formField['secure'] ) {
+				$newFormFieldObj = new SecureFormField( $formField['id'] );
+			} else if ( isset($formField['validated']) && $formField['validated'] ) {
+				$newFormFieldObj = new ValidatedFormField( $formField['id'] );
+			} else {
+				$newFormFieldObj = new FormField( $formField['id'] );
+			}
+
+			/*
+			[submit] => Array
+                (
+                    [id] => submit
+                    [type] => submit
+                    [displayLabel] => Submit
+                    [displayLabelToken] => submit
+                    [errorMessage] => Please enter a valid password
+                    [errorMessageToken] => submit_error
+                    [errorHandler] => 
+                    [prependHTML] => 
+                    [appendHTML] => 
+                    [cssClasses] => egloo-form-field
+                )
+			*/
+			$newFormObj->addFormField( $formField['id'], $newFormFieldObj );
+		}
+
+		$retVal = $newFormObj;
+		echo_r($retVal);
+		die_r($formNode);
 		return $retVal;
 	}
 

@@ -40,6 +40,7 @@ class FormFieldSet {
 
 	protected $_formFieldSetID = null;
 	protected $_formFieldSetLegend = null;
+	protected $_formFieldSetLegendToken = null;
 
 	protected $_formFieldSetDefinition = null;
 
@@ -81,14 +82,6 @@ class FormFieldSet {
 	public function removeChildFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
 		unset($this->_formFieldChildData[$child_form_field_id]);
-	}
-
-	public function getLegend() {
-		return $this->_formFieldSetLegend;
-	}
-
-	public function setLegend( $formFieldSetLegend ) {
-		$this->_formFieldSetLegend = $formFieldSetLegend;
 	}
 
 	public function getChildErrors() {
@@ -135,6 +128,23 @@ class FormFieldSet {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+	}
+
+	// Legend
+	public function getLegend() {
+		return $this->_formFieldSetLegend;
+	}
+
+	public function setLegend( $formFieldSetLegend ) {
+		$this->_formFieldSetLegend = $formFieldSetLegend;
+	}
+
+	public function getLegendToken() {
+		return $this->_formFieldSetLegendToken;
+	}
+
+	public function setLegendToken( $formFieldSetLegendToken ) {
+		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
 	}
 
 	public function __destruct() {
