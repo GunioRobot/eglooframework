@@ -57,31 +57,31 @@ class FormFieldSet {
 		$this->_formFieldSetLegend = $formFieldSetLegend;
 	}
 
-	public function addChildFormField( $child_form_field_id, $formField ) {
+	public function addFormField( $child_form_field_id, $formField ) {
 		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
 			$this->_formFieldChildren[$child_form_field_id] = $formField;
-			$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+			// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
 		}
 	}
 
-	public function getChildFormField( $child_form_field_id ) {
+	public function getFormField( $child_form_field_id ) {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
 	
-	public function getChildFormFieldData( $child_form_field_id ) {
+	public function getFormFieldData( $child_form_field_id ) {
 		return $this->_formFieldChildData[$child_form_field_id];
 	}
 
-	public function setChildFormField( $child_form_field_id, $formField ) {
+	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
-		$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+		// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
 	}
 
-	public function removeChildFormField( $child_form_field_id ) {
+	public function removeFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
-		unset($this->_formFieldChildData[$child_form_field_id]);
+		// unset($this->_formFieldChildData[$child_form_field_id]);
 	}
 
 	public function getChildErrors() {

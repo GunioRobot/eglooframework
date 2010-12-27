@@ -750,38 +750,53 @@ final class FormDirector {
 			}
 
 			foreach( $formFieldSet['formFields'] as $formField ) {
-				/*
-				[id] => address_id
-                [type] => hidden
-                [displayLabel] => 
-                [displayLabelToken] => 
-                [errorMessage] => 
-                [errorMessageToken] => address_attention
-                [errorHandler] => FormErrorHandler
-                [prependHTML] => 
-                [appendHTML] => 
-                [cssClasses] => egloo-form-field
-				*/
-				
-				// If container... child has:
-				
-				/*
-				[children] => Array
-                    (
-                        [address_line_one] => Array
-                            (
-                                [id] => address_line_one
-                                [type] => text
-                                [displayLabel] => Address 1
-                                [displayLabelToken] => address_line_one
-                                [errorMessage] => Please enter a valid address
-                                [errorMessageToken] => address_line_one_error
-                                [errorHandler] => 
-                                [prependHTML] => 
-                                [appendHTML] => 
-                                [cssClasses] => egloo-form-field
-                            )
-				*/
+				$newFormFieldObj = null;
+
+				if ( isset($formField['secure']) && $formField['secure'] ) {
+					$newFormFieldObj = new SecureFormField( $formField['id'] );
+				} else if ( isset($formField['validated']) && $formField['validated'] ) {
+					$newFormFieldObj = new ValidatedFormField( $formField['id'] );
+				} else {
+					$newFormFieldObj = new FormField( $formField['id'] );
+				}
+
+				$newFormFieldObj->setFormFieldType( $formField['type'] );
+				$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
+				$newFormFieldObj->setDisplayLabelToken( $formField['displayLabelToken'] );
+				$newFormFieldObj->setErrorMessage( $formField['errorMessage'] );
+				$newFormFieldObj->setErrorMessageToken( $formField['errorMessageToken'] );
+				$newFormFieldObj->setErrorHandler( $formField['errorHandler'] );
+				$newFormFieldObj->setPrependHTML( $formField['prependHTML'] );
+				$newFormFieldObj->setAppendHTML( $formField['appendHTML'] );
+				$newFormFieldObj->setCSSClasses( $formField['cssClasses'] );
+
+				if ( $formField['type'] === 'container' ) {
+					foreach( $formField['children'] as $containerChild ) {
+						$newChildFormFieldObj = null;
+
+						if ( isset($containerChild['secure']) && $containerChild['secure'] ) {
+							$newChildFormFieldObj = new SecureFormField( $containerChild['id'] );
+						} else if ( isset($containerChild['validated']) && $containerChild['validated'] ) {
+							$newChildFormFieldObj = new ValidatedFormField( $containerChild['id'] );
+						} else {
+							$newChildFormFieldObj = new FormField( $containerChild['id'] );
+						}
+
+						$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+						$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
+						$newChildFormFieldObj->setDisplayLabelToken( $containerChild['displayLabelToken'] );
+						$newChildFormFieldObj->setErrorMessage( $containerChild['errorMessage'] );
+						$newChildFormFieldObj->setErrorMessageToken( $containerChild['errorMessageToken'] );
+						$newChildFormFieldObj->setErrorHandler( $containerChild['errorHandler'] );
+						$newChildFormFieldObj->setPrependHTML( $containerChild['prependHTML'] );
+						$newChildFormFieldObj->setAppendHTML( $containerChild['appendHTML'] );
+						$newChildFormFieldObj->setCSSClasses( $containerChild['cssClasses'] );
+
+						$newFormFieldObj->addFormField( $containerChild['id'], $newChildFormFieldObj );
+					}
+				}
+
+				$newFormFieldSetObj->addFormField( $formField['id'], $newFormFieldObj );
 			}
 
 			$newFormObj->addFormFieldSet( $formFieldSet['id'], $newFormFieldSetObj );
@@ -798,21 +813,52 @@ final class FormDirector {
 				$newFormFieldObj = new FormField( $formField['id'] );
 			}
 
-			/*
-			[submit] => Array
-                (
-                    [id] => submit
-                    [type] => submit
-                    [displayLabel] => Submit
-                    [displayLabelToken] => submit
-                    [errorMessage] => Please enter a valid password
-                    [errorMessageToken] => submit_error
-                    [errorHandler] => 
-                    [prependHTML] => 
-                    [appendHTML] => 
-                    [cssClasses] => egloo-form-field
-                )
-			*/
+			$newFormFieldObj = null;
+
+			if ( isset($formField['secure']) && $formField['secure'] ) {
+				$newFormFieldObj = new SecureFormField( $formField['id'] );
+			} else if ( isset($formField['validated']) && $formField['validated'] ) {
+				$newFormFieldObj = new ValidatedFormField( $formField['id'] );
+			} else {
+				$newFormFieldObj = new FormField( $formField['id'] );
+			}
+
+			$newFormFieldObj->setFormFieldType( $formField['type'] );
+			$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
+			$newFormFieldObj->setDisplayLabelToken( $formField['displayLabelToken'] );
+			$newFormFieldObj->setErrorMessage( $formField['errorMessage'] );
+			$newFormFieldObj->setErrorMessageToken( $formField['errorMessageToken'] );
+			$newFormFieldObj->setErrorHandler( $formField['errorHandler'] );
+			$newFormFieldObj->setPrependHTML( $formField['prependHTML'] );
+			$newFormFieldObj->setAppendHTML( $formField['appendHTML'] );
+			$newFormFieldObj->setCSSClasses( $formField['cssClasses'] );
+
+			if ( $formField['type'] === 'container' ) {
+				foreach( $formField['children'] as $containerChild ) {
+					$newChildFormFieldObj = null;
+
+					if ( isset($containerChild['secure']) && $containerChild['secure'] ) {
+						$newChildFormFieldObj = new SecureFormField( $containerChild['id'] );
+					} else if ( isset($containerChild['validated']) && $containerChild['validated'] ) {
+						$newChildFormFieldObj = new ValidatedFormField( $containerChild['id'] );
+					} else {
+						$newChildFormFieldObj = new FormField( $containerChild['id'] );
+					}
+
+					$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+					$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
+					$newChildFormFieldObj->setDisplayLabelToken( $containerChild['displayLabelToken'] );
+					$newChildFormFieldObj->setErrorMessage( $containerChild['errorMessage'] );
+					$newChildFormFieldObj->setErrorMessageToken( $containerChild['errorMessageToken'] );
+					$newChildFormFieldObj->setErrorHandler( $containerChild['errorHandler'] );
+					$newChildFormFieldObj->setPrependHTML( $containerChild['prependHTML'] );
+					$newChildFormFieldObj->setAppendHTML( $containerChild['appendHTML'] );
+					$newChildFormFieldObj->setCSSClasses( $containerChild['cssClasses'] );
+
+					$newFormFieldObj->addFormField( $containerChild['id'], $newChildFormFieldObj );
+				}
+			}
+
 			$newFormObj->addFormField( $formField['id'], $newFormFieldObj );
 		}
 

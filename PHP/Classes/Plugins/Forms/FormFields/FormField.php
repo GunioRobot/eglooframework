@@ -40,7 +40,20 @@ class FormField {
 
 	protected $_formFieldID = null;
 	protected $_formFieldData = null;
-	protected $_formFieldLabel = null;
+	// protected $_formFieldLabel = null;
+	protected $_formFieldType = null;
+
+	protected $_appendHTML = null;
+
+	protected $_cssClasses = null;
+
+	protected $_displayLabel = null;
+	protected $_displayLabelToken = null;
+
+	protected $_errorMessage = null;
+	protected $_errorMessageToken = null;
+
+	protected $_errorHandler = null;
 
 	protected $_formFieldDefinition = null;
 
@@ -50,40 +63,43 @@ class FormField {
 	protected $_formFieldChildren = array();
 	protected $_formFieldChildData = array();
 
+	protected $_prependHTML = null;
+
 	protected $_renderedFormField = null;
 	protected $_renderedErrors = null;
 
-	public function __construct( $formFieldID = null, $formFieldData = null, $formFieldLabel = null ) {
+	public function __construct( $formFieldID = null, $formFieldData = null, $displayLabel = null, $displayLabelToken = null ) {
 		$this->_formFieldID = $formFieldID;
 		$this->_formFieldData = $formFieldData;
-		$this->_formFieldLabel = $formFieldLabel;
+		$this->_displayLabel = $displayLabel;
+		$this->_displayLabelToken = $displayLabelToken;
 	}
 
-	public function addChildFormField( $child_form_field_id, $formField ) {
+	public function addFormField( $child_form_field_id, $formField ) {
 		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
 			$this->_formFieldChildren[$child_form_field_id] = $formField;
-			$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+			// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
 		}
 	}
 
-	public function getChildFormField( $child_form_field_id ) {
+	public function getFormField( $child_form_field_id ) {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
 	
-	public function getChildFormFieldData( $child_form_field_id ) {
+	public function getFormFieldData( $child_form_field_id ) {
 		return $this->_formFieldChildData[$child_form_field_id];
 	}
 
-	public function setChildFormField( $child_form_field_id, $formField ) {
+	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
-		$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+		// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
 	}
 
-	public function removeChildFormField( $child_form_field_id ) {
+	public function removeFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
-		unset($this->_formFieldChildData[$child_form_field_id]);
+		// unset($this->_formFieldChildData[$child_form_field_id]);
 	}
 
 	public function getData() {
@@ -161,6 +177,111 @@ class FormField {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+	}
+
+	// Append HTML
+	public function getAppendHTML() {
+		return $this->_appendHTML;
+	}
+
+	public function setAppendHTML( $appendHTML ) {
+		$this->_appendHTML = $appendHTML;
+	}
+
+	// CSS
+	public function addCSSClass( $class_name ) {
+		$this->_cssClasses[$class_name] = $class_name;
+	}
+
+	public function removeCSSClass( $class_name ) {
+		unset($this->_cssClasses[$class_name]);
+	}
+
+	public function getCSSClasses() {
+		return $this->_cssClasses;
+	}
+
+	public function getCSSClassesString() {
+		return implode( ' ', $this->_cssClasses );
+	}
+
+	public function setCSSClasses( $cssClasses ) {
+		if ( is_string( $cssClasses ) ) {
+			$classes = explode( ' ', $cssClasses );
+
+			foreach($classes as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		} else if ( is_array( $cssClasses ) ) {
+			$this->_cssClasses = array();
+
+			foreach($cssClasses as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		}
+	}
+
+	// Display Label
+	public function getDisplayLabel() {
+		return $this->_displayLabel;
+	}
+
+	public function setDisplayLabel( $displayLabel ) {
+		$this->_displayLabel = $displayLabel;
+	}
+
+	// Display Label Token
+	public function getDisplayLabelToken() {
+		return $this->_displayLabelToken;
+	}
+
+	public function setDisplayLabelToken( $displayLabelToken ) {
+		$this->_displayLabelToken = $displayLabelToken;
+	}
+
+	// Error Message
+	public function getErrorMessage() {
+		return $this->_errorMessage;
+	}
+
+	public function setErrorMessage( $errorMessage ) {
+		$this->_errorMessage = $errorMessage;
+	}
+
+	// Error Message Token
+	public function getErrorMessageToken() {
+		return $this->_errorMessageToken;
+	}
+
+	public function setErrorMessageToken( $errorMessageToken ) {
+		$this->_errorMessageToken = $errorMessageToken;
+	}
+
+	// Error Handler
+	public function getErrorHandler() {
+		return $this->_errorHandler;
+	}
+
+	public function setErrorHandler( $errorHandler ) {
+		$this->_errorHandler = $errorHandler;
+	}
+
+	// FormField Type
+	public function getFormFieldType() {
+		return $this->_formFieldType;
+	}
+
+	public function setFormFieldType( $formFieldType ) {
+		$this->_formFieldType = $formFieldType;
+	}
+
+	// Prepend HTML
+	public function getPrependHTML() {
+		return $this->_prependHTML;
+	}
+
+	public function setPrependHTML( $prependHTML ) {
+		$this->_prependHTML = $prependHTML;
 	}
 
 	public function __destruct() {
