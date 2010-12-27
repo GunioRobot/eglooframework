@@ -863,8 +863,7 @@ final class FormDirector {
 		}
 
 		$retVal = $newFormObj;
-		echo_r($retVal);
-		die_r($formNode);
+
 		return $retVal;
 	}
 

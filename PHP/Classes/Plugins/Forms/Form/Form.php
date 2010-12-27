@@ -150,7 +150,44 @@ class Form {
 	public function render() {
 		$retVal = null;
 
-		
+		// TODO needs to be able to set action and method
+		// TODO localize this whole thing
+		$html = '<form method="POST">' . "\n";
+
+		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
+			$html .= '<fieldset id="' . $this->_formID . '-form-fieldset" class="' .
+				implode( ' ', $this->_cssClasses ) . '">';
+			$html .= '<legend>' . $this->_formLegend . '</legend>';
+		}
+
+		// This should be able to respect some overall order between fieldsets and fields
+		foreach( $this->_formFields as $formField ) {
+			switch ( $formField->getFormFieldType() ) {
+				case 'foo' :
+					echo 'blah';
+					break;
+				default :
+					$html .= 'meh';
+					break;
+			}
+		}
+
+		// This should be able to respect some overall order between fieldsets and fields
+		foreach( $this->_formFieldSets as $formFieldSet ) {
+			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+				$html .= '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
+					implode( ' ', $formFieldSet->getCSSClasses() ) . '">';
+				$html .= '<legend>' . $formFieldSet->getLegend() . '</legend>';
+			}
+		}
+
+		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
+			$html .= '</fieldset>';
+		}
+
+		$html .= '</form>';
+
+		$retVal = $html;
 
 		return $retVal;
 	}
