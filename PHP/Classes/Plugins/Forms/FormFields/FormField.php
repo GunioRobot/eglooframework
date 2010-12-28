@@ -69,6 +69,9 @@ class FormField {
 	protected $_renderedFormField = null;
 	protected $_renderedErrors = null;
 
+	protected $_variablePrepend = null;
+	protected $_variableAppend = null;
+
 	public function __construct( $formFieldID = null, $formFieldData = null, $displayLabel = null, $displayLabelToken = null ) {
 		$this->_formFieldID = $formFieldID;
 		$this->_formFieldData = $formFieldData;
@@ -168,28 +171,29 @@ class FormField {
 				$retVal .= $prepend . "\t" . '<!-- FormField Container: "' . $this->getID() . '" -->' . "\n";
 
 				foreach( $this->getFormFields() as $formField ) {
+					$formField->setVariablePrepend($this->getVariablePrepend() . '[' . $this->getID() . '][formFields]');
 					$retVal .= $formField->render( true, true, false, "\t" . $prepend );
 				}
 
 				break;
 			case 'hidden' :
-				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
-					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="hidden" value="' .
-					$this->getFormFieldValue() . '" />' . "\n";
+				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' . 
+					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
+					'" type="hidden" value="' . $this->getFormFieldValue() . '" />' . "\n";
 				break;
 			case 'password' :
 				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
-					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="password" value="' .
-					$this->getFormFieldValue() . '" />' . "\n";
+					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
+					'" type="password" value="' . $this->getFormFieldValue() . '" />' . "\n";
 				break;
 			case 'submit' :
 				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
-					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="submit" value="' .
-					$this->getFormFieldValue() . '" />' . "\n";
+					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
+					'" type="submit" value="' . $this->getFormFieldValue() . '" />' . "\n";
 				break;
 			case 'text' :
 				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
-					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="text" value="' .
+					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="text" value="' .
 					$this->getFormFieldValue() . '" />' . "\n";
 				break;
 			default :
@@ -330,6 +334,23 @@ class FormField {
 
 	public function setPrependHTML( $prependHTML ) {
 		$this->_prependHTML = $prependHTML;
+	}
+
+	// Variable Container
+	public function getVariablePrepend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariablePrepend( $variablePrepend ) {
+		$this->_variablePrepend = $variablePrepend;
+	}
+
+	public function getVariableAppend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariableAppend( $variableAppend ) {
+		$this->_variableAppend = $variableAppend;
 	}
 
 	public function __destruct() {

@@ -172,6 +172,7 @@ class Form {
 			}
 
 			foreach( $formFieldSet->getFormFields() as $formField ) {
+				$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
 				$html .= $formField->render( true, true, false, "\t" );
 			}
 
@@ -182,6 +183,7 @@ class Form {
 
 		// This should be able to respect some overall order between fieldsets and fields
 		foreach( $this->_formFields as $formField ) {
+			$formField->setVariablePrepend($this->getFormID() . '[formFields]');
 			$html .= $formField->render();
 		}
 
