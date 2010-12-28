@@ -70,6 +70,13 @@ class Form {
 	protected $_inputLocalized = false;
 	protected $_inputLocalizer = null;
 
+	protected $_isCRUDable = false;
+
+	protected $_createTriggers = array();
+	protected $_readTriggers = array();
+	protected $_updateTriggers = array();
+	protected $_destroyTriggers = array();
+
 	protected $_validated = false;
 	protected $_validator = null;
 
@@ -87,6 +94,10 @@ class Form {
 		} else {
 			throw new Exception( 'FormField with ID "' . $form_field_id . '" already exists' );
 		}
+	}
+
+	public function issetFormField( $form_field_id ) {
+		return isset($this->_formFields[$form_field_id]);
 	}
 
 	public function getFormField( $form_field_id ) {
@@ -163,7 +174,7 @@ class Form {
 
 		// This should be able to respect some overall order between fieldsets and fields
 		foreach( $this->_formFieldSets as $formFieldSet ) {
-			$html .= "\t" . '<!-- FieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+			$html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
 
 			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
 				$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
@@ -214,6 +225,47 @@ class Form {
 		$this->_formErrors[$field_id] = $error_value;
 	}
 
+	// CRUD
+	public function isCRUDable() {
+		return $this->_isCRUDable;
+	}
+
+	public function setIsCRUDable( $isCRUDable ) {
+		$this->_isCRUDable = $isCRUDable;
+	}
+
+	public function setCRUDCreateTriggers( $createTriggers ) {
+		$this->_createTriggers = $createTriggers;
+	}
+
+	public function getCRUDCreateTriggers() {
+		return $this->_createTriggers;
+	}
+
+	public function setCRUDReadTriggers( $readTriggers ) {
+		$this->_readTriggers = $readTriggers;
+	}
+
+	public function getCRUDReadTriggers() {
+		return $this->_readTriggers;
+	}
+
+	public function setCRUDUpdateTriggers( $updateTriggers ) {
+		$this->_updateTriggers = $updateTriggers;
+	}
+
+	public function getCRUDUpdateTriggers() {
+		return $this->_updateTriggers;
+	}
+
+	public function setCRUDDestroyTriggers( $destroyTriggers ) {
+		$this->_destroyTriggers = $destroyTriggers;
+	}
+
+	public function getCRUDDestroyTriggers() {
+		return $this->_destroyTriggers;
+	}
+
 	// CSS
 	public function addCSSClass( $class_name ) {
 		$this->_cssClasses[$class_name] = $class_name;
@@ -246,7 +298,6 @@ class Form {
 			}
 		}
 	}
-
 
 	// DAO/DTO
 	public function setFormDAO( $formDAO ) {

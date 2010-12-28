@@ -45,27 +45,106 @@ class CRUDDirector {
 	}
 
 	public static function getInstance() {
-		if (!self::$singleton) {
-			self::$singleton = new CRUDDirector();
+		if (!self::$_singleton) {
+			self::$_singleton = new CRUDDirector();
 		}
 
-		return self::$singleton;
+		return self::$_singleton;
+	}
+
+	public function processForm( $form ) {
+		$retVal = false;
+
+		$pulledTrigger = false;
+
+		// Branch to CRUD action
+		$createTriggers = $form->getCRUDCreateTriggers();
+
+		foreach( $createTriggers as $createTrigger ) {
+			if ( $this->pulledTrigger($createTrigger) ) {
+				$retVal = $this->processCreate( $form );
+				$pulledTrigger = true;
+				break;
+			}
+		}
+
+		if ( !$pulledTrigger ) {
+			$readTriggers = $form->getCRUDReadTriggers();
+
+			foreach( $readTriggers as $readTrigger ) {
+				if ( $this->pulledTrigger($readTrigger) ) {
+					$retVal = $this->processRead( $form );
+					$pulledTrigger = true;
+					break;
+				}
+			}
+		}
+
+		if ( !$pulledTrigger ) {
+			$updateTriggers = $form->getCRUDUpdateTriggers();
+
+			foreach( $updateTriggers as $updateTrigger ) {
+				if ( $this->pulledTrigger($updateTrigger) ) {
+					$retVal = $this->processUpdate( $form );
+					$pulledTrigger = true;
+					break;
+				}
+			}
+		}
+
+		if ( !$pulledTrigger ) {
+			$destroyTriggers = $form->getCRUDDestroyTriggers();
+
+			foreach( $destroyTriggers as $destroyTrigger ) {
+				if ( $this->pulledTrigger($destroyTrigger) ) {
+					$retVal = $this->processDestroy( $form );
+					$pulledTrigger = true;
+					break;
+				}
+			}
+		}
+
+		return $retVal;
 	}
 
 	public function processCreate( $form ) {
-		
+		echo_r('create');
+		$formDAO = $form->getFormDAO();
+		$formDTO = $form->getFormDTO();
 	}
 
 	public function processRead( $form ) {
-		
+		echo_r('read');
+		$formDAO = $form->getFormDAO();
+		$formDTO = $form->getFormDTO();
 	}
 
 	public function processUpdate( $form ) {
-		
+		echo_r('update');
+		$formDAO = $form->getFormDAO();
+		$formDTO = $form->getFormDTO();
 	}
 
 	public function processDestroy( $form ) {
-		
+		echo_r('destroy');
+		$formDAO = $form->getFormDAO();
+		$formDTO = $form->getFormDTO();
+	}
+
+	private function pulledTrigger( $trigger ) {
+		$retVal = false;
+
+		if ( strtolower( $trigger['type'] ) === 'formfield' ) {
+			// if ($)
+		} else if ( strtolower( $trigger['type'] ) === 'post' ) {
+			
+		} else if ( strtolower( $trigger['type'] ) === 'get' ) {
+			
+		} else {
+			// Invalid type specified...
+		}
+
+		return $retVal;
 	}
 
 }

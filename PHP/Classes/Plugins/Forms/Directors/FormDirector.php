@@ -678,9 +678,76 @@ final class FormDirector {
 				$formNodes[$formNodeID]['formFields'][$formFieldID] = $newFormField;
 			}
 
+			foreach( $formNode->xpath( 'child::CRUD' ) as $crudNode ) {
+				$formNodes[$formNodeID]['CRUD'] = array();
+
+				foreach( $crudNode->xpath( 'child::Create' ) as $createNode ) {
+					$createTriggers = array();
+
+					foreach( $createNode->xpath( 'child::Trigger' ) as $triggerNode ) {
+						$newTrigger = array();
+
+						$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
+						$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
+						$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+
+						$createTriggers[] = $newTrigger;
+					}
+
+					$formNodes[$formNodeID]['CRUD']['create'] = $createTriggers;
+				}
+
+				foreach( $crudNode->xpath( 'child::Read' ) as $readNode ) {
+					$readTriggers = array();
+
+					foreach( $readNode->xpath( 'child::Trigger' ) as $triggerNode ) {
+						$newTrigger = array();
+
+						$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
+						$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
+						$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+
+						$readTriggers[] = $newTrigger;
+					}
+
+					$formNodes[$formNodeID]['CRUD']['read'] = $readTriggers;
+				}
+
+				foreach( $crudNode->xpath( 'child::Update' ) as $updateNode ) {
+					$updateTriggers = array();
+
+					foreach( $updateNode->xpath( 'child::Trigger' ) as $triggerNode ) {
+						$newTrigger = array();
+
+						$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
+						$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
+						$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+
+						$updateTriggers[] = $newTrigger;
+					}
+
+					$formNodes[$formNodeID]['CRUD']['update'] = $updateTriggers;
+				}
+
+				foreach( $crudNode->xpath( 'child::Destroy' ) as $destroyNode ) {
+					$destroyTriggers = array();
+
+					foreach( $destroyNode->xpath( 'child::Trigger' ) as $triggerNode ) {
+						$newTrigger = array();
+
+						$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
+						$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
+						$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+
+						$destroyTriggers[] = $newTrigger;
+					}
+
+					$formNodes[$formNodeID]['CRUD']['destroy'] = $destroyTriggers;
+				}
+			}
+
 			$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes::' . $formNodeID,
 				$formNodes[$formNodeID], 'Dispatching', 0, true );
-			;
 		}
 
 		$this->_formNodes = $formNodes;
@@ -889,6 +956,18 @@ final class FormDirector {
 
 			$newFormObj->addFormField( $formField['id'], $newFormFieldObj );
 		}
+
+		// CRUD
+		$crudInfo = $formNode['CRUD'];
+
+		if ( !empty($crudInfo['create']) || !empty($crudInfo['read']) || !empty($crudInfo['update']) || !empty($crudInfo['destroy']) ) {
+			$newFormObj->setIsCRUDable( true );
+		}
+
+		$newFormObj->setCRUDCreateTriggers( $crudInfo['create'] );
+		$newFormObj->setCRUDReadTriggers( $crudInfo['read'] );
+		$newFormObj->setCRUDUpdateTriggers( $crudInfo['update'] );
+		$newFormObj->setCRUDDestroyTriggers( $crudInfo['destroy'] );
 
 		$retVal = $newFormObj;
 
