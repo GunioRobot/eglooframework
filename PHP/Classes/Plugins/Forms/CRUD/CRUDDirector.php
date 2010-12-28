@@ -61,7 +61,7 @@ class CRUDDirector {
 		$createTriggers = $form->getCRUDCreateTriggers();
 
 		foreach( $createTriggers as $createTrigger ) {
-			if ( $this->pulledTrigger($createTrigger) ) {
+			if ( $this->pulledTrigger($form, $createTrigger) ) {
 				$retVal = $this->processCreate( $form );
 				$pulledTrigger = true;
 				break;
@@ -72,7 +72,7 @@ class CRUDDirector {
 			$readTriggers = $form->getCRUDReadTriggers();
 
 			foreach( $readTriggers as $readTrigger ) {
-				if ( $this->pulledTrigger($readTrigger) ) {
+				if ( $this->pulledTrigger($form, $readTrigger) ) {
 					$retVal = $this->processRead( $form );
 					$pulledTrigger = true;
 					break;
@@ -84,7 +84,7 @@ class CRUDDirector {
 			$updateTriggers = $form->getCRUDUpdateTriggers();
 
 			foreach( $updateTriggers as $updateTrigger ) {
-				if ( $this->pulledTrigger($updateTrigger) ) {
+				if ( $this->pulledTrigger($form, $updateTrigger) ) {
 					$retVal = $this->processUpdate( $form );
 					$pulledTrigger = true;
 					break;
@@ -96,7 +96,7 @@ class CRUDDirector {
 			$destroyTriggers = $form->getCRUDDestroyTriggers();
 
 			foreach( $destroyTriggers as $destroyTrigger ) {
-				if ( $this->pulledTrigger($destroyTrigger) ) {
+				if ( $this->pulledTrigger($form, $destroyTrigger) ) {
 					$retVal = $this->processDestroy( $form );
 					$pulledTrigger = true;
 					break;
@@ -108,38 +108,97 @@ class CRUDDirector {
 	}
 
 	public function processCreate( $form ) {
-		echo_r('create');
+		$retVal = null;
+		
 		$formDAO = $form->getFormDAO();
 		$formDTO = $form->getFormDTO();
+		
+		$formDAOObj = new $formDAO();
+		$formDTOObj = new $formDTO( $form );
+
+		$retVal = $formDAOObj->CRUDCreate( $formDTOObj );
+		
+		return $retVal;
 	}
 
 	public function processRead( $form ) {
-		echo_r('read');
+		$retVal = null;
+		
 		$formDAO = $form->getFormDAO();
 		$formDTO = $form->getFormDTO();
+		
+		$formDAOObj = new $formDAO();
+		$formDTOObj = new $formDTO( $form );
+
+		$retVal = $formDAOObj->CRUDRead( $formDTOObj );
+		
+		return $retVal;
 	}
 
 	public function processUpdate( $form ) {
-		echo_r('update');
+		$retVal = null;
+		
 		$formDAO = $form->getFormDAO();
 		$formDTO = $form->getFormDTO();
+		
+		$formDAOObj = new $formDAO();
+		$formDTOObj = new $formDTO( $form );
+
+		$retVal = $formDAOObj->CRUDUpdate( $formDTOObj );
+		
+		return $retVal;
 	}
 
 	public function processDestroy( $form ) {
-		echo_r('destroy');
+		$retVal = null;
+		
 		$formDAO = $form->getFormDAO();
 		$formDTO = $form->getFormDTO();
+		
+		$formDAOObj = new $formDAO();
+		$formDTOObj = new $formDTO( $form );
+
+		$retVal = $formDAOObj->CRUDDestroy( $formDTOObj );
+		
+		return $retVal;
 	}
 
-	private function pulledTrigger( $trigger ) {
+	private function pulledTrigger( $form, $trigger ) {
 		$retVal = false;
 
 		if ( strtolower( $trigger['type'] ) === 'formfield' ) {
-			// if ($)
+			// TODO this should do multilevel...
+			if ( $form->issetFormField( $trigger['key'] ) ) { 
+				$formField = $form->getFormField( $trigger['key'] );
+
+				if ( $formField->getFormFieldValue() === $trigger['value'] ) {
+					$retVal = true;
+				}
+			}
 		} else if ( strtolower( $trigger['type'] ) === 'post' ) {
-			
+			$requestInfoBean = RequestInfoBean::getInstance();
+
+			if ( $requestInfoBean->issetPOST( $trigger['key'] ) ) {
+				if ( $requestInfoBean->getPOST( $trigger['key'] ) === $trigger['value'] ) {
+					$retVal = true;
+				}
+			} else if ( isset( $_POST[$trigger['key']] ) ) {
+				if ( $_POST[$trigger['key']] === $trigger['value'] ) {
+					$retVal = true;
+				}
+			}
 		} else if ( strtolower( $trigger['type'] ) === 'get' ) {
-			
+			$requestInfoBean = RequestInfoBean::getInstance();
+
+			if ( $requestInfoBean->issetGET( $trigger['key'] ) ) {
+				if ( $requestInfoBean->getGET( $trigger['key'] ) === $trigger['value'] ) {
+					$retVal = true;
+				}
+			} else if ( isset( $_GET[$trigger['key']] ) ) {
+				if ( $_GET[$trigger['key']] === $trigger['value'] ) {
+					$retVal = true;
+				}
+			}
 		} else {
 			// Invalid type specified...
 		}

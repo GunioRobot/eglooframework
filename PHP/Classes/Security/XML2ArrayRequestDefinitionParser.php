@@ -1422,7 +1422,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$requestInfoBean->setPOST( $formArg['id'],  $formObj );
 						$requestInfoBean->setForm( $formArg['id'],  $formObj );
 
-						// TODO CRUD, if applicable
+						if ( $formObj->isCRUDable() ) {
+							$crudDirector = CRUDDirector::getInstance();
+							$crudSuccess = $crudDirector->processForm( $formObj );
+						}
+
+						// TODO figure out how to branch on CRUD success/fail?  Or just mark in $formObj?
 					} else {
 						$errorMessage = "Form parameter: " . $formArg['id'] . 
 							" with value '" . print_r($formArray, true) . "' is not valid" .
