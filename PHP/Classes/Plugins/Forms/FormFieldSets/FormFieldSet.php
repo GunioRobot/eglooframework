@@ -49,6 +49,8 @@ class FormFieldSet {
 	protected $_formFieldChildren = array();
 	protected $_formFieldChildData = array();
 
+	protected $_cssClasses = array();
+
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
 
@@ -69,7 +71,11 @@ class FormFieldSet {
 	public function getFormField( $child_form_field_id ) {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
-	
+
+	public function getFormFields() {
+		return $this->_formFieldChildren;
+	}
+
 	public function getFormFieldData( $child_form_field_id ) {
 		return $this->_formFieldChildData[$child_form_field_id];
 	}
@@ -128,6 +134,39 @@ class FormFieldSet {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+	}
+
+	// CSS
+	public function addCSSClass( $class_name ) {
+		$this->_cssClasses[$class_name] = $class_name;
+	}
+
+	public function removeCSSClass( $class_name ) {
+		unset($this->_cssClasses[$class_name]);
+	}
+
+	public function getCSSClasses() {
+		return $this->_cssClasses;
+	}
+
+	public function getCSSClassesString() {
+		return implode( ' ', $this->_cssClasses );
+	}
+
+	public function setCSSClasses( $cssClasses ) {
+		if ( is_string( $cssClasses ) ) {
+			$classes = explode( ' ', $cssClasses );
+
+			foreach($classes as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		} else if ( is_array( $cssClasses ) ) {
+			$this->_cssClasses = array();
+
+			foreach($cssClasses as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		}
 	}
 
 	// Legend

@@ -301,6 +301,7 @@ final class FormDirector {
 					}
 
 					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
+					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 
 					if ( !$formFieldType || trim($formFieldType) === '' ) {
 						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -337,6 +338,7 @@ final class FormDirector {
 							}
 
 							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
+							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
 
 							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 								throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -402,6 +404,7 @@ final class FormDirector {
 
 							$newChildFormField = array(	'id' => $formFieldChildID,
 													'type' => $formFieldChildType,
+													'value' => $formFieldChildValue,
 													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
 													'displayLabelToken' => $childDisplayLabelLocalizationToken,
@@ -457,6 +460,7 @@ final class FormDirector {
 
 					$newFormField = array(	'id' => $formFieldID,
 											'type' => $formFieldType,
+											'value' => $formFieldValue,
 											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
 											'displayLabelToken' => $displayLabelLocalizationToken,
@@ -497,6 +501,7 @@ final class FormDirector {
 				}
 
 				$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
+				$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 
 				if ( !$formFieldType || trim($formFieldType) === '' ) {
 					throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -532,6 +537,7 @@ final class FormDirector {
 						}
 
 						$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
+						$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
 
 						if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 							throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -597,6 +603,7 @@ final class FormDirector {
 
 						$newChildFormField = array(	'id' => $formFieldChildID,
 												'type' => $formFieldChildType,
+												'value' => $formFieldChildValue,
 												// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 												'displayLabel' => $childDisplayLabel,
 												'displayLabelToken' => $childDisplayLabelLocalizationToken,
@@ -652,6 +659,7 @@ final class FormDirector {
 
 				$newFormField = array(	'id' => $formFieldID,
 										'type' => $formFieldType,
+										'value' => $formFieldValue,
 										// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 										'displayLabel' => $displayLabel,
 										'displayLabelToken' => $displayLabelLocalizationToken,
@@ -761,6 +769,11 @@ final class FormDirector {
 				}
 
 				$newFormFieldObj->setFormFieldType( $formField['type'] );
+
+				if ( isset($formField['value']) ) {
+					$newFormFieldObj->setFormFieldValue( $formField['value'] );
+				}
+
 				$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
 				$newFormFieldObj->setDisplayLabelToken( $formField['displayLabelToken'] );
 				$newFormFieldObj->setErrorMessage( $formField['errorMessage'] );
@@ -783,6 +796,11 @@ final class FormDirector {
 						}
 
 						$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+
+						if ( isset($containerChild['value']) ) {
+							$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+						}
+
 						$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
 						$newChildFormFieldObj->setDisplayLabelToken( $containerChild['displayLabelToken'] );
 						$newChildFormFieldObj->setErrorMessage( $containerChild['errorMessage'] );
@@ -824,6 +842,11 @@ final class FormDirector {
 			}
 
 			$newFormFieldObj->setFormFieldType( $formField['type'] );
+
+			if ( isset($formField['value']) ) {
+				$newFormFieldObj->setFormFieldValue( $formField['value'] );
+			}
+
 			$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
 			$newFormFieldObj->setDisplayLabelToken( $formField['displayLabelToken'] );
 			$newFormFieldObj->setErrorMessage( $formField['errorMessage'] );
@@ -846,6 +869,11 @@ final class FormDirector {
 					}
 
 					$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+
+					if ( isset($containerChild['value']) ) {
+						$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+					}
+
 					$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
 					$newChildFormFieldObj->setDisplayLabelToken( $containerChild['displayLabelToken'] );
 					$newChildFormFieldObj->setErrorMessage( $containerChild['errorMessage'] );

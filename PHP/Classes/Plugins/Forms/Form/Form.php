@@ -152,7 +152,8 @@ class Form {
 
 		// TODO needs to be able to set action and method
 		// TODO localize this whole thing
-		$html = '<form method="POST">' . "\n";
+		$html = '<!-- Form: "' . $this->_formID . '" -->' . "\n";
+		$html .= '<form method="POST">' . "\n";
 
 		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
 			$html .= '<fieldset id="' . $this->_formID . '-form-fieldset" class="' .
@@ -161,31 +162,34 @@ class Form {
 		}
 
 		// This should be able to respect some overall order between fieldsets and fields
-		foreach( $this->_formFields as $formField ) {
-			switch ( $formField->getFormFieldType() ) {
-				case 'foo' :
-					echo 'blah';
-					break;
-				default :
-					$html .= 'meh';
-					break;
+		foreach( $this->_formFieldSets as $formFieldSet ) {
+			$html .= "\t" . '<!-- FieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+
+			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+				$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
+					implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
+				$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
+			}
+
+			foreach( $formFieldSet->getFormFields() as $formField ) {
+				$html .= $formField->render( true, true, false, "\t" );
+			}
+
+			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+				$html .= "\t" . '</fieldset>' . "\n";
 			}
 		}
 
 		// This should be able to respect some overall order between fieldsets and fields
-		foreach( $this->_formFieldSets as $formFieldSet ) {
-			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				$html .= '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
-					implode( ' ', $formFieldSet->getCSSClasses() ) . '">';
-				$html .= '<legend>' . $formFieldSet->getLegend() . '</legend>';
-			}
+		foreach( $this->_formFields as $formField ) {
+			$html .= $formField->render();
 		}
 
 		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
-			$html .= '</fieldset>';
+			$html .= '</fieldset>' . "\n";
 		}
 
-		$html .= '</form>';
+		$html .= '</form>' . "\n";
 
 		$retVal = $html;
 
@@ -241,22 +245,6 @@ class Form {
 		}
 	}
 
-	// HTML
-	public function getAppendHTML() {
-		return $this->_appendHTML;
-	}
-
-	public function setAppendHTML( $appendHTML ) {
-		$this->_appendHTML = $appendHTML;
-	}
-
-	public function getPrependHTML() {
-		return $this->_prependHTML;
-	}
-
-	public function setPrependHTML( $prependHTML ) {
-		$this->_prependHTML = $prependHTML;
-	}
 
 	// DAO/DTO
 	public function setFormDAO( $formDAO ) {
@@ -290,6 +278,23 @@ class Form {
 
 	public function setDisplayFormatter( $displayFormatter ) {
 		$this->_displayFormatter = $displayFormatter;
+	}
+
+	// HTML
+	public function getAppendHTML() {
+		return $this->_appendHTML;
+	}
+
+	public function setAppendHTML( $appendHTML ) {
+		$this->_appendHTML = $appendHTML;
+	}
+
+	public function getPrependHTML() {
+		return $this->_prependHTML;
+	}
+
+	public function setPrependHTML( $prependHTML ) {
+		$this->_prependHTML = $prependHTML;
 	}
 
 	// Legend

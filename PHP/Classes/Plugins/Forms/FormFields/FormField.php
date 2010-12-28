@@ -42,6 +42,7 @@ class FormField {
 	protected $_formFieldData = null;
 	// protected $_formFieldLabel = null;
 	protected $_formFieldType = null;
+	protected $_formFieldValue = null;
 
 	protected $_appendHTML = null;
 
@@ -78,7 +79,7 @@ class FormField {
 	public function addFormField( $child_form_field_id, $formField ) {
 		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
 			$this->_formFieldChildren[$child_form_field_id] = $formField;
-			// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+			// $this->_formFieldChildData[$child_form_field_id] = $this->getData();
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
 		}
@@ -87,14 +88,18 @@ class FormField {
 	public function getFormField( $child_form_field_id ) {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
-	
+
+	public function getFormFields() {
+		return $this->_formFieldChildren;
+	}
+
 	public function getFormFieldData( $child_form_field_id ) {
 		return $this->_formFieldChildData[$child_form_field_id];
 	}
 
 	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
-		// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+		// $this->_formFieldChildData[$child_form_field_id] = $this->getData();
 	}
 
 	public function removeFormField( $child_form_field_id ) {
@@ -118,14 +123,6 @@ class FormField {
 
 	public function setData( $formFieldData ) {
 		$this->_formFieldData = $formFieldData;
-	}
-
-	public function getLabel() {
-		return $this->_formFieldLabel;
-	}
-
-	public function setLabel( $formFieldLabel ) {
-		$this->_formFieldLabel = $formFieldLabel;
 	}
 
 	public function getErrors( $include_child_errors = true ) {
@@ -155,10 +152,52 @@ class FormField {
 		return $this->_formFieldID;
 	}
 
-	public function render( $render_labels = true, $render_children = true, $render_child_labels = false ) {
+	public function render( $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
 		$retVal = null;
 
-		
+		// TODO localize this
+		if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' ) {
+			$retVal = $prepend . "\t" . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
+				'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . "\n";
+		} else {
+			$retVal = '';
+		}
+
+		switch ( $this->getFormFieldType() ) {
+			case 'container' :
+				$retVal .= $prepend . "\t" . '<!-- FormField Container: "' . $this->getID() . '" -->' . "\n";
+
+				foreach( $this->getFormFields() as $formField ) {
+					$retVal .= $formField->render( true, true, false, "\t" . $prepend );
+				}
+
+				break;
+			case 'hidden' :
+				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="hidden" value="' .
+					$this->getFormFieldValue() . '" />' . "\n";
+				break;
+			case 'password' :
+				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="password" value="' .
+					$this->getFormFieldValue() . '" />' . "\n";
+				break;
+			case 'submit' :
+				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="submit" value="' .
+					$this->getFormFieldValue() . '" />' . "\n";
+				break;
+			case 'text' :
+				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$this->getID() . '" class="' . $this->getCSSClassesString() . '" type="text" value="' .
+					$this->getFormFieldValue() . '" />' . "\n";
+				break;
+			default :
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Form: Invalid input type "' . $this->getFormFieldType() .
+					'" specified in FormField "' . $this->getID() );
+				break;
+		}
+
 
 		return $retVal;
 	}
@@ -273,6 +312,15 @@ class FormField {
 
 	public function setFormFieldType( $formFieldType ) {
 		$this->_formFieldType = $formFieldType;
+	}
+
+	// FormField Value
+	public function getFormFieldValue() {
+		return $this->_formFieldValue;
+	}
+
+	public function setFormFieldValue( $formFieldValue ) {
+		$this->_formFieldValue = $formFieldValue;
 	}
 
 	// Prepend HTML
