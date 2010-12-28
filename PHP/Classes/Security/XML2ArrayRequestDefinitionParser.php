@@ -207,6 +207,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
 			}
 
+			$requestAttributeSets[$attributeSetID]['attributes']['formArguments'] = array();
+
+			foreach( $attributeSet->xpath( 'child::FormArgument' ) as $formArgument ) {
+				$newFormArgument = array();
+
+				$newFormArgument['id'] = (string) $formArgument['id'];
+				$newFormArgument['type'] = strtolower( (string) $formArgument['type'] );
+				$newFormArgument['required'] = strtolower( (string) $formArgument['required'] );
+				$newFormArgument['formID'] = (string) $formArgument['formID'];
+
+				$requestAttributeSets[$attributeSetID]['attributes']['formArguments'][$newFormArgument['id']] = $newFormArgument;
+			}
+
 			$requestAttributeSets[$attributeSetID]['attributes']['complexArguments'] = array();
 
 			foreach( $attributeSet->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
@@ -394,6 +407,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
+				}
+
+				$requestClasses[$requestClassID]['requests'][$requestID]['formArguments'] = array();
+
+				foreach( $request->xpath( 'child::FormArgument' ) as $formArgument ) {
+					$newFormArgument = array();
+
+					$newFormArgument['id'] = (string) $formArgument['id'];
+					$newFormArgument['type'] = strtolower( (string) $formArgument['type'] );
+					$newFormArgument['required'] = strtolower( (string) $formArgument['required'] );
+					$newFormArgument['formID'] = (string) $formArgument['formID'];
+
+					$requestClasses[$requestClassID]['requests'][$requestID]['formArguments'][$newFormArgument['id']] = $newFormArgument;
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'] = array();
@@ -812,7 +838,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$retVal = true;
 
-		//check boolean arguments
+		// Process BooleanArguments
 		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -821,7 +847,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-		//check variable arguments
+		// Process VariableArguments
 		if( !$this->validateVariableArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -830,7 +856,16 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-		//check complex arguments
+		// Process FormArguments
+		if( !$this->validateFormArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
+		// Process ComplexArguments
 		if( !$this->validateComplexArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -839,7 +874,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-		//check select arguments
+		// Process SelectArguments
 		if( !$this->validateSelectArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -848,7 +883,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-		//check depend arguments
+		// Process Depends
 		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -857,7 +892,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-		//build decorator array and set it in the requestInfoBean
+		// Build decorator array and set it in the requestInfoBean
 		$this->buildDecoratorArray( $requestNode, $requestInfoBean);
 
 		/**
@@ -1251,6 +1286,175 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 					//set argument in the request info bean
 					$requestInfoBean->setPOST( $variableArg['id'],	$sanitizedValues );
+				}
+			}
+		} 
+
+		return $retVal;
+	}
+
+	/**
+	 * Process FormArguments
+	 * 
+	 * @return true if all FormArguments pass the test, false otherwise
+	 */
+	private function validateFormArguments( $requestNode, $requestInfoBean ) {
+		$requestID = $_GET[ self::REQUEST_ID_KEY ];
+		$retVal = true;
+
+		 foreach( $requestNode['formArguments'] as $formArg ) {
+			if ( $formArg['type'] === 'getarray' ) {
+				if( !isset( $_GET[ $formArg['id'] ] ) ){
+					//check if required
+					if( $formArg['required'] === "true") {
+						$errorMessage = "Required form parameter: " . $formArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
+
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredGET( $formArg['id'] );
+							$retVal = false;
+						}
+					}
+				} else {
+					//check if correctly formatted
+					$formArray = $_GET[ $formArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-GET array variable as an array
+					if (!is_array($formArray)) {
+						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $formArg['id'] . '\' is type \'' .
+							gettype($formArray) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
+					// $validator = $formArg['validator'];
+					// $validatorObj = new $validator();
+					// 
+					// if (isset($formArg['complexType'])) {
+					// 	$complexType = $formArg['complexType'];
+					// } else if ( isset($formArg['scalarType']) ) {
+					// 	$scalarType = $formArg['scalarType'];
+					// 
+					// 	// TODO enforce scalar type
+					// 
+					// 	// We don't use a complexType here
+					// 	$complexType = null;
+					// } else {
+					// 	$complexType = null;
+					// }
+					// 
+					// $validatedInput = $validatorObj->validate( $complexValues, $complexType );
+					// 
+					// if ( isset($validatedInput) && $validatedInput ) {
+					// 	$requestInfoBean->setGET( $formArg['id'],  $validatedInput );
+					// } else {
+					// 	$errorMessage = "Complex parameter: " . $formArg['id'] . 
+					// 		" with value '" . $complexValues . "' is not valid" .
+					// 		" in GET request with request ID: " . $requestID;
+					// 	eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+					// 
+					// 	if ( !isset($requestNode['errorProcessorID']) ) {
+					// 		if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+					// 			throw new ErrorException($errorMessage);
+					// 		}
+					// 
+					// 		return false;
+					// 	} else {
+					// 		//set invalid argument in the request info bean
+					// 		$requestInfoBean->setInvalidGET( $formArg['id'], $complexValues );
+					// 		$retVal = false;
+					// 	}
+					// }
+				}
+			} else if ( $formArg['type'] === 'postarray') {
+				if( !isset( $_POST[ $formArg['id'] ] ) ){
+					//check if required
+					if( $formArg['required'] === "true") {
+						$errorMessage = "Required form parameter: " . $formArg['id'] . 
+							" is not set in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
+
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setUnsetRequiredPOST( $formArg['id'] );
+							$retVal = false;
+						}
+					}
+				} else {
+					$formArray = $_POST[ $formArg['id'] ];
+
+					// Throw an exception if we attempt to access a non-post array variable as an array
+					if (!is_array($formArray)) {
+						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $formArg['id'] . '\' is type \'' .
+							gettype($formArray) . '\', not type \'' . gettype(array()) . '\'');
+					}
+
+					$formDirector = FormDirector::getInstance();
+					$formObj = $formDirector->buildSubmittedForm( $formArg['id'], $formArray );
+
+					$formProcessedAndValid = false;
+
+					if ( $formObj instanceof SecureForm ) {
+						if ( $formObj->validate() && $formObj->isSecure() ) {
+							$formProcessedAndValid = true;
+						}
+					} else if ( $formObj instanceof ValidatedForm ) {
+						if ( $formObj->validate() ) {
+							$formProcessedAndValid = true;
+						}
+					}
+
+					$formProcessedAndValid = true;
+
+					if ( isset($formProcessedAndValid) && $formProcessedAndValid ) {
+						$requestInfoBean->setPOST( $formArg['id'],  $formObj );
+						$requestInfoBean->setForm( $formArg['id'],  $formObj );
+
+						// TODO CRUD, if applicable
+					} else {
+						$errorMessage = "Form parameter: " . $formArg['id'] . 
+							" with value '" . print_r($formArray, true) . "' is not valid" .
+							" in post request with request ID: " . $requestID;
+						eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+						if ( !isset($requestNode['errorProcessorID']) ) {
+							if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+								throw new ErrorException($errorMessage);
+							}
+
+							return false;
+						} else {
+							//set invalid argument in the request info bean
+							$requestInfoBean->setInvalidPOST( $formArg['id'], $formObj );
+							$requestInfoBean->setInvalidForm( $formArg['id'], $formObj );
+							$retVal = false;
+						}
+					}
+
+				}
+			} else {
+				$errorMessage = "Form parameter must be type getArray or postArray: " . $formArg['id'] .
+					' in post request with request ID: ' . $requestID;
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
+
+				if ( !isset($requestNode['errorProcessorID']) ) {
+					if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+						throw new ErrorException($errorMessage);
+					}
+
+					return false;
 				}
 			}
 		} 

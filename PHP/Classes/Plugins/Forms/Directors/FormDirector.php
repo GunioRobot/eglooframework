@@ -895,10 +895,52 @@ final class FormDirector {
 		return $retVal;
 	}
 
-	public function buildSubmittedForm( $form_name, $parameter_method ) {
+	public function buildSubmittedForm( $form_name, $form_array ) {
 		$retVal = null;
 
-		$formNode = $this->getFormNodeDefinition( $form_name );
+		$retVal = $this->buildForm( $form_name );
+
+		foreach( $retVal->getFormFieldSets() as $formFieldSet ) {
+			$formFieldSetArray = $form_array['formFieldSets'][$formFieldSet->getID()];
+
+			foreach( $formFieldSet->getFormFields() as $formField ) {
+				$formFieldValue = isset($formFieldSetArray['formFields'][$formField->getID()]) ?
+					$formFieldSetArray['formFields'][$formField->getID()] : null;
+
+				if ( !is_array($formFieldValue) ) {
+					$formField->setFormFieldValue($formFieldValue);
+				} else if ( !isset( $formFieldValue['formFields'] ) ) {
+					// TODO ... this
+					// Not a container field, so process (probably a select)
+				} else {
+					foreach( $formField->getFormFields() as $childFormField ) {
+						$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
+							$formFieldValue['formFields'][$childFormField->getID()] : null;
+
+						$childFormField->setFormFieldValue($childFormFieldValue);
+					}
+				}
+			}
+		}
+
+		foreach($retVal->getFormFields() as $formField) {
+			$formFieldValue = isset($form_array['formFields'][$formField->getID()]) ?
+				$form_array['formFields'][$formField->getID()] : null;
+
+			if ( !is_array($formFieldValue) ) {
+				$formField->setFormFieldValue($formFieldValue);
+			} else if ( !isset( $formFieldValue['formFields'] ) ) {
+				// TODO ... this
+				// Not a container field, so process (probably a select)
+			} else {
+				foreach( $formField->getFormFields() as $childFormField ) {
+					$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
+						$formFieldValue['formFields'][$childFormField->getID()] : null;
+
+					$childFormField->setFormFieldValue($childFormFieldValue);
+				}
+			}
+		}
 
 		return $retVal;
 	}
@@ -925,7 +967,7 @@ final class FormDirector {
 	 * 
 	 * @return Fully built and validated form object or false on error
 	 */
-	public function processSubmittedForm( $form_name, $parameter_method ) {
+	public function processSubmittedForm( $formObj ) {
 		$retVal = false;
 
 		$formNode = $this->getFormNodeDefinition( $form_name );

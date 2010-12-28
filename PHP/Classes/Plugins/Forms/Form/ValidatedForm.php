@@ -45,15 +45,15 @@ class ValidatedForm extends Form {
 		// Should branch?  Validate all children and then self via validator, or just invoke validator?
 
 		foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
-			if ( !$formFieldSet->validate() ) {
-				$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors();
-			}
+			// if ( !$formFieldSet->validate() ) {
+			// 	$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors();
+			// }
 		}
-
+		
 		foreach( $this->_formFields as $formFieldID => $formField ) {
-			if ( !$formField->validate() ) {
-				$this->_formErrors[$formFieldID] = $formField->getErrors();
-			}
+			// if ( !$formField->validate() ) {
+			// 	$this->_formErrors[$formFieldID] = $formField->getErrors();
+			// }
 		}
 
 		if ( empty($this->_formErrors) ) {
