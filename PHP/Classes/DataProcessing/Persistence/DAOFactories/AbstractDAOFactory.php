@@ -183,8 +183,7 @@ class AbstractDAOFactory {
 	}
 
 	public function __call( $method, $args ) {
-		echo_r($args);
-		die_r($method);
+		return $this->getAppropriateFactory( $args[0] )->$method();
 	}
 
 }

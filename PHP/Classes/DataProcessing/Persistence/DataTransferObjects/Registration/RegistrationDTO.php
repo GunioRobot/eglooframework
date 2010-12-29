@@ -1,6 +1,6 @@
 <?php
 /**
- * PGSQLRegistrationDAO Class File
+ * RegistrationDTO Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * PGSQLRegistrationDAO
+ * RegistrationDTO
  *
  * $short_description
  *
@@ -36,23 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class PGSQLRegistrationDAO extends RegistrationDAO {
-
-	public function CRUDCreate( $formDTO ) {
-		
-	}
-
-	public function CRUDRead( $formDTO ) {
-		
-	}
-
-	public function CRUDUpdate( $formDTO ) {
-		
-	}
-
-	public function CRUDDestroy( $formDTO ) {
-		
-	}
+class RegistrationDTO extends DataTransferObject {
 
 }
 

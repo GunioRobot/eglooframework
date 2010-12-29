@@ -147,6 +147,12 @@ final class FormDirector {
 				throw new ErrorException('Invalid secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
+			$formNodeDAOConnectionName = isset($formNode['daoConnectionName']) ? (string) $formNode['daoConnectionName'] : NULL;
+
+			if ( !$formNodeDAOConnectionName || trim($formNodeDAOConnectionName) === '' ) {
+				throw new ErrorException('No DAOConnectionName specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			}
+
 			$formNodeDAOFactory = isset($formNode['daoFactory']) ? (string) $formNode['daoFactory'] : NULL;
 
 			if ( !$formNodeDAOFactory || trim($formNodeDAOFactory) === '' ) {
@@ -216,6 +222,7 @@ final class FormDirector {
 												'inputLocalizer' => $formNodeInputLocalizer,
 												'validated' => $formNodeValidated,
 												'secure' => $formNodeSecure,
+												'daoConnectionName' => $formNodeDAOConnectionName,
 												'daoFactory' => $formNodeDAOFactory,
 												'DAO' => $formNodeDAO,
 												'DTO' => $formNodeDTO,

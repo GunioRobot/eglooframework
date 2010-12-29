@@ -109,66 +109,74 @@ class CRUDDirector {
 
 	public function processCreate( $form ) {
 		$retVal = null;
-		
-		$formDAOFactoryName = $form->getFormDAOFactory();
-		$formDAOName = $form->getFormDAO();
-		$formDTOName = $form->getFormDTO();
 
-		$formDAOFactory = $formDAOFactoryName::getInstance();
+		$formDAO = $this->buildDAO( $form );
+		$formDTO = $this->buildDTO( $form );
 
-		$getDAOMethod = 'get' . $formDAOName;
+		$retVal = $formDAO->CRUDCreate( $formDTO );
 
-		$formDAO = $formDAOFactory->$getDAOMethod( $form->getFormDAOConnectionName() );
-
-		$formDAO->
-
-		$formDAOObj = new $formDAO();
-		$formDTOObj = new $formDTO( $form );
-
-		$retVal = $formDAOObj->CRUDCreate( $formDTOObj );
-		
 		return $retVal;
 	}
 
 	public function processRead( $form ) {
 		$retVal = null;
-		
-		$formDAO = $form->getFormDAO();
-		$formDTO = $form->getFormDTO();
-		
-		$formDAOObj = new $formDAO();
-		$formDTOObj = new $formDTO( $form );
 
-		$retVal = $formDAOObj->CRUDRead( $formDTOObj );
-		
+		$formDAO = $this->buildDAO( $form );
+		$formDTO = $this->buildDTO( $form );
+
+		$retVal = $formDAO->CRUDRead( $formDTO );
+
 		return $retVal;
 	}
 
 	public function processUpdate( $form ) {
 		$retVal = null;
-		
-		$formDAO = $form->getFormDAO();
-		$formDTO = $form->getFormDTO();
-		
-		$formDAOObj = new $formDAO();
-		$formDTOObj = new $formDTO( $form );
 
-		$retVal = $formDAOObj->CRUDUpdate( $formDTOObj );
-		
+		$formDAO = $this->buildDAO( $form );
+		$formDTO = $this->buildDTO( $form );
+
+		$retVal = $formDAO->CRUDUpdate( $formDTO );
+
 		return $retVal;
 	}
 
 	public function processDestroy( $form ) {
 		$retVal = null;
-		
-		$formDAO = $form->getFormDAO();
-		$formDTO = $form->getFormDTO();
-		
-		$formDAOObj = new $formDAO();
-		$formDTOObj = new $formDTO( $form );
 
-		$retVal = $formDAOObj->CRUDDestroy( $formDTOObj );
-		
+		$formDAO = $this->buildDAO( $form );
+		$formDTO = $this->buildDTO( $form );
+
+		$retVal = $formDAO->CRUDDestroy( $formDTO );
+
+		return $retVal;
+	}
+
+	private function buildDAO( $form ) {
+		$retVal = null;
+
+		$formDAOFactoryName = $form->getFormDAOFactory();
+		$formDAOFactory = $formDAOFactoryName::getInstance();
+
+		$formDAOName = $form->getFormDAO();
+		$getDAOMethod = 'get' . $formDAOName;
+
+		$formDAO = $formDAOFactory->$getDAOMethod( $form->getFormDAOConnectionName() );
+
+		$retVal = $formDAO;
+
+		return $retVal;
+	}
+
+	private function buildDTO( $form ) {
+		$retVal = null;
+
+		$formDTOName = $form->getFormDTO();
+
+		// TODO initialize this bad boy
+		$formDTO = new $formDTOName( $form );
+
+		$retVal = $formDTO;
+
 		return $retVal;
 	}
 

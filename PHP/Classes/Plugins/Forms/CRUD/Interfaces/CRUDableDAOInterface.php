@@ -38,13 +38,13 @@
  */
 interface CRUDableDAOInterface {
 
-	abstract public function CRUDCreate( $formDTO );
+	public function CRUDCreate( $formDTO );
 
-	abstract public function CRUDRead( $formDTO );
+	public function CRUDRead( $formDTO );
 
-	abstract public function CRUDUpdate( $formDTO );
+	public function CRUDUpdate( $formDTO );
 
-	abstract public function CRUDDestroy( $formDTO );
+	public function CRUDDestroy( $formDTO );
 
 }
 

@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class RegistrationDAO extends AbstractDAO implements CRUDableDAOInterface {
+abstract class RegistrationDAO extends AbstractDAO implements CRUDableDAOInterface {
 
 }
 
