@@ -43,6 +43,8 @@ class Form {
 	protected $_formLegend = null;
 	protected $_formLegendToken = null;
 
+	protected $_formDAOConnectionName = null;
+	protected $_formDAOFactory = null;
 	protected $_formDAO = null;
 	protected $_formDTO = null;
 
@@ -300,20 +302,36 @@ class Form {
 	}
 
 	// DAO/DTO
-	public function setFormDAO( $formDAO ) {
-		$this->_formDAO = $formDAO;
+	public function getFormDAOConnectionName() {
+		return $this->_formDAOConnectionName;
+	}
+
+	public function setFormDAOConnectionName( $formDAOConnectionName ) {
+		$this->_formDAOConnectionName = $formDAOConnectionName;
+	}
+
+	public function getFormDAOFactory() {
+		return $this->_formDAOFactory;
+	}
+
+	public function setFormDAOFactory( $formDAOFactory ) {
+		$this->_formDAOFactory = $formDAOFactory;
 	}
 
 	public function getFormDAO() {
 		return $this->_formDAO;
 	}
 
-	public function setFormDTO( $formDTO ) {
-		$this->_formDTO = $formDTO;
+	public function setFormDAO( $formDAO ) {
+		$this->_formDAO = $formDAO;
 	}
 
 	public function getFormDTO() {
 		return $this->_formDTO;
+	}
+
+	public function setFormDTO( $formDTO ) {
+		$this->_formDTO = $formDTO;
 	}
 
 	// Formatters

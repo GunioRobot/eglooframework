@@ -182,4 +182,9 @@ class AbstractDAOFactory {
 		return $this->getAppropriateFactory( $connection_name )->getGenericPLFunctionDAO();
 	}
 
+	public function __call( $method, $args ) {
+		echo_r($args);
+		die_r($method);
+	}
+
 }

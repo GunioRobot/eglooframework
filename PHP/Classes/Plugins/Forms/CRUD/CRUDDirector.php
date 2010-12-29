@@ -110,9 +110,18 @@ class CRUDDirector {
 	public function processCreate( $form ) {
 		$retVal = null;
 		
-		$formDAO = $form->getFormDAO();
-		$formDTO = $form->getFormDTO();
-		
+		$formDAOFactoryName = $form->getFormDAOFactory();
+		$formDAOName = $form->getFormDAO();
+		$formDTOName = $form->getFormDTO();
+
+		$formDAOFactory = $formDAOFactoryName::getInstance();
+
+		$getDAOMethod = 'get' . $formDAOName;
+
+		$formDAO = $formDAOFactory->$getDAOMethod( $form->getFormDAOConnectionName() );
+
+		$formDAO->
+
 		$formDAOObj = new $formDAO();
 		$formDTOObj = new $formDTO( $form );
 

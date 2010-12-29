@@ -40,7 +40,7 @@ abstract class AbstractDAO {
 
 	protected $_connection_name = null;
 
-	public function __construct( $connection_name ) {
+	public function __construct( $connection_name = 'egPrimary' ) {
 		$this->_connection_name = $connection_name;
 	}
 

@@ -147,6 +147,12 @@ final class FormDirector {
 				throw new ErrorException('Invalid secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 			}
 
+			$formNodeDAOFactory = isset($formNode['daoFactory']) ? (string) $formNode['daoFactory'] : NULL;
+
+			if ( !$formNodeDAOFactory || trim($formNodeDAOFactory) === '' ) {
+				throw new ErrorException('No DAOFactory specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
+			}
+
 			$formNodeDAO = isset($formNode['dao']) ? (string) $formNode['dao'] : NULL;
 
 			if ( !$formNodeDAO || trim($formNodeDAO) === '' ) {
@@ -210,6 +216,7 @@ final class FormDirector {
 												'inputLocalizer' => $formNodeInputLocalizer,
 												'validated' => $formNodeValidated,
 												'secure' => $formNodeSecure,
+												'daoFactory' => $formNodeDAOFactory,
 												'DAO' => $formNodeDAO,
 												'DTO' => $formNodeDTO,
 												'validator' => $formNodeValidator,
@@ -796,6 +803,8 @@ final class FormDirector {
 		$newFormObj->setFormLegend( $formNode['legend'] );
 		$newFormObj->setFormLegendToken( $formNode['legendToken'] );
 
+		$newFormObj->setFormDAOConnectionName( $formNode['daoConnectionName'] );
+		$newFormObj->setFormDAOFactory( $formNode['daoFactory'] );
 		$newFormObj->setFormDAO( $formNode['DAO'] );
 		$newFormObj->setFormDTO( $formNode['DTO'] );
 
