@@ -1,0 +1,23 @@
+
+/**
+ * @var ${4:Type} ${2:Description}
+ */
+protected \$_${1:name} = null;
+
+/**
+ * Returns protected class member \$_${1:name}
+ *
+ * @return ${4:Void} ${2:Description}
+ */
+public function get${1/(_)|(id)|([^_]*)/(?1::(?2:ID:\u$3))/g:name}() {
+	return \$_${1:name};
+}
+
+/**
+ * Sets protected class member \$_${1:name}
+ *
+ * @param ${1:name} ${4:Type} ${2:Description}
+ */
+public function set${1/(_)|(id)|([^_]*)/(?1::(?2:ID:\u$3))/g:name}( \$${1:name} ) {
+	\$_${1:name} = \$${1:name};
+}
