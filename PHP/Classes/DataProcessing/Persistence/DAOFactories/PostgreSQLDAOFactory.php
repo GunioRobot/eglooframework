@@ -122,5 +122,11 @@ class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 		return new PGSQLGenericPLFunctionDAO( $this->_connection_name );
 	}
 
+	public function __call( $method, $args ) {
+		$genericDAORequested = substr( $method, 3 );
+		$concreteDAORequested = 'PGSQL' . $genericDAORequested;
+		return new $concreteDAORequested( $this->_connection_name );
+	}
+
 }
 
