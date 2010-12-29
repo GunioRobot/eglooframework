@@ -173,7 +173,8 @@ class CRUDDirector {
 		$formDTOName = $form->getFormDTO();
 
 		// TODO initialize this bad boy
-		$formDTO = new $formDTOName( $form );
+		$formDTO = new $formDTOName();
+		$formDTO->initWithForm( $form );
 
 		$retVal = $formDTO;
 

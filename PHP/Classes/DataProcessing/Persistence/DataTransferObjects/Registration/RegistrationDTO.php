@@ -36,409 +36,845 @@
  * @package $package
  * @subpackage $subpackage
  */
-class RegistrationDTO extends DataTransferObject {
+class RegistrationDTO extends DataTransferObject implements FormDTOInterface {
 
-	// Registration Transaction
+	/**
+	 * @var integer Unique registration ID
+	 */
 	protected $_registration_id = null;
 
-	// Form Meta
-	protected $_form_action = null;
-
-	// Form Localization
-	protected $_displayLocalization = null;
-	protected $_inputLocalization = null;
-
-	// Address Information
-	protected $_address_id = null;
-	protected $_address_attention = null;
-	protected $_address_lines = null;
-	protected $_address_locality = null;
-	protected $_address_town = null;
-	protected $_address_region = null;
-	protected $_address_province = null;
-	protected $_address_postal_code = null;
-	protected $_address_country = null;
-	protected $_address_additional_info = null;
-
-	// DTO Version
-	protected $_addressDTO = null;
-
-	// Billing Address Information
-	// protected $_billing_address_id = null;
-	// protected $_billing_address_attention = null;
-	// protected $_billing_address_lines = null;
-	// protected $_billing_address_locality = null;
-	// protected $_billing_address_town = null;
-	// protected $_billing_address_region = null;
-	// protected $_billing_address_province = null;
-	// protected $_billing_address_postal_code = null;
-	// protected $_billing_address_country = null;
-	// protected $_billing_address_additional_info = null;
-
-	// DTO Version
-	// protected $_billingAddressDTO = null;
-
-	// Shipping Address Information
-	// protected $_shipping_address_id = null;
-	// protected $_shipping_address_attention = null;
-	// protected $_shipping_address_lines = null;
-	// protected $_shipping_address_locality = null;
-	// protected $_shipping_address_town = null;
-	// protected $_shipping_address_region = null;
-	// protected $_shipping_address_province = null;
-	// protected $_shipping_address_postal_code = null;
-	// protected $_shipping_address_country = null;
-	// protected $_shipping_address_additional_info = null;
-
-	// DTO Version
-	// protected $_shippingAddressDTO = null;
-
-	// Email Address
-	protected $_primary_email_address = null;
-	protected $_secondary_email_address = null;
-
-	// DTO Version
-	protected $_emailAddressDTO = null;
-
-	// Password Fields
-	protected $_password_field_one = null;
-	protected $_password_field_two = null;
-
-	// Payment Method
-	// protected $_payment_method_id;
-
-	// DTO Version
-	// protected $_paymentMethodDTO = null;
-
-	// Person Information
-	protected $_first_name = null;
-	protected $_middle_name_or_initial = null;
-	protected $_last_name = null;
-
-	protected $_birth_month = null;
-	protected $_birth_day = null;
-	protected $_birth_year = null;
-
-	protected $_gender = null;
-
-	// DTO Version
-	protected $_personDTO = null;
-
-	// Phone
-	protected $_primary_phone_number = null;
-	protected $_secondary_phone_number = null;
-
-	// DTO Version
-	protected $_phoneDTO = null;
-
-	// Additional Contact Options
-	protected $_fax_phone_number = null;
-	protected $_mobile_phone_number = null;
-	protected $_office_phone_number = null;
-
-	// User (Meta)
-	protected $_username = null;
-	protected $_role_id = null;
-
-	// DTO Version
-	protected $_userDTO = null;
-
-	public function __construct( $registrationForm ) {
-		die_r($registrationForm);
-	}
-
+	/**
+	 * Returns protected class member $_registration_id
+	 *
+	 * @return integer Unique registration ID
+	 */
 	public function getRegistrationID() {
 		return $this->_registration_id;
 	}
 
+	/**
+	 * Sets protected class member $_registration_id
+	 *
+	 * @param registration_id integer Unique registration ID
+	 */
 	public function setRegistrationID( $registration_id ) {
 		$this->_registration_id = $registration_id;
 	}
 
+	/**
+	 * @var mixed Form action of this registration
+	 */
+	protected $_form_action = null;
+
+	/**
+	 * Returns protected class member $_form_action
+	 *
+	 * @return mixed Form action of this registration
+	 */
 	public function getFormAction() {
 		return $this->_form_action;
 	}
 
+	/**
+	 * Sets protected class member $_form_action
+	 *
+	 * @param form_action mixed Form action of this registration
+	 */
 	public function setFormAction( $form_action ) {
-		$this->_form_action = $_form_action;
+		$this->_form_action = $form_action;
 	}
 
+	/**
+	 * @var mixed Display localization of this registration form
+	 */
+	protected $_display_localization = null;
+
+	/**
+	 * Returns protected class member $_display_localization
+	 *
+	 * @return mixed Display localization of this registration form
+	 */
 	public function getDisplayLocalization() {
-		return $this->_displayLocalization;
+		return $this->_display_localization;
 	}
 
-	public function setDisplayLocalization( $displayLocalization ) {
-		$this->_displayLocalization = $displayLocalization;
+	/**
+	 * Sets protected class member $_display_localization
+	 *
+	 * @param display_localization mixed Display localization of this registration form
+	 */
+	public function setDisplayLocalization( $display_localization ) {
+		$this->_display_localization = $display_localization;
 	}
 
+	/**
+	 * @var mixed Input localization of this registration form
+	 */
+	protected $_input_localization = null;
+
+	/**
+	 * Returns protected class member $_input_localization
+	 *
+	 * @return mixed Input localization of this registration form
+	 */
 	public function getInputLocalization() {
-		return $this->_inputLocalization;
+		return $this->_input_localization;
 	}
 
-	public function setInputLocalization( $inputLocalization ) {
-		$this->_inputLocalization = $inputLocalization;
+	/**
+	 * Sets protected class member $_input_localization
+	 *
+	 * @param input_localization mixed Input localization of this registration form
+	 */
+	public function setInputLocalization( $input_localization ) {
+		$this->_input_localization = $input_localization;
 	}
 
-/*
-protected $_address_id = null;
-protected $_address_attention = null;
-protected $_address_lines = null;
-protected $_address_locality = null;
-protected $_address_town = null;
-protected $_address_region = null;
-protected $_address_province = null;
-protected $_address_postal_code = null;
-protected $_address_country = null;
-protected $_address_additional_info = null;
-*/
+
+	/**
+	 * @var string Unique address ID
+	 */
+	protected $_address_id = null;
+
+	/**
+	 * Returns protected class member $_address_id
+	 *
+	 * @return string Unique address ID
+	 */
 	public function getAddressID() {
 		return $this->_address_id;
 	}
 
+	/**
+	 * Sets protected class member $_address_id
+	 *
+	 * @param address_id string Unique address ID
+	 */
 	public function setAddressID( $address_id ) {
 		$this->_address_id = $address_id;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Attention of the address
+	 */
+	protected $_address_attention = null;
+
+	/**
+	 * Returns protected class member $_address_attention
+	 *
+	 * @return string Attention of the address
+	 */
+	public function getAddressAttention() {
+		return $this->_address_attention;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_attention
+	 *
+	 * @param address_attention string Attention of the address
+	 */
+	public function setAddressAttention( $address_attention ) {
+		$this->_address_attention = $address_attention;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var array Lines of the address (first, variable)
+	 */
+	protected $_address_lines = null;
+
+	/**
+	 * Returns protected class member $_address_lines
+	 *
+	 * @return array Lines of the address (first, variable)
+	 */
+	public function getAddressLines() {
+		return $this->_address_lines;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_lines
+	 *
+	 * @param address_lines array Lines of the address (first, variable)
+	 */
+	public function setAddressLines( $address_lines ) {
+		$this->_address_lines = $address_lines;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Locality of address
+	 */
+	protected $_address_locality = null;
+
+	/**
+	 * Returns protected class member $_address_locality
+	 *
+	 * @return mixed Locality of address
+	 */
+	public function getAddressLocality() {
+		return $this->_address_locality;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_locality
+	 *
+	 * @param address_locality mixed Locality of address
+	 */
+	public function setAddressLocality( $address_locality ) {
+		$this->_address_locality = $address_locality;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+
+	/**
+	 * @var mixed Town of address
+	 */
+	protected $_address_town = null;
+
+	/**
+	 * Returns protected class member $_address_town
+	 *
+	 * @return mixed Town of address
+	 */
+	public function getAddressTown() {
+		return $this->_address_town;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_town
+	 *
+	 * @param address_town mixed Town of address
+	 */
+	public function setAddressTown( $address_town ) {
+		$this->_address_town = $address_town;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Region of address
+	 */
+	protected $_address_region = null;
+
+	/**
+	 * Returns protected class member $_address_region
+	 *
+	 * @return mixed Region of address
+	 */
+	public function getAddressRegion() {
+		return $this->_address_region;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_region
+	 *
+	 * @param address_region mixed Region of address
+	 */
+	public function setAddressRegion( $address_region ) {
+		$this->_address_region = $address_region;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Province of address
+	 */
+	protected $_address_province = null;
+
+	/**
+	 * Returns protected class member $_address_province
+	 *
+	 * @return mixed Province of address
+	 */
+	public function getAddressProvince() {
+		return $this->_address_province;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_province
+	 *
+	 * @param address_province mixed Province of address
+	 */
+	public function setAddressProvince( $address_province ) {
+		$this->_address_province = $address_province;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Postal code of address
+	 */
+	protected $_address_postal_code = null;
+
+	/**
+	 * Returns protected class member $_address_postal_code
+	 *
+	 * @return mixed Postal code of address
+	 */
+	public function getAddressPostalCode() {
+		return $this->_address_postal_code;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_postal_code
+	 *
+	 * @param address_postal_code mixed Postal code of address
+	 */
+	public function setAddressPostalCode( $address_postal_code ) {
+		$this->_address_postal_code = $address_postal_code;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Country of address
+	 */
+	protected $_address_country = null;
+
+	/**
+	 * Returns protected class member $_address_country
+	 *
+	 * @return mixed Country of address
+	 */
+	public function getAddressCountry() {
+		return $this->_address_country;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_country
+	 *
+	 * @param address_country mixed Country of address
+	 */
+	public function setAddressCountry( $address_country ) {
+		$this->_address_country = $address_country;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Additional information for address
+	 */
+	protected $_address_additional_info = null;
+
+	/**
+	 * Returns protected class member $_address_additional_info
+	 *
+	 * @return string Additional information for address
+	 */
+	public function getAddressAdditionalInfo() {
+		return $this->_address_additional_info;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_address_additional_info
+	 *
+	 * @param address_additional_info string Additional information for address
+	 */
+	public function setAddressAdditionalInfo( $address_additional_info ) {
+		$this->_address_additional_info = $address_additional_info;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var AddressDTO DTO representation of address
+	 */
+	protected $_addressDTO = null;
+
+	/**
+	 * Returns protected class member $_addressDTO
+	 *
+	 * @return AddressDTO DTO representation of address
+	 */
+	public function getAddressDTO() {
+		return $this->_addressDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_addressDTO
+	 *
+	 * @param addressDTO AddressDTO DTO representation of address
+	 */
+	public function setAddressDTO( $addressDTO ) {
+		$this->_addressDTO = $addressDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Primary email address
+	 */
+	protected $_primary_email_address = null;
+
+	/**
+	 * Returns protected class member $_primary_email_address
+	 *
+	 * @return mixed Primary email address
+	 */
+	public function getPrimaryEmailAddress() {
+		return $this->_primary_email_address;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_primary_email_address
+	 *
+	 * @param primary_email_address mixed Primary email address
+	 */
+	public function setPrimaryEmailAddress( $primary_email_address ) {
+		$this->_primary_email_address = $primary_email_address;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Secondary email address
+	 */
+	protected $_secondary_email_address = null;
+
+	/**
+	 * Returns protected class member $_secondary_email_address
+	 *
+	 * @return mixed Secondary email address
+	 */
+	public function getSecondaryEmailAddress() {
+		return $this->_secondary_email_address;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_secondary_email_address
+	 *
+	 * @param secondary_email_address mixed Secondary email address
+	 */
+	public function setSecondaryEmailAddress( $secondary_email_address ) {
+		$this->_secondary_email_address = $secondary_email_address;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var EmailAddressDTO DTO representation of primary email address
+	 */
+	protected $_primaryEmailAddressDTO = null;
+
+	/**
+	 * Returns protected class member $_primaryEmailAddressDTO
+	 *
+	 * @return EmailAddressDTO DTO representation of primary email address
+	 */
+	public function getPrimaryEmailAddressDTO() {
+		return $this->_primaryEmailAddressDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_primaryEmailAddressDTO
+	 *
+	 * @param primaryEmailAddressDTO EmailAddressDTO DTO representation of primary email address
+	 */
+	public function setPrimaryEmailAddressDTO( $primaryEmailAddressDTO ) {
+		$this->_primaryEmailAddressDTO = $primaryEmailAddressDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var EmailAddressDTO DTO representation of secondary email address
+	 */
+	protected $_secondaryEmailAddressDTO = null;
+
+	/**
+	 * Returns protected class member $_secondaryEmailAddressDTO
+	 *
+	 * @return EmailAddressDTO DTO representation of secondary email address
+	 */
+	public function getSecondaryEmailAddressDTO() {
+		return $this->_secondaryEmailAddressDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_secondaryEmailAddressDTO
+	 *
+	 * @param secondaryEmailAddressDTO EmailAddressDTO DTO representation of secondary email address
+	 */
+	public function setSecondaryEmailAddressDTO( $secondaryEmailAddressDTO ) {
+		$this->_secondaryEmailAddressDTO = $secondaryEmailAddressDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string First password field submitted
+	 */
+	protected $_password_field_one = null;
+
+	/**
+	 * Returns protected class member $_password_field_one
+	 *
+	 * @return string First password field submitted
+	 */
+	public function getPasswordFieldOne() {
+		return $this->_password_field_one;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_password_field_one
+	 *
+	 * @param password_field_one string First password field submitted
+	 */
+	public function setPasswordFieldOne( $password_field_one ) {
+		$this->_password_field_one = $password_field_one;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Second password field submitted
+	 */
+	protected $_password_field_two = null;
+
+	/**
+	 * Returns protected class member $_password_field_two
+	 *
+	 * @return string Second password field submitted
+	 */
+	public function getPasswordFieldTwo() {
+		return $this->_password_field_two;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_password_field_two
+	 *
+	 * @param password_field_two string Second password field submitted
+	 */
+	public function setPasswordFieldTwo( $password_field_two ) {
+		$this->_password_field_two = $password_field_two;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string First name of person registering
+	 */
+	protected $_first_name = null;
+
+	/**
+	 * Returns protected class member $_first_name
+	 *
+	 * @return string First name of person registering
+	 */
+	public function getFirstName() {
+		return $this->_first_name;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_first_name
+	 *
+	 * @param first_name string First name of person registering
+	 */
+	public function setFirstName( $first_name ) {
+		$this->_first_name = $first_name;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Middle name or initial of person registering
+	 */
+	protected $_middle_name_or_initial = null;
+
+	/**
+	 * Returns protected class member $_middle_name_or_initial
+	 *
+	 * @return string Middle name or initial of person registering
+	 */
+	public function getMiddleNameOrInitial() {
+		return $this->_middle_name_or_initial;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_middle_name_or_initial
+	 *
+	 * @param middle_name_or_initial string Middle name or initial of person registering
+	 */
+	public function setMiddleNameOrInitial( $middle_name_or_initial ) {
+		$this->_middle_name_or_initial = $middle_name_or_initial;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Last name of person registering
+	 */
+	protected $_last_name = null;
+
+	/**
+	 * Returns protected class member $_last_name
+	 *
+	 * @return string Last name of person registering
+	 */
+	public function getLastName() {
+		return $this->_last_name;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_last_name
+	 *
+	 * @param last_name string Last name of person registering
+	 */
+	public function setLastName( $last_name ) {
+		$this->_last_name = $last_name;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Birth month of person registering
+	 */
+	protected $_birth_month = null;
+
+	/**
+	 * Returns protected class member $_birth_month
+	 *
+	 * @return mixed Birth month of person registering
+	 */
+	public function getBirthMonth() {
+		return $this->_birth_month;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_birth_month
+	 *
+	 * @param birth_month mixed Birth month of person registering
+	 */
+	public function setBirthMonth( $birth_month ) {
+		$this->_birth_month = $birth_month;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Birth date of person registering
+	 */
+	protected $_birth_day = null;
+
+	/**
+	 * Returns protected class member $_birth_day
+	 *
+	 * @return mixed Birth date of person registering
+	 */
+	public function getBirthDay() {
+		return $this->_birth_day;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_birth_day
+	 *
+	 * @param birth_day mixed Birth date of person registering
+	 */
+	public function setBirthDay( $birth_day ) {
+		$this->_birth_day = $birth_day;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Birth year of person registering
+	 */
+	protected $_birth_year = null;
+
+	/**
+	 * Returns protected class member $_birth_year
+	 *
+	 * @return mixed Birth year of person registering
+	 */
+	public function getBirthYear() {
+		return $this->_birth_year;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_birth_year
+	 *
+	 * @param birth_year mixed Birth year of person registering
+	 */
+	public function setBirthYear( $birth_year ) {
+		$this->_birth_year = $birth_year;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Gender of person registering
+	 */
+	protected $_gender = null;
+
+	/**
+	 * Returns protected class member $_gender
+	 *
+	 * @return mixed Gender of person registering
+	 */
+	public function getGender() {
+		return $this->_gender;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_gender
+	 *
+	 * @param gender mixed Gender of person registering
+	 */
+	public function setGender( $gender ) {
+		$this->_gender = $gender;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var PersonDTO DTO representation of person registering
+	 */
+	protected $_personDTO = null;
+
+	/**
+	 * Returns protected class member $_personDTO
+	 *
+	 * @return PersonDTO DTO representation of person registering
+	 */
+	public function getPersonDTO() {
+		return $this->_personDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_personDTO
+	 *
+	 * @param personDTO PersonDTO DTO representation of person registering
+	 */
+	public function setPersonDTO( $personDTO ) {
+		$this->_personDTO = $personDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Primary phone number of person registering
+	 */
+	protected $_primary_phone_number = null;
+
+	/**
+	 * Returns protected class member $_primary_phone_number
+	 *
+	 * @return mixed Primary phone number of person registering
+	 */
+	public function getPrimaryPhoneNumber() {
+		return $this->_primary_phone_number;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_primary_phone_number
+	 *
+	 * @param primary_phone_number mixed Primary phone number of person registering
+	 */
+	public function setPrimaryPhoneNumber( $primary_phone_number ) {
+		$this->_primary_phone_number = $primary_phone_number;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Secondary phone number of person registering
+	 */
+	protected $_secondary_phone_number = null;
+
+	/**
+	 * Returns protected class member $_secondary_phone_number
+	 *
+	 * @return mixed Secondary phone number of person registering
+	 */
+	public function getSecondaryPhoneNumber() {
+		return $this->_secondary_phone_number;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_secondary_phone_number
+	 *
+	 * @param secondary_phone_number mixed Secondary phone number of person registering
+	 */
+	public function setSecondaryPhoneNumber( $secondary_phone_number ) {
+		$this->_secondary_phone_number = $secondary_phone_number;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var PhoneNumberDTO DTO representation of primary phone number
+	 */
+	protected $_primaryPhoneNumberDTO = null;
+
+	/**
+	 * Returns protected class member $_primaryPhoneNumberDTO
+	 *
+	 * @return PhoneNumberDTO DTO representation of primary phone number
+	 */
+	public function getPrimaryPhoneNumberDTO() {
+		return $this->_primaryPhoneNumberDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_primaryPhoneNumberDTO
+	 *
+	 * @param primaryPhoneNumberDTO PhoneNumberDTO DTO representation of primary phone number
+	 */
+	public function setPrimaryPhoneNumberDTO( $primaryPhoneNumberDTO ) {
+		$this->_primaryPhoneNumberDTO = $primaryPhoneNumberDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var PhoneNumberDTO DTO representation of secondary phone number
+	 */
+	protected $_secondaryPhoneNumberDTO = null;
+
+	/**
+	 * Returns protected class member $_secondaryPhoneNumberDTO
+	 *
+	 * @return PhoneNumberDTO DTO representation of secondary phone number
+	 */
+	public function getSecondaryPhoneNumberDTO() {
+		return $this->_secondaryPhoneNumberDTO;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_secondaryPhoneNumberDTO
+	 *
+	 * @param secondaryPhoneNumberDTO PhoneNumberDTO DTO representation of secondary phone number
+	 */
+	public function setSecondaryPhoneNumberDTO( $secondaryPhoneNumberDTO ) {
+		$this->_secondaryPhoneNumberDTO = $secondaryPhoneNumberDTO;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var string Username of the person registering
+	 */
+	protected $_username = null;
+
+	/**
+	 * Returns protected class member $_username
+	 *
+	 * @return string Username of the person registering
+	 */
+	public function getUsername() {
+		return $this->_username;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_username
+	 *
+	 * @param username string Username of the person registering
+	 */
+	public function setUsername( $username ) {
+		$this->_username = $username;
 	}
 
-	public function getRegistrationID() {
-		return $this->_registration_id;
+	/**
+	 * @var mixed Role ID of the user registering
+	 */
+	protected $_role_id = null;
+
+	/**
+	 * Returns protected class member $_role_id
+	 *
+	 * @return mixed Role ID of the user registering
+	 */
+	public function getRoleID() {
+		return $this->_role_id;
 	}
 
-	public function setRegistrationID( $registration_id ) {
-		$this->_registration_id = $registration_id;
+	/**
+	 * Sets protected class member $_role_id
+	 *
+	 * @param role_id mixed Role ID of the user registering
+	 */
+	public function setRoleID( $role_id ) {
+		$this->_role_id = $role_id;
 	}
 
+	/**
+	 * @var UserDTO DTO representation of the user registering
+	 */
+	protected $_userDTO = null;
+
+	/**
+	 * Returns protected class member $_userDTO
+	 *
+	 * @return UserDTO DTO representation of the user registering
+	 */
+	public function getUserDTO() {
+		return $this->_userDTO;
+	}
+
+	/**
+	 * Sets protected class member $_userDTO
+	 *
+	 * @param userDTO UserDTO DTO representation of the user registering
+	 */
+	public function setUserDTO( $userDTO ) {
+		$this->_userDTO = $userDTO;
+	}
+
+	public function __construct() {}
+
+	public function initWithForm( Form $form ) {
+		die_r($form);
+	}
+
+	public function __destruct() {}
 
 }
 
