@@ -1548,10 +1548,10 @@ final class FormDirector {
 		$newFormAttributeSetObj->setPrependHTML( $formAttributeSetNode['prependHTML'] );
 		$newFormAttributeSetObj->setCSSClasses( $formAttributeSetNode['cssClasses']);
 
-		$newFormAttributeSetObj->setFormDAOConnectionName( $formAttributeSetNode['daoConnectionName'] );
-		$newFormAttributeSetObj->setFormDAOFactory( $formAttributeSetNode['daoFactory'] );
-		$newFormAttributeSetObj->setFormDAO( $formAttributeSetNode['DAO'] );
-		$newFormAttributeSetObj->setFormDTO( $formAttributeSetNode['DTO'] );
+		$newFormAttributeSetObj->setDAOConnectionName( $formAttributeSetNode['daoConnectionName'] );
+		$newFormAttributeSetObj->setDAOFactory( $formAttributeSetNode['daoFactory'] );
+		$newFormAttributeSetObj->setDAO( $formAttributeSetNode['DAO'] );
+		$newFormAttributeSetObj->setDTO( $formAttributeSetNode['DTO'] );
 
 		foreach( $formAttributeSetNode['formFieldSets'] as $formFieldSet ) {
 			$newFormFieldSetObj = null;
