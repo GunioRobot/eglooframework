@@ -43,6 +43,11 @@ class Form {
 	protected $_formLegend = null;
 	protected $_formLegendToken = null;
 
+	/**
+	 * @var array an array of FormAttributeSets
+	 */
+	protected $_formAttributeSets = array();
+
 	protected $_formDAOConnectionName = null;
 	protected $_formDAOFactory = null;
 	protected $_formDAO = null;
@@ -332,6 +337,47 @@ class Form {
 
 	public function setFormDTO( $formDTO ) {
 		$this->_formDTO = $formDTO;
+	}
+
+	/**
+	 * Returns protected class member $_formAttributeSets
+	 *
+	 * @return array an array of FormAttributeSets
+	 */
+	public function getFormAttributeSets() {
+		return $this->_formAttributeSets;
+	}
+
+	/**
+	 * Sets protected class member $_formAttributeSets
+	 *
+	 * @param formAttributeSets array an array of FormAttributeSets
+	 */
+	public function setFormAttributeSets( $formAttributeSets ) {
+		$this->_formAttributeSets = $formAttributeSets;
+	}
+
+	/**
+	 * Returns value for key in protected class member $_formAttributeSets
+	 *
+	 * @param $attribute_set_name string the name of the FormAttributeSet to return
+	 *
+	 * @return array an array of FormAttributeSets
+	 */
+	public function getFormAttributeSet( $attribute_set_name ) {
+		return $this->_formAttributeSets[ $attribute_set_name ];
+	}
+
+	/**
+	 * Returns protected class member $_formAttributeSets
+	 *
+	 * @param $attribute_set_name string the name of the FormAttributeSet to set
+	 * @param $form_attribute_set FormAttributeSet the FormAttributeSet to set
+	 *
+	 * @return array an array of FormAttributeSets
+	 */
+	public function setFormAttributeSet( $attribute_set_name, $form_attribute_set ) {
+		return $this->_formAttributeSets[ $attribute_set_name ] = $form_attribute_set;
 	}
 
 	// Formatters
