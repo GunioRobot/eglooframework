@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * eGloo Framework Provided Forms Dispatch File
+ *
+ * Dispatches framework provided Forms requests for an eGloo application
+ * 
+ * Copyright 2010 eGloo, LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *  
+ * @author George Cooper
+ * @copyright 2010 eGloo, LLC
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @package Forms
+ * @version 1.0
+ -->
+<tns:Forms xmlns:tns="com.egloo.www/eGlooForms" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="com.egloo.www/eGlooForms schemas/eGlooForms.xsd">
+	<Form id="registration" displayLocalized="true" displayLocalizer="GenericFormDisplayLocalizer" inputLocalized="true"
+			inputLocalizer="GenericFormInputLocalizer" daoFactory="AbstractDAOFactory" daoConnectionName="egPrimary" dao="RegistrationDAO"
+			dto="RegistrationDTO" validated="true" secure="false" validator="RegistrationFormValidator" dataFormatter="RegistrationFormDataFormatter"
+			displayFormatter="RegistrationFormDisplayFormatter">
+		<Legend legendToken="registration_form"><![CDATA[]]></Legend>
+		<PrependHTML><![CDATA[]]></PrependHTML>
+		<AppendHTML><![CDATA[]]></AppendHTML>
+		<CSSClasses><![CDATA[egloo-form]]></CSSClasses>
+		<FormFieldSet id="address" validated="true" secure="false" validator="AddressFormFieldSetValidator">
+			<Legend legendToken="address_fieldset"><![CDATA[Address]]></Legend>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<CSSClasses><![CDATA[egloo-form-field-set]]></CSSClasses>
+			<FormField id="address_id" type="hidden" constraint="numeric" allowNull="true">
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_id"></ErrorMessage>
+				<ErrorHandler><![CDATA[FormErrorHandler]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_attention" type="text">
+				<DisplayLabel localizationToken="address_attention"><![CDATA[Attention:]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_attention"></ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_lines" type="container">
+				<FormField id="address_line_one" type="text">
+					<DisplayLabel localizationToken="address_line_one">Address 1</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_one_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<FormField id="address_line_two" type="text">
+					<DisplayLabel localizationToken="address_line_two">Address 2</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_two_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<FormField id="address_line_three" type="text">
+					<DisplayLabel localizationToken="address_line_three">Address 3</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_three_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<FormField id="address_line_four" type="text">
+					<DisplayLabel localizationToken="address_line_four">Address 4</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_four_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<FormField id="address_line_five" type="text">
+					<DisplayLabel localizationToken="address_line_five">Address 5</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_five_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<FormField id="address_line_six" type="text">
+					<DisplayLabel localizationToken="address_line_six">Address 6</DisplayLabel>
+					<PrependHTML><![CDATA[]]></PrependHTML>
+					<AppendHTML><![CDATA[]]></AppendHTML>
+					<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+					<ErrorMessage localizationToken="address_line_six_error">Please enter a valid address</ErrorMessage>
+					<ErrorHandler><![CDATA[]]></ErrorHandler>
+				</FormField>
+				<!-- <ErrorMessage localizationToken="address_fieldset_error_error">Please enter a valid address</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler> -->
+			</FormField>
+			<FormField id="address_locality" type="text">
+				<DisplayLabel localizationToken="address_locality"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_locality_error">Please enter a valid locality</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_town" type="text">
+				<DisplayLabel localizationToken="address_town"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_town_error">Please enter a valid city</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_region" type="text">
+				<DisplayLabel localizationToken="address_region"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_region_error">Please enter a valid region</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_province" type="text">
+				<DisplayLabel localizationToken="address_province"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_province_error">Please enter a valid state or province</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_postal_code" type="text" constraint="~.*~">
+				<DisplayLabel localizationToken="address_postal_code"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_postal_code_error">Please enter a valid postal code</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_country" type="text">
+				<DisplayLabel localizationToken="address_country"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_country_error">Please enter a valid country</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="address_additional_info" type="textarea">
+				<DisplayLabel localizationToken="address_additional_info"><![CDATA[]]></DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="address_additional_info_error"></ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+		</FormFieldSet>
+		<FormFieldSet id="passwords" validated="true" secure="false" validator="PasswordFormFieldSetValidator">
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<CSSClasses><![CDATA[egloo-form-field-set]]></CSSClasses>
+			<FormField id="password_one" type="password">
+				<DisplayLabel localizationToken="password_one">Password</DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="password_one_error">Please enter a valid password</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+			<FormField id="password_two" type="password">
+				<DisplayLabel localizationToken="password_two">Confirm Password</DisplayLabel>
+				<PrependHTML><![CDATA[]]></PrependHTML>
+				<AppendHTML><![CDATA[]]></AppendHTML>
+				<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+				<ErrorMessage localizationToken="password_two_error">Passwords do not match</ErrorMessage>
+				<ErrorHandler><![CDATA[]]></ErrorHandler>
+			</FormField>
+		</FormFieldSet>
+		<FormField id="submit" type="submit" value="Submit">
+			<DisplayLabel localizationToken="submit">Submit</DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="submit_error">Please enter a valid password</ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+		<CRUD>
+			<!-- Have handlers for a write fail, a read fail, update, destroy, etc.-->
+			<Create>
+				<Trigger triggerType="FormField" triggerKey="submit" triggerValue="Submit" />
+				<!-- <Trigger triggerType="FormField" triggerKey="create" triggerValue="Create" /> -->
+			</Create>
+			<Read>
+				<!-- If nothing provided, CRUD action not supported.  Reading a registration form makes no sense, for instance -->
+				<!-- <Trigger triggerType="GET" triggerKey="egSlug" triggerValue="^[0-9]+$" /> -->
+				<!-- <Trigger triggerType="POST" triggerKey="someKey" triggerValue="^[0-9]+?[a-zA-Z]{1}$" /> -->
+			</Read>
+			<Update>
+				<!-- If nothing provided, CRUD action not supported.  Updating a new registration form makes no sense, for instance -->
+				<!-- <Trigger triggerType="FormField" triggerKey="update" triggerValue="Update" /> -->
+			</Update>
+			<Destroy>
+				<!-- If nothing provided, CRUD action not supported.  Deleting a new registration form makes no sense, for instance -->
+				<!-- <Trigger triggerType="FormField" triggerKey="delete" triggerValue="Delete" /> -->
+			</Destroy>
+		</CRUD>
+	</Form>
+
+	<!-- Common eGloo Form Attribute Sets -->
+	<!-- <FormAttributeSet id="address_test">
+	</FormAttributeSet> -->
+</tns:Forms>
