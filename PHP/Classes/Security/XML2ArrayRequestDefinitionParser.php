@@ -777,6 +777,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		} else if ($allNodesCached == null) {
 			// We haven't found anything in cache, so let's read in the XML and recheck for the request class/ID pair
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Request nodes not cached, loading: ' . $requestLookup, 'Security' );
+			$useRequestIDDefaultHandler = eGlooConfiguration::getUseDefaultRequestIDHandler();
+			$useRequestClassDefaultHandler = eGlooConfiguration::getUseDefaultRequestClassHandler();
 			$this->loadRequestNodes();
 
 			// Same logic as above, except we're checking what we loaded from XML
