@@ -1,6 +1,6 @@
 <?php
 /**
- * YearValueSeeder Class File
+ * CountryValueSeeder Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * YearValueSeeder
+ * CountryValueSeeder
  *
  * $short_description
  *
@@ -36,11 +36,12 @@
  * @package $package
  * @subpackage $subpackage
  */
-class YearValueSeeder extends ValueSeeder {
+class CountryValueSeeder extends ValueSeeder {
 
-	protected $_defaultValue = null;
+	protected $_defaultValue = 'US';
 
-	protected $_yearValues = array();
+	protected $_countryValues = array(
+		'US' => 'United States' );
 
 	/**
 	 * Static Data Members
@@ -48,18 +49,12 @@ class YearValueSeeder extends ValueSeeder {
 	private static $_singleton = null;
 
 	private function __construct() {
-		$starting_year = intval(date('Y')) - 18;
-
-		for( $i = 0; $i < 80 ; $i++ ) {
-			$this->_yearValues[$starting_year - $i] = $starting_year - $i;
-		}
-
-		$this->_defaultValue = $starting_year;
+		
 	}
 
 	public static function getInstance() {
 		if (!self::$_singleton) {
-			self::$_singleton = new YearValueSeeder();
+			self::$_singleton = new CountryValueSeeder();
 		}
 
 		return self::$_singleton;
@@ -70,7 +65,7 @@ class YearValueSeeder extends ValueSeeder {
 	}
 
 	public function getValues() {
-		return $this->_yearValues;
+		return $this->_countryValues;
 	}
 
 }
