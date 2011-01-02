@@ -43,6 +43,8 @@ class FormField {
 	// protected $_formFieldLabel = null;
 	protected $_formFieldType = null;
 	protected $_formFieldValue = null;
+	protected $_formFieldValueSeeder = null;
+	protected $_formFieldValueSeederName = null;
 
 	protected $_appendHTML = null;
 
@@ -162,8 +164,8 @@ class FormField {
 	public function render( $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
 		$retVal = null;
 
-		// TODO localize this
-		if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' ) {
+		// TODO localize this.  Also, we ignore checkbox labeling to have it wrap the input field
+		if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' && $this->getFormFieldType() !== 'checkbox' ) {
 			$retVal = $prepend . "\t" . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
 				'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . "\n";
 		} else {
@@ -171,6 +173,15 @@ class FormField {
 		}
 
 		switch ( $this->getFormFieldType() ) {
+			case 'checkbox' :
+				// We do special label rendering to get the checkbox on the left of the label text
+				$retVal .= $prepend . "\t" . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
+					'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
+					$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
+					']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getFormFieldValue() .
+					'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . "\n";
+
+				break;
 			case 'container' :
 				$retVal .= $prepend . "\t" . '<!-- FormField Container: "' . $this->getID() . '" -->' . "\n";
 
@@ -189,6 +200,19 @@ class FormField {
 				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
 					'" type="password" value="' . $this->getFormFieldValue() . '" />' . "\n";
+				break;
+			case 'select' :
+				$valueSeeder = $this->getFormFieldValueSeeder();
+
+				$retVal .= $prepend . "\t" . '<select id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' . "\n";
+
+				foreach( $valueSeeder->getValues() as $key => $value ) {
+					$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '">' . $value . '</option>' . "\n";
+				}
+
+				$retVal .= $prepend . "\t" . '</select>' . "\n";
+
 				break;
 			case 'submit' :
 				$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
@@ -373,6 +397,30 @@ class FormField {
 
 	public function setFormFieldValue( $formFieldValue ) {
 		$this->_formFieldValue = $formFieldValue;
+	}
+
+	// FormField Value Seeder
+	public function getFormFieldValueSeeder() {
+		if ( !$this->_formFieldValueSeeder ) {
+			$formFieldValueSeederName = $this->_formFieldValueSeederName;
+
+			$this->_formFieldValueSeeder = $formFieldValueSeederName::getInstance();
+		}
+
+		return $this->_formFieldValueSeeder;
+	}
+
+	public function setFormFieldValueSeeder( $formFieldValueSeeder ) {
+		$this->_formFieldValueSeeder = $formFieldValueSeeder;
+	}
+
+	// FormField Value Seeder
+	public function getFormFieldValueSeederName() {
+		return $this->_formFieldValueSeederName;
+	}
+
+	public function setFormFieldValueSeederName( $formFieldValueSeederName ) {
+		$this->_formFieldValueSeederName = $formFieldValueSeederName;
 	}
 
 	// Prepend HTML
