@@ -58,6 +58,8 @@ class FormField {
 
 	protected $_formFieldDefinition = null;
 
+	protected $_formFieldElementOrder = array();
+
 	protected $_formFieldErrors = array();
 	protected $_formFieldChildErrors = array();
 
@@ -82,6 +84,8 @@ class FormField {
 	public function addFormField( $child_form_field_id, $formField ) {
 		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
 			$this->_formFieldChildren[$child_form_field_id] = $formField;
+			$elementCount = count($this->_formFieldElementOrder);
+			$this->_formFieldElementOrder[$child_form_field_id] = $elementCount + 1;
 			// $this->_formFieldChildData[$child_form_field_id] = $this->getData();
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
@@ -280,6 +284,50 @@ class FormField {
 
 	public function setDisplayLabelToken( $displayLabelToken ) {
 		$this->_displayLabelToken = $displayLabelToken;
+	}
+
+	// Element Ordering
+	public function swapElements( $first_element_id, $second_element_id ) {
+		$first_index = $this->_formFieldElementOrder[$first_element_id];
+		$second_index = $this->_formFieldElementOrder[$second_element_id];
+
+		$this->_formFieldElementOrder[$first_element_id] = $second_index;
+		$this->_formFieldElementOrder[$second_element_id] = $first_index;
+
+		asort($this->_formFieldElementOrder);
+	}
+
+	public function insertElementBefore( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formFieldElementOrder[$first_element_id];
+		// $second_index = $this->_formFieldElementOrder[$second_element_id];
+		// 
+		// $this->_formFieldElementOrder[$first_element_id] = $second_index;
+		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formFieldElementOrder);
+	}
+
+	public function insertElementAfter( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formFieldElementOrder[$first_element_id];
+		// $second_index = $this->_formFieldElementOrder[$second_element_id];
+		// 
+		// $this->_formFieldElementOrder[$first_element_id] = $second_index;
+		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formFieldElementOrder);
+	}
+
+	public function setElementOrder( $element_order ) {
+		$count = 1;
+
+		foreach( $element_order as $element ) {
+			if ( isset($this->_formFieldElementOrder[$element]) ) {
+				$this->_formFieldElementOrder[$element] = $count;
+				$count++;
+			}
+		}
+
+		asort( $this->_formFieldElementOrder );
 	}
 
 	// Error Message

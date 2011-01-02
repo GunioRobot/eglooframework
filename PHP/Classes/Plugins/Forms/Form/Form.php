@@ -55,6 +55,8 @@ class Form {
 
 	protected $_formDefinition = null;
 
+	protected $_formElementOrder = array();
+
 	protected $_formErrors = array();
 
 	protected $_formFields = array();
@@ -97,6 +99,8 @@ class Form {
 	public function addFormField( $form_field_id, $formField ) {
 		if ( !isset($this->_formFields[$form_field_id]) ) {
 			$this->_formFields[$form_field_id] = $formField;
+			$elementCount = count($this->_formElementOrder);
+			$this->_formElementOrder[$form_field_id] = $elementCount + 1;
 			// $this->_formData[$form_field_id] = $formField->getData();
 		} else {
 			throw new Exception( 'FormField with ID "' . $form_field_id . '" already exists' );
@@ -123,6 +127,8 @@ class Form {
 	public function addFormFieldSet( $form_field_set_id, $formFieldSet ) {
 		if ( !isset($this->_formFields[$form_field_set_id]) ) {
 			$this->_formFieldSets[$form_field_set_id] = $formFieldSet;
+			$elementCount = count($this->_formElementOrder);
+			$this->_formElementOrder[$form_field_set_id] = $elementCount + 1;
 		} else {
 			throw new Exception( 'FormFieldSet with ID "' . $form_field_set_id . '" already exists' );
 		}
@@ -179,30 +185,32 @@ class Form {
 			$html .= '<legend>' . $this->_formLegend . '</legend>';
 		}
 
-		// This should be able to respect some overall order between fieldsets and fields
-		foreach( $this->_formFieldSets as $formFieldSet ) {
-			$html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+		foreach($this->_formElementOrder as $element_id => $element_position) {
+			if ( isset( $this->_formFieldSets[$element_id] ) ) {
+				$formFieldSet = $this->_formFieldSets[$element_id];
 
-			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
-					implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
-				$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
+				$html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+
+				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+					$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
+						implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
+					$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
+				}
+
+				foreach( $formFieldSet->getFormFields() as $formField ) {
+					$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
+					$html .= $formField->render( true, true, false, "\t" );
+				}
+
+				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+					$html .= "\t" . '</fieldset>' . "\n";
+				}
+			} else if ( isset( $this->_formFields[$element_id] ) ) {
+				$formField = $this->_formFields[$element_id];
+
+				$formField->setVariablePrepend($this->getFormID() . '[formFields]');
+				$html .= $formField->render();
 			}
-
-			foreach( $formFieldSet->getFormFields() as $formField ) {
-				$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-				$html .= $formField->render( true, true, false, "\t" );
-			}
-
-			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				$html .= "\t" . '</fieldset>' . "\n";
-			}
-		}
-
-		// This should be able to respect some overall order between fieldsets and fields
-		foreach( $this->_formFields as $formField ) {
-			$formField->setVariablePrepend($this->getFormID() . '[formFields]');
-			$html .= $formField->render();
 		}
 
 		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
@@ -337,6 +345,50 @@ class Form {
 
 	public function setFormDTO( $formDTO ) {
 		$this->_formDTO = $formDTO;
+	}
+
+	// Element Ordering
+	public function swapElements( $first_element_id, $second_element_id ) {
+		$first_index = $this->_formElementOrder[$first_element_id];
+		$second_index = $this->_formElementOrder[$second_element_id];
+
+		$this->_formElementOrder[$first_element_id] = $second_index;
+		$this->_formElementOrder[$second_element_id] = $first_index;
+
+		asort($this->_formElementOrder);
+	}
+
+	public function insertElementBefore( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formElementOrder[$first_element_id];
+		// $second_index = $this->_formElementOrder[$second_element_id];
+		// 
+		// $this->_formElementOrder[$first_element_id] = $second_index;
+		// $this->_formElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formElementOrder);
+	}
+
+	public function insertElementAfter( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formElementOrder[$first_element_id];
+		// $second_index = $this->_formElementOrder[$second_element_id];
+		// 
+		// $this->_formElementOrder[$first_element_id] = $second_index;
+		// $this->_formElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formElementOrder);
+	}
+
+	public function setElementOrder( $element_order ) {
+		$count = 1;
+
+		foreach( $element_order as $element ) {
+			if ( isset($this->_formElementOrder[$element]) ) {
+				$this->_formElementOrder[$element] = $count;
+				$count++;
+			}
+		}
+
+		asort( $this->_formElementOrder );
 	}
 
 	/**
