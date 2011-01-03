@@ -38,6 +38,15 @@
  */
 class FormFieldSet {
 
+	const RENDER_MODE_EDIT 			= 0x01;
+	const RENDER_MODE_EDIT_DISABLED = 0x02;
+	const RENDER_MODE_EDIT_HIDDEN 	= 0x03;
+
+	const RENDER_MODE_READ			= 0x04;
+	const RENDER_MODE_READ_HIDDEN 	= 0x05;
+
+	const RENDER_MODE_NONE			= 0x06;
+
 	protected $_formFieldSetID = null;
 	protected $_formFieldSetLegend = null;
 	protected $_formFieldSetLegendToken = null;
@@ -51,7 +60,13 @@ class FormFieldSet {
 	protected $_formFieldChildren = array();
 	protected $_formFieldChildData = array();
 
+	protected $_appendHTML = '';
+
 	protected $_cssClasses = array();
+
+	protected $_prependHTML = '';
+
+	protected $_renderMode = self::RENDER_MODE_EDIT;
 
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
@@ -216,6 +231,33 @@ class FormFieldSet {
 
 		asort( $this->_formFieldSetElementOrder );
 	}
+
+	// HTML Prepend/Append
+	public function getAppendHTML() {
+		return $this->_appendHTML;
+	}
+
+	public function setAppendHTML( $appendHTML ) {
+		$this->_appendHTML = $appendHTML;
+	}
+
+	public function getPrependHTML() {
+		return $this->_prependHTML;
+	}
+
+	public function setPrependHTML( $prependHTML ) {
+		$this->_prependHTML = $prependHTML;
+	}
+
+	// Render Mode
+	public function getRenderMode() {
+		return $this->_renderMode;
+	}
+
+	public function setRenderMode( $renderMode ) {
+		$this->_renderMode = $renderMode;
+	}
+
 
 	// Legend
 	public function getLegend() {

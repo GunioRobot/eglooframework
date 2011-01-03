@@ -871,6 +871,7 @@ class RegistrationDTO extends DataTransferObject implements FormDTOInterface {
 	public function __construct() {}
 
 	public function initWithForm( Form $form ) {
+		echo_r('Registration::initWithForm()');
 		die_r($form);
 	}
 

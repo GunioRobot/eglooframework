@@ -191,6 +191,10 @@ class Form {
 
 				$html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
 
+				if ( trim($formFieldSet->getPrependHTML()) !== '' ) {
+					$html .= "\t" . $formFieldSet->getPrependHTML() . "\n";
+				}
+
 				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
 					$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
 						implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
@@ -204,6 +208,10 @@ class Form {
 
 				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
 					$html .= "\t" . '</fieldset>' . "\n";
+				}
+
+				if ( trim($formFieldSet->getAppendHTML()) !== '' ) {
+					$html .= "\t" . $formFieldSet->getAppendHTML() . "\n";
 				}
 			} else if ( isset( $this->_formFields[$element_id] ) ) {
 				$formField = $this->_formFields[$element_id];

@@ -39,7 +39,7 @@
 class PGSQLRegistrationDAO extends RegistrationDAO {
 
 	public function CRUDCreate( $formDTO ) {
-		
+		die_r('here2');
 	}
 
 	public function CRUDRead( $formDTO ) {
