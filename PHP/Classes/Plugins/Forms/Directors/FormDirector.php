@@ -1962,7 +1962,11 @@ final class FormDirector {
 		$retVal = $this->buildForm( $form_name );
 
 		foreach( $retVal->getFormFieldSets() as $formFieldSet ) {
-			$formFieldSetArray = $form_array['formFieldSets'][$formFieldSet->getID()];
+			if ( isset($form_array['formFieldSets'][$formFieldSet->getID()]) ) {
+				$formFieldSetArray = $form_array['formFieldSets'][$formFieldSet->getID()];
+			} else {
+				continue;
+			}
 
 			foreach( $formFieldSet->getFormFields() as $formField ) {
 				$formFieldValue = isset($formFieldSetArray['formFields'][$formField->getID()]) ?
