@@ -91,6 +91,10 @@ class FormFieldSet {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
 
+	public function issetFormField( $child_form_field_id ) {
+		return isset($this->_formFieldChildren[$child_form_field_id]);
+	}
+
 	public function getFormFields() {
 		return $this->_formFieldChildren;
 	}

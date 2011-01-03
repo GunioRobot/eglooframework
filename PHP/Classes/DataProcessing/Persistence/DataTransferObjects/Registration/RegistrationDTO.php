@@ -130,6 +130,28 @@ class RegistrationDTO extends DataTransferObject implements FormDTOInterface {
 		$this->_input_localization = $input_localization;
 	}
 
+	/**
+	 * @var bool Whether the user accepted the TOS or not
+	 */
+	protected $_acceptsTOS = null;
+
+	/**
+	 * Returns protected class member $_acceptsTOS
+	 *
+	 * @return bool Whether the user accepted the TOS or not
+	 */
+	public function getAcceptsTOS() {
+		return $this->_acceptsTOS;
+	}
+
+	/**
+	 * Sets protected class member $_acceptsTOS
+	 *
+	 * @param acceptsTOS bool Whether the user accepted the TOS or not
+	 */
+	public function setAcceptsTOS( $acceptsTOS ) {
+		$this->_acceptsTOS = $acceptsTOS;
+	}
 
 	/**
 	 * @var string Unique address ID
@@ -871,8 +893,69 @@ class RegistrationDTO extends DataTransferObject implements FormDTOInterface {
 	public function __construct() {}
 
 	public function initWithForm( Form $form ) {
-		echo_r('Registration::initWithForm()');
-		die_r($form);
+		/* Fields Not Touched (But Available) */
+		// _registration_id
+		// 	    _form_action
+		// 	    _display_localization
+		// 	    _input_localization
+		// 	    _addressDTO
+		// 	    _secondary_email_address
+		// 	    _primaryEmailAddressDTO
+		// 	    _secondaryEmailAddressDTO
+		// 	    _personDTO
+		// 	    _secondary_phone_number
+		// 	    _primaryPhoneNumberDTO
+		// 	    _secondaryPhoneNumberDTO
+		// 	    _role_id
+		// 	    _userDTO:protected] =>
+		$addressFormFieldSet = $form->getFormFieldSet('address');
+		$this->_address_id = $addressFormFieldSet->getFormField('address_id')->getFormFieldValue();
+		$this->_address_attention = $addressFormFieldSet->getFormField('address_attention')->getFormFieldValue();
+
+		$this->_address_lines = array();
+
+		foreach( $addressFormFieldSet->getFormField('address_lines')->getFormFields() as $addressLine ) {
+			$this->_address_lines[$addressLine->getID()] = $addressLine->getFormFieldValue();
+		}
+
+		$this->_address_locality = $addressFormFieldSet->getFormField('address_locality')->getFormFieldValue();
+		$this->_address_town = $addressFormFieldSet->getFormField('address_town')->getFormFieldValue();
+		$this->_address_region = $addressFormFieldSet->getFormField('address_region')->getFormFieldValue();
+		$this->_address_province = $addressFormFieldSet->getFormField('address_province')->getFormFieldValue();
+		$this->_address_postal_code = $addressFormFieldSet->getFormField('address_postal_code')->getFormFieldValue();
+		$this->_address_country = $addressFormFieldSet->getFormField('address_country')->getFormFieldValue();
+		$this->_address_additional_info = $addressFormFieldSet->getFormField('address_additional_info')->getFormFieldValue();
+
+		$nameFormFieldSet = $form->getFormFieldSet('name');
+		$this->_first_name = $nameFormFieldSet->getFormField('first_name')->getFormFieldValue();
+
+		if ( $nameFormFieldSet->issetFormField('middle_name_or_initial') ) {
+			$this->_middle_name_or_initial = $nameFormFieldSet->getFormField('middle_name_or_initial')->getFormFieldValue();
+		} else {
+			$this->_middle_name_or_initial = null;
+		}
+
+		$this->_last_name = $nameFormFieldSet->getFormField('last_name')->getFormFieldValue();
+
+		$birthdateFormFieldSet = $form->getFormFieldSet('birthdate');
+		$this->_birth_month = $birthdateFormFieldSet->getFormField('birthdate_month')->getFormFieldValue();
+		$this->_birth_day = $birthdateFormFieldSet->getFormField('birthdate_day')->getFormFieldValue();
+		$this->_birth_year = $birthdateFormFieldSet->getFormField('birthdate_year')->getFormFieldValue();
+
+		$passwordFormFieldSet = $form->getFormFieldSet('password');
+		$this->_password_field_one = $passwordFormFieldSet->getFormField('password_one')->getFormFieldValue();
+		$this->_password_field_two = $passwordFormFieldSet->getFormField('password_two')->getFormFieldValue();
+
+		$this->_gender = $form->getFormField('gender')->getFormFieldValue();
+		$this->_primary_email_address = $form->getFormField('email')->getFormFieldValue();
+		$this->_username = $form->getFormField('username')->getFormFieldValue();
+		$this->_primary_phone_number = $form->getFormField('phone_number')->getFormFieldValue();
+
+		if ( $form->issetFormField('acceptsTOS') && $form->getFormField('acceptsTOS')->getFormFieldValue() === 'acceptsTOS') {
+			$this->_acceptsTOS = true;
+		} else {
+			$this->_acceptsTOS = false;
+		}
 	}
 
 	public function __destruct() {}
