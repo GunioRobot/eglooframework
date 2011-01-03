@@ -109,11 +109,15 @@ class FormFieldSet {
 	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
 		// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+
+		return $this;
 	}
 
 	public function removeFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
 		// unset($this->_formFieldChildData[$child_form_field_id]);
+
+		return $this;
 	}
 
 	public function getChildErrors() {
@@ -174,8 +178,6 @@ class FormFieldSet {
 	public function renderErrors() {
 		$retVal = null;
 
-		
-
 		return $retVal;
 	}
 
@@ -185,15 +187,21 @@ class FormFieldSet {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+
+		return $this;
 	}
 
 	// CSS
 	public function addCSSClass( $class_name ) {
 		$this->_cssClasses[$class_name] = $class_name;
+
+		return $this;
 	}
 
 	public function removeCSSClass( $class_name ) {
 		unset($this->_cssClasses[$class_name]);
+
+		return $this;
 	}
 
 	public function getCSSClasses() {
@@ -218,6 +226,8 @@ class FormFieldSet {
 				$this->_cssClasses[$class] = $class;
 			}
 		}
+
+		return $this;
 	}
 
 	// Element Ordering
@@ -229,6 +239,8 @@ class FormFieldSet {
 		$this->_formFieldSetElementOrder[$second_element_id] = $first_index;
 
 		asort($this->_formFieldSetElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementBefore( $first_element_id, $second_element_id ) {
@@ -239,6 +251,8 @@ class FormFieldSet {
 		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formFieldSetElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementAfter( $first_element_id, $second_element_id ) {
@@ -249,6 +263,8 @@ class FormFieldSet {
 		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formFieldSetElementOrder);
+
+		return $this;
 	}
 
 	public function setElementOrder( $element_order ) {
@@ -262,6 +278,8 @@ class FormFieldSet {
 		}
 
 		asort( $this->_formFieldSetElementOrder );
+
+		return $this;
 	}
 
 	// HTML Prepend/Append
@@ -271,6 +289,8 @@ class FormFieldSet {
 
 	public function setAppendHTML( $appendHTML ) {
 		$this->_appendHTML = $appendHTML;
+
+		return $this;
 	}
 
 	public function getPrependHTML() {
@@ -279,6 +299,8 @@ class FormFieldSet {
 
 	public function setPrependHTML( $prependHTML ) {
 		$this->_prependHTML = $prependHTML;
+
+		return $this;
 	}
 
 	// Render Mode
@@ -288,6 +310,8 @@ class FormFieldSet {
 
 	public function setRenderMode( $renderMode ) {
 		$this->_renderMode = $renderMode;
+
+		return $this;
 	}
 
 
@@ -298,6 +322,8 @@ class FormFieldSet {
 
 	public function setLegend( $formFieldSetLegend ) {
 		$this->_formFieldSetLegend = $formFieldSetLegend;
+
+		return $this;
 	}
 
 	public function getLegendToken() {
@@ -306,6 +332,8 @@ class FormFieldSet {
 
 	public function setLegendToken( $formFieldSetLegendToken ) {
 		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
+
+		return $this;
 	}
 
 	// Variable Container
@@ -315,6 +343,8 @@ class FormFieldSet {
 
 	public function setVariablePrepend( $variablePrepend ) {
 		$this->_variablePrepend = $variablePrepend;
+
+		return $this;
 	}
 
 	public function getVariableAppend() {
@@ -323,6 +353,8 @@ class FormFieldSet {
 
 	public function setVariableAppend( $variableAppend ) {
 		$this->_variableAppend = $variableAppend;
+
+		return $this;
 	}
 
 	public function __destruct() {

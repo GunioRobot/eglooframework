@@ -62,6 +62,9 @@ class Form {
 	protected $_formFields = array();
 	protected $_formFieldSets = array();
 
+	protected $_formAction = null;
+	protected $_formMethod = 'post';
+
 	protected $_renderedForm = null;
 	protected $_renderedErrors = null;
 
@@ -105,6 +108,8 @@ class Form {
 		} else {
 			throw new Exception( 'FormField with ID "' . $form_field_id . '" already exists' );
 		}
+
+		return $this;
 	}
 
 	public function issetFormField( $form_field_id ) {
@@ -122,6 +127,8 @@ class Form {
 	public function removeFormField( $form_field_id ) {
 		unset($this->_formFields[$form_field_id]);
 		unset($this->_formData[$form_field_id]);
+
+		return $this;
 	}
 
 	public function addFormFieldSet( $form_field_set_id, $formFieldSet ) {
@@ -132,6 +139,8 @@ class Form {
 		} else {
 			throw new Exception( 'FormFieldSet with ID "' . $form_field_set_id . '" already exists' );
 		}
+
+		return $this;
 	}
 
 	public function getFormFieldSet( $form_field_set_id ) {
@@ -145,6 +154,8 @@ class Form {
 	public function removeFormFieldSet( $form_field_set_id ) {
 		unset($this->_formFieldSets[$form_field_set_id]);
 		unset($this->_formData[$form_field_set_id]);
+
+		return $this;
 	}
 
 	public function getFormData() {
@@ -153,6 +164,8 @@ class Form {
 
 	public function setFormData( $formData ) {
 		$this->_formData = $formData;
+
+		return $this;
 	}
 
 	public function getFormErrors() {
@@ -177,7 +190,13 @@ class Form {
 		// TODO needs to be able to set action and method
 		// TODO localize this whole thing
 		$html = '<!-- Form: "' . $this->_formID . '" -->' . "\n";
-		$html .= '<form method="POST">' . "\n";
+		$html .= '<form method="' . $this->_formMethod . '"';
+		
+		if ( isset($this->_formAction) ) {
+			$html .= ' action="' . $this->_formAction . '"';
+		}
+
+		$html .= '>' . "\n";
 
 		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
 			$html .= '<fieldset id="' . $this->_formID . '-form-fieldset" class="' .
@@ -240,8 +259,6 @@ class Form {
 	public function renderErrors() {
 		$retVal = null;
 
-		
-
 		return $retVal;
 	}
 
@@ -251,6 +268,19 @@ class Form {
 
 	public function setErrorsByFieldID( $field_id, $error_value ) {
 		$this->_formErrors[$field_id] = $error_value;
+
+		return $this;
+	}
+
+	// Action
+	public function getFormAction() {
+		return $this->_formAction;
+	}
+
+	public function setFormAction( $action ) {
+		$this->_formAction = $action;
+
+		return $this;
 	}
 
 	// CRUD
@@ -260,10 +290,14 @@ class Form {
 
 	public function setIsCRUDable( $isCRUDable ) {
 		$this->_isCRUDable = $isCRUDable;
+
+		return $this;
 	}
 
 	public function setCRUDCreateTriggers( $createTriggers ) {
 		$this->_createTriggers = $createTriggers;
+
+		return $this;
 	}
 
 	public function getCRUDCreateTriggers() {
@@ -272,6 +306,8 @@ class Form {
 
 	public function setCRUDReadTriggers( $readTriggers ) {
 		$this->_readTriggers = $readTriggers;
+
+		return $this;
 	}
 
 	public function getCRUDReadTriggers() {
@@ -280,6 +316,8 @@ class Form {
 
 	public function setCRUDUpdateTriggers( $updateTriggers ) {
 		$this->_updateTriggers = $updateTriggers;
+
+		return $this;
 	}
 
 	public function getCRUDUpdateTriggers() {
@@ -288,6 +326,8 @@ class Form {
 
 	public function setCRUDDestroyTriggers( $destroyTriggers ) {
 		$this->_destroyTriggers = $destroyTriggers;
+
+		return $this;
 	}
 
 	public function getCRUDDestroyTriggers() {
@@ -297,10 +337,14 @@ class Form {
 	// CSS
 	public function addCSSClass( $class_name ) {
 		$this->_cssClasses[$class_name] = $class_name;
+
+		return $this;
 	}
 
 	public function removeCSSClass( $class_name ) {
 		unset($this->_cssClasses[$class_name]);
+
+		return $this;
 	}
 
 	public function getCSSClasses() {
@@ -325,6 +369,8 @@ class Form {
 				$this->_cssClasses[$class] = $class;
 			}
 		}
+
+		return $this;
 	}
 
 	// DAO/DTO
@@ -334,6 +380,8 @@ class Form {
 
 	public function setFormDAOConnectionName( $formDAOConnectionName ) {
 		$this->_formDAOConnectionName = $formDAOConnectionName;
+
+		return $this;
 	}
 
 	public function getFormDAOFactory() {
@@ -342,6 +390,8 @@ class Form {
 
 	public function setFormDAOFactory( $formDAOFactory ) {
 		$this->_formDAOFactory = $formDAOFactory;
+
+		return $this;
 	}
 
 	public function getFormDAO() {
@@ -350,6 +400,8 @@ class Form {
 
 	public function setFormDAO( $formDAO ) {
 		$this->_formDAO = $formDAO;
+
+		return $this;
 	}
 
 	public function getFormDTO() {
@@ -358,6 +410,8 @@ class Form {
 
 	public function setFormDTO( $formDTO ) {
 		$this->_formDTO = $formDTO;
+
+		return $this;
 	}
 
 	// Element Ordering
@@ -369,6 +423,8 @@ class Form {
 		$this->_formElementOrder[$second_element_id] = $first_index;
 
 		asort($this->_formElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementBefore( $first_element_id, $second_element_id ) {
@@ -379,6 +435,8 @@ class Form {
 		// $this->_formElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementAfter( $first_element_id, $second_element_id ) {
@@ -389,6 +447,8 @@ class Form {
 		// $this->_formElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formElementOrder);
+
+		return $this;
 	}
 
 	public function setElementOrder( $element_order ) {
@@ -402,6 +462,8 @@ class Form {
 		}
 
 		asort( $this->_formElementOrder );
+
+		return $this;
 	}
 
 	/**
@@ -420,6 +482,8 @@ class Form {
 	 */
 	public function setFormAttributeSets( $formAttributeSets ) {
 		$this->_formAttributeSets = $formAttributeSets;
+
+		return $this;
 	}
 
 	/**
@@ -452,6 +516,8 @@ class Form {
 
 	public function setDataFormatter( $dataFormatter ) {
 		$this->_dataFormatter = $dataFormatter;
+
+		return $this;
 	}
 
 	public function getDisplayFormatter() {
@@ -460,6 +526,8 @@ class Form {
 
 	public function setDisplayFormatter( $displayFormatter ) {
 		$this->_displayFormatter = $displayFormatter;
+
+		return $this;
 	}
 
 	// HTML
@@ -469,6 +537,8 @@ class Form {
 
 	public function setAppendHTML( $appendHTML ) {
 		$this->_appendHTML = $appendHTML;
+
+		return $this;
 	}
 
 	public function getPrependHTML() {
@@ -477,6 +547,8 @@ class Form {
 
 	public function setPrependHTML( $prependHTML ) {
 		$this->_prependHTML = $prependHTML;
+
+		return $this;
 	}
 
 	// Legend
@@ -486,6 +558,8 @@ class Form {
 
 	public function setFormLegend( $formLegend ) {
 		$this->_formLegend = $formLegend;
+
+		return $this;
 	}
 
 	public function getFormLegendToken() {
@@ -494,6 +568,8 @@ class Form {
 
 	public function setFormLegendToken( $formLegendToken ) {
 		$this->_formLegendToken = $formLegendToken;
+
+		return $this;
 	}
 
 	// Localization
@@ -503,6 +579,8 @@ class Form {
 
 	public function setDisplayLocalized( $isDisplayLocalized ) {
 		$this->_displayLocalized = $isDisplayLocalized;
+
+		return $this;
 	}
 
 	public function getDisplayLocalizer() {
@@ -511,6 +589,8 @@ class Form {
 
 	public function setDisplayLocalizer( $displayLocalizer ) {
 		$this->_displayLocalizer = $displayLocalizer;
+
+		return $this;
 	}
 
 	public function isInputLocalized() {
@@ -519,6 +599,8 @@ class Form {
 
 	public function setInputLocalized( $isInputLocalized ) {
 		$this->_inputLocalized = $isInputLocalized;
+
+		return $this;
 	}
 
 	public function getInputLocalizer() {
@@ -527,6 +609,19 @@ class Form {
 
 	public function setInputLocalizer( $inputLocalizer ) {
 		$this->_inputLocalizer = $inputLocalizer;
+
+		return $this;
+	}
+
+	// Method
+	public function getFormMethod() {
+		return $this->_formMethod;
+	}
+
+	public function setFormMethod( $method ) {
+		$this->_formMethod = $method;
+
+		return $this;
 	}
 
 	// Validator
@@ -536,6 +631,8 @@ class Form {
 
 	public function setValidator( $validator ) {
 		$this->_validator = $validator;
+
+		return $this;
 	}
 
 	public function __destruct() {

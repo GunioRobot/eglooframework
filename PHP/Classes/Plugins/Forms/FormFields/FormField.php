@@ -56,6 +56,13 @@ class FormField {
 	protected $_formFieldValueSeederName = null;
 
 	protected $_appendHTML = '';
+	protected $_prependHTML = '';
+
+	protected $_labelAppendHTML = '';
+	protected $_labelPrependHTML = '';
+
+	protected $_inputAppendHTML = '';
+	protected $_inputPrependHTML = '';
 
 	protected $_cssClasses = null;
 
@@ -79,7 +86,7 @@ class FormField {
 
 	protected $_formFieldHTMLAttributes = array();
 
-	protected $_prependHTML = '';
+
 
 	protected $_renderedFormField = null;
 	protected $_renderedErrors = null;
@@ -105,6 +112,8 @@ class FormField {
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
 		}
+
+		return $this;
 	}
 
 	public function getFormField( $child_form_field_id ) {
@@ -122,11 +131,15 @@ class FormField {
 	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
 		// $this->_formFieldChildData[$child_form_field_id] = $this->getData();
+
+		return $this;
 	}
 
 	public function removeFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
 		// unset($this->_formFieldChildData[$child_form_field_id]);
+
+		return $this;
 	}
 
 	public function getData() {
@@ -145,6 +158,8 @@ class FormField {
 
 	public function setData( $formFieldData ) {
 		$this->_formFieldData = $formFieldData;
+
+		return $this;
 	}
 
 	public function getErrors( $include_child_errors = true ) {
@@ -184,18 +199,18 @@ class FormField {
 
 			// TODO localize this.  Also, we ignore checkbox labeling to have it wrap the input field
 			if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' && $this->getFormFieldType() !== 'checkbox' ) {
-				$retVal .= $prepend . "\t" . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
-					'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . "\n";
+				$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
+					'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . $this->getLabelAppendHTML() . "\n";
 			}
 
 			switch ( $this->getFormFieldType() ) {
 				case 'checkbox' :
 					// We do special label rendering to get the checkbox on the left of the label text
-					$retVal .= $prepend . "\t" . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
+					$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
 						'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
 						$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
 						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getFormFieldValue() .
-						'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . "\n";
+						'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
 
 					break;
 				case 'container' :
@@ -213,32 +228,45 @@ class FormField {
 						'" type="hidden" value="' . $this->getFormFieldValue() . '" />' . "\n";
 					break;
 				case 'password' :
-					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="password" value="' . $this->getFormFieldValue() . '" />' . "\n";
+						'" type="password" value="' . $this->getFormFieldValue() . '" ';
+
+					foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+						$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+					}
+
+					$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
+
 					break;
 				case 'select' :
 					$valueSeeder = $this->getFormFieldValueSeeder();
 
-					$retVal .= $prepend . "\t" . '<select id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<select id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' . "\n";
 
 					foreach( $valueSeeder->getValues() as $key => $value ) {
 						$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '">' . $value . '</option>' . "\n";
 					}
 
-					$retVal .= $prepend . "\t" . '</select>' . "\n";
+					$retVal .= $prepend . "\t" . '</select>' . $this->getInputAppendHTML() . "\n";
 
 					break;
 				case 'submit' :
-					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="submit" value="' . $this->getFormFieldValue() . '" />' . "\n";
+						'" type="submit" value="' . $this->getFormFieldValue() . '" />' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'text' :
-					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="text" value="' .
-						$this->getFormFieldValue() . '" />' . "\n";
+						$this->getFormFieldValue() . '" ';
+
+						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+						}
+
+						$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'textarea' :
 					$retVal .= $prepend . "\t" . '<textarea id="formfield-' . $this->getID() . '-form-formfield" name="' .
@@ -274,24 +302,21 @@ class FormField {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
-	}
 
-	// Append HTML
-	public function getAppendHTML() {
-		return $this->_appendHTML;
-	}
-
-	public function setAppendHTML( $appendHTML ) {
-		$this->_appendHTML = $appendHTML;
+		return $this;
 	}
 
 	// CSS
 	public function addCSSClass( $class_name ) {
 		$this->_cssClasses[$class_name] = $class_name;
+
+		return $this;
 	}
 
 	public function removeCSSClass( $class_name ) {
 		unset($this->_cssClasses[$class_name]);
+
+		return $this;
 	}
 
 	public function getCSSClasses() {
@@ -316,6 +341,8 @@ class FormField {
 				$this->_cssClasses[$class] = $class;
 			}
 		}
+
+		return $this;
 	}
 
 	// Display Label
@@ -325,6 +352,8 @@ class FormField {
 
 	public function setDisplayLabel( $displayLabel ) {
 		$this->_displayLabel = $displayLabel;
+
+		return $this;
 	}
 
 	// Display Label Token
@@ -334,6 +363,8 @@ class FormField {
 
 	public function setDisplayLabelToken( $displayLabelToken ) {
 		$this->_displayLabelToken = $displayLabelToken;
+
+		return $this;
 	}
 
 	// Element Ordering
@@ -345,6 +376,8 @@ class FormField {
 		$this->_formFieldElementOrder[$second_element_id] = $first_index;
 
 		asort($this->_formFieldElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementBefore( $first_element_id, $second_element_id ) {
@@ -355,6 +388,8 @@ class FormField {
 		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formFieldElementOrder);
+
+		return $this;
 	}
 
 	public function insertElementAfter( $first_element_id, $second_element_id ) {
@@ -365,6 +400,8 @@ class FormField {
 		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
 		// 
 		// asort($this->_formFieldElementOrder);
+
+		return $this;
 	}
 
 	public function setElementOrder( $element_order ) {
@@ -378,6 +415,8 @@ class FormField {
 		}
 
 		asort( $this->_formFieldElementOrder );
+
+		return $this;
 	}
 
 	// Error Message
@@ -387,6 +426,8 @@ class FormField {
 
 	public function setErrorMessage( $errorMessage ) {
 		$this->_errorMessage = $errorMessage;
+
+		return $this;
 	}
 
 	// Error Message Token
@@ -396,6 +437,8 @@ class FormField {
 
 	public function setErrorMessageToken( $errorMessageToken ) {
 		$this->_errorMessageToken = $errorMessageToken;
+
+		return $this;
 	}
 
 	// Error Handler
@@ -405,6 +448,8 @@ class FormField {
 
 	public function setErrorHandler( $errorHandler ) {
 		$this->_errorHandler = $errorHandler;
+
+		return $this;
 	}
 
 	// FormField Type
@@ -414,6 +459,8 @@ class FormField {
 
 	public function setFormFieldType( $formFieldType ) {
 		$this->_formFieldType = $formFieldType;
+
+		return $this;
 	}
 
 	// FormField Value
@@ -423,6 +470,8 @@ class FormField {
 
 	public function setFormFieldValue( $formFieldValue ) {
 		$this->_formFieldValue = $formFieldValue;
+
+		return $this;
 	}
 
 	// FormField Value Seeder
@@ -438,6 +487,8 @@ class FormField {
 
 	public function setFormFieldValueSeeder( $formFieldValueSeeder ) {
 		$this->_formFieldValueSeeder = $formFieldValueSeeder;
+
+		return $this;
 	}
 
 	// FormField Value Seeder
@@ -447,6 +498,8 @@ class FormField {
 
 	public function setFormFieldValueSeederName( $formFieldValueSeederName ) {
 		$this->_formFieldValueSeederName = $formFieldValueSeederName;
+
+		return $this;
 	}
 
 	// FormField HTML Attributes
@@ -456,6 +509,8 @@ class FormField {
 
 	public function setFormFieldHTMLAttribute( $attribute_key, $attribute_value ) {
 		$this->_formFieldHTMLAttributes[$attribute_key] = $attribute_value;
+
+		return $this;
 	}
 
 	public function getFormFieldHTMLAttributes() {
@@ -464,15 +519,74 @@ class FormField {
 
 	public function setFormFieldHTMLAttributes( $attributes ) {
 		$this->_formFieldHTMLAttributes = $attributes;
+
+		return $this;
 	}
 
-	// Prepend HTML
+	// HTML Append
+	public function getAppendHTML() {
+		return $this->_appendHTML;
+	}
+
+	public function setAppendHTML( $appendHTML ) {
+		$this->_appendHTML = $appendHTML;
+
+		return $this;
+	}
+
+	//  HTML Prepend
 	public function getPrependHTML() {
 		return $this->_prependHTML;
 	}
 
 	public function setPrependHTML( $prependHTML ) {
 		$this->_prependHTML = $prependHTML;
+
+		return $this;
+	}
+
+	// Label HTML Append
+	public function getLabelAppendHTML() {
+		return $this->_labelAppendHTML;
+	}
+
+	public function setLabelAppendHTML( $labelAppendHTML ) {
+		$this->_labelAppendHTML = $labelAppendHTML;
+
+		return $this;
+	}
+
+	// Label HTML Prepend
+	public function getLabelPrependHTML() {
+		return $this->_labelPrependHTML;
+	}
+
+	public function setLabelPrependHTML( $labelPrependHTML ) {
+		$this->_labelPrependHTML = $labelPrependHTML;
+
+		return $this;
+	}
+
+	// Input HTML Append
+	public function getInputAppendHTML() {
+		return $this->_inputAppendHTML;
+	}
+
+	public function setInputAppendHTML( $inputAppendHTML ) {
+		$this->_inputAppendHTML = $inputAppendHTML;
+
+		return $this;
+	}
+
+	//  Input HTML Prepend
+	public function getInputPrependHTML() {
+		return $this->_inputPrependHTML;
+	}
+
+	public function setInputPrependHTML( $inputPrependHTML ) {
+		$this->_inputPrependHTML = $inputPrependHTML;
+
+		return $this;
 	}
 
 	// Render Mode
@@ -482,6 +596,8 @@ class FormField {
 
 	public function setRenderMode( $renderMode ) {
 		$this->_renderMode = $renderMode;
+
+		return $this;
 	}
 
 	// Variable Container
@@ -491,6 +607,8 @@ class FormField {
 
 	public function setVariablePrepend( $variablePrepend ) {
 		$this->_variablePrepend = $variablePrepend;
+
+		return $this;
 	}
 
 	public function getVariableAppend() {
@@ -499,6 +617,8 @@ class FormField {
 
 	public function setVariableAppend( $variableAppend ) {
 		$this->_variableAppend = $variableAppend;
+
+		return $this;
 	}
 
 	public function __destruct() {

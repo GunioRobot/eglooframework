@@ -43,8 +43,9 @@ class GenderValueSeeder extends ValueSeeder {
 	protected $_genderValues = array(
 		'male' => 'Male',
 		'female' => 'Female',
-		'male_transgender' => 'Transgender Male',
-		'female_transgender' => 'Transgender Female' );
+		// 'male_transgender' => 'Transgender Male',
+		// 'female_transgender' => 'Transgender Female'
+	);
 
 	/**
 	 * Static Data Members

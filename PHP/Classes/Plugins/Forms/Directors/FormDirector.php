@@ -347,6 +347,10 @@ final class FormDirector {
 								$childErrorHandler = null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
+								$childLabelPrependHTML = null;
+								$childLabelAppendHTML = null;
+								$childInputPrependHTML = null;
+								$childInputAppendHTML = null;
 								$childCSSClasses = null;
 
 								$childDisplayLabelLocalizationToken = null;
@@ -376,6 +380,22 @@ final class FormDirector {
 									$childAppendHTML = (string) $childAppendHTMLNode;
 								}
 
+								foreach( $formFieldChild->xpath( 'child::LabelPrependHTML' ) as $childLabelPrependHTMLNode ) {
+									$childLabelPrependHTML = (string) $childLabelPrependHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::LabelAppendHTML' ) as $childLabelAppendHTMLNode ) {
+									$childLabelAppendHTML = (string) $childLabelAppendHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::InputPrependHTML' ) as $childInputPrependHTMLNode ) {
+									$childInputPrependHTML = (string) $childInputPrependHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::InputAppendHTML' ) as $childInputAppendHTMLNode ) {
+									$childInputAppendHTML = (string) $childInputAppendHTMLNode;
+								}
+
 								foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 									$childCSSClasses = (string) $childCSSClassesNode;
 								}
@@ -392,6 +412,10 @@ final class FormDirector {
 														'errorHandler' => $childErrorHandler,
 														'prependHTML' => $childPrependHTML,
 														'appendHTML' => $childAppendHTML,
+														'labelPrependHTML' => $childLabelPrependHTML,
+														'labelAppendHTML' => $childLabelAppendHTML,
+														'inputPrependHTML' => $childInputPrependHTML,
+														'inputAppendHTML' => $childInputAppendHTML,
 														'cssClasses' => $childCSSClasses,
 													);
 
@@ -404,6 +428,10 @@ final class FormDirector {
 						$errorHandler = null;
 						$prependHTML = null;
 						$appendHTML = null;
+						$labelPrependHTML = null;
+						$labelAppendHTML = null;
+						$inputPrependHTML = null;
+						$inputAppendHTML = null;
 						$cssClasses = null;
 
 						$displayLabelLocalizationToken = null;
@@ -425,12 +453,28 @@ final class FormDirector {
 							$errorHandler = (string) $errorHandlerNode;
 						}
 
-						foreach( $formField->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
-							$prependHTML = (string) $childPrependHTMLNode;
+						foreach( $formField->xpath( 'child::PrependHTML' ) as $prependHTMLNode ) {
+							$prependHTML = (string) $prependHTMLNode;
 						}
 
-						foreach( $formField->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
-							$appendHTML = (string) $childAppendHTMLNode;
+						foreach( $formField->xpath( 'child::AppendHTML' ) as $appendHTMLNode ) {
+							$appendHTML = (string) $appendHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::LabelPrependHTML' ) as $labelPrependHTMLNode ) {
+							$labelPrependHTML = (string) $labelPrependHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::LabelAppendHTML' ) as $labelAppendHTMLNode ) {
+							$labelAppendHTML = (string) $labelAppendHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::InputPrependHTML' ) as $inputPrependHTMLNode ) {
+							$inputPrependHTML = (string) $inputPrependHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::InputAppendHTML' ) as $inputAppendHTMLNode ) {
+							$inputAppendHTML = (string) $inputAppendHTMLNode;
 						}
 
 						foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
@@ -449,6 +493,10 @@ final class FormDirector {
 												'errorHandler' => $errorHandler,
 												'prependHTML' => $prependHTML,
 												'appendHTML' => $appendHTML,
+												'labelPrependHTML' => $labelPrependHTML,
+												'labelAppendHTML' => $labelAppendHTML,
+												'inputPrependHTML' => $inputPrependHTML,
+												'inputAppendHTML' => $inputAppendHTML,
 												'cssClasses' => $cssClasses,
 											);
 
@@ -507,6 +555,10 @@ final class FormDirector {
 							$childErrorHandler = null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
+							$childLabelPrependHTML = null;
+							$childLabelAppendHTML = null;
+							$childInputPrependHTML = null;
+							$childInputAppendHTML = null;
 							$childCSSClasses = null;
 
 							$childDisplayLabelLocalizationToken = null;
@@ -536,6 +588,22 @@ final class FormDirector {
 								$childAppendHTML = (string) $childAppendHTMLNode;
 							}
 
+							foreach( $formFieldChild->xpath( 'child::LabelPrependHTML' ) as $childLabelPrependHTMLNode ) {
+								$childLabelPrependHTML = (string) $childLabelPrependHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::LabelAppendHTML' ) as $childLabelAppendHTMLNode ) {
+								$childLabelAppendHTML = (string) $childLabelAppendHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::InputPrependHTML' ) as $childInputPrependHTMLNode ) {
+								$childInputPrependHTML = (string) $childInputPrependHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::InputAppendHTML' ) as $childInputAppendHTMLNode ) {
+								$childInputAppendHTML = (string) $childInputAppendHTMLNode;
+							}
+
 							foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 								$childCSSClasses = (string) $childCSSClassesNode;
 							}
@@ -552,6 +620,10 @@ final class FormDirector {
 													'errorHandler' => $childErrorHandler,
 													'prependHTML' => $childPrependHTML,
 													'appendHTML' => $childAppendHTML,
+													'labelPrependHTML' => $childLabelPrependHTML,
+													'labelAppendHTML' => $childLabelAppendHTML,
+													'inputPrependHTML' => $childInputPrependHTML,
+													'inputAppendHTML' => $childInputAppendHTML,
 													'cssClasses' => $childCSSClasses,
 												);
 
@@ -564,6 +636,10 @@ final class FormDirector {
 					$errorHandler = null;
 					$prependHTML = null;
 					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
 					$cssClasses = null;
 
 					$displayLabelLocalizationToken = null;
@@ -593,6 +669,22 @@ final class FormDirector {
 						$appendHTML = (string) $childAppendHTMLNode;
 					}
 
+					foreach( $formField->xpath( 'child::LabelPrependHTML' ) as $labelPrependHTMLNode ) {
+						$labelPrependHTML = (string) $labelPrependHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::LabelAppendHTML' ) as $labelAppendHTMLNode ) {
+						$labelAppendHTML = (string) $labelAppendHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::InputPrependHTML' ) as $inputPrependHTMLNode ) {
+						$inputPrependHTML = (string) $inputPrependHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::InputAppendHTML' ) as $inputAppendHTMLNode ) {
+						$inputAppendHTML = (string) $inputAppendHTMLNode;
+					}
+
 					foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 						$cssClasses = (string) $childCSSClassesNode;
 					}
@@ -609,6 +701,10 @@ final class FormDirector {
 											'errorHandler' => $errorHandler,
 											'prependHTML' => $prependHTML,
 											'appendHTML' => $appendHTML,
+											'labelPrependHTML' => $labelPrependHTML,
+											'labelAppendHTML' => $labelAppendHTML,
+											'inputPrependHTML' => $inputPrependHTML,
+											'inputAppendHTML' => $inputAppendHTML,
 											'cssClasses' => $cssClasses,
 										);
 
@@ -927,6 +1023,10 @@ final class FormDirector {
 								$childErrorHandler = null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
+								$childLabelPrependHTML = null;
+								$childLabelAppendHTML = null;
+								$childInputPrependHTML = null;
+								$childInputAppendHTML = null;
 								$childCSSClasses = null;
 
 								$childDisplayLabelLocalizationToken = null;
@@ -956,6 +1056,22 @@ final class FormDirector {
 									$childAppendHTML = (string) $childAppendHTMLNode;
 								}
 
+								foreach( $formFieldChild->xpath( 'child::LabelPrependHTML' ) as $childLabelPrependHTMLNode ) {
+									$childLabelPrependHTML = (string) $childLabelPrependHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::LabelAppendHTML' ) as $childLabelAppendHTMLNode ) {
+									$childLabelAppendHTML = (string) $childLabelAppendHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::InputPrependHTML' ) as $childInputPrependHTMLNode ) {
+									$childInputPrependHTML = (string) $childInputPrependHTMLNode;
+								}
+
+								foreach( $formFieldChild->xpath( 'child::InputAppendHTML' ) as $childInputAppendHTMLNode ) {
+									$childInputAppendHTML = (string) $childInputAppendHTMLNode;
+								}
+
 								foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 									$childCSSClasses = (string) $childCSSClassesNode;
 								}
@@ -972,6 +1088,10 @@ final class FormDirector {
 														'errorHandler' => $childErrorHandler,
 														'prependHTML' => $childPrependHTML,
 														'appendHTML' => $childAppendHTML,
+														'labelPrependHTML' => $childLabelPrependHTML,
+														'labelAppendHTML' => $childLabelAppendHTML,
+														'inputPrependHTML' => $childInputPrependHTML,
+														'inputAppendHTML' => $childInputAppendHTML,
 														'cssClasses' => $childCSSClasses,
 													);
 
@@ -984,6 +1104,10 @@ final class FormDirector {
 						$errorHandler = null;
 						$prependHTML = null;
 						$appendHTML = null;
+						$labelPrependHTML = null;
+						$labelAppendHTML = null;
+						$inputPrependHTML = null;
+						$inputAppendHTML = null;
 						$cssClasses = null;
 
 						$displayLabelLocalizationToken = null;
@@ -1005,12 +1129,28 @@ final class FormDirector {
 							$errorHandler = (string) $errorHandlerNode;
 						}
 
-						foreach( $formField->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
-							$prependHTML = (string) $childPrependHTMLNode;
+						foreach( $formField->xpath( 'child::PrependHTML' ) as $prependHTMLNode ) {
+							$prependHTML = (string) $prependHTMLNode;
 						}
 
-						foreach( $formField->xpath( 'child::AppendHTML' ) as $childAppendHTMLNode ) {
-							$appendHTML = (string) $childAppendHTMLNode;
+						foreach( $formField->xpath( 'child::AppendHTML' ) as $appendHTMLNode ) {
+							$appendHTML = (string) $appendHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::LabelPrependHTML' ) as $labelPrependHTMLNode ) {
+							$labelPrependHTML = (string) $labelPrependHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::LabelAppendHTML' ) as $labelAppendHTMLNode ) {
+							$labelAppendHTML = (string) $labelAppendHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::InputPrependHTML' ) as $inputPrependHTMLNode ) {
+							$inputPrependHTML = (string) $inputPrependHTMLNode;
+						}
+
+						foreach( $formField->xpath( 'child::InputAppendHTML' ) as $inputAppendHTMLNode ) {
+							$inputAppendHTML = (string) $inputAppendHTMLNode;
 						}
 
 						foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
@@ -1029,6 +1169,10 @@ final class FormDirector {
 												'errorHandler' => $errorHandler,
 												'prependHTML' => $prependHTML,
 												'appendHTML' => $appendHTML,
+												'labelPrependHTML' => $labelPrependHTML,
+												'labelAppendHTML' => $labelAppendHTML,
+												'inputPrependHTML' => $inputPrependHTML,
+												'inputAppendHTML' => $inputAppendHTML,
 												'cssClasses' => $cssClasses,
 											);
 
@@ -1122,6 +1266,10 @@ final class FormDirector {
 							$childErrorHandler = null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
+							$childLabelPrependHTML = null;
+							$childLabelAppendHTML = null;
+							$childInputPrependHTML = null;
+							$childInputAppendHTML = null;
 							$childCSSClasses = null;
 
 							$childDisplayLabelLocalizationToken = null;
@@ -1151,6 +1299,22 @@ final class FormDirector {
 								$childAppendHTML = (string) $childAppendHTMLNode;
 							}
 
+							foreach( $formFieldChild->xpath( 'child::LabelPrependHTML' ) as $childLabelPrependHTMLNode ) {
+								$childLabelPrependHTML = (string) $childLabelPrependHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::LabelAppendHTML' ) as $childLabelAppendHTMLNode ) {
+								$childLabelAppendHTML = (string) $childLabelAppendHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::InputPrependHTML' ) as $childInputPrependHTMLNode ) {
+								$childInputPrependHTML = (string) $childInputPrependHTMLNode;
+							}
+
+							foreach( $formFieldChild->xpath( 'child::InputAppendHTML' ) as $childInputAppendHTMLNode ) {
+								$childInputAppendHTML = (string) $childInputAppendHTMLNode;
+							}
+
 							foreach( $formFieldChild->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 								$childCSSClasses = (string) $childCSSClassesNode;
 							}
@@ -1167,6 +1331,10 @@ final class FormDirector {
 													'errorHandler' => $childErrorHandler,
 													'prependHTML' => $childPrependHTML,
 													'appendHTML' => $childAppendHTML,
+													'labelPrependHTML' => $childLabelPrependHTML,
+													'labelAppendHTML' => $childLabelAppendHTML,
+													'inputPrependHTML' => $childInputPrependHTML,
+													'inputAppendHTML' => $childInputAppendHTML,
 													'cssClasses' => $childCSSClasses,
 												);
 
@@ -1179,6 +1347,10 @@ final class FormDirector {
 					$errorHandler = null;
 					$prependHTML = null;
 					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
 					$cssClasses = null;
 
 					$displayLabelLocalizationToken = null;
@@ -1208,6 +1380,22 @@ final class FormDirector {
 						$appendHTML = (string) $childAppendHTMLNode;
 					}
 
+					foreach( $formField->xpath( 'child::LabelPrependHTML' ) as $labelPrependHTMLNode ) {
+						$labelPrependHTML = (string) $labelPrependHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::LabelAppendHTML' ) as $labelAppendHTMLNode ) {
+						$labelAppendHTML = (string) $labelAppendHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::InputPrependHTML' ) as $inputPrependHTMLNode ) {
+						$inputPrependHTML = (string) $inputPrependHTMLNode;
+					}
+
+					foreach( $formField->xpath( 'child::InputAppendHTML' ) as $inputAppendHTMLNode ) {
+						$inputAppendHTML = (string) $inputAppendHTMLNode;
+					}
+
 					foreach( $formField->xpath( 'child::CSSClasses' ) as $childCSSClassesNode ) {
 						$cssClasses = (string) $childCSSClassesNode;
 					}
@@ -1224,6 +1412,10 @@ final class FormDirector {
 											'errorHandler' => $errorHandler,
 											'prependHTML' => $prependHTML,
 											'appendHTML' => $appendHTML,
+											'labelPrependHTML' => $labelPrependHTML,
+											'labelAppendHTML' => $labelAppendHTML,
+											'inputPrependHTML' => $inputPrependHTML,
+											'inputAppendHTML' => $inputAppendHTML,
 											'cssClasses' => $cssClasses,
 										);
 
@@ -1410,6 +1602,10 @@ final class FormDirector {
 				$newFormFieldObj->setErrorHandler( $formField['errorHandler'] );
 				$newFormFieldObj->setPrependHTML( $formField['prependHTML'] );
 				$newFormFieldObj->setAppendHTML( $formField['appendHTML'] );
+				$newFormFieldObj->setLabelPrependHTML( $formField['labelPrependHTML'] );
+				$newFormFieldObj->setLabelAppendHTML( $formField['labelAppendHTML'] );
+				$newFormFieldObj->setInputPrependHTML( $formField['inputPrependHTML'] );
+				$newFormFieldObj->setInputAppendHTML( $formField['inputAppendHTML'] );
 				$newFormFieldObj->setCSSClasses( $formField['cssClasses'] );
 
 				if ( $formField['type'] === 'container' ) {
@@ -1441,6 +1637,10 @@ final class FormDirector {
 						$newChildFormFieldObj->setErrorHandler( $containerChild['errorHandler'] );
 						$newChildFormFieldObj->setPrependHTML( $containerChild['prependHTML'] );
 						$newChildFormFieldObj->setAppendHTML( $containerChild['appendHTML'] );
+						$newChildFormFieldObj->setLabelPrependHTML( $containerChild['labelPrependHTML'] );
+						$newChildFormFieldObj->setLabelAppendHTML( $containerChild['labelAppendHTML'] );
+						$newChildFormFieldObj->setInputPrependHTML( $containerChild['inputPrependHTML'] );
+						$newChildFormFieldObj->setInputAppendHTML( $containerChild['inputAppendHTML'] );
 						$newChildFormFieldObj->setCSSClasses( $containerChild['cssClasses'] );
 
 						$newFormFieldObj->addFormField( $containerChild['id'], $newChildFormFieldObj );
@@ -1491,6 +1691,10 @@ final class FormDirector {
 			$newFormFieldObj->setErrorHandler( $formField['errorHandler'] );
 			$newFormFieldObj->setPrependHTML( $formField['prependHTML'] );
 			$newFormFieldObj->setAppendHTML( $formField['appendHTML'] );
+			$newFormFieldObj->setLabelPrependHTML( $formField['labelPrependHTML'] );
+			$newFormFieldObj->setLabelAppendHTML( $formField['labelAppendHTML'] );
+			$newFormFieldObj->setInputPrependHTML( $formField['inputPrependHTML'] );
+			$newFormFieldObj->setInputAppendHTML( $formField['inputAppendHTML'] );
 			$newFormFieldObj->setCSSClasses( $formField['cssClasses'] );
 
 			if ( $formField['type'] === 'container' ) {
@@ -1522,6 +1726,10 @@ final class FormDirector {
 					$newChildFormFieldObj->setErrorHandler( $containerChild['errorHandler'] );
 					$newChildFormFieldObj->setPrependHTML( $containerChild['prependHTML'] );
 					$newChildFormFieldObj->setAppendHTML( $containerChild['appendHTML'] );
+					$newChildFormFieldObj->setLabelPrependHTML( $containerChild['labelPrependHTML'] );
+					$newChildFormFieldObj->setLabelAppendHTML( $containerChild['labelAppendHTML'] );
+					$newChildFormFieldObj->setInputPrependHTML( $containerChild['inputPrependHTML'] );
+					$newChildFormFieldObj->setInputAppendHTML( $containerChild['inputAppendHTML'] );
 					$newChildFormFieldObj->setCSSClasses( $containerChild['cssClasses'] );
 
 					$newFormFieldObj->addFormField( $containerChild['id'], $newChildFormFieldObj );
