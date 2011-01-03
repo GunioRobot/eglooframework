@@ -189,30 +189,35 @@ class Form {
 			if ( isset( $this->_formFieldSets[$element_id] ) ) {
 				$formFieldSet = $this->_formFieldSets[$element_id];
 
-				$html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+				$variablePrepend = $this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]';
+				$formFieldSet->setVariablePrepend($variablePrepend);
 
-				if ( trim($formFieldSet->getPrependHTML()) !== '' ) {
-					$html .= "\t" . $formFieldSet->getPrependHTML() . "\n";
-				}
+				$html .= $formFieldSet->render();
 
-				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-					$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
-						implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
-					$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
-				}
-
-				foreach( $formFieldSet->getFormFields() as $formField ) {
-					$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-					$html .= $formField->render( true, true, false, "\t" );
-				}
-
-				if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-					$html .= "\t" . '</fieldset>' . "\n";
-				}
-
-				if ( trim($formFieldSet->getAppendHTML()) !== '' ) {
-					$html .= "\t" . $formFieldSet->getAppendHTML() . "\n";
-				}
+				// $html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
+				// 
+				// if ( trim($formFieldSet->getPrependHTML()) !== '' ) {
+				// 	$html .= "\t" . $formFieldSet->getPrependHTML() . "\n";
+				// }
+				// 
+				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+				// 	$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
+				// 		implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
+				// 	$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
+				// }
+				// 
+				// foreach( $formFieldSet->getFormFields() as $formField ) {
+				// 	$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
+				// 	$html .= $formField->render( true, true, false, "\t" );
+				// }
+				// 
+				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
+				// 	$html .= "\t" . '</fieldset>' . "\n";
+				// }
+				// 
+				// if ( trim($formFieldSet->getAppendHTML()) !== '' ) {
+				// 	$html .= "\t" . $formFieldSet->getAppendHTML() . "\n";
+				// }
 			} else if ( isset( $this->_formFields[$element_id] ) ) {
 				$formField = $this->_formFields[$element_id];
 

@@ -71,6 +71,9 @@ class FormFieldSet {
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
 
+	protected $_variablePrepend = null;
+	protected $_variableAppend = null;
+
 	public function __construct( $formFieldSetID = null, $formFieldSetLegend = null ) {
 		$this->_formFieldSetID = $formFieldSetID;
 		$this->_formFieldSetLegend = $formFieldSetLegend;
@@ -136,9 +139,34 @@ class FormFieldSet {
 	}
 
 	public function render( $render_legend = true, $render_children = true, $render_child_labels = true, $render_frameset = true ) {
-		$retVal = null;
+		$retVal = '';
 
-		
+		if ( $this->_renderMode !== self::RENDER_MODE_NONE ) {
+			$retVal = "\t" . '<!-- FormFieldSet: "' . $this->getID() . '" -->' . "\n";
+
+			if ( trim($this->getPrependHTML()) !== '' ) {
+				$retVal .= "\t" . $this->getPrependHTML() . "\n";
+			}
+
+			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
+				$retVal .= "\t" . '<fieldset id="fieldset-' . $this->getID() . '-form-fieldset" class="' .
+					implode( ' ', $this->getCSSClasses() ) . '">' . "\n";
+				$retVal .= "\t" . '<legend>' . $this->getLegend() . '</legend>' . "\n";
+			}
+
+			foreach( $this->getFormFields() as $formField ) {
+				$formField->setVariablePrepend($this->getVariablePrepend());
+				$retVal .= $formField->render( true, true, false, "\t" );
+			}
+
+			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
+				$retVal .= "\t" . '</fieldset>' . "\n";
+			}
+
+			if ( trim($this->getAppendHTML()) !== '' ) {
+				$retVal .= "\t" . $this->getAppendHTML() . "\n";
+			}
+		}
 
 		return $retVal;
 	}
@@ -278,6 +306,23 @@ class FormFieldSet {
 
 	public function setLegendToken( $formFieldSetLegendToken ) {
 		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
+	}
+
+	// Variable Container
+	public function getVariablePrepend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariablePrepend( $variablePrepend ) {
+		$this->_variablePrepend = $variablePrepend;
+	}
+
+	public function getVariableAppend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariableAppend( $variableAppend ) {
+		$this->_variableAppend = $variableAppend;
 	}
 
 	public function __destruct() {
