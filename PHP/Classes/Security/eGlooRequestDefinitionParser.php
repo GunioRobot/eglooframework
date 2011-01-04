@@ -40,11 +40,13 @@
  */
 abstract class eGlooRequestDefinitionParser {
 
-	// Static Data Members
-	const REQUEST_ID_KEY = "eg_requestID";
-	const REQUEST_CLASS_KEY = "eg_requestClass";
-	const PROCESSOR_ID_KEY = "processorID";
-	const ERROR_PROCESSOR_ID_KEY = "processorID";
+	// Class Constants
+	const REQUEST_ID_KEY = 'eg_requestID';
+	const REQUEST_CLASS_KEY = 'eg_requestClass';
+	const PROCESSOR_ID_KEY = 'processorID';
+	const ERROR_PROCESSOR_ID_KEY = 'processorID';
+	const REQUEST_CLASS_WILDCARD_KEY = 'egDefault';
+	const REQUEST_ID_WILDCARD_KEY = 'egDefault';
 
 	// We DO NOT declare this so that child classes will define it and will be responsible
 	// for containing their own singletons.  This is a performance boost
@@ -132,22 +134,31 @@ abstract class eGlooRequestDefinitionParser {
 		$requestInfoBean->setInterfaceBundle( $this->uibundle );
 
 		// Check if there is a request class.  If there isn't, log it and return not setting any request processor
-		 if ( !isset( $_GET[ self::REQUEST_CLASS_KEY ] ) ) {
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request class not set in request.  ' . "\n" .
-				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
-			$retVal = false;
-		 }
+		if ( !isset( $_GET[ self::REQUEST_CLASS_KEY ] ) ) {
+			if ( eGlooConfiguration::getUseDefaultRequestClassHandler() ) {
+				$requestInfoBean->setRequestClass( self::REQUEST_CLASS_WILDCARD_KEY );
+				$requestInfoBean->setRequestID( self::REQUEST_ID_WILDCARD_KEY );
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooRequestDefinitionParser: Request class not set in request.  ' . "\n" .
+					'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+				$retVal = false;
+			}
+		} else {
+			$requestInfoBean->setRequestClass( $_GET[ self::REQUEST_CLASS_KEY ] );
+		}
 
 		// Check if there is a request id.  If there isn't, log it and return not setting any request processor
 		if ( !isset( $_GET[ self::REQUEST_ID_KEY ] ) ) {
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Request ID not set in request.  ' . "\n" .
-				'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
-			$retVal = false;
+			if ( eGlooConfiguration::getUseDefaultRequestIDHandler() ) {
+				$requestInfoBean->setRequestID( self::REQUEST_ID_WILDCARD_KEY );
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooRequestDefinitionParser: Request ID not set in request.  ' . "\n" .
+					'Verify that mod_rewrite is active and its rules are correct in your .htaccess', 'Security' );
+				$retVal = false;
+			}
+		} else {
+			$requestInfoBean->setRequestID( $_GET[ self::REQUEST_ID_KEY ] );
 		}
-
-		// Grab the request class and request ID
-        $requestInfoBean->setRequestClass( $_GET[ self::REQUEST_CLASS_KEY ] );
-        $requestInfoBean->setRequestID( $_GET[ self::REQUEST_ID_KEY ] );
 
 		return $retVal;
 	}
