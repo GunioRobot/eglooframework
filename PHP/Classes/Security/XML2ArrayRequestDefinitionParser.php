@@ -1426,7 +1426,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 						if ( $formObj->isCRUDable() ) {
 							$crudDirector = CRUDDirector::getInstance();
-							$crudSuccess = $crudDirector->processForm( $formObj );
+							$crudResult = $crudDirector->processForm( $formObj );
+
+							if ( !$crudResult ) {
+								// Do something special?  For now, no
+								$formObj->setCRUDResult( $crudResult );
+							} else {
+								$formObj->setCRUDResult( $crudResult );
+							}
 						}
 
 						// TODO figure out how to branch on CRUD success/fail?  Or just mark in $formObj?

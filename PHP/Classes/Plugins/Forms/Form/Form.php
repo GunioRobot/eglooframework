@@ -89,6 +89,8 @@ class Form {
 	protected $_updateTriggers = array();
 	protected $_destroyTriggers = array();
 
+	protected $_crudResult = null;
+
 	protected $_validated = false;
 	protected $_validator = null;
 
@@ -332,6 +334,14 @@ class Form {
 
 	public function getCRUDDestroyTriggers() {
 		return $this->_destroyTriggers;
+	}
+
+	public function getCRUDResult() {
+		return $this->_crudResult;
+	}
+
+	public function setCRUDResult( $crudResult ) {
+		$this->_crudResult = $crudResult;
 	}
 
 	// CSS
