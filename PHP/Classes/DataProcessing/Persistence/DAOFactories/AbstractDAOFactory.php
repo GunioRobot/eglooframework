@@ -161,7 +161,7 @@ class AbstractDAOFactory {
 	public function getSearchDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getSearchDAO();
 	}
-	
+
 	public function getImageDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getImageDAO();
 	}
@@ -173,13 +173,17 @@ class AbstractDAOFactory {
 	public function getGenericCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getGenericCubeDAO();
 	}
-	
+
 	public function getAuctionDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getAuctionDAO();
 	}
-	
+
 	public function getGenericPLFunctionDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getGenericPLFunctionDAO();
+	}
+
+	public function __call( $method, $args ) {
+		return $this->getAppropriateFactory( $args[0] )->$method();
 	}
 
 }

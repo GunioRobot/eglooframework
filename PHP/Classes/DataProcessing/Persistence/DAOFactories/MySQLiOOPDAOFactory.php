@@ -125,4 +125,10 @@ class MySQLiOOPDAOFactory extends ConcreteDAOFactory {
 		return new MySQLiOOPGenericPLFunctionDAO( $this->_connection_name );
 	}
 
+	public function __call( $method, $args ) {
+		$genericDAORequested = substr( $method, 3 );
+		$concreteDAORequested = 'MySQLiOOP' . $genericDAORequested;
+		return new $concreteDAORequested( $this->_connection_name );
+	}
+
 }

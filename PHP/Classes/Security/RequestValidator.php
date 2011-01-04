@@ -65,7 +65,6 @@ final class RequestValidator {
 			$this->uibundle = $uibundle;
 
 			// We'll do a conditional check, but for now let's just build an XML parser
-			// self::$requestDefinitionParser = XMLRequestDefinitionParser::getInstance($this->webapp, $this->uibundle);
 			self::$requestDefinitionParser = XML2ArrayRequestDefinitionParser::getInstance( $this->webapp, $this->uibundle );
 		}
 	}

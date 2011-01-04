@@ -1,6 +1,6 @@
 <?php
 /**
- * AbstractDAO Class File
+ * ValidatedFormAttributeSet Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * ValidatedFormAttributeSet
  *
  * $short_description
  *
@@ -36,13 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
-
-	protected $_connection_name = null;
-
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
+class ValidatedFormAttributeSet extends FormAttributeSet {
 
 }
 

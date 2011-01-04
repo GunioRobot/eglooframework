@@ -38,6 +38,8 @@
  */
 class ValidatedFormFieldSet extends FormFieldSet {
 
+	protected $_validator = null;
+
 	public function validate() {
 		$retVal = false;
 
@@ -47,7 +49,7 @@ class ValidatedFormFieldSet extends FormFieldSet {
 		if ( !empty($this->_formFieldChildren) ) {
 			foreach( $this->_formFieldChildren as $formFieldID => $formField ) {
 				if ( !$formField->validate() ) {
-					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors()
+					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors();
 				}
 			}
 		}
@@ -57,6 +59,15 @@ class ValidatedFormFieldSet extends FormFieldSet {
 		}
 
 		return $retVal;
+	}
+
+	// Validator
+	public function getValidator() {
+		return $this->_validator;
+	}
+
+	public function setValidator( $validator ) {
+		$this->_validator = $validator;
 	}
 
 }

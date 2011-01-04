@@ -48,19 +48,25 @@ class RequestInfoBean {
 	private $FILES = null;
 	private $GET = null; 
 	private $POST = null;
+
+	private $forms = null;
 	
 	// Unset Required
 	private $UNSET_COOKIES = null;
 	private $UNSET_FILES = null;
 	private $UNSET_GET = null; 
 	private $UNSET_POST = null;
+
+	private $unsetForms = null;
 	
 	// Invalid provided
 	private $INVALID_COOKIES = null;
 	private $INVALID_FILES = null;
 	private $INVALID_GET = null; 
 	private $INVALID_POST = null;
-	
+
+	private $invalidForms = null;
+
 	private $decoratorArray = array();
 
 	private $application = null;
@@ -97,16 +103,22 @@ class RequestInfoBean {
 		$this->FILES = array();
 		$this->GET = array();
 		$this->POST = array();
-		
+
+		$this->forms = array();
+
 		$this->UNSET_COOKIES = array();
 		$this->UNSET_FILES = array();
 		$this->UNSET_GET = array();
 		$this->UNSET_POST = array();
 
+		$this->unsetForms = array();
+
 		$this->INVALID_COOKIES = array();
 		$this->INVALID_FILES = array();
 		$this->INVALID_GET = array();
 		$this->INVALID_POST = array();
+
+		$this->invalidForms = array();
 	}
 
 	public function issetCOOKIE( $key ) {
@@ -135,7 +147,7 @@ class RequestInfoBean {
 		if ( !isset( $this->COOKIES[$key] ) ) {
 			$this->COOKIES[$key] = $value;
 		} else if ( $this->COOKIES[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change COOKIE key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change COOKIE key \'' . 
 				$key . '\' (value = \'' . $this->COOKIES[$key] . '\') to \'' . $value . '\'' );
 		}
 	}
@@ -166,7 +178,7 @@ class RequestInfoBean {
 		if ( !isset( $this->FILES[$key] ) ) {
 			$this->FILES[$key] = $value;
 		} else if ( $this->FILES[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change FILES key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change FILES key \'' . 
 				$key . '\' (value = \'' . $this->FILES[$key] . '\') to \'' . $value . '\'' );
 		}		 
 	}
@@ -233,7 +245,7 @@ class RequestInfoBean {
 		if ( !isset( $this->GET[$key] ) ) {
 			$this->GET[$key] = $value;
 		} else if ( $this->GET[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change GET key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change GET key \'' . 
 				$key . '\' (value = \'' . $this->GET[$key] . '\') to \'' . $value . '\'' );
 		}	 
 	}
@@ -308,7 +320,7 @@ class RequestInfoBean {
 		if ( !isset( $this->POST[$key] ) ) {
 			$this->POST[$key] = $value;
 		} else if ( $this->POST[$key] !== $value ) {
-			throw new RequestInfoException( 'Programmer Error: Attempted to change POST key \'' . 
+			throw new RequestInfoBeanException( 'Programmer Error: Attempted to change POST key \'' . 
 				$key . '\' (value = \'' . $this->POST[$key] . '\') to \'' . $value . '\'' );
 		}	 
 	}
@@ -319,6 +331,77 @@ class RequestInfoBean {
 
 	public function setUnsetRequiredPOST( $key ) {
 		$this->UNSET_POST[$key] = $key;
+	}
+
+	public function issetForm( $formID ) {
+		$retVal = false;
+		
+		if ( isset( $this->forms[$formID] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function issetInvalidForm( $formID ) {
+		$retVal = false;
+		
+		if ( isset( $this->invalidForms[$formID] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public function isRequiredFormUnset( $formID ) {
+		$retVal = false;
+		
+		if ( isset( $this->unsetForms[$formID] ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+
+	}
+
+	public function setUnsetRequiredForm( $formID ) {
+		$this->unsetForms[$formID] = $formID;
+	}
+
+	public function getForm( $formID ) {
+		if ( !isset( $this->forms[$formID] ) ) {
+			trigger_error( 'Programmer Error: Requested form \'' . $formID . '\' not found in forms list', E_USER_ERROR );
+		}
+
+		return $this->forms[$formID];
+	}
+
+	public function setForm( $formID, $formObj ) {
+		$this->forms[$formID] = $formObj;
+	}
+
+	public function getInvalidForm( $formID ) {
+		if ( !isset( $this->invalidForms[$formID] ) ) {
+			trigger_error( 'Programmer Error: Requested form \'' . $formID . '\' not found in invalid forms list', E_USER_ERROR );
+		}
+
+		return $this->invalidForms[$formID];
+	}
+
+	public function setInvalidForm( $formID, $formObj ) {
+		$this->invalidForms[$formID] = $formObj;
+	}
+
+	public function getFormsArray() {
+		return $this->forms;
+	}
+
+	public function getInvalidFormsArray() {
+		return $this->invalidForms;
+	}
+
+	public function getUnsetFormsArray() {
+		return $this->invalidForms;
 	}
 
 	public function setRequestClass( $requestClass ) {

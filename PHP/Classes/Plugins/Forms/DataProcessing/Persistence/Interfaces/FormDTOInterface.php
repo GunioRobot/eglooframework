@@ -1,6 +1,6 @@
 <?php
 /**
- * AbstractDAO Class File
+ * FormDTOInterface Interface File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * FormDTOInterface
  *
  * $short_description
  *
@@ -36,13 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
+interface FormDTOInterface {
 
-	protected $_connection_name = null;
-
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
+	public function initWithForm( Form $form );
 
 }
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * AbstractDAO Class File
+ * ${TM_NEW_FILE_BASENAME} Class File
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright ${TM_YEAR} ${TM_ORGANIZATION_NAME}
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *  
- * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @author ${TM_FULLNAME}
+ * @copyright ${TM_YEAR} ${TM_ORGANIZATION_NAME}
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * ${TM_NEW_FILE_BASENAME}
  *
  * $short_description
  *
@@ -36,13 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
-
-	protected $_connection_name = null;
-
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
+class ${TM_NEW_FILE_BASENAME} {
 
 }
 

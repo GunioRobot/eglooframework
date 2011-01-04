@@ -1,10 +1,10 @@
 <?php
 /**
- * AbstractDAO Class File
+ * ValueSeeder Class File
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * ValueSeeder
  *
  * $short_description
  *
@@ -36,13 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
+abstract class ValueSeeder {
 
-	protected $_connection_name = null;
-
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
+	abstract public function getValues();
 
 }
 

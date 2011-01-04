@@ -1,10 +1,10 @@
 <?php
 /**
- * AbstractDAO Class File
+ * YearValueSeeder Class File
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * YearValueSeeder
  *
  * $short_description
  *
@@ -36,12 +36,41 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
+class YearValueSeeder extends ValueSeeder {
 
-	protected $_connection_name = null;
+	protected $_defaultValue = null;
 
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
+	protected $_yearValues = array();
+
+	/**
+	 * Static Data Members
+	 */
+	private static $_singleton = null;
+
+	private function __construct() {
+		$starting_year = intval(date('Y')) - 18;
+
+		for( $i = 0; $i < 80 ; $i++ ) {
+			$this->_yearValues[$starting_year - $i] = $starting_year - $i;
+		}
+
+		$this->_defaultValue = $starting_year;
+	}
+
+	public static function getInstance() {
+		if (!self::$_singleton) {
+			self::$_singleton = new YearValueSeeder();
+		}
+
+		return self::$_singleton;
+	}
+
+	public function getDefaultValue() {
+		return $this->_defaultValue;
+	}
+
+	public function getValues() {
+		return $this->_yearValues;
 	}
 
 }

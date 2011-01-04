@@ -1,6 +1,6 @@
 <?php
 /**
- * AbstractDAO Class File
+ * RegistrationExtendedDTO Class File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * RegistrationExtendedDTO
  *
  * $short_description
  *
@@ -36,13 +36,13 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
+class RegistrationExtendedDTO extends RegistrationDTO {
 
-	protected $_connection_name = null;
+	// Additional Contact Options
+	protected $_fax_phone_number = null;
+	protected $_mobile_phone_number = null;
+	protected $_office_phone_number = null;
 
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
 
 }
 

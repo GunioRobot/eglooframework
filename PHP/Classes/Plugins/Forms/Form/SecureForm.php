@@ -47,7 +47,12 @@ class SecureForm extends ValidatedForm {
 	}
 
 	public function isSecure() {
-		
+		$retVal = false;
+
+		// TODO check if secure...
+		$retVal = true;
+
+		return $retVal;
 	}
 
 }

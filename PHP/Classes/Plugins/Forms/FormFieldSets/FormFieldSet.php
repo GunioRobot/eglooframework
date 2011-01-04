@@ -38,57 +38,86 @@
  */
 class FormFieldSet {
 
+	const RENDER_MODE_EDIT 			= 0x01;
+	const RENDER_MODE_EDIT_DISABLED = 0x02;
+	const RENDER_MODE_EDIT_HIDDEN 	= 0x03;
+
+	const RENDER_MODE_READ			= 0x04;
+	const RENDER_MODE_READ_HIDDEN 	= 0x05;
+
+	const RENDER_MODE_NONE			= 0x06;
+
 	protected $_formFieldSetID = null;
 	protected $_formFieldSetLegend = null;
+	protected $_formFieldSetLegendToken = null;
 
 	protected $_formFieldSetDefinition = null;
+
+	protected $_formFieldSetElementOrder = array();
 
 	protected $_formFieldChildErrors = array();
 
 	protected $_formFieldChildren = array();
 	protected $_formFieldChildData = array();
 
+	protected $_appendHTML = '';
+
+	protected $_cssClasses = array();
+
+	protected $_prependHTML = '';
+
+	protected $_renderMode = self::RENDER_MODE_EDIT;
+
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
+
+	protected $_variablePrepend = null;
+	protected $_variableAppend = null;
 
 	public function __construct( $formFieldSetID = null, $formFieldSetLegend = null ) {
 		$this->_formFieldSetID = $formFieldSetID;
 		$this->_formFieldSetLegend = $formFieldSetLegend;
 	}
 
-	public function addChildFormField( $child_form_field_id, $formField ) {
+	public function addFormField( $child_form_field_id, $formField ) {
 		if ( !isset($this->_formFieldChildren[$child_form_field_id]) ) {
 			$this->_formFieldChildren[$child_form_field_id] = $formField;
-			$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+			$elementCount = count($this->_formFieldSetElementOrder);
+			$this->_formFieldSetElementOrder[$child_form_field_id] = $elementCount + 1;
+			// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
 		} else {
 			throw new Exception( 'FormField child with ID "' . $child_form_field_id . '" already exists' );
 		}
 	}
 
-	public function getChildFormField( $child_form_field_id ) {
+	public function getFormField( $child_form_field_id ) {
 		return $this->_formFieldChildren[$child_form_field_id];
 	}
-	
-	public function getChildFormFieldData( $child_form_field_id ) {
+
+	public function issetFormField( $child_form_field_id ) {
+		return isset($this->_formFieldChildren[$child_form_field_id]);
+	}
+
+	public function getFormFields() {
+		return $this->_formFieldChildren;
+	}
+
+	public function getFormFieldData( $child_form_field_id ) {
 		return $this->_formFieldChildData[$child_form_field_id];
 	}
 
-	public function setChildFormField( $child_form_field_id, $formField ) {
+	public function setFormField( $child_form_field_id, $formField ) {
 		$this->_formFieldChildren[$child_form_field_id] = $formField;
-		$this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+		// $this->_formFieldChildData[$child_form_field_id] = $formField->getData();
+
+		return $this;
 	}
 
-	public function removeChildFormField( $child_form_field_id ) {
+	public function removeFormField( $child_form_field_id ) {
 		unset($this->_formFieldChildren[$child_form_field_id]);
-		unset($this->_formFieldChildData[$child_form_field_id]);
-	}
+		// unset($this->_formFieldChildData[$child_form_field_id]);
 
-	public function getLegend() {
-		return $this->_formFieldSetLegend;
-	}
-
-	public function setLegend( $formFieldSetLegend ) {
-		$this->_formFieldSetLegend = $formFieldSetLegend;
+		return $this;
 	}
 
 	public function getChildErrors() {
@@ -114,17 +143,40 @@ class FormFieldSet {
 	}
 
 	public function render( $render_legend = true, $render_children = true, $render_child_labels = true, $render_frameset = true ) {
-		$retVal = null;
+		$retVal = '';
 
-		
+		if ( $this->_renderMode !== self::RENDER_MODE_NONE ) {
+			$retVal = "\t" . '<!-- FormFieldSet: "' . $this->getID() . '" -->' . "\n";
+
+			if ( trim($this->getPrependHTML()) !== '' ) {
+				$retVal .= "\t" . $this->getPrependHTML() . "\n";
+			}
+
+			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
+				$retVal .= "\t" . '<fieldset id="fieldset-' . $this->getID() . '-form-fieldset" class="' .
+					implode( ' ', $this->getCSSClasses() ) . '">' . "\n";
+				$retVal .= "\t" . '<legend>' . $this->getLegend() . '</legend>' . "\n";
+			}
+
+			foreach( $this->getFormFields() as $formField ) {
+				$formField->setVariablePrepend($this->getVariablePrepend());
+				$retVal .= $formField->render( true, true, false, "\t" );
+			}
+
+			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
+				$retVal .= "\t" . '</fieldset>' . "\n";
+			}
+
+			if ( trim($this->getAppendHTML()) !== '' ) {
+				$retVal .= "\t" . $this->getAppendHTML() . "\n";
+			}
+		}
 
 		return $retVal;
 	}
 
 	public function renderErrors() {
 		$retVal = null;
-
-		
 
 		return $retVal;
 	}
@@ -135,6 +187,174 @@ class FormFieldSet {
 
 	public function setErrorsByChildID( $child_field_id, $error_value ) {
 		$this->_formFieldChildErrors[$child_field_id] = $error_value;
+
+		return $this;
+	}
+
+	// CSS
+	public function addCSSClass( $class_name ) {
+		$this->_cssClasses[$class_name] = $class_name;
+
+		return $this;
+	}
+
+	public function removeCSSClass( $class_name ) {
+		unset($this->_cssClasses[$class_name]);
+
+		return $this;
+	}
+
+	public function getCSSClasses() {
+		return $this->_cssClasses;
+	}
+
+	public function getCSSClassesString() {
+		return implode( ' ', $this->_cssClasses );
+	}
+
+	public function setCSSClasses( $cssClasses ) {
+		if ( is_string( $cssClasses ) ) {
+			$classes = explode( ' ', $cssClasses );
+
+			foreach($classes as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		} else if ( is_array( $cssClasses ) ) {
+			$this->_cssClasses = array();
+
+			foreach($cssClasses as $class) {
+				$this->_cssClasses[$class] = $class;
+			}
+		}
+
+		return $this;
+	}
+
+	// Element Ordering
+	public function swapElements( $first_element_id, $second_element_id ) {
+		$first_index = $this->_formFieldSetElementOrder[$first_element_id];
+		$second_index = $this->_formFieldSetElementOrder[$second_element_id];
+
+		$this->_formFieldSetElementOrder[$first_element_id] = $second_index;
+		$this->_formFieldSetElementOrder[$second_element_id] = $first_index;
+
+		asort($this->_formFieldSetElementOrder);
+
+		return $this;
+	}
+
+	public function insertElementBefore( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formFieldSetElementOrder[$first_element_id];
+		// $second_index = $this->_formFieldSetElementOrder[$second_element_id];
+		// 
+		// $this->_formFieldSetElementOrder[$first_element_id] = $second_index;
+		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formFieldSetElementOrder);
+
+		return $this;
+	}
+
+	public function insertElementAfter( $first_element_id, $second_element_id ) {
+		// $first_index = $this->_formFieldSetElementOrder[$first_element_id];
+		// $second_index = $this->_formFieldSetElementOrder[$second_element_id];
+		// 
+		// $this->_formFieldSetElementOrder[$first_element_id] = $second_index;
+		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
+		// 
+		// asort($this->_formFieldSetElementOrder);
+
+		return $this;
+	}
+
+	public function setElementOrder( $element_order ) {
+		$count = 1;
+
+		foreach( $element_order as $element ) {
+			if ( isset($this->_formFieldSetElementOrder[$element]) ) {
+				$this->_formFieldSetElementOrder[$element] = $count;
+				$count++;
+			}
+		}
+
+		asort( $this->_formFieldSetElementOrder );
+
+		return $this;
+	}
+
+	// HTML Prepend/Append
+	public function getAppendHTML() {
+		return $this->_appendHTML;
+	}
+
+	public function setAppendHTML( $appendHTML ) {
+		$this->_appendHTML = $appendHTML;
+
+		return $this;
+	}
+
+	public function getPrependHTML() {
+		return $this->_prependHTML;
+	}
+
+	public function setPrependHTML( $prependHTML ) {
+		$this->_prependHTML = $prependHTML;
+
+		return $this;
+	}
+
+	// Render Mode
+	public function getRenderMode() {
+		return $this->_renderMode;
+	}
+
+	public function setRenderMode( $renderMode ) {
+		$this->_renderMode = $renderMode;
+
+		return $this;
+	}
+
+
+	// Legend
+	public function getLegend() {
+		return $this->_formFieldSetLegend;
+	}
+
+	public function setLegend( $formFieldSetLegend ) {
+		$this->_formFieldSetLegend = $formFieldSetLegend;
+
+		return $this;
+	}
+
+	public function getLegendToken() {
+		return $this->_formFieldSetLegendToken;
+	}
+
+	public function setLegendToken( $formFieldSetLegendToken ) {
+		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
+
+		return $this;
+	}
+
+	// Variable Container
+	public function getVariablePrepend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariablePrepend( $variablePrepend ) {
+		$this->_variablePrepend = $variablePrepend;
+
+		return $this;
+	}
+
+	public function getVariableAppend() {
+		return $this->_variablePrepend;
+	}
+
+	public function setVariableAppend( $variableAppend ) {
+		$this->_variableAppend = $variableAppend;
+
+		return $this;
 	}
 
 	public function __destruct() {

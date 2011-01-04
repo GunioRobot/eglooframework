@@ -1,6 +1,6 @@
 <?php
 /**
- * AbstractDAO Class File
+ * CRUDableDAOInterface Interface File
  *
  * $file_block_description
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * AbstractDAO
+ * CRUDableDAOInterface
  *
  * $short_description
  *
@@ -36,13 +36,15 @@
  * @package $package
  * @subpackage $subpackage
  */
-abstract class AbstractDAO {
+interface CRUDableDAOInterface {
 
-	protected $_connection_name = null;
+	public function CRUDCreate( $formDTO );
 
-	public function __construct( $connection_name = 'egPrimary' ) {
-		$this->_connection_name = $connection_name;
-	}
+	public function CRUDRead( $formDTO );
+
+	public function CRUDUpdate( $formDTO );
+
+	public function CRUDDestroy( $formDTO );
 
 }
 
