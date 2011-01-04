@@ -119,7 +119,18 @@ class StyleSheetExtendedRawFileRequestProcessor extends RequestProcessor {
 
 		$templateDirector->setTemplateBuilder( $templateBuilder, $file_name ); // <=-- custom request ID
 
-        $templateDirector->preProcessTemplate();
+		try {
+			$templateDirector->preProcessTemplate();
+		} catch (ErrorException $e) {
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw $e;
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'StyleSheetExtendedRawFileRequestProcessor: Template requested but not found: "' .
+				 	$this->requestInfoBean->getGET( 'css_name' ) . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
+				eGlooHTTPResponse::issueRaw404Response();
+			}
+		}
 
 		$templateDirector->setTemplateVariables($templateVariables, true);
 
