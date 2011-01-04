@@ -66,7 +66,19 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
 		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder(), $this->_requestIDOverride, $this->_requestClassOverride );
-		$templateDirector->preProcessTemplate();
+
+		try {
+			$templateDirector->preProcessTemplate();
+		} catch (ErrorException $e) {
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw $e;
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Template requested for RequestClass/RequestID "' .
+					$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
+				eGlooHTTPResponse::issueRaw404Response();
+			}
+		}
 
 		$this->populateTemplateVariables();
 
