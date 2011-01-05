@@ -55,7 +55,9 @@ class eGlooHTTPResponse {
 	public static function issueCustom404Response( $templateVariables = null, $dispatchClass = self::DISPATCH_CLASS, $dispatchID = self::HTTP_RESPONSE_404 ) {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered issueCustom404Response()" );
 
-		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
+		// Don't call eGlooResponse::outputXHTML from this context because it might invoke this function itself and cause an infinite loop
+		// This is considered, effectively, a more primitive path, thus it must use the fallback pattern
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( RequestInfoBean::getInstance() );
 		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchClass, $dispatchID );
 
 		try {

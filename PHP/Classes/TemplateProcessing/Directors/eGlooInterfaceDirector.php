@@ -11,14 +11,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *		  http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *	
  * @author George Cooper
  * @copyright 2010 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -37,20 +37,20 @@
 class eGlooInterfaceDirector extends TemplateDirector {
 
 	const NO_CACHE		= 0x00;
-	const HARD_CACHE 	= 0x01;
-	const SOFT_CACHE 	= 0x02;
+	const HARD_CACHE	= 0x01;
+	const SOFT_CACHE	= 0x02;
 	const DYNAMIC_CACHE = 0x04;
 
 	const NO_MODIFIERS	= 0x00;
 
-    private $cacheID = null;
-    private $requestInfoBean = null;
-    private $templateBuilder = null;
+	private $cacheID = null;
+	private $requestInfoBean = null;
+	private $templateBuilder = null;
 	private $useSmartCaching = false;
 
-    public function __construct( $requestInfoBean ) {
-        $this->requestInfoBean = $requestInfoBean;
-    }
+	public function __construct( $requestInfoBean ) {
+		$this->requestInfoBean = $requestInfoBean;
+	}
 
 	public function useSmartCaching( $useSmartCaching = true ) {
 		$this->useSmartCaching = $useSmartCaching;
@@ -61,7 +61,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 	}
 
-    public function preProcessTemplate() {
+	public function preProcessTemplate() {
 		if ($this->useSmartCaching) {
 			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 				$requestClass = $this->requestInfoBean->getRequestClass();
@@ -71,12 +71,12 @@ class eGlooInterfaceDirector extends TemplateDirector {
 				$this->setHardCacheID($requestClass, $requestID, $cacheID);
 
 				if (!$this->isHardCached()) {
-			        $this->templateBuilder->setDispatchPath();
+					$this->templateBuilder->setDispatchPath();
 					$this->templateBuilder->resolveTemplateRoot();
 
-			        if ( $this->cacheID !== null ) {
-			            $this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
-			        }
+					if ( $this->cacheID !== null ) {
+						$this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
+					}
 				}
 			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
@@ -88,16 +88,16 @@ class eGlooInterfaceDirector extends TemplateDirector {
 				}
 			}
 		} else {
-	        $this->templateBuilder->setDispatchPath();
+			$this->templateBuilder->setDispatchPath();
 			$this->templateBuilder->resolveTemplateRoot();
 
-	        if ( $this->cacheID !== null ) {
-	            $this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
-	        }
+			if ( $this->cacheID !== null ) {
+				$this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
+			}
 		}
-    }
+	}
 
-    public function processTemplate() {
+	public function processTemplate() {
 		$retVal = null;
 
 		if ($this->useSmartCaching) {
@@ -113,16 +113,16 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			$retVal = $this->templateBuilder->run();
 		}
 
-        return $retVal;
-    }
+		return $retVal;
+	}
 
-    public function postProcessTemplate() {
-        
-    }
+	public function postProcessTemplate() {
+		
+	}
 
-    public function setTemplateVariables( $tokenArray, $expose_system_variables = false, $system_variable_whitelist = null ) {
+	public function setTemplateVariables( $tokenArray, $expose_system_variables = false, $system_variable_whitelist = null ) {
 		if ($expose_system_variables) {
-			// Do an automated thing for this with a foreach loop.  For now, just rewrite base
+			// Do an automated thing for this with a foreach loop.	For now, just rewrite base
 			if (!isset($tokenArray['rewriteBase'])) {
 				if (!$system_variable_whitelist || ($system_variable_whitelist !== null && isset($system_variable_whitelist['rewriteBase']))) {
 					$tokenArray['rewriteBase'] = eGlooConfiguration::getRewriteBase();
@@ -133,22 +133,22 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			}
 		}
 
-        $this->templateBuilder->setTemplateVariables( $tokenArray );
-    }
+		$this->templateBuilder->setTemplateVariables( $tokenArray );
+	}
 
-    public function setContentProcessors( $contentProcessorArray ) {
-        $this->templateBuilder->setContentProcessors( $contentProcessorArray );
-    }
+	public function setContentProcessors( $contentProcessorArray ) {
+		$this->templateBuilder->setContentProcessors( $contentProcessorArray );
+	}
 
-    public function getTemplateBuilder() {
-        
-    }
-    
-    public function isCached() {
-        return $this->templateBuilder->isCached();
-    }
+	public function getTemplateBuilder() {
+		
+	}
+	
+	public function isCached() {
+		return $this->templateBuilder->isCached();
+	}
 
-    public function isHardCached( $requestClass = null, $requestID = null, $cacheID = null ) {
+	public function isHardCached( $requestClass = null, $requestID = null, $cacheID = null ) {
 		$requestClass = isset($requestClass) ? $requestClass : $this->requestInfoBean->getRequestClass();
 		$requestID = isset($requestID) ? $requestID : $this->requestInfoBean->getRequestID();
 
@@ -157,27 +157,27 @@ class eGlooInterfaceDirector extends TemplateDirector {
 				// TODO specify caching parameters for the smarty templates
 				// This needs to be base64_encoded because the cacheID is sued to create directories
 				$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
-				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();        
+				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
 			}
 
 			$cacheID = $this->cacheID;
 		}
 
-        return $this->templateBuilder->isHardCached( $requestClass, $requestID, $cacheID );
-    }
-    
-    public function setCacheID( $cacheID = null, $ttl = 3600 ) {
+		return $this->templateBuilder->isHardCached( $requestClass, $requestID, $cacheID );
+	}
+	
+	public function setCacheID( $cacheID = null, $ttl = 3600 ) {
 		if ($cacheID === null) {
 			// TODO specify caching parameters for the smarty templates
 			// This needs to be base64_encoded because the cacheID is sued to create directories
 			$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
-			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();        
+			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
 		}
 
-        $this->ttl = $ttl;
-    }
-    
-    public function setHardCacheID( $requestClass = null, $requestID = null, $cacheID = null, $ttl = 3600 ) {
+		$this->ttl = $ttl;
+	}
+	
+	public function setHardCacheID( $requestClass = null, $requestID = null, $cacheID = null, $ttl = 3600 ) {
 		$requestClass = isset($requestClass) ? $requestClass : $this->requestInfoBean->getRequestClass();
 		$requestID = isset($requestID) ? $requestID : $this->requestInfoBean->getRequestID();
 
@@ -189,13 +189,13 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			$cacheID = $this->cacheID;
 		}
 
-        $this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
-    }
-    
-    public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null, $userRequestClass = null ) {
-        $this->templateBuilder = $templateBuilder;
-        // TODO uncomment this as part of refactoring for hard caching
-        $this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
+		$this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
+	}
+	
+	public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null, $userRequestClass = null ) {
+		$this->templateBuilder = $templateBuilder;
+		// TODO uncomment this as part of refactoring for hard caching
+		$this->templateBuilder->setRequestInfoBean( $this->requestInfoBean );
 
 		if ($userRequestID !== null) {
 			$this->templateBuilder->setUserRequestID($userRequestID);
@@ -205,9 +205,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			$this->templateBuilder->setUserRequestClass($userRequestClass);
 		}
 
-        $this->templateBuilder->setTemplateEngine();
-    }
-    
+		$this->templateBuilder->setTemplateEngine();
+	}
+	
 }
-
-?>
