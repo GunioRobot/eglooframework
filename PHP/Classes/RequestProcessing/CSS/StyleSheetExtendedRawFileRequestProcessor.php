@@ -127,7 +127,7 @@ class StyleSheetExtendedRawFileRequestProcessor extends RequestProcessor {
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'StyleSheetExtendedRawFileRequestProcessor: Template requested but not found: "' .
 					$this->requestInfoBean->getGET( 'css_name' ) . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
-				eGlooHTTPResponse::issueRaw404Response();
+				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}
 

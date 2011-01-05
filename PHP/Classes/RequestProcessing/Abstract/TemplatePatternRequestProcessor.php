@@ -76,7 +76,7 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Template requested for RequestClass/RequestID "' .
 					$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
-				eGlooHTTPResponse::issueRaw404Response();
+				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}
 
