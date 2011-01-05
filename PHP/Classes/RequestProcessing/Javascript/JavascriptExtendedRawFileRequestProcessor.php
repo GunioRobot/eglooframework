@@ -67,7 +67,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 		preg_match_all('~([0-9a-zA-Z_ -]+):([0-9a-zA-Z_ -]+)/~', $file_name, $matches, PREG_SET_ORDER);
 
 		foreach($matches as $match_set) {
-			if ( count($match_set) === 3 && isset($matches[1]) && isset($matches[2]) ) {
+			if ( count($match_set) === 3 && isset($match_set[1]) && isset($match_set[2]) ) {
 				$templateVariables[$match_set[1]] = $match_set[2];
 			}
 		}
@@ -84,7 +84,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 		}
 
 		foreach($matches as $match_set) {
-			if ( count($match_set) === 3 && isset($matches[1]) && isset($matches[2]) ) {
+			if ( count($match_set) === 3 && isset($match_set[1]) && isset($match_set[2]) ) {
 				$templateVariables[$match_set[1]] = $match_set[2];
 			}
 		}
