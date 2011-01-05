@@ -122,7 +122,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'JavascriptExtendedRawFileRequestProcessor: Template requested but not found: "' .
 					$this->requestInfoBean->getGET( 'javascript_name' ) . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
-				eGlooHTTPResponse::issueRaw404Response();
+				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}
 

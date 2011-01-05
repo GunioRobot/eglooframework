@@ -38,6 +38,12 @@
  */
 class eGlooHTTPResponse {
 
+	// Constants
+	const DISPATCH_CLASS = 'egCustomHTTPResponse';
+
+	// Response Code Constants
+	const HTTP_RESPONSE_404 = '404';
+
 	public static function issueRaw404Response() {
 		self::resetHeaders();
 
@@ -46,8 +52,43 @@ class eGlooHTTPResponse {
 		exit;
 	}
 
-	public static function issueCustom404Response( $custom_error_template = null ) {
-		
+	public static function issueCustom404Response( $templateVariables = null, $dispatchClass = self::DISPATCH_CLASS, $dispatchID = self::HTTP_RESPONSE_404 ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered issueCustom404Response()" );
+
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
+		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchClass, $dispatchID );
+
+		try {
+			$templateDirector->preProcessTemplate();
+		} catch (ErrorException $e) {
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw $e;
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template requested for ' .
+					self::DISPATCH_CLASS . '/' . self::HTTP_RESPONSE_404 . ' but not found.' );
+				self::issueRaw404Response();
+			}
+		}
+
+		if ( !$templateVariables || !is_array($templateVariables) ) {
+			$templateVariables = array();
+		}
+
+		$templateDirector->setTemplateVariables( $templateVariables, true );
+
+		$output = $templateDirector->processTemplate();
+
+		// Reset headers on this request
+		self::resetHeaders();
+
+		header("Content-type: text/html; charset=UTF-8");
+		header('HTTP/1.0 404 Not Found', true, 404);
+
+		// TODO buffer output
+		echo $output;        
+
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting issueCustom404Response()" );
 	}
 
 	public static function resetHeaders() {
