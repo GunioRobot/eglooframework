@@ -38,7 +38,7 @@ class GetAllRelationshipRequestsRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Relationships/Friends/Lists/FriendRequestsList.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
 		$profileID = null;
 

@@ -27,7 +27,7 @@
  */
 
 // TODO don't make this hard coded
-require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
+// require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * XMLBuilder
@@ -64,7 +64,7 @@ class XMLBuilder extends TemplateBuilder {
         $templateDispatcher =
 			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        $templateEngine = new TemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+        $templateEngine = new XMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
         
         $dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
         
@@ -78,4 +78,3 @@ class XMLBuilder extends TemplateBuilder {
     
 }
 
-?>

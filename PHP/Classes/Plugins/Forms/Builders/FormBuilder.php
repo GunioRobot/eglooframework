@@ -114,7 +114,7 @@ class FormBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new TemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new XHTMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {

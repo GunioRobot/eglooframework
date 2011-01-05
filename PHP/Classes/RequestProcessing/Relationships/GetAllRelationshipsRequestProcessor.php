@@ -37,7 +37,7 @@ class GetAllRelationshipsRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Relationships/Friends/Lists/FriendListContainer.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $loggedInProfileID = $_SESSION['MAIN_PROFILE_ID'];
  		$daoFunction = 'getProfileRelationships';

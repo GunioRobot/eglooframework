@@ -42,7 +42,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Account/RegisterNewAccountXMLHTTPResponse.xmltpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $accountDTO = null;
 

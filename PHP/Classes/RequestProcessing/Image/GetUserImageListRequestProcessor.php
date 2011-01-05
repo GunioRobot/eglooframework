@@ -38,7 +38,7 @@ class GetUserImageListRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Image/Lists/ImageList.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $profileID = $_SESSION['MAIN_PROFILE_ID'];
         $userID = $_SESSION['USER_ID'];        
