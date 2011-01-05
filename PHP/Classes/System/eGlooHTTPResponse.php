@@ -58,7 +58,7 @@ class eGlooHTTPResponse {
 		// Don't call eGlooResponse::outputXHTML from this context because it might invoke this function itself and cause an infinite loop
 		// This is considered, effectively, a more primitive path, thus it must use the fallback pattern
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( RequestInfoBean::getInstance() );
-		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchClass, $dispatchID );
+		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchID, $dispatchClass );
 
 		try {
 			$templateDirector->preProcessTemplate();
