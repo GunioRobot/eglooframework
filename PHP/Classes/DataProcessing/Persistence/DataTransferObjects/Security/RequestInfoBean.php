@@ -465,26 +465,11 @@ class RequestInfoBean {
 
 		$currentGETArray = $this->GET;
 
-		// $count = count($this->GET);
-		// $i = 1;
-
-		// foreach($this->GET as $key => $value) {
-		// 	if (!in_array($key, $keys_to_ignore)) {
-		// 		$retVal .= $key . '=' . urlencode($value);
-		// 
-		// 		if ($count > $i) {
-		// 			$retVal .= '&';
-		// 		}
-		// 
-		// 		$i++;
-		// 	}
-		// }
-
 		foreach( $keys_to_ignore as $key ) {
 			unset($currentGETArray[$key]);
 		}
 
-		$retVal = http_build_query( $currentGETArray );
+		$retVal .= http_build_query( $currentGETArray );
 
 		return $retVal;
 	}
