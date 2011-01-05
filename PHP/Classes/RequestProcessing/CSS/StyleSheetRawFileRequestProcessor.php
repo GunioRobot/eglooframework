@@ -63,6 +63,8 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 		$matches = array();
 		preg_match('~^([^/]*)?/?([^/]*)$~', $file_name, $matches);
 
+		$cache_to_webroot = false;
+
 		// TODO fix this so it can handle multi-level deep
 		if ( isset($matches[1]) && isset($matches[2]) && trim($matches[2]) === '') {
 			$file_name = $matches[1];
@@ -72,9 +74,7 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 			$file_name = $matches[2];
 			$user_agent_hash = $matches[1];
 
-			if (trim($user_agent_hash) !== hash('sha256', $_SERVER['HTTP_USER_AGENT'])) {
-				$cache_to_webroot = false;
-			} else {
+			if (trim($user_agent_hash) === hash('sha256', $_SERVER['HTTP_USER_AGENT'])) {
 				$cache_to_webroot = true;
 			}
 		}
@@ -102,7 +102,7 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetRawFileRequestProcessor: Echoing Response" );
 
-		header('Content-type: text/css');		 
+		header('Content-type: text/css');
 
 		// TODO buffer output
 		echo $output;
@@ -112,7 +112,6 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 
 			StaticContentCacheManager::buildStaticContentCache('css', $user_agent_hash, $file_name . '.css', $output );
 		}
-
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'StyleSheetRawFileRequestProcessor: Exiting processRequest()' );
 	}

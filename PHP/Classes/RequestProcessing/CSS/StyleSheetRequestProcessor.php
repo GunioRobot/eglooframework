@@ -75,7 +75,7 @@ class StyleSheetRequestProcessor extends RequestProcessor {
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
 				throw $e;
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::WARN, 'StyleSheetRawFileRequestProcessor: Template requested but not found: "' .
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'StyleSheetRequestProcessor: Template requested but not found: "' .
 					$this->requestInfoBean->getRequestID() . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
 				eGlooHTTPResponse::issueRaw404Response();
 			}
