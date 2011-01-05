@@ -37,7 +37,7 @@ class ViewRelationshipManagerRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Relationships/Default/UserRelationshipManager.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         if ( true ) {
             $profileID = $_SESSION['MAIN_PROFILE_ID'];

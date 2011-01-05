@@ -98,10 +98,12 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 						foreach( $localization->xpath( 'child::Client' ) as $client ) {
 							$defaultDispatchMapArray = $client->xpath( 'child::DefaultDispatchMap' );
 
+							$clientPath = isset($client['path']) && trim( (string) $client['path'] ) !== '' ? $client['path'] : null;
+
 							$newClient = array(
 								'id' => (string) $client['id'],
 								'matches' => (string) $client['matches'],
-								'path' => (string) $client['path']
+								'path' => $clientPath
 							);
 
 							if (empty($defaultDispatchMapArray)) {

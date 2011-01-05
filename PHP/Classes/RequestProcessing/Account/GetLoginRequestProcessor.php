@@ -41,7 +41,7 @@ class GetLoginRequestProcessor extends RequestProcessor {
     public function processRequest() {
 		
 
-		$this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+		$this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
         header("Content-type: text/html; charset=UTF-8");
 
 		//set about variable info

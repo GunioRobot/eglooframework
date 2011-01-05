@@ -40,7 +40,7 @@ class ViewBlogEntryRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Blog/Views/BlogEntryView.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $blogEntryID = $this->requestInfoBean->getGET('blogID');
 

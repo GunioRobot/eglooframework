@@ -37,7 +37,7 @@ class SearchPeopleBaseRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Search/SearchByName/SearchByNameXMLHTTPResponse.xmltpl';
 
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
 		$searchParam = $this->requestInfoBean->getGET('name');
 

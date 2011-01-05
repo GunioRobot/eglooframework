@@ -39,7 +39,7 @@ class DeleteBlogEntryRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Blog/Forms/BlogEntryForm.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         if ( $this->requestInfoBean->issetPOST('newBlogEntrySubmit') ) {
             eGlooLogger::writeLog( eGlooLogger::DEBUG, 'DeleteBlogEntryRequestProcessor: User submitted new blog' );

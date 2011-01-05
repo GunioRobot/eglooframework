@@ -40,7 +40,7 @@ class ViewBlogEntryListRequestProcessor extends RequestProcessor {
 	 */
 	
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 		$template = "../Cubes/B/Blog.gloo/xhtml/ContentViewContent.html";
 
 		$viewingProfileID = null;

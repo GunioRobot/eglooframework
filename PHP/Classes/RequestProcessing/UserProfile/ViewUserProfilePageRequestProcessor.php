@@ -36,7 +36,7 @@
 class ViewUserProfilePageRequestProcessor extends RequestProcessor {
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $profileID = $this->requestInfoBean->getGET( 'profileID' );
 

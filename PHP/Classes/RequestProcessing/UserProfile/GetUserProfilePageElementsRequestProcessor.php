@@ -41,7 +41,7 @@ class GetUserProfilePageElementsRequestProcessor extends RequestProcessor {
 //        $cacheGateway = CacheGateway::getCacheGateway();
 //        
 //        if ( ($output = $cacheGateway->getObject( 'adf', '<type>' ) ) == null ) {
-//            $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+//            $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 //
 //            $userProfileCenterContainerContent = new UserProfileCenterContainerContentProcessor();
 //            $userProfileCenterContainerContent->setTemplateEngine( $this->_templateEngine );

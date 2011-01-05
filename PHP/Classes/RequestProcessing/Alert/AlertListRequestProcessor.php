@@ -39,7 +39,7 @@ class AlertListRequestProcessor extends RequestProcessor {
     private static $_template = 'blogEntry_default.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new TemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
         $alertList = TestValueConstructor::getAlertList();
 

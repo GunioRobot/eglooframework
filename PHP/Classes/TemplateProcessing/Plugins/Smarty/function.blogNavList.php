@@ -34,7 +34,7 @@
  */
 function smarty_function_blogNavList($params, &$smarty)
 {
-	$templateEngine = new TemplateEngine( 'dev', 'us' );
+	$templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
 
 	if( !isset( $params[ 'profileID' ] ) ){
        		$smarty->trigger_error("assign: missing 'profileID' parameter");

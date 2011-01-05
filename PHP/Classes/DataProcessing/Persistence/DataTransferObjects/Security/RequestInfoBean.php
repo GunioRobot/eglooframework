@@ -460,7 +460,6 @@ class RequestInfoBean {
 		return $this->errorRequestProcessorID;
 	}	
 
-
 	public function getFullyQualifiedRequestString( $keys_to_ignore = array() ) {
 		$retVal = $this->requestClass . '/' . $this->requestID . '?';
 
