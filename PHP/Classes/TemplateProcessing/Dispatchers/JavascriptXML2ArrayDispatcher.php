@@ -160,7 +160,7 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 	/**
 	 * Only functional method available to the public.	
 	 */
-	public function dispatch($requestInfoBean, $userRequestID = null) {
+	public function dispatch($requestInfoBean, $userRequestID = null, $userRequestClass = null) {
 		// TODO only if not cache
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'JavascriptXML2ArrayDispatcher';
