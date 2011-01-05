@@ -70,8 +70,6 @@ class eGlooResponse {
 		try {
 			$templateDirector->preProcessTemplate();
 		} catch (ErrorException $e) {
-			echo_r($dispatchClass . '/' . $dispatchID);
-			die_r($e->getMessage());
 			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
 				throw $e;

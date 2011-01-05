@@ -67,7 +67,7 @@ class eGlooHTTPResponse {
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
 				throw $e;
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template requested for ' .
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template dispatch requested for ' .
 					self::DISPATCH_CLASS . '/' . self::HTTP_RESPONSE_404 . ' but not found.' );
 				self::issueRaw404Response();
 			}
@@ -79,7 +79,20 @@ class eGlooHTTPResponse {
 
 		$templateDirector->setTemplateVariables( $templateVariables, true );
 
-		$output = $templateDirector->processTemplate();
+		try {
+			$output = $templateDirector->processTemplate();
+		} catch (ErrorException $e) {
+			$errorMessage = 'eGlooHTTPResponse: Error processing template for ' . self::DISPATCH_CLASS . '/' .
+				self::HTTP_RESPONSE_404 . ': ' . $e->getMessage();
+
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException( $errorMessage );
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, $errorMessage );
+				self::issueRaw404Response();
+			}
+		}
 
 		// Reset headers on this request
 		self::resetHeaders();
