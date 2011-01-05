@@ -247,3 +247,53 @@ function die_d( $mixed ) {
 	echo_d($mixed);
 	die;
 }
+
+/**
+ * Convenience method
+ */
+function big( $mixed ) {
+	echo '<h1>';
+	print_r($mixed);
+	echo '</h1>';
+}
+
+/**
+ * almost_empty function.
+ *
+ * Like empty(), returns true if input evaluates to 0, '', an empty array, or null.
+ * In addition, almost_empty will return true if input is an n-deep array or object with
+ * only 'empty' values.
+ *
+ * Optionally, pass a second $trim param. If this param is true, almost_empty will trim
+ * any strings it finds, returning true if $in contains only white space.
+ *
+ * This function (almost_empty) is from the Zoop framework. http://zoopframework.com/
+ *
+ * This function (almost_empty) is covered under the Zoop Framework License:
+ * 2006 Supernerd LLC and Contributors. All Rights Reserved.
+ * This software is subject to the provisions of the Zope Public License, Version 2.1 (ZPL)
+ *
+ * @copyright 2006 Supernerd LLC and Contributors. All Rights Reserved.
+ * @license Documentation/Packaged Software Licenses/Zoop (http://zoopframework.com/license)
+ * @see empty
+ * @access public
+ * @param mixed $in
+ * @param bool $trim
+ * @return bool
+ */
+function almost_empty($in, $trim = false) {
+	if ($trim && is_string($in)) {
+		$in = trim($in);
+	}
+
+	if ( empty( $in ) ) {
+		return true;
+	} else if (is_array($in) || is_object($in)) {
+		foreach ((array)$in as $_val) {
+			if (!almost_empty($_val)) return false;
+		}
+		return true;
+	} else {
+		return false;
+	}
+}

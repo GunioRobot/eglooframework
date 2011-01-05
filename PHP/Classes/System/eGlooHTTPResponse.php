@@ -55,8 +55,10 @@ class eGlooHTTPResponse {
 	public static function issueCustom404Response( $templateVariables = null, $dispatchClass = self::DISPATCH_CLASS, $dispatchID = self::HTTP_RESPONSE_404 ) {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered issueCustom404Response()" );
 
-		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
-		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchClass, $dispatchID );
+		// Don't call eGlooResponse::outputXHTML from this context because it might invoke this function itself and cause an infinite loop
+		// This is considered, effectively, a more primitive path, thus it must use the fallback pattern
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( RequestInfoBean::getInstance() );
+		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchID, $dispatchClass );
 
 		try {
 			$templateDirector->preProcessTemplate();
@@ -65,7 +67,7 @@ class eGlooHTTPResponse {
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
 				throw $e;
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template requested for ' .
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template dispatch requested for ' .
 					self::DISPATCH_CLASS . '/' . self::HTTP_RESPONSE_404 . ' but not found.' );
 				self::issueRaw404Response();
 			}
@@ -77,7 +79,20 @@ class eGlooHTTPResponse {
 
 		$templateDirector->setTemplateVariables( $templateVariables, true );
 
-		$output = $templateDirector->processTemplate();
+		try {
+			$output = $templateDirector->processTemplate();
+		} catch (ErrorException $e) {
+			$errorMessage = 'eGlooHTTPResponse: Error processing template for ' . self::DISPATCH_CLASS . '/' .
+				self::HTTP_RESPONSE_404 . ': ' . $e->getMessage();
+
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw new ErrorException( $errorMessage );
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, $errorMessage );
+				self::issueRaw404Response();
+			}
+		}
 
 		// Reset headers on this request
 		self::resetHeaders();

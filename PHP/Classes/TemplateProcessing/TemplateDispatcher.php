@@ -68,7 +68,7 @@ abstract class TemplateDispatcher {
     /**
      * Only functional method available to the public.  
      */
-    abstract public function dispatch( $requestInfoBean );
+    abstract public function dispatch( $requestInfoBean, $requestID, $requestClass );
 
 
 	public function getDispatchPath() {

@@ -464,20 +464,28 @@ class RequestInfoBean {
 	public function getFullyQualifiedRequestString( $keys_to_ignore = array() ) {
 		$retVal = $this->requestClass . '/' . $this->requestID . '?';
 
-		$count = count($this->GET);
-		$i = 1;
+		$currentGETArray = $this->GET;
 
-		foreach($this->GET as $key => $value) {
-			if (!in_array($key, $keys_to_ignore)) {
-				$retVal .= $key . '=' . urlencode($value);
+		// $count = count($this->GET);
+		// $i = 1;
 
-				if ($count > $i) {
-					$retVal .= '&';
-				}
+		// foreach($this->GET as $key => $value) {
+		// 	if (!in_array($key, $keys_to_ignore)) {
+		// 		$retVal .= $key . '=' . urlencode($value);
+		// 
+		// 		if ($count > $i) {
+		// 			$retVal .= '&';
+		// 		}
+		// 
+		// 		$i++;
+		// 	}
+		// }
 
-				$i++;
-			}
+		foreach( $keys_to_ignore as $key ) {
+			unset($currentGETArray[$key]);
 		}
+
+		$retVal = http_build_query( $currentGETArray );
 
 		return $retVal;
 	}
