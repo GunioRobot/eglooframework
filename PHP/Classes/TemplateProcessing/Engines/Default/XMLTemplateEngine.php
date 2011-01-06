@@ -36,7 +36,7 @@
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class XMLTemplateEngine extends TemplateEngine {
+class XMLTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $templateRoots = null;
 	protected $packagePrefix = 'XML';
