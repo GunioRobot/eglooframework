@@ -7,7 +7,7 @@
  * Copyright 2010 eGloo, LLC
  *	
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @package $package
  * @subpackage $subpackage
  * @version 1.0

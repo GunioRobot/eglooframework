@@ -16,7 +16,7 @@
  * limitations under the License.
  *  
  * @author Matt brennan
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @version 0.1
  */

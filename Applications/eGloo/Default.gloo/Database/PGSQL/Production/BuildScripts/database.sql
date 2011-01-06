@@ -16,7 +16,7 @@
 -- @author Miklos Pataky
 -- @author Lwin Moe
 -- @author Keith Buel
--- @copyright 2010 eGloo, LLC
+-- @copyright 2011 eGloo, LLC
 -- @license http://www.apache.org/licenses/LICENSE-2.0
 -- @package Database
 -- @version 1.0
