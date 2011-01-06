@@ -117,7 +117,7 @@ class XHTMLBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new TemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new XHTMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {
@@ -131,6 +131,8 @@ class XHTMLBuilder extends TemplateBuilder {
 				$cacheGateway = CacheGateway::getCacheGateway();
 				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
 			} catch (Exception $e) {
+				// TODO make this proper
+				echo_r(get_class($this->templateEngine));
 				echo_r($e->getMessage());
 				die;
 			}
@@ -138,6 +140,8 @@ class XHTMLBuilder extends TemplateBuilder {
 			try {
 				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 			} catch (Exception $e) {
+				// TODO make this proper
+				echo_r(get_class($this->templateEngine));
 				echo_r($e->getMessage());
 				die;
 			}
