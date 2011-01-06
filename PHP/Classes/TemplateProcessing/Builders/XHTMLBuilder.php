@@ -117,7 +117,7 @@ class XHTMLBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new XHTMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new XHTMLDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {

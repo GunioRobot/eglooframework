@@ -106,7 +106,7 @@ class CSSBuilder extends TemplateBuilder {
     }
     
     public function setTemplateEngine() {
-		$this->templateEngine = new CSSTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+		$this->templateEngine = new CSSDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {

@@ -64,7 +64,7 @@ class XMLBuilder extends TemplateBuilder {
         $templateDispatcher =
 			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        $templateEngine = new XMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+        $templateEngine = new XMLDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
         
         $dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
         

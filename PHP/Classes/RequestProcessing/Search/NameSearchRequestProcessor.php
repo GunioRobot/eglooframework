@@ -37,7 +37,7 @@ class NameSearchRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Search/SearchByName/SearchByNameXMLHTTPResponse.xmltpl';
 
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
 		$searchParam = $this->requestInfoBean->getGET('nameSearchParam');
 

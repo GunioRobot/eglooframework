@@ -88,7 +88,7 @@ class CSSSmarty2TemplateEngine extends Smarty2TemplateEngine implements Template
 			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new CSSTemplateEngineException('Unknown Deployment Type Specified');
+			throw new CSSDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
 
     }

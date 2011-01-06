@@ -77,7 +77,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
   			//TODO return an error
   		}
   		
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $accountDTO = null;
 

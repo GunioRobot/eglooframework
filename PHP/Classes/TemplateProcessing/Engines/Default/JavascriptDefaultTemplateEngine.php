@@ -1,9 +1,9 @@
 <?php
 /**
- * XHTMLTemplateEngine Class File
+ * JavascriptDefaultTemplateEngine Class File
  *
- * Contains the class definition for the TemplateEngine, a subclass of
- * the Smarty template engine class.
+ * Contains the class definition for the JavascriptDefaultTemplateEngine, a 
+ * subclass of the TemplateEngine class.
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -28,53 +28,48 @@
  */
 
 /**
- * XHTMLTemplateEngine
- *
- * Provides a class definition for a generic template engine subclass of
- * the Smarty template engine class.
- *
- * $long_description
+ * JavascriptDefaultTemplateEngine
+ * 
+ * Provides a class definition for a Javascript template engine subclass of
+ * the TemplateEngine class.
  *
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class XHTMLTemplateEngine extends Smarty implements TemplateEngineInterface {
+class JavascriptDefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
-	protected $templateRoots = null;
-	protected $packagePrefix = '';
-
+	protected $packagePrefix = 'Javascript';
+	
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-		$this->left_delimiter = '<!--{'; 
-		$this->right_delimiter = '}-->'; 
+
+		$this->left_delimiter = '/*<!--{';
+		$this->right_delimiter = '}-->*/';
 
 		$this->error_reporting = E_ALL | E_STRICT;
 		$this->error_unassigned = true;
 
-        $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
+		// $this->left_delimiter = '{';
+		// $this->right_delimiter = '}';
 
-        // Get the template paths for the application and the framework
+		// Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
 		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/Templates/';
+			eGlooConfiguration::getApplicationPath() . '/Templates/' . $this->packagePrefix . '/';
 
-		$extra_template_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . '/' . eGlooConfiguration::getExtraTemplatePath();
+		$framework_template_path = 'Templates/Frameworks/Common/Javascript/';
 
-		$framework_template_path = 'Templates';
-
-		// TODO this should have a package prefix used.  Existing apps will need updated dispatches
 		$this->templateRoots = array(
 			'Application' => $application_template_path,
 			'ApplicationCommon' => $application_common_template_path,
-			'ExtraTemplatePath' => $extra_template_path,
 			'Framework' => $framework_template_path
 		);
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-        $this->template_dir = $this->templateRoots;
+       $this->template_dir = array($application_template_path, $application_common_template_path, $framework_template_path);
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -89,7 +84,7 @@ class XHTMLTemplateEngine extends Smarty implements TemplateEngineInterface {
 		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
 		$this->cache_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
 
-		// $this->cache_handler_func = 'smarty_cache_memcache';
+        // $this->cache_handler_func = 'smarty_cache_memcache';
 
 		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 			$this->compile_check = false;
@@ -100,17 +95,16 @@ class XHTMLTemplateEngine extends Smarty implements TemplateEngineInterface {
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
-			// $this->caching = true;
 			// $this->caching = 2;
 			$this->caching = false;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
+			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new TemplateEngineException('Unknown Deployment Type Specified');
+			throw new JavascriptDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
-
     }
 
 	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {

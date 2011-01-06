@@ -1,8 +1,8 @@
 <?php
 /**
- * XHTMLTemplateEngineException Class File
+ * XHTMLDefaultTemplateEngineException Class File
  *
- * Contains the class definition for the XHTMLTemplateEngineException
+ * Contains the class definition for the XHTMLDefaultTemplateEngineException
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -27,19 +27,19 @@
  */
 
 /**
- * Private exception subclass for use by XHTMLTemplateEngine
+ * Private exception subclass for use by XHTMLDefaultTemplateEngine
  */
-final class XHTMLTemplateEngineException extends TemplateEngineException {
+final class XHTMLDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
-    * XHTMLTemplateEngineException constructor.  Takes a message and a code and invokes
-    * the parent (TemplateEngineException) constructor.  May eventually contain additional code,
+    * XHTMLDefaultTemplateEngineException constructor.  Takes a message and a code and invokes
+    * the parent (DefaultTemplateEngineException) constructor.  May eventually contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          a XHTMLTemplateEngineException
+    * @returns          a XHTMLDefaultTemplateEngineException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor

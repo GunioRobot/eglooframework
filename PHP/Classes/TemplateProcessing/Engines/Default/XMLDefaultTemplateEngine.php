@@ -1,18 +1,17 @@
 <?php
 /**
- * CSSTemplateEngine Class File
+ * XMLDefaultTemplateEngine Class File
  *
- * Contains the class definition for the CSSTemplateEngine, a subclass of 
- * the TemplateEngine class.
- *
+ * $file_block_description
+ * 
  * Copyright 2010 eGloo, LLC
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *        http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,32 +27,48 @@
  */
 
 /**
- * CSSTemplateEngine
- * 
- * Provides a class definition for a CSS template engine subclass of
- * the TemplateEngine class.
+ * XMLDefaultTemplateEngine
+ *
+ * $short_description
+ *
+ * $long_description
  *
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
+class XMLDefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
-	protected $packagePrefix = 'CSS';
+	protected $templateRoots = null;
+	protected $packagePrefix = 'XML';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-		$this->left_delimiter = '/*<!--{';
-		$this->right_delimiter = '}-->*/';
+		$this->left_delimiter = '<!--{'; 
+		$this->right_delimiter = '}-->'; 
+
+		$this->error_reporting = E_ALL | E_STRICT;
+		$this->error_unassigned = true;
+
+        $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
 
-		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
+		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			eGlooConfiguration::getApplicationPath() . '/Templates/';
+
+		$framework_template_path = 'Templates';
+
+		$this->templateRoots = array(
+			'Application' => $application_template_path,
+			'ApplicationCommon' => $application_common_template_path,
+			'Framework' => $framework_template_path
+		);
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-        $this->template_dir = array($application_template_path, $framework_template_path);
+        $this->template_dir = $this->templateRoots;
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -85,11 +100,11 @@ class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
-			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new CSSTemplateEngineException('Unknown Deployment Type Specified');
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
 		}
+
     }
 
 	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
@@ -141,3 +156,4 @@ class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
 	}
 
 }
+

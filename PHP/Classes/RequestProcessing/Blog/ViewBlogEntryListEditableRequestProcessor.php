@@ -40,7 +40,7 @@ class ViewBlogEntryListEditableRequestProcessor extends RequestProcessor {
 	*/
 
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 		$template = "../Templates/Frameworks/Common/XHTML/Blog/Lists/BlogEntryListContainer.tpl";
 
         $loggedInProfileID = $_SESSION['MAIN_PROFILE_ID'];

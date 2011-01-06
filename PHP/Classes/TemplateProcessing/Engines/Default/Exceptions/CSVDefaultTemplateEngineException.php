@@ -1,8 +1,8 @@
 <?php
 /**
- * JavascriptTemplateEngineException Class File
+ * CSVDefaultTemplateEngineException Class File
  *
- * Contains the class definition for the JavascriptTemplateEngineException
+ * Contains the class definition for the CSVDefaultTemplateEngineException
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -27,19 +27,19 @@
  */
 
 /**
- * Private exception subclass for use by JavascriptTemplateEngine
+ * Private exception subclass for use by CSVDefaultTemplateEngine
  */
-final class JavascriptTemplateEngineException extends TemplateEngineException {
+final class CSVDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
-    * JavascriptTemplateEngineException constructor.  Takes a message and a code and invokes
-    * the parent (TemplateEngineException) constructor.  May eventually contain additional code,
+    * CSVDefaultTemplateEngineException constructor.  Takes a message and a code and invokes
+    * the parent (DefaultTemplateEngineException) constructor.  May eventually contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          a JavascriptTemplateEngineException
+    * @returns          a CSVDefaultTemplateEngineException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor

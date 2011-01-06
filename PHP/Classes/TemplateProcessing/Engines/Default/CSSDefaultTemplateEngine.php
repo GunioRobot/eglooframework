@@ -1,17 +1,18 @@
 <?php
 /**
- * CSVTemplateEngine Class File
+ * CSSDefaultTemplateEngine Class File
  *
- * $file_block_description
- * 
+ * Contains the class definition for the CSSDefaultTemplateEngine, a subclass of 
+ * the TemplateEngine class.
+ *
  * Copyright 2010 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,54 +22,38 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  * @version 1.0
  */
 
 /**
- * CSVTemplateEngine
+ * CSSDefaultTemplateEngine
+ * 
+ * Provides a class definition for a CSS template engine subclass of
+ * the TemplateEngine class.
  *
- * $short_description
- *
- * $long_description
- *
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  */
-class CSVTemplateEngine extends Smarty implements TemplateEngineInterface {
+class CSSDefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
-	protected $templateRoots = null;
-	protected $packagePrefix = 'CSV';
+	protected $packagePrefix = 'CSS';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-		$this->left_delimiter = '{'; 
-		$this->right_delimiter = '}'; 
-
-		$this->error_reporting = E_ALL | E_STRICT;
-		$this->error_unassigned = true;
-
-        $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
+		$this->left_delimiter = '/*<!--{';
+		$this->right_delimiter = '}-->*/';
 
         // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
-		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/Templates/';
-
-		$framework_template_path = 'Templates';
-
-		$this->templateRoots = array(
-			'Application' => $application_template_path,
-			'ApplicationCommon' => $application_common_template_path,
-			'Framework' => $framework_template_path
-		);
+		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-        $this->template_dir = $this->templateRoots;
+        $this->template_dir = array($application_template_path, $framework_template_path);
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -100,11 +85,11 @@ class CSVTemplateEngine extends Smarty implements TemplateEngineInterface {
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
+			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new TemplateEngineException('Unknown Deployment Type Specified');
+			throw new CSSDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
-
     }
 
 	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
@@ -136,7 +121,7 @@ class CSVTemplateEngine extends Smarty implements TemplateEngineInterface {
 			unset($this->templateRoots['Framework']);
 			$this->template_dir = $this->templateRoots;
 		} else {
-			$framework_template_path = eGlooConfiguration::getFrameworkRootPath() . '/Templates/';
+			$framework_template_path = 'Templates/';
 
 			if ($scope) {
 				$framework_template_path .= $scope . '/';
@@ -156,4 +141,3 @@ class CSVTemplateEngine extends Smarty implements TemplateEngineInterface {
 	}
 
 }
-

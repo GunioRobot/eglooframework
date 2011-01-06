@@ -38,7 +38,7 @@ class ViewMessageRequestProcessor extends RequestProcessor {
     private static $_template = 'blogEntry_default.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $entryList = TestValueConstructor::getBlogEntryList();
         

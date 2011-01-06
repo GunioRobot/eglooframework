@@ -112,7 +112,7 @@ class CSVBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new CSVTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new CSVDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {

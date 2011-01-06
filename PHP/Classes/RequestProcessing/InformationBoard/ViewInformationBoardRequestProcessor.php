@@ -42,7 +42,7 @@ class ViewInformationBoardRequestProcessor extends RequestProcessor {
     private static $_template = '../Templates/Applications/eGloo/InterfaceBundles/Default/XHTML/InformationBoard/InformationBoardBase.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
         
         $viewInfoBoardContent = null;
 

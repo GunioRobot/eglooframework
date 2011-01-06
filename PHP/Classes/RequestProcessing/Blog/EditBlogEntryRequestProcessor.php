@@ -43,7 +43,7 @@ class EditBlogEntryRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Blog/Forms/BlogEditForm.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $blogEntryID = $this->requestInfoBean->getGET('blogID');
 

@@ -112,7 +112,7 @@ class JavascriptBuilder extends TemplateBuilder {
     }
     
     public function setTemplateEngine() {
-    	$this->templateEngine = new JavascriptTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+    	$this->templateEngine = new JavascriptDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {

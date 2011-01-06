@@ -45,7 +45,7 @@ class ProcessLogoutRequestProcessor extends RequestProcessor {
         header('Location: /');
 //        
 //
-//        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+//        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 //        header("Content-type: text/html; charset=UTF-8");
 //
 //

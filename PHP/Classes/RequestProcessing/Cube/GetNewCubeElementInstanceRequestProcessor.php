@@ -49,7 +49,7 @@ class GetNewCubeElementInstanceRequestProcessor extends RequestProcessor {
 
         $cubeDTO->createNewInstance( $profileID,  $cubeTypeID );
             
-		$templateEngine = new CubeTemplateEngine( 'dev', 'us' );
+		$templateEngine = new CubeDefaultTemplateEngine( 'dev', 'us' );
         $templateEngine->assign( 'cubeElementInstanceID', $cubeDTO->getElementInstanceID());
         $templateEngine->assign( 'cubeElementTypeID', $cubeDTO->getElementTypeID() );
         $templateEngine->assign( 'cubeElementName', $cubeDTO->getCubeName() );

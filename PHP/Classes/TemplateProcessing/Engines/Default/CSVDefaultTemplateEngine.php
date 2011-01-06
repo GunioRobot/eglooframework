@@ -1,9 +1,8 @@
 <?php
 /**
- * JavascriptTemplateEngine Class File
+ * CSVDefaultTemplateEngine Class File
  *
- * Contains the class definition for the JavascriptTemplateEngine, a 
- * subclass of the TemplateEngine class.
+ * $file_block_description
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -22,44 +21,44 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package TemplateProcessing
- * @subpackage TemplateEngines
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * JavascriptTemplateEngine
- * 
- * Provides a class definition for a Javascript template engine subclass of
- * the TemplateEngine class.
+ * CSVDefaultTemplateEngine
  *
- * @package TemplateProcessing
- * @subpackage TemplateEngines
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface {
+class CSVDefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
-	protected $packagePrefix = 'Javascript';
-	
+	protected $templateRoots = null;
+	protected $packagePrefix = 'CSV';
+
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-
-		$this->left_delimiter = '/*<!--{';
-		$this->right_delimiter = '}-->*/';
+		$this->left_delimiter = '{'; 
+		$this->right_delimiter = '}'; 
 
 		$this->error_reporting = E_ALL | E_STRICT;
 		$this->error_unassigned = true;
 
-		// $this->left_delimiter = '{';
-		// $this->right_delimiter = '}';
+        $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
-		// Get the template paths for the application and the framework
+        // Get the template paths for the application and the framework
 		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
+			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
 
 		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/Templates/' . $this->packagePrefix . '/';
+			eGlooConfiguration::getApplicationPath() . '/Templates/';
 
-		$framework_template_path = 'Templates/Frameworks/Common/Javascript/';
+		$framework_template_path = 'Templates';
 
 		$this->templateRoots = array(
 			'Application' => $application_template_path,
@@ -69,7 +68,7 @@ class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface
 
 		// We look in all template directories
 		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-       $this->template_dir = array($application_template_path, $application_common_template_path, $framework_template_path);
+        $this->template_dir = $this->templateRoots;
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -84,7 +83,7 @@ class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface
 		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
 		$this->cache_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
 
-        // $this->cache_handler_func = 'smarty_cache_memcache';
+		// $this->cache_handler_func = 'smarty_cache_memcache';
 
 		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 			$this->compile_check = false;
@@ -95,16 +94,17 @@ class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
+			// $this->caching = true;
 			// $this->caching = 2;
 			$this->caching = false;
 		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
-			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new JavascriptTemplateEngineException('Unknown Deployment Type Specified');
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
 		}
+
     }
 
 	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
@@ -136,7 +136,7 @@ class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface
 			unset($this->templateRoots['Framework']);
 			$this->template_dir = $this->templateRoots;
 		} else {
-			$framework_template_path = 'Templates/';
+			$framework_template_path = eGlooConfiguration::getFrameworkRootPath() . '/Templates/';
 
 			if ($scope) {
 				$framework_template_path .= $scope . '/';
@@ -156,3 +156,4 @@ class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface
 	}
 
 }
+
