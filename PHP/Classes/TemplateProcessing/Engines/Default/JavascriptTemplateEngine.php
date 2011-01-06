@@ -36,7 +36,7 @@
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class JavascriptTemplateEngine extends TemplateEngine {
+class JavascriptTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $packagePrefix = 'Javascript';
 	
@@ -105,7 +105,54 @@ class JavascriptTemplateEngine extends TemplateEngine {
 		} else {
 			throw new JavascriptTemplateEngineException('Unknown Deployment Type Specified');
 		}
-
     }
+
+	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
+		if (!$useApplicationTemplates) {
+			unset($this->templateRoots['Application']);
+			$this->config_dir = $this->templateRoots;
+		} else {
+			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
+			$this->templateRoots['Application'] = $application_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
+	}
+
+	public function useApplicationCommonTemplates( $useApplicationCommonTemplates ) {
+		if (!$useApplicationCommonTemplates) {
+			unset($this->templateRoots['ApplicationCommon']);
+			$this->config_dir = $this->templateRoots;
+		} else {
+			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+				eGlooConfiguration::getApplicationPath() . '/Templates/';
+			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
+	}
+
+	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null ) {
+		if (!$useFrameworkTemplates) {
+			unset($this->templateRoots['Framework']);
+			$this->template_dir = $this->templateRoots;
+		} else {
+			$framework_template_path = 'Templates/';
+
+			if ($scope) {
+				$framework_template_path .= $scope . '/';
+			}
+
+			if ($package) {
+				$framework_template_path .= $package . '/';
+			}
+
+			$this->templateRoots['Framework'] = $framework_template_path;
+			$this->template_dir = $this->templateRoots;
+		}
+	}
+
+	public function getTemplatePaths() {
+		return $this->template_dir;
+	}
 
 }

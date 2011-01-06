@@ -2,7 +2,8 @@
 /**
  * XHTMLTemplateEngine Class File
  *
- * $file_block_description
+ * Contains the class definition for the TemplateEngine, a subclass of
+ * the Smarty template engine class.
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -29,17 +30,18 @@
 /**
  * XHTMLTemplateEngine
  *
- * $short_description
+ * Provides a class definition for a generic template engine subclass of
+ * the Smarty template engine class.
  *
  * $long_description
  *
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class XHTMLTemplateEngine extends TemplateEngine {
+class XHTMLTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $templateRoots = null;
-	protected $packagePrefix = 'XHTML';
+	protected $packagePrefix = '';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
@@ -62,6 +64,7 @@ class XHTMLTemplateEngine extends TemplateEngine {
 
 		$framework_template_path = 'Templates';
 
+		// TODO this should have a package prefix used.  Existing apps will need updated dispatches
 		$this->templateRoots = array(
 			'Application' => $application_template_path,
 			'ApplicationCommon' => $application_common_template_path,
@@ -159,4 +162,3 @@ class XHTMLTemplateEngine extends TemplateEngine {
 	}
 
 }
-

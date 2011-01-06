@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CSVTemplateEngine extends TemplateEngine {
+class CSVTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $templateRoots = null;
 	protected $packagePrefix = 'CSV';
