@@ -20,14 +20,11 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Template
  * @version 1.0
  */
-
-// TODO don't make this hard coded
-// require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * XMLBuilder
@@ -64,7 +61,7 @@ class XMLBuilder extends TemplateBuilder {
         $templateDispatcher =
 			XHTMLDispatcher::getInstance( $this->requestInfoBean->getApplication(), $this->requestInfoBean->getInterfaceBundle() );
 
-        $templateEngine = new XMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+        $templateEngine = new XMLDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
         
         $dispatchPath = $templateDispatcher->dispatch( $this->requestInfoBean );
         

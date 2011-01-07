@@ -1,10 +1,10 @@
 <?php
 /**
- * TemplateEngineException Class File
+ * CSVBuilderException Class File
  *
- * Contains the class definition for the TemplateEngineException
+ * Contains the class definition for the CSVBuilderException
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,24 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package TemplateProcessing
- * @subpackage Exceptions
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * Exception subclass for use by TemplateEngine
+ * CSVBuilderException
+ *
+ * Exception subclass for use by CSVBuilder
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class TemplateEngineException extends Exception {
+class CSVBuilderException extends Exception {
 
    /**
     * TemplateEngineException constructor.  Takes a message and a code and invokes

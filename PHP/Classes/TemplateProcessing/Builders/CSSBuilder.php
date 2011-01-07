@@ -20,14 +20,11 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Template
  * @version 1.0
  */
-
-// TODO don't make this hard coded
-require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * CSSBuilder
@@ -106,7 +103,7 @@ class CSSBuilder extends TemplateBuilder {
     }
     
     public function setTemplateEngine() {
-		$this->templateEngine = new CSSTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+		$this->templateEngine = new CSSDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {

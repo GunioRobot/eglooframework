@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author <UNKNOWN>
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @subpackage Blog
@@ -39,7 +39,7 @@ class DeleteBlogEntryRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Blog/Forms/BlogEntryForm.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         if ( $this->requestInfoBean->issetPOST('newBlogEntrySubmit') ) {
             eGlooLogger::writeLog( eGlooLogger::DEBUG, 'DeleteBlogEntryRequestProcessor: User submitted new blog' );

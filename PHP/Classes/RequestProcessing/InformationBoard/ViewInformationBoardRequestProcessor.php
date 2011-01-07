@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -42,7 +42,7 @@ class ViewInformationBoardRequestProcessor extends RequestProcessor {
     private static $_template = '../Templates/Applications/eGloo/InterfaceBundles/Default/XHTML/InformationBoard/InformationBoardBase.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
         
         $viewInfoBoardContent = null;
 

@@ -20,13 +20,11 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Template
  * @version 1.0
  */
-
-// require( 'PHP/Classes/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * XHTMLBuilder
@@ -117,7 +115,7 @@ class XHTMLBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new XHTMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new XHTMLDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {

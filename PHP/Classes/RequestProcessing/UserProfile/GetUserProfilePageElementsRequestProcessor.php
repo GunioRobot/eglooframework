@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -41,7 +41,7 @@ class GetUserProfilePageElementsRequestProcessor extends RequestProcessor {
 //        $cacheGateway = CacheGateway::getCacheGateway();
 //        
 //        if ( ($output = $cacheGateway->getObject( 'adf', '<type>' ) ) == null ) {
-//            $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+//            $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 //
 //            $userProfileCenterContainerContent = new UserProfileCenterContainerContentProcessor();
 //            $userProfileCenterContainerContent->setTemplateEngine( $this->_templateEngine );

@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -37,7 +37,7 @@ class SearchPeopleBaseRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Search/SearchByName/SearchByNameXMLHTTPResponse.xmltpl';
 
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
 		$searchParam = $this->requestInfoBean->getGET('name');
 

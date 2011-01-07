@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -88,7 +88,7 @@ class CSSSmarty2TemplateEngine extends Smarty2TemplateEngine implements Template
 			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new CSSTemplateEngineException('Unknown Deployment Type Specified');
+			throw new CSSDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
 
     }

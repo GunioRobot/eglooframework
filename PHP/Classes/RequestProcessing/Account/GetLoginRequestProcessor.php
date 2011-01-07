@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author Keith Buel
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @subpackage Account
@@ -41,7 +41,7 @@ class GetLoginRequestProcessor extends RequestProcessor {
     public function processRequest() {
 		
 
-		$this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+		$this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
         header("Content-type: text/html; charset=UTF-8");
 
 		//set about variable info

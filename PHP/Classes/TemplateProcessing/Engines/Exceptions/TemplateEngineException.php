@@ -1,8 +1,8 @@
 <?php
 /**
- * XHTMLTemplateEngineException Class File
+ * TemplateEngineException Class File
  *
- * Contains the class definition for the XHTMLTemplateEngineException
+ * Contains the class definition for the TemplateEngineException
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package TemplateProcessing
  * @subpackage Exceptions
@@ -27,19 +27,19 @@
  */
 
 /**
- * Private exception subclass for use by XHTMLTemplateEngine
+ * Exception subclass for use by TemplateEngine
  */
-final class XHTMLTemplateEngineException extends TemplateEngineException {
+class TemplateEngineException extends Exception {
 
    /**
-    * XHTMLTemplateEngineException constructor.  Takes a message and a code and invokes
-    * the parent (TemplateEngineException) constructor.  May eventually contain additional code,
+    * TemplateEngineException constructor.  Takes a message and a code and invokes
+    * the parent (Exception) constructor.  May eventaully contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          a XHTMLTemplateEngineException
+    * @returns          a TemplateEngineException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor

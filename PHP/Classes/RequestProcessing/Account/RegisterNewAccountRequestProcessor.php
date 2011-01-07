@@ -20,7 +20,7 @@
  *  
  * @author George Cooper
  * @author Keith Buel
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @subpackage Account
@@ -42,7 +42,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XMLHTTPResponse/Account/RegisterNewAccountXMLHTTPResponse.xmltpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $accountDTO = null;
 

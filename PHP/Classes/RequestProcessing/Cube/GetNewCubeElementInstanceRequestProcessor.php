@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -49,7 +49,7 @@ class GetNewCubeElementInstanceRequestProcessor extends RequestProcessor {
 
         $cubeDTO->createNewInstance( $profileID,  $cubeTypeID );
             
-		$templateEngine = new CubeTemplateEngine( 'dev', 'us' );
+		$templateEngine = new CubeDefaultTemplateEngine( 'dev', 'us' );
         $templateEngine->assign( 'cubeElementInstanceID', $cubeDTO->getElementInstanceID());
         $templateEngine->assign( 'cubeElementTypeID', $cubeDTO->getElementTypeID() );
         $templateEngine->assign( 'cubeElementName', $cubeDTO->getCubeName() );

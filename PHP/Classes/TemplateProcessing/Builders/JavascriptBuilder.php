@@ -20,14 +20,11 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package Template
  * @version 1.0
  */
-
-// TODO don't make this hard coded
-require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
 
 /**
  * JavascriptBuilder
@@ -112,7 +109,7 @@ class JavascriptBuilder extends TemplateBuilder {
     }
     
     public function setTemplateEngine() {
-    	$this->templateEngine = new JavascriptTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
+    	$this->templateEngine = new JavascriptDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );
     }
     
     public function run() {
@@ -144,6 +141,10 @@ class JavascriptBuilder extends TemplateBuilder {
 						$retVal = file_get_contents($path . $dispatchPath);
 						break;
 					}
+				}
+
+				if ( !$retVal ) {
+					throw new JavascriptBuilderException( 'Javascript template not found at path: ' . $dispatchPath );
 				}
 			}
 		} catch (ErrorException $e) {

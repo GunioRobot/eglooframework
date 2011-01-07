@@ -1,8 +1,8 @@
 <?php
 /**
- * CSSTemplateEngine Class File
+ * CSSDefaultTemplateEngine Class File
  *
- * Contains the class definition for the CSSTemplateEngine, a subclass of 
+ * Contains the class definition for the CSSDefaultTemplateEngine, a subclass of 
  * the TemplateEngine class.
  *
  * Copyright 2010 eGloo, LLC
@@ -20,7 +20,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package TemplateProcessing
  * @subpackage TemplateEngines
@@ -28,7 +28,7 @@
  */
 
 /**
- * CSSTemplateEngine
+ * CSSDefaultTemplateEngine
  * 
  * Provides a class definition for a CSS template engine subclass of
  * the TemplateEngine class.
@@ -36,7 +36,7 @@
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
+class CSSDefaultTemplateEngine extends DefaultTemplateEngine implements TemplateEngineInterface {
 
 	protected $packagePrefix = 'CSS';
 
@@ -45,15 +45,9 @@ class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
 		$this->left_delimiter = '/*<!--{';
 		$this->right_delimiter = '}-->*/';
 
-        // Get the template paths for the application and the framework
-		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
+		$this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
-		$framework_template_path = 'Templates/Applications/eGloo/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/CSS/';
-
-		// We look in all template directories
-		// This does NOT guarantee priority (undefined which will be grabbed if name collision exists)
-        $this->template_dir = array($application_template_path, $framework_template_path);
+		$this->setTemplatePaths();
 
 		// Set the configuration directory
         $this->config_dir   = eGlooConfiguration::getConfigurationPath() . '/Smarty';
@@ -88,56 +82,8 @@ class CSSTemplateEngine extends Smarty implements TemplateEngineInterface {
 			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new CSSTemplateEngineException('Unknown Deployment Type Specified');
+			throw new CSSDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
     }
-
-	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
-		if (!$useApplicationTemplates) {
-			unset($this->templateRoots['Application']);
-			$this->config_dir = $this->templateRoots;
-		} else {
-			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
-			$this->templateRoots['Application'] = $application_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function useApplicationCommonTemplates( $useApplicationCommonTemplates ) {
-		if (!$useApplicationCommonTemplates) {
-			unset($this->templateRoots['ApplicationCommon']);
-			$this->config_dir = $this->templateRoots;
-		} else {
-			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-				eGlooConfiguration::getApplicationPath() . '/Templates/';
-			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null ) {
-		if (!$useFrameworkTemplates) {
-			unset($this->templateRoots['Framework']);
-			$this->template_dir = $this->templateRoots;
-		} else {
-			$framework_template_path = 'Templates/';
-
-			if ($scope) {
-				$framework_template_path .= $scope . '/';
-			}
-
-			if ($package) {
-				$framework_template_path .= $package . '/';
-			}
-
-			$this->templateRoots['Framework'] = $framework_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function getTemplatePaths() {
-		return $this->template_dir;
-	}
 
 }

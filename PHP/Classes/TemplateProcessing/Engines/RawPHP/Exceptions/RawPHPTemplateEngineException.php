@@ -1,10 +1,10 @@
 <?php
 /**
- * XMLTemplateEngineException Class File
+ * RawPHPTemplateEngineException Class File
  *
- * Contains the class definition for the XMLTemplateEngineException
+ * Contains the class definition for the RawPHPTemplateEngineException
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,27 +19,34 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package TemplateProcessing
- * @subpackage Exceptions
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * Private exception subclass for use by XMLTemplateEngine
+ * RawPHPTemplateEngineException
+ *
+ * Private exception subclass for use by RawPHPTemplateEngine
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-final class XMLTemplateEngineException extends TemplateEngineException {
+class RawPHPTemplateEngineException extends TemplateEngineException {
 
    /**
-    * XMLTemplateEngineException constructor.  Takes a message and a code and invokes
+    * RawPHPTemplateEngineException constructor.  Takes a message and a code and invokes
     * the parent (TemplateEngineException) constructor.  May eventually contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          a XMLTemplateEngineException
+    * @returns          a RawPHPTemplateEngineException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor

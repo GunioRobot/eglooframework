@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -37,7 +37,7 @@ class ViewRelationshipManagerRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Relationships/Default/UserRelationshipManager.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         if ( true ) {
             $profileID = $_SESSION['MAIN_PROFILE_ID'];

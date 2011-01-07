@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author <UNKNOWN>
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @subpackage Blog
@@ -40,7 +40,7 @@ class ViewBlogEntryRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Blog/Views/BlogEntryView.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $blogEntryID = $this->requestInfoBean->getGET('blogID');
 

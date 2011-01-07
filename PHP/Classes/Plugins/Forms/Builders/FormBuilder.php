@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -114,7 +114,7 @@ class FormBuilder extends TemplateBuilder {
     }
 
     public function setTemplateEngine() {
-        $this->templateEngine = new XHTMLTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
+        $this->templateEngine = new XHTMLDefaultTemplateEngine( $this->requestInfoBean->getInterfaceBundle(), 'US', 'en' );    
     }
 
     public function run() {

@@ -1,8 +1,8 @@
 <?php
 /**
- * CubeTemplateEngineException Class File
+ * CubeDefaultTemplateEngineException Class File
  *
- * Contains the class definition for the CubeTemplateEngineException
+ * Contains the class definition for the CubeDefaultTemplateEngineException
  * 
  * Copyright 2010 eGloo, LLC
  * 
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package TemplateProcessing
  * @subpackage Exceptions
@@ -27,19 +27,19 @@
  */
 
 /**
- * Private exception subclass for use by CubeTemplateEngine
+ * Private exception subclass for use by CubeDefaultTemplateEngine
  */
-final class CubeTemplateEngineException extends TemplateEngineException {
+final class CubeDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
-    * CubeTemplateEngineException constructor.  Takes a message and a code and invokes
-    * the parent (TemplateEngineException) constructor.  May eventually contain additional code,
+    * CubeDefaultTemplateEngineException constructor.  Takes a message and a code and invokes
+    * the parent (DefaultTemplateEngineException) constructor.  May eventually contain additional code,
     * but for now acts as a means of determining the exact type of exception thrown
     * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          a CubeTemplateEngineException
+    * @returns          a CubeDefaultTemplateEngineException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor

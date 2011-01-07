@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package RequestProcessing
  * @version 1.0
@@ -38,7 +38,7 @@ class GetUserImageListRequestProcessor extends RequestProcessor {
     private $_templateDefault = '../Templates/Frameworks/Common/XHTML/Image/Lists/ImageList.tpl';
     
     public function processRequest() {
-        $this->_templateEngine = new XHTMLTemplateEngine( 'dev', 'us' );
+        $this->_templateEngine = new XHTMLDefaultTemplateEngine( 'dev', 'us' );
 
         $profileID = $_SESSION['MAIN_PROFILE_ID'];
         $userID = $_SESSION['USER_ID'];        

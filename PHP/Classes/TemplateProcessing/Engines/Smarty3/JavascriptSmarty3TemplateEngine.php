@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2010 eGloo, LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -102,7 +102,7 @@ class JavascriptSmarty3TemplateEngine extends Smarty3TemplateEngine implements T
 			// $this->caching = 2;
 			$this->caching = false;
 		} else {
-			throw new JavascriptTemplateEngineException('Unknown Deployment Type Specified');
+			throw new JavascriptDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
 
     }
