@@ -36,7 +36,9 @@
  * @package TemplateProcessing
  * @subpackage TemplateEngines
  */
-class CubeDefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
+class CubeDefaultTemplateEngine extends DefaultTemplateEngine implements TemplateEngineInterface {
+
+	protected $packagePrefix = 'Cube';
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
@@ -44,7 +46,10 @@ class CubeDefaultTemplateEngine extends Smarty implements TemplateEngineInterfac
         $this->left_delimiter = '<!--{'; 
         $this->right_delimiter = '}-->'; 
 
-        $this->template_dir = 'Cubes/';
+		$this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
+
+		$this->setTemplatePaths();
+
         $this->config_dir   = 'Configuration/Smarty';
 
 		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/CompiledTemplates/' . $local . '/' . $language;
@@ -73,53 +78,5 @@ class CubeDefaultTemplateEngine extends Smarty implements TemplateEngineInterfac
 			throw new CubeDefaultTemplateEngineException('Unknown Deployment Type Specified');
 		}
     }
-
-	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null ) {
-		if (!$useApplicationTemplates) {
-			unset($this->templateRoots['Application']);
-			$this->config_dir = $this->templateRoots;
-		} else {
-			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
-			$this->templateRoots['Application'] = $application_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function useApplicationCommonTemplates( $useApplicationCommonTemplates ) {
-		if (!$useApplicationCommonTemplates) {
-			unset($this->templateRoots['ApplicationCommon']);
-			$this->config_dir = $this->templateRoots;
-		} else {
-			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-				eGlooConfiguration::getApplicationPath() . '/Templates/';
-			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null ) {
-		if (!$useFrameworkTemplates) {
-			unset($this->templateRoots['Framework']);
-			$this->template_dir = $this->templateRoots;
-		} else {
-			$framework_template_path = 'Templates/';
-
-			if ($scope) {
-				$framework_template_path .= $scope . '/';
-			}
-
-			if ($package) {
-				$framework_template_path .= $package . '/';
-			}
-
-			$this->templateRoots['Framework'] = $framework_template_path;
-			$this->template_dir = $this->templateRoots;
-		}
-	}
-
-	public function getTemplatePaths() {
-		return $this->template_dir;
-	}
 
 }

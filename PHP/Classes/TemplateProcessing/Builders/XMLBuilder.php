@@ -26,9 +26,6 @@
  * @version 1.0
  */
 
-// TODO don't make this hard coded
-// require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
-
 /**
  * XMLBuilder
  * 

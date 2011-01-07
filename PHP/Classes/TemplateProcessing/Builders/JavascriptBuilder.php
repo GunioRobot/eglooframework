@@ -26,9 +26,6 @@
  * @version 1.0
  */
 
-// TODO don't make this hard coded
-require( 'PHP/Classes/Performance/Caching/Smarty/SmartyMemcacheHandler.php' );
-
 /**
  * JavascriptBuilder
  * 
@@ -144,6 +141,10 @@ class JavascriptBuilder extends TemplateBuilder {
 						$retVal = file_get_contents($path . $dispatchPath);
 						break;
 					}
+				}
+
+				if ( !$retVal ) {
+					throw new JavascriptBuilderException( 'Javascript template not found at path: ' . $dispatchPath );
 				}
 			}
 		} catch (ErrorException $e) {
