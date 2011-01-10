@@ -38,15 +38,27 @@
  */
 interface TemplateEngineInterface {
 
-    public function __construct( $interfacebundle, $local = 'US', $language = 'en' );
+    public function __construct( $interface_bundle, $locale = 'US', $language = 'en' );
 
-	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null );
+	public function getTemplatePaths();
+
+	public function setCacheHandler();
+
+	public function setCustomDelimiters();
+
+	public function setDeploymentOptions();
+
+	public function setEngineDirectories();
+
+	public function setErrorReporting();
+
+	public function setTemplatePaths();
 
 	public function useApplicationCommonTemplates( $useApplicationCommonTemplates );
 
-	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null );
+	public function useApplicationTemplates( $useApplicationTemplates = true, $interfaceBundle = null );
 
-	public function getTemplatePaths();
+	public function useFrameworkTemplates( $useFrameworkTemplates = true, $scope = null, $package = null );
 
 }
 

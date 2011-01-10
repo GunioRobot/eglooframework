@@ -65,16 +65,16 @@ class DefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 		$this->setCacheHandler();
 	}
 
-	protected function setCacheHandler() {
+	public function setCacheHandler() {
 		// $this->cache_handler_func = 'smarty_cache_memcache';
 	}
 
-	protected function setCustomDelimiters() {
+	public function setCustomDelimiters() {
 		$this->left_delimiter = $this->_custom_left_delimiter; 
 		$this->right_delimiter = $this->_custom_right_delimiter; 
 	}
 
-	protected function setDeploymentOptions() {
+	public function setDeploymentOptions() {
 		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
 			$this->compile_check = false;
 			$this->force_compile = false;
@@ -96,7 +96,7 @@ class DefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 		}
 	}
 
-	protected function setEngineDirectories() {
+	public function setEngineDirectories() {
 		$this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
 		// Set the configuration directory
@@ -114,12 +114,12 @@ class DefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 		$this->cache_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
 	}
 
-	protected function setErrorReporting() {
+	public function setErrorReporting() {
 		$this->error_reporting = E_ALL | E_STRICT;
 		$this->error_unassigned = true;
 	}
 
-	protected function setTemplatePaths( $templatePaths = null ) {
+	public function setTemplatePaths( $templatePaths = null ) {
 		if ( !$templatePaths ) {
 	        // Get the template paths for the application and the framework
 			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
