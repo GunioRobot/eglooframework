@@ -67,10 +67,10 @@ class XMLBuilder extends TemplateBuilder {
 		
 		// assign variables
 
-		// output		 
+		// output
 		$output = $templateEngine->fetch( $dispatchPath );
 		
-		return $output;		   
+		return $output;
 	}
 	
 }
