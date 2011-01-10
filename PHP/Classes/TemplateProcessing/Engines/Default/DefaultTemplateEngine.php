@@ -40,10 +40,81 @@ class DefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	protected $templateRoots = null;
 	protected $packagePrefix = '';
+	protected $_custom_left_delimiter = '{';
+	protected $_custom_right_delimiter = '}';
+	protected $_interface_bundle = 'Default';
+	protected $_locale = 'US';
+	protected $_language = 'en';
 
-	public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
-		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
+	public function __construct( $interface_bundle, $locale = 'US', $language = 'en' ) {
+		parent::__construct( $interface_bundle, $locale = 'US', $language = 'en' );
 
+		$this->_interface_bundle = $interface_bundle;
+		$this->_locale = $locale;
+		$this->_language = $language;
+
+		$this->init();
+	}
+
+	protected function init() {
+		$this->setErrorReporting();
+		$this->setCustomDelimiters();
+		$this->setEngineDirectories();
+		$this->setTemplatePaths();
+		$this->setDeploymentOptions();
+		$this->setCacheHandler();
+	}
+
+	protected function setCacheHandler() {
+		// $this->cache_handler_func = 'smarty_cache_memcache';
+	}
+
+	protected function setCustomDelimiters() {
+		$this->left_delimiter = $this->_custom_left_delimiter; 
+		$this->right_delimiter = $this->_custom_right_delimiter; 
+	}
+
+	protected function setDeploymentOptions() {
+		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			$this->compile_check = false;
+			$this->force_compile = false;
+			// $this->caching = true;
+			// $this->caching = 2;
+			$this->caching = false;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			$this->compile_check = true;
+			$this->force_compile = false;
+			// $this->caching = true;
+			// $this->caching = 2;
+			$this->caching = false;
+		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			$this->compile_check = true;
+			$this->force_compile = true;
+			$this->caching = false;
+		} else {
+			throw new TemplateEngineException('Unknown Deployment Type Specified');
+		}
+	}
+
+	protected function setEngineDirectories() {
+		$this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
+
+		// Set the configuration directory
+		$this->config_dir	= eGlooConfiguration::getConfigurationPath() . '/Smarty';
+
+		// Set compilation and cache directories
+		$this->compile_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/CompiledTemplates/' . $this->_locale. '/' . $this->_language;
+
+		$this->cache_dir	= eGlooConfiguration::getCachePath() . '/' . eGlooConfiguration::getApplicationPath() . '/' .
+			eGlooConfiguration::getUIBundleName() . '/SmartyCache/' . $this->_locale. '/' . $this->_language;
+
+		// Because neither Windows nor Smarty is as dumb as both
+		$this->compile_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->compile_dir);
+		$this->cache_dir = str_replace('/', DIRECTORY_SEPARATOR, $this->cache_dir);
+	}
+
+	protected function setErrorReporting() {
 		$this->error_reporting = E_ALL | E_STRICT;
 		$this->error_unassigned = true;
 	}
