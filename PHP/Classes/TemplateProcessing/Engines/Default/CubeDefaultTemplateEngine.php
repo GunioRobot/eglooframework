@@ -43,8 +43,8 @@ class CubeDefaultTemplateEngine extends DefaultTemplateEngine implements Templat
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
 
-        $this->left_delimiter = '<!--{'; 
-        $this->right_delimiter = '}-->'; 
+		$this->left_delimiter = '<!--{'; 
+		$this->right_delimiter = '}-->'; 
 
 		$this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 

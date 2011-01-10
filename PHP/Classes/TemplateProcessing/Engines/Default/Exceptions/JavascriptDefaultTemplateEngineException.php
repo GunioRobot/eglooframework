@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by JavascriptDefaultTemplateEngine
  */
-final class JavascriptDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class JavascriptDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * JavascriptDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

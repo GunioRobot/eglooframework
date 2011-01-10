@@ -37,14 +37,14 @@
  */
 class XHTMLBuilder extends TemplateBuilder {
 
-    private $cacheID = null;
-    private $hardCacheID = null;
-    private $contentProcessors = null;
-    private $deployment = null;
-    private $requestInfoBean = null;
-    private $templateVariables = null;
-	private $output = null;
-	private $isHardCached = false;
+    protected $cacheID = null;
+    protected $hardCacheID = null;
+    protected $contentProcessors = null;
+    protected $deployment = null;
+    protected $requestInfoBean = null;
+    protected $templateVariables = null;
+	protected $output = null;
+	protected $isHardCached = false;
 
     public function setRequestInfoBean( $requestInfoBean ) {
         $this->requestInfoBean = $requestInfoBean;
@@ -124,67 +124,23 @@ class XHTMLBuilder extends TemplateBuilder {
 		if (isset($this->hardCacheID) && $this->isHardCached) {
 			$retVal = $this->output;
 		} else if (isset($this->hardCacheID) && !$this->isHardCached) {
-			try {
-				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
-				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
-			} catch (Exception $e) {
-				// TODO make this proper
-				echo_r(get_class($this->templateEngine));
-				echo_r($e->getMessage());
-				die;
-			}
+			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
+			$cacheGateway = CacheGateway::getCacheGateway();
+			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
 		} else {
-			try {
-				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
-			} catch (Exception $e) {
-				// TODO make this proper
-				echo_r(get_class($this->templateEngine));
-				echo_r($e->getMessage());
-				die;
-			}
+			$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 		}
 
         return $retVal;
     }
 
-	private function __fetch($dispatchPath, $cacheID) {
+	protected function __fetch($dispatchPath, $cacheID) {
 		$retVal = null;
 
 		try {
 			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
-		} catch (ErrorException $e) {
-			$matches = array();
-
-			if ( preg_match('~.*the \$compile_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
-				if (count($matches) > 1) {
-					try {
-						$mode = 0777;
-						$recursive = true;
-
-						mkdir( $matches[1], $mode, $recursive );
-
-						$retVal = $this->__fetch( $dispatchPath, $cacheID );
-					} catch (Exception $e){
-						throw $e;
-					}
-				}
-			} else if ( preg_match('~.*the \$cache_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
-				if (count($matches) > 1) {
-					try {
-						$mode = 0777;
-						$recursive = true;
-
-						mkdir( $matches[1], $mode, $recursive );
-
-						$retVal = $this->__fetch( $dispatchPath, $cacheID );
-					} catch (Exception $e){
-						throw $e;
-					}
-				}
-			} else {
-				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on XHTML engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
-			}
+		} catch (Exception $e) {
+			$this->processEngineFetchException( $e );
 		}
 
 		return $retVal;

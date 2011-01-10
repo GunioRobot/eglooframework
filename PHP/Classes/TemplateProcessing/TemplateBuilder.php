@@ -107,6 +107,72 @@ abstract class TemplateBuilder {
 			// $this->templateEngine->useApplicationCommonTemplates(true);
 			// $this->templateEngine->useFrameworkTemplates(true);
 		}
+	}
+
+	protected function processEngineFetchException( $e ) {
+		$template_engine_class = get_class($this->templateEngine);
+		$error_message = 'Template Engine of type "' . $template_engine_class . '" ';
+
+		$matches = array();
+
+		// TODO This should probably catch against the known engine messages in a different way.  Branching on type?
+		// Right now this is assuming DefaultTemplateEngine like whoa
+		if ( preg_match('~.*the \$compile_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+			if (count($matches) >= 1) {
+				try {
+					$mode = 0777;
+					$recursive = true;
+
+					mkdir( $matches[1], $mode, $recursive );
+
+					$retVal = $this->__fetch( $dispatchPath, $cacheID );
+				} catch (Exception $e){
+					throw new FailedWriteTemplateCompileDirectoryException( $e->getMessage() );
+				}
+			}
+		} else if ( preg_match('~.*the \$cache_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
+			if (count($matches) >= 1) {
+				try {
+					$mode = 0777;
+					$recursive = true;
+
+					mkdir( $matches[1], $mode, $recursive );
+
+					$retVal = $this->__fetch( $dispatchPath, $cacheID );
+				} catch (Exception $e){
+					throw new FailedWriteTemplateCacheDirectoryException( $e->getMessage() );
+				}
+			}
+		} else if ( preg_match('~.*Unable to load template file.*~', $e->getMessage(), $matches ) ) {
+			if (count($matches) >= 1) {
+				$error_message .= 'failed to load template file with cache ID "' . $this->cacheID  .
+					'" at path: ' . "\n" . $this->dispatchPath;
+
+				throw new DefaultTemplateEngineFailedReadTemplateException( $error_message );
+			}
+		} else if ( preg_match('~.*Undefined Smarty variable.*~', $e->getMessage(), $matches ) ) {
+			if (count($matches) >= 1) {
+				$error_message .= 'failed processing template file with cache ID "' . $this->cacheID  . '" at path: ' . "\n" .
+					$this->dispatchPath . "\n\n";
+				$error_message .= $template_engine_class . ' error: ' . $e->getMessage();
+
+				throw new DefaultTemplateEngineUndefinedVariableException( $error_message );
+			}
+		} else if ( preg_match('~.*Syntax Error in template.*~', $e->getMessage(), $matches ) ) {
+			if (count($matches) >= 1) {
+				$error_message .= 'failed processing template file with cache ID "' . $this->cacheID  . '" at path: ' . "\n" .
+					$this->dispatchPath . "\n\n";
+				$error_message .= $template_engine_class . ' error: ' . $e->getMessage();
+
+				throw new DefaultTemplateEngineSyntaxErrorException( $error_message );
+			}
+		} else {
+			$error_message .= 'failed processing template file with cache ID "' . $this->cacheID  . '" at path: ' . "\n" .
+				$this->dispatchPath . "\n\n";
+			$error_message .= $template_engine_class . ' error: ' . $e->getMessage();
+
+			throw new DefaultTemplateEngineException( $error_message );
+		}
 
 	}
 

@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by CSSDefaultTemplateEngine
  */
-final class CSSDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class CSSDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * CSSDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

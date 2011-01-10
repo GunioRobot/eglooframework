@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by CubeDefaultTemplateEngine
  */
-final class CubeDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class CubeDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * CubeDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

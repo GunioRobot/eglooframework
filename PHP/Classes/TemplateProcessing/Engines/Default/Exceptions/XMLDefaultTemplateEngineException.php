@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by XMLDefaultTemplateEngine
  */
-final class XMLDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class XMLDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * XMLDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

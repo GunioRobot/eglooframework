@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by CSVDefaultTemplateEngine
  */
-final class CSVDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class CSVDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * CSVDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

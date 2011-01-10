@@ -37,13 +37,13 @@
  */
 class JavascriptBuilder extends TemplateBuilder {
     
-    private $cacheID = null;
-    private $hardCacheID = null;
-    private $deployment = null;
-    private $requestInfoBean = null;
-    private $templateVariables = null;
-	private $output = null;
-	private $isHardCached = false;
+    protected $cacheID = null;
+    protected $hardCacheID = null;
+    protected $deployment = null;
+    protected $requestInfoBean = null;
+    protected $templateVariables = null;
+	protected $output = null;
+	protected $isHardCached = false;
 
 	public function __construct() {
 		$this->processTemplate = false;
@@ -129,7 +129,7 @@ class JavascriptBuilder extends TemplateBuilder {
         return $retVal;
     }
 
-	private function __fetch($dispatchPath, $cacheID) {
+	protected function __fetch($dispatchPath, $cacheID) {
 		$retVal = null;
 
 		try {
@@ -147,38 +147,8 @@ class JavascriptBuilder extends TemplateBuilder {
 					throw new JavascriptBuilderException( 'Javascript template not found at path: ' . $dispatchPath );
 				}
 			}
-		} catch (ErrorException $e) {
-			$matches = array();
-
-			if ( preg_match('~.*the \$compile_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
-				if (count($matches) > 1) {
-					try {
-						$mode = 0777;
-						$recursive = true;
-
-						mkdir( $matches[1], $mode, $recursive );
-
-						$retVal = $this->__fetch( $dispatchPath, $cacheID );
-					} catch (Exception $e){
-						throw $e;
-					}
-				}
-			} else if ( preg_match('~.*the \$cache_dir \'(.*)\' does not exist, or is not a directory.*~', $e->getMessage(), $matches ) ) {
-				if (count($matches) > 1) {
-					try {
-						$mode = 0777;
-						$recursive = true;
-
-						mkdir( $matches[1], $mode, $recursive );
-
-						$retVal = $this->__fetch( $dispatchPath, $cacheID );
-					} catch (Exception $e){
-						throw $e;
-					}
-				}
-			} else {
-				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on Javascript engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
-			}
+		} catch (Exception $e) {
+			$this->processEngineFetchException( $e );
 		}
 
 		return $retVal;

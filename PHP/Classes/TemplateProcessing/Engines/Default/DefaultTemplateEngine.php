@@ -43,6 +43,9 @@ class DefaultTemplateEngine extends Smarty implements TemplateEngineInterface {
 
 	public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
+
+		$this->error_reporting = E_ALL | E_STRICT;
+		$this->error_unassigned = true;
 	}
 
 	protected function setTemplatePaths( $templatePaths = null ) {
