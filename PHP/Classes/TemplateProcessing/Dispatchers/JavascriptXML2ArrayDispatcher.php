@@ -279,22 +279,9 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 			}
 		}
 
-		// if ( $dispatchPath === null ) {
-		//	if (isset($javascriptClients['Default'])) {
-		//		foreach( $javascriptClients['Default'] as $map ) {
-		//			if( $userRequestID === (string) $map['id'] ) {
-		//				$dispatchPath = (string) $map['dispatchPath'];
-		//				$processTemplate = (string) $map['process'];
-		//				break;
-		//			}
-		//		}
-		//	}
-		// } else {
-		//	// TODO throw exception
-		// }
-
 		if ( !$dispatchPath || $dispatchPath === '' ) {
-			$error_message = "JavascriptXML2ArrayDispatcher: Dispatch node not found for '" . $userRequestID . ".js'" ;
+			$error_message = 'JavascriptXML2ArrayDispatcher: Dispatch node not found for "' . $userRequestID . '.js".  ' .
+				'Please review your Javascript Dispatch.xml';
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

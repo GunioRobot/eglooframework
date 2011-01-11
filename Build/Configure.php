@@ -155,39 +155,7 @@ foreach($xml_config_options['System']['Options'] as $option_name => $option) {
 	}
 }
 
-// Check if we're going to be writing out localization cache paths
-// if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
-// 	echo "Writing localization paths in cache path...\n";
-// 	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
-// 	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
-// 
-	// // Build paths for each locale
-	// foreach($countries as $country) {
-	// 	if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
-	// 		mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755, true);
-	// 	}
-	// 
-	// 	if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
-	// 		mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755, true);
-	// 	}
-	// 
-	// 	// Build paths for each language in each country
-	// 	foreach($languages as $language) {
-	// 		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
-	// 			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755, true);
-	// 		}
-	// 		if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
-	// 			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755, true);
-	// 		}
-	// 	}
-	// }
-// }
-
 eGlooConfiguration::writeFrameworkSystemXML( $xml_config_options, true, '../XML/System.skeleton.xml', './System.xml');
-
-// Dump our fresh configuration set
-// $config_dump = var_export($configuration_options, TRUE);
-// file_put_contents('ConfigCache.php', $config_dump);
 
 // We're good, let's get out of here
 exit;

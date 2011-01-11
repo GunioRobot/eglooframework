@@ -174,7 +174,8 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		 * and id, if not, return false.
 		 */
 		if ( !isset( $this->dispatchNodes[ $requestLookup ]) ) {
-			$error_message = "XHTMLXML2ArrayDispatcher: Dispatch node not found for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = 'XHTMLXML2ArrayDispatcher: Dispatch node not found for request class : "' . $userRequestClass .
+				'" and request ID "' . $userRequestID . '".  Please review your XHTML Dispatch.xml';
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

@@ -211,7 +211,8 @@ class CSVXML2ArrayDispatcher extends TemplateDispatcher {
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
-			$error_message = "CSVXML2ArrayDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
+			$error_message = 'CSVXML2ArrayDispatcher: Dispatch path did not match for request class : "' . $userRequestClass .
+				'" and request ID "' . $userRequestID . '".  Please review your XHTML Dispatch.xml';
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
