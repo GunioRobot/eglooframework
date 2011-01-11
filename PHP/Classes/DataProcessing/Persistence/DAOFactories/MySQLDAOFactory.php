@@ -45,30 +45,6 @@ class MySQLDAOFactory extends ConcreteDAOFactory {
 		return new MySQLSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new MySQLGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new MySQLInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new MySQLInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new MySQLInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new MySQLInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new MySQLInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new MySQLAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class MySQLDAOFactory extends ConcreteDAOFactory {
 		return new MySQLCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new MySQLFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new MySQLUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class MySQLDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new MySQLGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new MySQLAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new MySQLGenericPLFunctionDAO( $this->_connection_name );
 	}

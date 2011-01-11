@@ -45,30 +45,6 @@ class PropelDAOFactory extends ConcreteDAOFactory {
 		return new PropelSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new PropelGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new PropelInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new PropelInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new PropelInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new PropelInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new PropelInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new PropelAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class PropelDAOFactory extends ConcreteDAOFactory {
 		return new PropelCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new PropelFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new PropelUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class PropelDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new PropelGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new PropelAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new PropelGenericPLFunctionDAO( $this->_connection_name );
 	}

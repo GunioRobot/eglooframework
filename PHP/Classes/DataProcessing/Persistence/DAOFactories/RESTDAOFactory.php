@@ -45,30 +45,6 @@ class RESTDAOFactory extends ConcreteDAOFactory {
 		return new RESTSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new RESTGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new RESTInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new RESTInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new RESTInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new RESTInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new RESTInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new RESTAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class RESTDAOFactory extends ConcreteDAOFactory {
 		return new RESTCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new RESTFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new RESTUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class RESTDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new RESTGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new RESTAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new RESTGenericPLFunctionDAO( $this->_connection_name );
 	}

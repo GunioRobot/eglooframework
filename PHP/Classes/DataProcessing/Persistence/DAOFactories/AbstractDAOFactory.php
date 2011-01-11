@@ -102,30 +102,6 @@ class AbstractDAOFactory {
 		return $this->getAppropriateFactory( $connection_name )->getSessionDAO();
 	}
 
-	public function getGlobalMenuBarDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getGlobalMenuBarDAO();
-	}
-
-	public function getInformationBoardIcingDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardIcingDAO();
-	}
-
-	public function getInformationBoardMusicDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardMusicDAO();
-	}
-
-	public function getInformationBoardPeopleDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardPeopleDAO();
-	}
-
-	public function getInformationBoardPicturesDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardPicturesDAO();
-	}
-
-	public function getInformationBoardVideoDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardVideoDAO();
-	}
-
 	public function getAccountDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getAccountDAO();
 	}
@@ -149,10 +125,6 @@ class AbstractDAOFactory {
 	public function getCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getCubeDAO();
 	}
-	
-	public function getFridgeDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getFridgeDAO();
-	}
 
 	public function getUserInvitesDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getUserInvitesDAO();
@@ -172,10 +144,6 @@ class AbstractDAOFactory {
 
 	public function getGenericCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getGenericCubeDAO();
-	}
-
-	public function getAuctionDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getAuctionDAO();
 	}
 
 	public function getGenericPLFunctionDAO( $connection_name = 'egPrimary' ) {

@@ -45,30 +45,6 @@ class OracleDBDAOFactory extends ConcreteDAOFactory {
 		return new OracleDBSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new OracleDBGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new OracleDBInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new OracleDBInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new OracleDBInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new OracleDBInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new OracleDBInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new OracleDBAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class OracleDBDAOFactory extends ConcreteDAOFactory {
 		return new OracleDBCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new OracleDBFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new OracleDBUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class OracleDBDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new OracleDBGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new OracleDBAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new OracleDBGenericPLFunctionDAO( $this->_connection_name );
 	}

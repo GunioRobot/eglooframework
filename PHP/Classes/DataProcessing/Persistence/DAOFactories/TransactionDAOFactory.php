@@ -45,30 +45,6 @@ class TransactionDAOFactory extends ConcreteDAOFactory {
 		return new TransactionSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new TransactionGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new TransactionInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new TransactionInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new TransactionInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new TransactionInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new TransactionInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new TransactionAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class TransactionDAOFactory extends ConcreteDAOFactory {
 		return new TransactionCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new TransactionFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new TransactionUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class TransactionDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new TransactionGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new TransactionAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new TransactionGenericPLFunctionDAO( $this->_connection_name );
 	}

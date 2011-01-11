@@ -42,30 +42,6 @@ class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 		return new PGSQLSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new PGSQLGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new PGSQLInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new PGSQLInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new PGSQLInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new PGSQLInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new PGSQLInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new PGSQLAccountDAO( $this->_connection_name );
 	}
@@ -90,10 +66,6 @@ class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 		return new PGSQLCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new PGSQLFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new PGSQLUserInvitesDAO( $this->_connection_name );	
 	}
@@ -113,11 +85,7 @@ class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new PGSQLGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new PGSQLAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new PGSQLGenericPLFunctionDAO( $this->_connection_name );
 	}
