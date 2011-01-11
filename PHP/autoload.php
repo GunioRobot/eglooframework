@@ -35,7 +35,7 @@ eGlooConfiguration::loadConfigurationOptions();
 
 // Bring up the eGlooLogger
 if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/Utilities/eGlooLogger.php' );
+	include( 'PHP/Classes/System/eGlooLogger.php' );
 }
 
 // Initialize the eGlooLogger
