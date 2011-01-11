@@ -3,7 +3,7 @@
 # eGloo Framework Control Script
 #
 # Script should be chmod 700 and run from the working directory
-# using the command egctl <args>
+# using the command egloo <args>
 #
 # Copyright 2010 eGloo, LLC
 # 
