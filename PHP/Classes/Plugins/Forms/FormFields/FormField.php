@@ -86,7 +86,7 @@ class FormField {
 
 	protected $_formFieldHTMLAttributes = array();
 
-
+	protected $_hasError = false;
 
 	protected $_renderedFormField = null;
 	protected $_renderedErrors = null;
@@ -162,9 +162,42 @@ class FormField {
 		return $this;
 	}
 
+	public function getError( $error_id ) {
+		return $this->_formFieldErrors[$error_id];
+	}
+
+	public function setError( $error_id, $error_message, $error_token = null ) {
+		$this->_formFieldErrors[$error_id] = $error_message;
+
+		return $this;
+	}
+
+	public function issetError( $error_id ) {
+		return isset( $this->_formFieldErrors[$error_id] );
+	}
+
+	public function unsetError( $error_id ) {
+		unset( $this->_formFieldErrors[$error_id] );
+	}
+
 	public function getErrors( $include_child_errors = true ) {
 		// TODO return child errors, too
 		return $this->_formFieldErrors;
+	}
+
+	public function setErrors( $formfield_errors ) {
+		// TODO return child errors, too
+		return $this->_formFieldErrors = $formfield_errors;
+	}
+
+	public function hasError() {
+		return $this->_hasError();
+	}
+
+	public function setHasError( $error_state ) {
+		$this->_hasError = $error_state;
+
+		return $this;
 	}
 
 	public function getChildErrors() {
@@ -209,7 +242,7 @@ class FormField {
 					$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
 						'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
 						$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
-						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getFormFieldValue() .
+						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getValue() .
 						'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
 
 					break;
@@ -225,12 +258,12 @@ class FormField {
 				case 'hidden' :
 					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' . 
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="hidden" value="' . $this->getFormFieldValue() . '" />' . "\n";
+						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
 					break;
 				case 'password' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="password" value="' . $this->getFormFieldValue() . '" ';
+						'" type="password" value="' . $this->getValue() . '" ';
 
 					foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
 						$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
@@ -240,7 +273,7 @@ class FormField {
 
 					break;
 				case 'select' :
-					$valueSeeder = $this->getFormFieldValueSeeder();
+					$valueSeeder = $this->getValueSeeder();
 
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<select id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' . "\n";
@@ -255,12 +288,12 @@ class FormField {
 				case 'submit' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="submit" value="' . $this->getFormFieldValue() . '" />' . $this->getInputAppendHTML() . "\n";
+						'" type="submit" value="' . $this->getValue() . '" />' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'text' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="text" value="' .
-						$this->getFormFieldValue() . '" ';
+						$this->getValue() . '" ';
 
 						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
 							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
@@ -271,7 +304,7 @@ class FormField {
 				case 'textarea' :
 					$retVal .= $prepend . "\t" . '<textarea id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' .
-						$this->getFormFieldValue() . '</textarea>' . "\n";
+						$this->getValue() . '</textarea>' . "\n";
 					break;
 				default :
 					eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Form: Invalid input type "' . $this->getFormFieldType() .
@@ -464,7 +497,7 @@ class FormField {
 	}
 
 	// FormField Value
-	public function getFormFieldValue() {
+	public function getValue() {
 		return $this->_formFieldValue;
 	}
 
@@ -475,7 +508,7 @@ class FormField {
 	}
 
 	// FormField Value Seeder
-	public function getFormFieldValueSeeder() {
+	public function getValueSeeder() {
 		if ( !$this->_formFieldValueSeeder ) {
 			$formFieldValueSeederName = $this->_formFieldValueSeederName;
 
@@ -492,7 +525,7 @@ class FormField {
 	}
 
 	// FormField Value Seeder
-	public function getFormFieldValueSeederName() {
+	public function getValueSeederName() {
 		return $this->_formFieldValueSeederName;
 	}
 

@@ -189,7 +189,7 @@ class CRUDDirector {
 			if ( $form->issetFormField( $trigger['key'] ) ) { 
 				$formField = $form->getFormField( $trigger['key'] );
 
-				if ( $formField->getFormFieldValue() === $trigger['value'] ) {
+				if ( $formField->getValue() === $trigger['value'] ) {
 					$retVal = true;
 				}
 			}

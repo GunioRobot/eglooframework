@@ -41,24 +41,47 @@ class ValidatedForm extends Form {
 	public function validate() {
 		$retVal = false;
 
+		$formValidatorName = $this->_validator;
+		$formValidatorObj = new $formValidatorName();
+		$formIsValid = $formValidatorObj->validateForm( $this );
+
+		$formFieldSetsValid = true;
+
+		// foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
+		// 	// if ( !$formFieldSet->validate() ) {
+		// 	// 	$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors();
+		// 	// }
+		// 
+		// 	$formFieldSetValidatorName = $formFieldSet->getValidator();
+		// 	$formFieldSetValidatorObj = new $formFieldSetValidatorName();
+		// 
+		// 	if ( !$formFieldSetValidatorObj->validateFormFieldSet( $formFieldSet ) ) {
+		// 		$formFieldSetsValid = false;
+		// 	}
+		// }
+
+		$formFieldsValid = true;
+
 		// TODO validate this form itself -- pick the right validator to do so.
 		// Should branch?  Validate all children and then self via validator, or just invoke validator?
+		// foreach( $this->_formFields as $formFieldID => $formField ) {
+		// 	// if ( !$formField->validate() ) {
+		// 	// 	$this->_formErrors[$formFieldID] = $formField->getErrors();
+		// 	// }
+		// 
+		// 	$formFieldValidatorName = $formField->getValidator();
+		// 	$formFieldValidatorObj = new $formFieldValidatorName();
+		// 
+		// 	if ( !$formFieldValidatorObj->validateFormField( $formField ) ) {
+		// 		$formFieldsValid = false;
+		// 	}
+		// }
 
-		foreach( $this->_formFieldSets as $formFieldSetID => $formFieldSet ) {
-			// if ( !$formFieldSet->validate() ) {
-			// 	$this->_formErrors[$formFieldSetID] = $formFieldSet->getErrors();
-			// }
-		}
-		
-		foreach( $this->_formFields as $formFieldID => $formField ) {
-			// if ( !$formField->validate() ) {
-			// 	$this->_formErrors[$formFieldID] = $formField->getErrors();
-			// }
-		}
-
-		if ( empty($this->_formErrors) ) {
+		if ( $formIsValid && $formFieldsValid && $formFieldsValid ) {
 			$retVal = true;
 		}
+
+		// die_r($this);
 
 		return $retVal;
 	}

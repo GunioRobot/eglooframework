@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FormValidator {
+abstract class FormValidator {
+
+	abstract public function validateForm( $form );
 
 }
 

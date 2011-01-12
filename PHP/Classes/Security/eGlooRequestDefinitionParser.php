@@ -44,7 +44,7 @@ abstract class eGlooRequestDefinitionParser {
 	const REQUEST_ID_KEY = 'eg_requestID';
 	const REQUEST_CLASS_KEY = 'eg_requestClass';
 	const PROCESSOR_ID_KEY = 'processorID';
-	const ERROR_PROCESSOR_ID_KEY = 'processorID';
+	const ERROR_PROCESSOR_ID_KEY = 'errorProcessorID';
 	const REQUEST_CLASS_WILDCARD_KEY = 'egDefault';
 	const REQUEST_ID_WILDCARD_KEY = 'egDefault';
 

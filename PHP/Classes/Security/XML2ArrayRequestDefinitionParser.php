@@ -1413,8 +1413,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						}
 					}
 
-					$formProcessedAndValid = true;
-
 					if ( isset($formProcessedAndValid) && $formProcessedAndValid ) {
 						$requestInfoBean->setPOST( $formArg['id'],  $formObj );
 						$requestInfoBean->setForm( $formArg['id'],  $formObj );

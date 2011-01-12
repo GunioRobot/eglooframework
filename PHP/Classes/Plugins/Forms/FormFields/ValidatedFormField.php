@@ -38,6 +38,29 @@
  */
 class ValidatedFormField extends FormField {
 
+	/**
+	 * @var boolean State of validation
+	 */
+	protected $_valid = false;
+
+	/**
+	 * Returns protected class member $_valid
+	 *
+	 * @return boolean State of validation
+	 */
+	public function getValid() {
+		return $this->_valid;
+	}
+
+	/**
+	 * Sets protected class member $_valid
+	 *
+	 * @param valid boolean State of validation
+	 */
+	public function setValid( $valid ) {
+		$this->_valid = $valid;
+	}
+
 	public function validate() {
 		$retVal = false;
 
@@ -58,6 +81,8 @@ class ValidatedFormField extends FormField {
 
 		return $retVal;
 	}
+
+	
 
 }
 

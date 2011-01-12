@@ -36,15 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FormFieldValidator {
+abstract class FormFieldValidator {
 
-	public function validate( $formField ) {
-		$retVal = false;
-
-		// TODO Validation
-
-		return $retVal;
-	}
+	abstract public function validateFormField( $formField );
 
 }
 
