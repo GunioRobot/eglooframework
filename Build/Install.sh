@@ -1163,7 +1163,7 @@ else
 		--FrameworkRootPath="$FRAMEWORK_PATH" \
 		--LoggingPath="$LOGPATH" \
 		--SmartyPath="$SMARTY_PATH" \
-		--UseDoctrine="true" \
+		--UseDoctrine="false" \
 		--UseSmarty="true" \
 		--WriteLocalizationPaths="true"
 fi

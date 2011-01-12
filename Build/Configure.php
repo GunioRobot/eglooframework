@@ -48,8 +48,15 @@ $configuration_options = array(
 		'egMaintenanceVersion'	=> '0',
 		'egMajorVersion'		=> '1',
 		'egMinorVersion'		=> '0',
-		'egUseDoctrine'			=> 'true',
+		'egUseDoctrine'			=> 'false',
+		'egUseDoctrine2DBAL'	=> 'false',
+		'egUseDoctrine2ORM'		=> 'false',
+		'egUseS3'				=> 'false',
 		'egUseSmarty'			=> 'true',
+		'egUseSmarty2'			=> 'false',
+		'egUseSmarty3'			=> 'false',
+		'egUseSwift4'			=> 'false',
+		'egUseTwig'				=> 'false',
 		);
 
 $xml_config_options = array(
