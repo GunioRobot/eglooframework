@@ -43,7 +43,7 @@ class ValidatedForm extends Form {
 
 		$formValidatorName = $this->_validator;
 		$formValidatorObj = new $formValidatorName();
-		$formIsValid = $formValidatorObj->validateForm( $this );
+		$formIsValid = $formValidatorObj->validate( $this );
 
 		$formFieldSetsValid = true;
 
@@ -55,7 +55,7 @@ class ValidatedForm extends Form {
 		// 	$formFieldSetValidatorName = $formFieldSet->getValidator();
 		// 	$formFieldSetValidatorObj = new $formFieldSetValidatorName();
 		// 
-		// 	if ( !$formFieldSetValidatorObj->validateFormFieldSet( $formFieldSet ) ) {
+		// 	if ( !$formFieldSetValidatorObj->validate( $formFieldSet ) ) {
 		// 		$formFieldSetsValid = false;
 		// 	}
 		// }
@@ -72,7 +72,7 @@ class ValidatedForm extends Form {
 		// 	$formFieldValidatorName = $formField->getValidator();
 		// 	$formFieldValidatorObj = new $formFieldValidatorName();
 		// 
-		// 	if ( !$formFieldValidatorObj->validateFormField( $formField ) ) {
+		// 	if ( !$formFieldValidatorObj->validate( $formField ) ) {
 		// 		$formFieldsValid = false;
 		// 	}
 		// }

@@ -38,7 +38,7 @@
  */
 abstract class FormValidator {
 
-	abstract public function validateForm( $form );
+	abstract public function validate( $form );
 
 }
 

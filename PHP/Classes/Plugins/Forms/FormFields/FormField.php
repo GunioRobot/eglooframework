@@ -93,6 +93,9 @@ class FormField {
 
 	protected $_renderMode = self::RENDER_MODE_EDIT;
 
+	protected $_isRequired = false;
+	protected $requiredFieldMarker = '&#9733;';
+
 	protected $_variablePrepend = null;
 	protected $_variableAppend = null;
 
@@ -229,11 +232,18 @@ class FormField {
 			if ( trim($this->_prependHTML) !== '' ) {
 				$retVal = $prepend . "\t" . $this->_prependHTML . "\n";
 			}
-
+ 
 			// TODO localize this.  Also, we ignore checkbox labeling to have it wrap the input field
 			if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' && $this->getFormFieldType() !== 'checkbox' ) {
 				$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
-					'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . $this->getLabelAppendHTML() . "\n";
+					'for="formfield-' . $this->getID() . '-form-formfield">';
+
+				if ( $this->_isRequired ) {
+					$retVal .= '<span id="formfield-' . $this->getID() . '-form-formfield-label-required-marker" ' .
+						'class="form-formfield-required-marker">' . $this->requiredFieldMarker . '</span> ';
+				}
+
+				$retVal .= $this->getDisplayLabel() . '</label>' . $this->getLabelAppendHTML() . "\n";
 			}
 
 			switch ( $this->getFormFieldType() ) {
@@ -629,6 +639,28 @@ class FormField {
 
 	public function setRenderMode( $renderMode ) {
 		$this->_renderMode = $renderMode;
+
+		return $this;
+	}
+
+	// Whether this field is required or not
+	public function isRequired() {
+		return $this->_isRequired;
+	}
+
+	public function setIsRequired( $isRequired = true ) {
+		$this->_isRequired = $isRequired;
+
+		return $this;
+	}
+
+	// Required Field Marker
+	public function getRequiredMarker() {
+		return $this->requiredFieldMarker;
+	}
+
+	public function setRequiredMarker( $requiredFieldMarker ) {
+		$this->requiredFieldMarker = $requiredFieldMarker;
 
 		return $this;
 	}

@@ -186,7 +186,7 @@ class Form {
 		return $this->_formID;
 	}
 
-	public function render() {
+	public function render( $render_errors = true ) {
 		$retVal = null;
 
 		// TODO needs to be able to set action and method
@@ -213,37 +213,13 @@ class Form {
 				$variablePrepend = $this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]';
 				$formFieldSet->setVariablePrepend($variablePrepend);
 
-				$html .= $formFieldSet->render();
+				$html .= $formFieldSet->render( $render_errors );
 
-				// $html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
-				// 
-				// if ( trim($formFieldSet->getPrependHTML()) !== '' ) {
-				// 	$html .= "\t" . $formFieldSet->getPrependHTML() . "\n";
-				// }
-				// 
-				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				// 	$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
-				// 		implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
-				// 	$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
-				// }
-				// 
-				// foreach( $formFieldSet->getFormFields() as $formField ) {
-				// 	$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-				// 	$html .= $formField->render( true, true, false, "\t" );
-				// }
-				// 
-				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				// 	$html .= "\t" . '</fieldset>' . "\n";
-				// }
-				// 
-				// if ( trim($formFieldSet->getAppendHTML()) !== '' ) {
-				// 	$html .= "\t" . $formFieldSet->getAppendHTML() . "\n";
-				// }
 			} else if ( isset( $this->_formFields[$element_id] ) ) {
 				$formField = $this->_formFields[$element_id];
 
 				$formField->setVariablePrepend($this->getFormID() . '[formFields]');
-				$html .= $formField->render();
+				$html .= $formField->render( $render_errors );
 			}
 		}
 

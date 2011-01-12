@@ -38,7 +38,7 @@
  */
 abstract class FormFieldSetValidator {
 
-	abstract public function validateFormFieldSet( $formFieldSet );
+	abstract public function validate( $formFieldSet );
 
 }
 

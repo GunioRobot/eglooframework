@@ -39,10 +39,8 @@
 class PhoneNumberFormFieldSetValidator extends FormFieldSetValidator {
 
 	public function validate( $phoneNumberFormFieldSet ) {
-		$retVal = false;
+		$retVal = true;
 
-		$retVal = parent::validate( $phoneNumberFormFieldSet );
-		
 		if ( $retVal ) {
 			// TODO Validation - should branch based upon localization
 		}

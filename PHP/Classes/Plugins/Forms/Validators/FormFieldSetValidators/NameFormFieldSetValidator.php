@@ -1,10 +1,10 @@
 <?php
 /**
- * AddressFormFieldSetValidator Class File
+ * NameFormFieldSetValidator Class File
  *
- * $file_block_description
+ * Contains the class definition for the NameFormFieldSetValidator
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
  */
 
 /**
- * AddressFormFieldSetValidator
+ * NameFormFieldSetValidator
  *
  * $short_description
  *
@@ -36,10 +36,30 @@
  * @package $package
  * @subpackage $subpackage
  */
-class AddressFormFieldSetValidator extends FormFieldSetValidator {
+class NameFormFieldSetValidator extends FormFieldSetValidator {
 
-	public function validate( $addressFormFieldSet ) {
+	public function validate( $nameFormFieldSet ) {
 		$retVal = true;
+
+		$firstNameField = $nameFormFieldSet->getFormField('first_name');
+
+		if ( !preg_match('~^[a-zA-Z ]{1,32}$~', $firstNameField->getValue() ) ) {
+			$firstNameField->setHasError( true );
+			$retVal = false;
+		} else {
+			$firstNameField->setHasError( false );
+		}
+
+		// TODO check middle initial, suffix, prefix, etc.
+
+		$lastNameField = $nameFormFieldSet->getFormField('last_name');
+
+		if ( !preg_match('~^[a-zA-Z ]{1,32}$~', $lastNameField->getValue() ) ) {
+			$lastNameField->setHasError( true );
+			$retVal = false;
+		} else {
+			$lastNameField->setHasError( false );
+		}
 
 		if ( $retVal ) {
 			// TODO Validation - should branch based upon localization

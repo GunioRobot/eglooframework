@@ -312,11 +312,18 @@ final class FormDirector {
 
 						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
+						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
 						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
 
 						if ( !$formFieldType || trim($formFieldType) === '' ) {
 							throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
 								'\'.	 Please review your Forms.xml');
+						}
+
+						if ( $formFieldRequired && $formFieldRequired === 'true' ) {
+							$formFieldRequired = true;
+						} else {
+							$formFieldRequired = false;
 						}
 
 						$containerChildren = array();
@@ -333,6 +340,7 @@ final class FormDirector {
 
 								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
+								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
 								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
 
 								if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
@@ -340,6 +348,12 @@ final class FormDirector {
 										"'.	 Please review your Forms.xml");
 								} else if ($formFieldChildType === 'container') {
 									throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+								}
+
+								if ( $formFieldChildRequired && $formFieldChildRequired === 'true' ) {
+									$formFieldChildRequired = true;
+								} else {
+									$formFieldChildRequired = false;
 								}
 
 								$childDisplayLabel = null;
@@ -403,6 +417,7 @@ final class FormDirector {
 								$newChildFormField = array(	'id' => $formFieldChildID,
 														'type' => $formFieldChildType,
 														'value' => $formFieldChildValue,
+														'required' => $formFieldChildRequired,
 														'seeder' => $formFieldChildValueSeeder,
 														// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 														'displayLabel' => $childDisplayLabel,
@@ -484,6 +499,7 @@ final class FormDirector {
 						$newFormField = array(	'id' => $formFieldID,
 												'type' => $formFieldType,
 												'value' => $formFieldValue,
+												'required' => $formFieldRequired,
 												'seeder' => $formFieldValueSeeder,
 												// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 												'displayLabel' => $displayLabel,
@@ -521,7 +537,14 @@ final class FormDirector {
 
 					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
+					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
 					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+
+					if ( $formFieldRequired && $formFieldRequired === 'true' ) {
+						$formFieldRequired = true;
+					} else {
+						$formFieldRequired = false;
+					}
 
 					if ( !$formFieldType || trim($formFieldType) === '' ) {
 						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -541,6 +564,7 @@ final class FormDirector {
 
 							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
+							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
 							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
 
 							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
@@ -548,6 +572,12 @@ final class FormDirector {
 									"'.	 Please review your Forms.xml");
 							} else if ($formFieldChildType === 'container') {
 								throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+							}
+
+							if ( $formFieldChildRequired && $formFieldChildRequired === 'true' ) {
+								$formFieldChildRequired = true;
+							} else {
+								$formFieldChildRequired = false;
 							}
 
 							$childDisplayLabel = null;
@@ -611,6 +641,7 @@ final class FormDirector {
 							$newChildFormField = array(	'id' => $formFieldChildID,
 													'type' => $formFieldChildType,
 													'value' => $formFieldChildValue,
+													'required' => $formFieldChildRequired,
 													'seeder' => $formFieldChildValueSeeder,
 													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
@@ -692,6 +723,7 @@ final class FormDirector {
 					$newFormField = array(	'id' => $formFieldID,
 											'type' => $formFieldType,
 											'value' => $formFieldValue,
+											'required' => $formFieldRequired,
 											'seeder' => $formFieldValueSeeder,
 											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
@@ -954,11 +986,18 @@ final class FormDirector {
 
 						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
+						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
 						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
 
 						if ( !$formFieldType || trim($formFieldType) === '' ) {
 							throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
 								'\'.	 Please review your Forms.xml');
+						}
+
+						if ( $formFieldRequired && $formFieldRequired === 'true' ) {
+							$formFieldRequired = true;
+						} else {
+							$formFieldRequired = false;
 						}
 
 						// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
@@ -992,6 +1031,7 @@ final class FormDirector {
 
 								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
+								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
 								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
 
 								if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
@@ -999,6 +1039,12 @@ final class FormDirector {
 										"'.	 Please review your Forms.xml");
 								} else if ($formFieldChildType === 'container') {
 									throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+								}
+
+								if ( $formFieldChildRequired && $formFieldChildRequired === 'true' ) {
+									$formFieldChildRequired = true;
+								} else {
+									$formFieldChildRequired = false;
 								}
 
 								// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
@@ -1079,6 +1125,7 @@ final class FormDirector {
 								$newChildFormField = array(	'id' => $formFieldChildID,
 														'type' => $formFieldChildType,
 														'value' => $formFieldChildValue,
+														'required' => $formFieldChildRequired,
 														'seeder' => $formFieldChildValueSeeder,
 														// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 														'displayLabel' => $childDisplayLabel,
@@ -1160,6 +1207,7 @@ final class FormDirector {
 						$newFormField = array(	'id' => $formFieldID,
 												'type' => $formFieldType,
 												'value' => $formFieldValue,
+												'required' => $formFieldRequired,
 												'seeder' => $formFieldValueSeeder,
 												// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 												'displayLabel' => $displayLabel,
@@ -1198,11 +1246,18 @@ final class FormDirector {
 
 					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
+					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
 					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
 
 					if ( !$formFieldType || trim($formFieldType) === '' ) {
 						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
 							'\'.	 Please review your Forms.xml');
+					}
+
+					if ( $formFieldRequired && $formFieldRequired === 'true' ) {
+						$formFieldRequired = true;
+					} else {
+						$formFieldRequired = false;
 					}
 
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
@@ -1235,6 +1290,7 @@ final class FormDirector {
 
 							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
+							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
 							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
 
 							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
@@ -1242,6 +1298,12 @@ final class FormDirector {
 									"'.	 Please review your Forms.xml");
 							} else if ($formFieldChildType === 'container') {
 								throw new ErrorException("eGloo does not currently allow container FormFields to have container children.  Please review your Forms.xml");
+							}
+
+							if ( $formFieldChildRequired && $formFieldChildRequired === 'true' ) {
+								$formFieldChildRequired = true;
+							} else {
+								$formFieldChildRequired = false;
 							}
 
 							// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
@@ -1322,6 +1384,7 @@ final class FormDirector {
 							$newChildFormField = array(	'id' => $formFieldChildID,
 													'type' => $formFieldChildType,
 													'value' => $formFieldChildValue,
+													'required' => $formFieldChildRequired,
 													'seeder' => $formFieldChildValueSeeder,
 													// 'displayLocalized' => $formFieldChildNodeDisplayLocalized,
 													'displayLabel' => $childDisplayLabel,
@@ -1403,6 +1466,7 @@ final class FormDirector {
 					$newFormField = array(	'id' => $formFieldID,
 											'type' => $formFieldType,
 											'value' => $formFieldValue,
+											'required' => $formFieldRequired,
 											'seeder' => $formFieldValueSeeder,
 											// 'displayLocalized' => $formFieldNodeDisplayLocalized,
 											'displayLabel' => $displayLabel,
@@ -1586,6 +1650,7 @@ final class FormDirector {
 				}
 
 				$newFormFieldObj->setFormFieldType( $formField['type'] );
+				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
 					$newFormFieldObj->setFormFieldValue( $formField['value'] );
@@ -1621,6 +1686,7 @@ final class FormDirector {
 						}
 
 						$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
 							$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
@@ -1675,6 +1741,7 @@ final class FormDirector {
 			}
 
 			$newFormFieldObj->setFormFieldType( $formField['type'] );
+			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
 				$newFormFieldObj->setFormFieldValue( $formField['value'] );
@@ -1710,6 +1777,7 @@ final class FormDirector {
 					}
 
 					$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
 						$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
@@ -1830,6 +1898,7 @@ final class FormDirector {
 				}
 
 				$newFormFieldObj->setFormFieldType( $formField['type'] );
+				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
 					$newFormFieldObj->setFormFieldValue( $formField['value'] );
@@ -1857,6 +1926,7 @@ final class FormDirector {
 						}
 
 						$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
 							$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
@@ -1903,6 +1973,7 @@ final class FormDirector {
 			}
 
 			$newFormFieldObj->setFormFieldType( $formField['type'] );
+			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
 				$newFormFieldObj->setFormFieldValue( $formField['value'] );
@@ -1930,6 +2001,7 @@ final class FormDirector {
 					}
 
 					$newChildFormFieldObj->setFormFieldType( $containerChild['type'] );
+					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
 						$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );

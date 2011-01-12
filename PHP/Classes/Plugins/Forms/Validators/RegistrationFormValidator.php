@@ -1,10 +1,10 @@
 <?php
 /**
- * AddressFormFieldSetValidator Class File
+ * RegistrationFormValidator Class File
  *
- * $file_block_description
+ * Contains the class definition for the RegistrationFormValidator
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
  */
 
 /**
- * AddressFormFieldSetValidator
+ * RegistrationFormValidator
  *
  * $short_description
  *
@@ -36,16 +36,29 @@
  * @package $package
  * @subpackage $subpackage
  */
-class AddressFormFieldSetValidator extends FormFieldSetValidator {
+class RegistrationFormValidator extends FormValidator {
 
-	public function validate( $addressFormFieldSet ) {
+	public function validate( $registrationForm ) {
 		$retVal = true;
 
-		if ( $retVal ) {
-			// TODO Validation - should branch based upon localization
-			// True for now
-			// $retVal = true;
+		foreach( $registrationForm->getFormFieldSets() as $formFieldSet ) {
+			$formFieldSetValidatorName = $formFieldSet->getValidator();
+			$formFieldSetValidatorObj = new $formFieldSetValidatorName();
+
+			if ( !$formFieldSetValidatorObj->validate($formFieldSet) ) {
+				$retVal = false;
+			}
 		}
+
+		// Not sure this is necessary
+		// foreach( $registrationForm->getFormFields() as $formField ) {
+		// 	$formFieldValidatorName = $formField->getValidator();
+		// 	$formFieldValidatorObj = new $formFieldValidatorName();
+		// 
+		// 	$formFieldValidatorObj->validate($formField);
+		// }
+
+		// TODO Run validation and such on FormAttributeSets dumped in
 
 		return $retVal;
 	}
