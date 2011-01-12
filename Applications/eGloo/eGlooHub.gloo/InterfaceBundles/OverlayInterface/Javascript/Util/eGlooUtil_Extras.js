@@ -1,2 +1,0 @@
-/*<!--{include file="../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/color_picker.js"}-->*/
-/*<!--{include file="../../../../../Frameworks/Common/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/islider.js"}-->*/
