@@ -160,7 +160,7 @@ class FormFieldSet {
 
 			foreach( $this->getFormFields() as $formField ) {
 				$formField->setVariablePrepend($this->getVariablePrepend());
-				$retVal .= $formField->render( true, true, false, "\t" );
+				$retVal .= $formField->render( true, true, true, false, "\t" );
 			}
 
 			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {

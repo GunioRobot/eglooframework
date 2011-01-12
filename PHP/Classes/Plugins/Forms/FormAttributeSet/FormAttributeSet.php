@@ -175,7 +175,7 @@ class FormAttributeSet {
 
 			foreach( $formFieldSet->getFormFields() as $formField ) {
 				$formField->setVariablePrepend($this->getID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-				$html .= $formField->render( true, true, false, "\t" );
+				$html .= $formField->render( true, true, true, false, "\t" );
 			}
 
 			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {

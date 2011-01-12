@@ -225,7 +225,7 @@ class FormField {
 		return $this->_formFieldID;
 	}
 
-	public function render( $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
+	public function render( $render_errors = true, $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
 		$retVal = '';
 
 		if ( $this->_renderMode !== self::RENDER_MODE_NONE ) {
@@ -261,7 +261,7 @@ class FormField {
 
 					foreach( $this->getFormFields() as $formField ) {
 						$formField->setVariablePrepend($this->getVariablePrepend() . '[' . $this->getID() . '][formFields]');
-						$retVal .= $formField->render( true, true, false, "\t" . $prepend );
+						$retVal .= $formField->render( true, true, true, false, "\t" . $prepend );
 					}
 
 					break;
@@ -324,6 +324,32 @@ class FormField {
 
 			if ( trim($this->_appendHTML) !== '' ) {
 				$retVal .= $prepend . "\t" . $this->_appendHTML . "\n";
+			}
+
+			if ( $render_errors && $this->_hasError ) {
+				$retVal .= $prepend . "\t" . '<div id="formfield-' . $this->getID() .
+					'-form-formfield-errors" class="form-formfield-errors">' . "\n";
+
+				if ( !empty( $this->_formFieldErrors ) ) {
+					// TODO Localize this
+					$retVal .= $prepend . "\t" . '<ul id="formfield-' . $this->getID() .
+						'-form-formfield-errors-list" class="form-formfield-errors-list">';
+
+					foreach( $this->_formFieldErrors as $formFieldError ) {
+						$retVal .= $prepend . "\t\t" . '<li id="formfield-' . $this->getID() .
+							'-form-formfield-errors-list-item" class="form-formfield-errors-list-item">';
+
+						// TODO get the error messages here
+						$retVal .= '</li>';
+					}
+
+					$retVal .= $prepend . "\t" . '</ul>';
+				} else {
+					// TODO Localize this
+					$retVal .= $this->_errorMessage;
+				}
+
+				$retVal .= $prepend . "\t" . '</div>' . "\n";
 			}
 
 		}
