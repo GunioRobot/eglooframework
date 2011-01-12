@@ -86,6 +86,10 @@ final class eGlooConfiguration {
 		}
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
+		
+		if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
+			self::secureEnvironment();
+		}
 	}
 
 	public static function loadWebRootConfig( $overwrite = true ) {
@@ -101,6 +105,16 @@ final class eGlooConfiguration {
 			case 'OFF' :
 			default :
 				$webRootConfigOptions['egCacheEnabled'] = false;
+				break;
+		}
+
+		switch( $_SERVER['EG_CACHE_APC'] ) {
+			case 'ON' :
+				$webRootConfigOptions['egAPCCacheEnabled'] = true;
+				break;
+			case 'OFF' :
+			default :
+				$webRootConfigOptions['egAPCCacheEnabled'] = false;
 				break;
 		}
 
@@ -328,7 +342,6 @@ final class eGlooConfiguration {
 				}
 			}
 		}
-
 	}
 
 	public static function getRuntimeConfigurationCacheFilename() {
@@ -1182,6 +1195,81 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
+	public static function secureEnvironment() {
+		unset($_SERVER['EG_APP']);
+		unset($_SERVER['EG_UI']);
+
+		unset($_SERVER['EG_CACHE']);
+		unset($_SERVER['EG_CACHE_APC']);
+		unset($_SERVER['EG_CACHE_FILE']);
+		unset($_SERVER['EG_CACHE_MEMCACHE']);
+		unset($_SERVER['EG_CACHE_RUNTIME']);
+
+		unset($_SERVER['EG_ENV']);
+
+		unset($_SERVER['EG_SANITY_CHECK_CLASS_LOADING']);
+
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_NAME']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_HOST']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_PORT']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_DATABASE']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_USER']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_PASSWORD']);
+		unset($_SERVER['EG_DB_CONNECTION_PRIMARY_ENGINE']);
+
+		unset($_SERVER['EG_DISPLAY_ERRORS']);
+		unset($_SERVER['EG_DISPLAY_TRACES']);
+
+		unset($_SERVER['EG_LOG_LEVEL']);
+		unset($_SERVER['EG_LOG_FORMAT']);
+
+		unset($_SERVER['EG_HOTFILE_CSS_CLUSTERING_ENABLED']);
+		unset($_SERVER['EG_HOTFILE_IMAGE_CLUSTERING_ENABLED']);
+		unset($_SERVER['EG_HOTFILE_JAVASCRIPT_CLUSTERING_ENABLED']);
+		unset($_SERVER['EG_HOTFILE_MEDIA_CLUSTERING_ENABLED']);
+
+		unset($_SERVER['EG_ENABLE_DEFAULT_REQUEST_CLASS']);
+		unset($_SERVER['EG_ENABLE_DEFAULT_REQUEST_ID']);
+
+		unset($_SERVER['EG_SECURE_ENVIRONMENT']);
+
+		unset($_SERVER['REDIRECT_EG_APP']);
+		unset($_SERVER['REDIRECT_EG_UI']);
+
+		unset($_SERVER['REDIRECT_EG_CACHE']);
+		unset($_SERVER['REDIRECT_EG_CACHE_APC']);
+		unset($_SERVER['REDIRECT_EG_CACHE_FILE']);
+		unset($_SERVER['REDIRECT_EG_CACHE_MEMCACHE']);
+		unset($_SERVER['REDIRECT_EG_CACHE_RUNTIME']);
+
+		unset($_SERVER['REDIRECT_EG_ENV']);
+
+		unset($_SERVER['REDIRECT_EG_SANITY_CHECK_CLASS_LOADING']);
+
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_NAME']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_HOST']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_PORT']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_DATABASE']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_USER']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_PASSWORD']);
+		unset($_SERVER['REDIRECT_EG_DB_CONNECTION_PRIMARY_ENGINE']);
+
+		unset($_SERVER['REDIRECT_EG_DISPLAY_ERRORS']);
+		unset($_SERVER['REDIRECT_EG_DISPLAY_TRACES']);
+
+		unset($_SERVER['REDIRECT_EG_LOG_LEVEL']);
+		unset($_SERVER['REDIRECT_EG_LOG_FORMAT']);
+
+		unset($_SERVER['REDIRECT_EG_HOTFILE_CSS_CLUSTERING_ENABLED']);
+		unset($_SERVER['REDIRECT_EG_HOTFILE_IMAGE_CLUSTERING_ENABLED']);
+		unset($_SERVER['REDIRECT_EG_HOTFILE_JAVASCRIPT_CLUSTERING_ENABLED']);
+		unset($_SERVER['REDIRECT_EG_HOTFILE_MEDIA_CLUSTERING_ENABLED']);
+
+		unset($_SERVER['REDIRECT_EG_ENABLE_DEFAULT_REQUEST_CLASS']);
+		unset($_SERVER['REDIRECT_EG_ENABLE_DEFAULT_REQUEST_ID']);
+
+		unset($_SERVER['REDIRECT_EG_SECURE_ENVIRONMENT']);
+	}
 
 	// Accessors
 
@@ -1441,6 +1529,10 @@ final class eGlooConfiguration {
 
 	public static function getUniqueInstanceIdentifier() {
 		return self::$uniqueInstanceID;
+	}
+
+	public static function getUseAPCCache() {
+		return self::$configuration_options['egAPCCacheEnabled'];
 	}
 
 	public static function getUseCache() {
