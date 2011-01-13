@@ -1673,11 +1673,11 @@ final class FormDirector {
 				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
-					$newFormFieldObj->setFormFieldValue( $formField['value'] );
+					$newFormFieldObj->setValue( $formField['value'] );
 				}
 
 				if ( isset($formField['seeder']) ) {
-					$newFormFieldObj->setFormFieldValueSeederName( $formField['seeder'] );
+					$newFormFieldObj->setValueSeederName( $formField['seeder'] );
 				}
 
 				$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
@@ -1709,11 +1709,11 @@ final class FormDirector {
 						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
-							$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+							$newChildFormFieldObj->setValue( $containerChild['value'] );
 						}
 
 						if ( isset($containerChild['seeder']) ) {
-							$newChildFormFieldObj->setFormFieldValueSeederName( $containerChild['seeder'] );
+							$newChildFormFieldObj->setValueSeederName( $containerChild['seeder'] );
 						}
 
 						$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
@@ -1764,11 +1764,11 @@ final class FormDirector {
 			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
-				$newFormFieldObj->setFormFieldValue( $formField['value'] );
+				$newFormFieldObj->setValue( $formField['value'] );
 			}
 
 			if ( isset($formField['seeder']) ) {
-				$newFormFieldObj->setFormFieldValueSeederName( $formField['seeder'] );
+				$newFormFieldObj->setValueSeederName( $formField['seeder'] );
 			}
 
 			$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
@@ -1800,11 +1800,11 @@ final class FormDirector {
 					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
-						$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+						$newChildFormFieldObj->setValue( $containerChild['value'] );
 					}
 
 					if ( isset($containerChild['seeder']) ) {
-						$newChildFormFieldObj->setFormFieldValueSeederName( $containerChild['seeder'] );
+						$newChildFormFieldObj->setValueSeederName( $containerChild['seeder'] );
 					}
 
 					$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
@@ -1925,7 +1925,7 @@ final class FormDirector {
 				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
-					$newFormFieldObj->setFormFieldValue( $formField['value'] );
+					$newFormFieldObj->setValue( $formField['value'] );
 				}
 
 				$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
@@ -1953,7 +1953,7 @@ final class FormDirector {
 						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
-							$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+							$newChildFormFieldObj->setValue( $containerChild['value'] );
 						}
 
 						$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
@@ -2000,7 +2000,7 @@ final class FormDirector {
 			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
-				$newFormFieldObj->setFormFieldValue( $formField['value'] );
+				$newFormFieldObj->setValue( $formField['value'] );
 			}
 
 			$newFormFieldObj->setDisplayLabel( $formField['displayLabel'] );
@@ -2028,7 +2028,7 @@ final class FormDirector {
 					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
-						$newChildFormFieldObj->setFormFieldValue( $containerChild['value'] );
+						$newChildFormFieldObj->setValue( $containerChild['value'] );
 					}
 
 					$newChildFormFieldObj->setDisplayLabel( $containerChild['displayLabel'] );
@@ -2069,7 +2069,7 @@ final class FormDirector {
 					$formFieldSetArray['formFields'][$formField->getID()] : null;
 
 				if ( !is_array($formFieldValue) ) {
-					$formField->setFormFieldValue($formFieldValue);
+					$formField->setValue($formFieldValue);
 				} else if ( !isset( $formFieldValue['formFields'] ) ) {
 					// TODO ... this
 					// Not a container field, so process (probably a select)
@@ -2078,7 +2078,7 @@ final class FormDirector {
 						$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
 							$formFieldValue['formFields'][$childFormField->getID()] : null;
 
-						$childFormField->setFormFieldValue($childFormFieldValue);
+						$childFormField->setValue($childFormFieldValue);
 					}
 				}
 			}
@@ -2089,7 +2089,7 @@ final class FormDirector {
 				$form_array['formFields'][$formField->getID()] : null;
 
 			if ( !is_array($formFieldValue) ) {
-				$formField->setFormFieldValue($formFieldValue);
+				$formField->setValue($formFieldValue);
 			} else if ( !isset( $formFieldValue['formFields'] ) ) {
 				// TODO ... this
 				// Not a container field, so process (probably a select)
@@ -2098,7 +2098,7 @@ final class FormDirector {
 					$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
 						$formFieldValue['formFields'][$childFormField->getID()] : null;
 
-					$childFormField->setFormFieldValue($childFormFieldValue);
+					$childFormField->setValue($childFormFieldValue);
 				}
 			}
 		}

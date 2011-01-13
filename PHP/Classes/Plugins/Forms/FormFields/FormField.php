@@ -170,7 +170,8 @@ class FormField {
 	}
 
 	public function setError( $error_id, $error_message, $error_token = null ) {
-		$this->_formFieldErrors[$error_id] = $error_message;
+		$this->_formFieldErrors[$error_id] =
+			array( 'default_message' => $error_message, 'localization_token' => $error_token );
 
 		return $this;
 	}
@@ -336,24 +337,24 @@ class FormField {
 			if ( $render_errors && $this->_hasError ) {
 				$retVal .= $prepend . "\t" . '<div id="formfield-' . $this->getID() .
 					'-form-formfield-errors" class="form-formfield-errors">' . "\n";
+				$retVal .= $prepend . "\t\t" . $this->_errorMessage . "\n";
 
 				if ( !empty( $this->_formFieldErrors ) ) {
 					// TODO Localize this
-					$retVal .= $prepend . "\t" . '<ul id="formfield-' . $this->getID() .
-						'-form-formfield-errors-list" class="form-formfield-errors-list">';
+					$retVal .= $prepend . "\t\t" . '<ul id="formfield-' . $this->getID() .
+						'-form-formfield-errors-list" class="form-formfield-errors-list">' . "\n";
 
 					foreach( $this->_formFieldErrors as $formFieldError ) {
-						$retVal .= $prepend . "\t\t" . '<li id="formfield-' . $this->getID() .
+						$retVal .= $prepend . "\t\t\t" . '<li id="formfield-' . $this->getID() .
 							'-form-formfield-errors-list-item" class="form-formfield-errors-list-item">';
 
-						// TODO get the error messages here
-						$retVal .= '</li>';
+						// TODO localize the messages here
+						$retVal .= $formFieldError['default_message'];
+
+						$retVal .= '</li>' . "\n";
 					}
 
-					$retVal .= $prepend . "\t" . '</ul>';
-				} else {
-					// TODO Localize this
-					$retVal .= $this->_errorMessage;
+					$retVal .= $prepend . "\t\t" . '</ul>' . "\n";
 				}
 
 				$retVal .= $prepend . "\t" . '</div>' . "\n";
@@ -544,7 +545,7 @@ class FormField {
 		return $this->_formFieldValue;
 	}
 
-	public function setFormFieldValue( $formFieldValue ) {
+	public function setValue( $formFieldValue ) {
 		$this->_formFieldValue = $formFieldValue;
 
 		return $this;
@@ -561,7 +562,7 @@ class FormField {
 		return $this->_formFieldValueSeeder;
 	}
 
-	public function setFormFieldValueSeeder( $formFieldValueSeeder ) {
+	public function setValueSeeder( $formFieldValueSeeder ) {
 		$this->_formFieldValueSeeder = $formFieldValueSeeder;
 
 		return $this;
@@ -572,7 +573,7 @@ class FormField {
 		return $this->_formFieldValueSeederName;
 	}
 
-	public function setFormFieldValueSeederName( $formFieldValueSeederName ) {
+	public function setValueSeederName( $formFieldValueSeederName ) {
 		$this->_formFieldValueSeederName = $formFieldValueSeederName;
 
 		return $this;

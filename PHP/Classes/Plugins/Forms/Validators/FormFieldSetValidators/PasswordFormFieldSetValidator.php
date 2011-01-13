@@ -43,23 +43,36 @@ class PasswordFormFieldSetValidator extends FormFieldSetValidator {
 
 		$firstPasswordField = $passwordFormFieldSet->getFormField('password_one');
 
-		if ( !preg_match('~^[a-zA-Z!@#$%^&*()+=/*_{};:\'"<>,.? -]{6,32}$~', $firstPasswordField->getValue() ) ) {
+		// This validator presumes that the DBAL or DB driver is performing string escaping
+		// If that is not the case in the environment you are operating in, reduce this set appropriately.
+		if ( !preg_match('~^[a-zA-Z!@#$%^&*()+=/*_{};:<>,.? -]{6,32}$~', $firstPasswordField->getValue() ) ) {
 			$firstPasswordField->setHasError( true );
+
+			if ( !preg_match('~^.{6,32}$~', $firstPasswordField->getValue() ) ) {
+				$firstPasswordField->setError( 
+					'password_length', 'Password must be between 6 and 32 characters long' , 'password_length_error_message' );
+			}
+
+			// Example...
+			if ( preg_match('~[0-9]+~', $firstPasswordField->getValue() ) ) {
+				$firstPasswordField->setError( 
+					'password_digits', 'Password cannot contain digits' , 'password_digit_error_message' );
+			}
+
+			// Example...
+			if ( preg_match('~[\'"]+~', $firstPasswordField->getValue() ) ) {
+				$firstPasswordField->setError( 
+					'password_invalid_characters', 'Password cannot contain the following characters: \',"' ,
+					'password_invalid_characters_error_message' );
+			}
+
+			$firstPasswordField->setValue('');
 			$retVal = false;
 		} else {
 			$firstPasswordField->setHasError( false );
 		}
 
-		// TODO check middle initial, suffix, prefix, etc.
-
 		$secondPasswordField = $passwordFormFieldSet->getFormField('password_two');
-
-		// if ( !preg_match('~^[a-zA-Z ]{1,32}$~', $secondPasswordField->getValue() ) ) {
-		// 	$secondPasswordField->setHasError( true );
-		// 	$retVal = false;
-		// } else {
-		// 	$secondPasswordField->setHasError( false );
-		// }
 
 		if ( $firstPasswordField->getValue() !== $secondPasswordField->getValue() ) {
 			$secondPasswordField->setHasError( true );
