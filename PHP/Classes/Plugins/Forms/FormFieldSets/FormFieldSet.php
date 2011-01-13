@@ -68,6 +68,9 @@ class FormFieldSet {
 
 	protected $_renderMode = self::RENDER_MODE_EDIT;
 
+	protected $_isRequired = false;
+	protected $requiredFieldMarker = '&#9733;';
+
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
 
@@ -155,7 +158,15 @@ class FormFieldSet {
 			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
 				$retVal .= "\t" . '<fieldset id="fieldset-' . $this->getID() . '-form-fieldset" class="' .
 					implode( ' ', $this->getCSSClasses() ) . '">' . "\n";
-				$retVal .= "\t" . '<legend>' . $this->getLegend() . '</legend>' . "\n";
+
+				$retVal .= "\t" . '<legend>';
+
+				if ( $this->_isRequired ) {
+					$retVal .= '<span id="fieldset-' . $this->getID() . '-form-fieldset-frameset-required-marker" ' .
+						'class="form-fieldset-required-marker">' . $this->requiredFieldMarker . '</span> ';
+				}
+
+				$retVal .= $this->getLegend() . '</legend>' . "\n";
 			}
 
 			foreach( $this->getFormFields() as $formField ) {
@@ -332,6 +343,28 @@ class FormFieldSet {
 
 	public function setLegendToken( $formFieldSetLegendToken ) {
 		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
+
+		return $this;
+	}
+
+	// Whether this field is required or not
+	public function isRequired() {
+		return $this->_isRequired;
+	}
+
+	public function setIsRequired( $isRequired = true ) {
+		$this->_isRequired = $isRequired;
+
+		return $this;
+	}
+
+	// Required Field Marker
+	public function getRequiredMarker() {
+		return $this->requiredFieldMarker;
+	}
+
+	public function setRequiredMarker( $requiredFieldMarker ) {
+		$this->requiredFieldMarker = $requiredFieldMarker;
 
 		return $this;
 	}

@@ -253,7 +253,14 @@ class FormField {
 						'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
 						$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
 						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getValue() .
-						'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
+						'" />';
+
+					if ( $this->_isRequired ) {
+						$retVal .= '<span id="formfield-' . $this->getID() . '-form-formfield-label-required-marker" ' .
+							'class="form-formfield-required-marker"> ' . $this->requiredFieldMarker . '</span> ';
+					}
+
+					$retVal .= $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
 
 					break;
 				case 'container' :

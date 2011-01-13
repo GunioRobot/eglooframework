@@ -281,6 +281,13 @@ final class FormDirector {
 					}
 
 					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
+					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
+
+					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
+						$formFieldSetNodeRequired = true;
+					} else {
+						$formFieldSetNodeRequired = false;
+					}
 
 					$formFieldSetLegend = null;
 					$formFieldSetLegendLocalizationToken = null;
@@ -295,6 +302,7 @@ final class FormDirector {
 												'validated' => $formFieldSetNodeValidated,
 												'secure' => $formFieldSetNodeSecure,
 												'validator' => $formFieldSetNodeValidator,
+												'required' => $formFieldSetNodeRequired,
 												'legend' => $formFieldSetLegend,
 												'legendToken' => $formFieldSetLegendLocalizationToken,
 												'formFields' => array()
@@ -955,6 +963,13 @@ final class FormDirector {
 					}
 
 					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
+					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
+
+					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
+						$formFieldSetNodeRequired = true;
+					} else {
+						$formFieldSetNodeRequired = false;
+					}
 
 					$formFieldSetLegend = null;
 					$formFieldSetLegendLocalizationToken = null;
@@ -969,6 +984,7 @@ final class FormDirector {
 												'validated' => $formFieldSetNodeValidated,
 												'secure' => $formFieldSetNodeSecure,
 												'validator' => $formFieldSetNodeValidator,
+												'required' => $formFieldSetNodeRequired,
 												'legend' => $formFieldSetLegend,
 												'legendToken' => $formFieldSetLegendLocalizationToken,
 												'formFields' => array()
@@ -1630,6 +1646,10 @@ final class FormDirector {
 				$newFormFieldSetObj = new FormFieldSet( $formFieldSet['id'] );
 			}
 
+			if ( isset($formFieldSet['required']) ) {
+				$newFormFieldSetObj->setIsRequired( $formFieldSet['required'] );
+			}
+
 			if ( isset($formFieldSet['legend']) ) {
 				$newFormFieldSetObj->setLegend( $formFieldSet['legend'] );
 			}
@@ -1876,6 +1896,10 @@ final class FormDirector {
 				}
 			} else {
 				$newFormFieldSetObj = new FormFieldSet( $formFieldSet['id'] );
+			}
+
+			if ( isset($formFieldSet['required']) ) {
+				$newFormFieldSetObj->setIsRequired( $formFieldSet['required'] );
 			}
 
 			if ( isset($formFieldSet['legend']) ) {

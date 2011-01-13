@@ -38,9 +38,10 @@
  */
 class GenderValueSeeder extends ValueSeeder {
 
-	protected $_defaultValue = 'male';
+	protected $_defaultValue = 0;
 
 	protected $_genderValues = array(
+		0 => '-Select-',
 		'male' => 'Male',
 		'female' => 'Female',
 		// 'male_transgender' => 'Transgender Male',

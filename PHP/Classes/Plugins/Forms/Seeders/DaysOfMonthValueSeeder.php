@@ -38,7 +38,7 @@
  */
 class DaysOfMonthValueSeeder extends ValueSeeder {
 
-	protected $_defaultValue = '1';
+	protected $_defaultValue = 0;
 
 	protected $_values = array();
 
@@ -48,6 +48,8 @@ class DaysOfMonthValueSeeder extends ValueSeeder {
 	private static $_singleton = null;
 
 	private function __construct() {
+		$this->_values[0] = '-';
+
 		for( $i = 1; $i <= 31; $i++ ) {
 			$this->_values[$i] = sprintf("%02s", $i);
 		}

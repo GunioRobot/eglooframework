@@ -48,6 +48,8 @@ class YearValueSeeder extends ValueSeeder {
 	private static $_singleton = null;
 
 	private function __construct() {
+		$this->_yearValues[null] = '-';
+
 		$starting_year = intval(date('Y')) - 18;
 
 		for( $i = 0; $i < 80 ; $i++ ) {
