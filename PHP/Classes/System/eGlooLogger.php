@@ -5,7 +5,7 @@
  * Contains the class definition for the eGlooLogger, a final class for 
  * eGloo framework logging functionality.
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
