@@ -200,6 +200,8 @@ final class FormDirector {
 					throw new ErrorException('No display formatter specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
+				$formAttributeSetEncoding = isset($formAttributeSetNode['encoding']) ? (string) $formAttributeSetNode['encoding'] : NULL;
+
 				$prependHTML = null;
 				$appendHTML = null;
 				$cssClasses = null;
@@ -246,6 +248,7 @@ final class FormDirector {
 													'prependHTML' => $prependHTML,
 													'appendHTML' => $appendHTML,
 													'cssClasses' => $cssClasses,
+													'encoding' => $formAttributeSetEncoding,
 												);
 
 				foreach( $formAttributeSetNode->xpath( 'child::FormFieldSet' ) as $formFieldSet ) {
@@ -867,6 +870,10 @@ final class FormDirector {
 					throw new ErrorException('No display formatter specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
+				$formNodeAction = isset($formNode['action']) && trim((string) $formNode['action']) !== '' ? (string) $formNode['action'] : NULL;
+				$formNodeEncoding = isset($formNode['encoding']) && trim((string) $formNode['encoding']) !== '' ? (string) $formNode['encoding'] : NULL;
+				$formNodeMethod = isset($formNode['method']) && trim((string) $formNode['method']) !== '' ? (string) $formNode['method'] : 'post';
+
 				$prependHTML = null;
 				$appendHTML = null;
 				$cssClasses = null;
@@ -913,6 +920,9 @@ final class FormDirector {
 													'prependHTML' => $prependHTML,
 													'appendHTML' => $appendHTML,
 													'cssClasses' => $cssClasses,
+													'action' => $formNodeAction,
+													'encoding' => $formNodeEncoding,
+													'method' => $formNodeMethod
 												);
 
 				foreach( $formNode->xpath( 'child::FormFieldSet' ) as $formFieldSet ) {
@@ -1629,6 +1639,10 @@ final class FormDirector {
 		$newFormObj->setFormDAO( $formNode['DAO'] );
 		$newFormObj->setFormDTO( $formNode['DTO'] );
 
+		$newFormObj->setAction( $formNode['action'] );
+		$newFormObj->setEncoding( $formNode['encoding'] );
+		$newFormObj->setMethod( $formNode['method'] );
+
 		foreach( $formNode['formFieldSets'] as $formFieldSet ) {
 			$newFormFieldSetObj = null;
 
@@ -1880,6 +1894,8 @@ final class FormDirector {
 		$newFormAttributeSetObj->setDAOFactory( $formAttributeSetNode['daoFactory'] );
 		$newFormAttributeSetObj->setDAO( $formAttributeSetNode['DAO'] );
 		$newFormAttributeSetObj->setDTO( $formAttributeSetNode['DTO'] );
+
+		$newFormAttributeSetObj->setEncoding( $formAttributeSetNode['encoding'] );
 
 		foreach( $formAttributeSetNode['formFieldSets'] as $formFieldSet ) {
 			$newFormFieldSetObj = null;

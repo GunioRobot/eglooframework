@@ -72,6 +72,8 @@ class FormAttributeSet {
 	protected $_displayLocalized = false;
 	protected $_displayLocalizer = null;
 
+	protected $_formEncoding = null;
+
 	protected $_inputLocalized = false;
 	protected $_inputLocalizer = null;
 
@@ -274,6 +276,17 @@ class FormAttributeSet {
 
 	public function setDTO( $formAttributeSetDTO ) {
 		$this->_formAttributeSetDTO = $formAttributeSetDTO;
+	}
+
+	// Encoding
+	public function getEncoding() {
+		return $this->_formEncoding;
+	}
+
+	public function setEncoding( $formEncoding ) {
+		$this->_formEncoding = $formEncoding;
+
+		return $this;
 	}
 
 	// Formatters

@@ -273,9 +273,25 @@ class FormField {
 					}
 
 					break;
+				case 'file' :
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="file" value="' .
+						$this->getValue() . '" ';
+
+						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+						}
+
+						$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
+					break;
 				case 'hidden' :
 					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' . 
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
+						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
+					break;
+				case 'max_file_size' :
+					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="MAX_FILE_SIZE" ' . 
+						'class="' . $this->getCSSClassesString() .
 						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
 					break;
 				case 'password' :

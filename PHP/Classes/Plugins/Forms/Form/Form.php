@@ -63,6 +63,7 @@ class Form {
 	protected $_formFieldSets = array();
 
 	protected $_formAction = null;
+	protected $_formEncoding = null;
 	protected $_formMethod = 'post';
 
 	protected $_renderedForm = null;
@@ -198,6 +199,10 @@ class Form {
 			$html .= ' action="' . $this->_formAction . '"';
 		}
 
+		if ( isset($this->_formEncoding) ) {
+			$html .= ' enctype="' . $this->_formEncoding . '"';
+		}
+
 		$html .= '>' . "\n";
 
 		if ( $this->_formLegend !== null && trim( $this->_formLegend ) !== '' ) {
@@ -251,11 +256,11 @@ class Form {
 	}
 
 	// Action
-	public function getFormAction() {
+	public function getAction() {
 		return $this->_formAction;
 	}
 
-	public function setFormAction( $action ) {
+	public function setAction( $action ) {
 		$this->_formAction = $action;
 
 		return $this;
@@ -495,6 +500,17 @@ class Form {
 		return $this->_formAttributeSets[ $attribute_set_name ] = $form_attribute_set;
 	}
 
+	// Encoding Type
+	public function getEncoding() {
+		return $this->_formEncoding;
+	}
+
+	public function setEncoding( $formEncoding ) {
+		$this->_formEncoding = $formEncoding;
+
+		return $this;
+	}
+
 	// Formatters
 	public function getDataFormatter() {
 		return $this->_dataFormatter;
@@ -600,11 +616,11 @@ class Form {
 	}
 
 	// Method
-	public function getFormMethod() {
+	public function getMethod() {
 		return $this->_formMethod;
 	}
 
-	public function setFormMethod( $method ) {
+	public function setMethod( $method ) {
 		$this->_formMethod = $method;
 
 		return $this;
