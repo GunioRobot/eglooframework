@@ -54,4 +54,3 @@ interface ContentRanked {
     
 }
 
-?>
