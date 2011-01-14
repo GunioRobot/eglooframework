@@ -1,8 +1,8 @@
 <?php
 /**
- * ContentVersioned Class File
+ * ContentRankable Class File
  *
- * Contains the class definition for the ContentVersioned
+ * Contains the class definition for the ContentRankable
  * 
  * Copyright 2011 eGloo, LLC
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ContentVersioned
+ * ContentRankable
  *
  * $short_description
  *
@@ -36,7 +36,24 @@
  * @package $package
  * @subpackage $subpackage
  */
-interface ContentVersioned {
+interface ContentRankable {
+
+	public function getRank();
+	
+	public function addUserView( $userView );
+	public function addUserRating( $userRating );
+	public function addUserComment( $userComment );
+	
+	public function getNumberUserViews();
+	
+	public function getAverageUserRating();
+	public function getMeanUserRating();
+	public function getMedianUserRating();
+
+	public function getSystemRanking();
+	public function getSystemFreshness();
+	public function getSystemWeight();
+	
 
 }
 
