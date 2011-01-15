@@ -41,7 +41,39 @@ class BirthdateFormFieldSetValidator extends FormFieldSetValidator {
 	public function validate( $birthdateFormFieldSet ) {
 		$retVal = true;
 
-		if ( $retVal ) {
+		$birthdateMonthField = $birthdateFormFieldSet->getFormField('birthdate_month');
+		$birthdateDayField = $birthdateFormFieldSet->getFormField('birthdate_day');
+		$birthdateYearField = $birthdateFormFieldSet->getFormField('birthdate_year');
+
+		$monthIntVal = intval( $birthdateMonthField->getValue() );
+		$dayIntVal = intval( $birthdateDayField->getValue() );
+		$yearIntVal = intval( $birthdateYearField->getValue() );
+
+		if ( $monthIntVal > 12 || $monthIntVal < 1 ) {
+			$birthdateMonthField->setHasError( true );
+			$retVal = false;
+		} else {
+			$birthdateMonthField->setHasError( false );
+		}
+
+		if ( $dayIntVal > 31 || $dayIntVal < 1 ) {
+			$birthdateDayField->setHasError( true );
+			$retVal = false;
+		} else {
+			$birthdateDayField->setHasError( false );
+		}
+
+		$validYears = YearValueSeeder::getInstance()->getValues( false );
+
+		if ( !in_array($yearIntVal, $validYears) ) {
+			$birthdateYearField->setHasError( true );
+			$retVal = false;
+		} else {
+			$birthdateYearField->setHasError( false );
+		}
+
+		if ( !$retVal ) {
+			$birthdateFormFieldSet->setHasError( true );
 			// TODO Validation - should branch based upon localization
 			// True for now
 			// $retVal = true;

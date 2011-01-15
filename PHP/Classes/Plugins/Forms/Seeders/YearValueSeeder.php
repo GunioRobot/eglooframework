@@ -71,8 +71,14 @@ class YearValueSeeder extends ValueSeeder {
 		return $this->_defaultValue;
 	}
 
-	public function getValues() {
-		return $this->_yearValues;
+	public function getValues( $with_select_null = true ) {
+		$retVal = $this->_yearValues;
+
+		if ( !$with_select_null ) {
+			unset($retVal[null]);
+		}
+
+		return $retVal;
 	}
 
 }

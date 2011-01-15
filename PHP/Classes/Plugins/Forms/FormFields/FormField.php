@@ -195,7 +195,7 @@ class FormField {
 	}
 
 	public function hasError() {
-		return $this->_hasError();
+		return $this->_hasError;
 	}
 
 	public function setHasError( $error_state ) {
@@ -262,7 +262,6 @@ class FormField {
 					}
 
 					$retVal .= $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
-
 					break;
 				case 'container' :
 					$retVal .= $prepend . "\t" . '<!-- FormField Container: "' . $this->getID() . '" -->' . "\n";
@@ -313,7 +312,13 @@ class FormField {
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' . "\n";
 
 					foreach( $valueSeeder->getValues() as $key => $value ) {
-						$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '">' . $value . '</option>' . "\n";
+						$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '"';
+
+						if ( $key == $this->_formFieldValue) {
+							$retVal .= ' selected="true"';
+						}
+
+						$retVal .= '>' . $value . '</option>' . "\n";
 					}
 
 					$retVal .= $prepend . "\t" . '</select>' . $this->getInputAppendHTML() . "\n";
@@ -350,7 +355,7 @@ class FormField {
 				$retVal .= $prepend . "\t" . $this->_appendHTML . "\n";
 			}
 
-			if ( $render_errors && $this->_hasError ) {
+			if ( $render_errors && $this->_hasError && trim($this->_errorMessage) !== '' ) {
 				$retVal .= $prepend . "\t" . '<div id="formfield-' . $this->getID() .
 					'-form-formfield-errors" class="form-formfield-errors">' . "\n";
 				$retVal .= $prepend . "\t\t" . $this->_errorMessage . "\n";

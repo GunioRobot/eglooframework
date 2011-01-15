@@ -43,7 +43,7 @@ class NameFormFieldSetValidator extends FormFieldSetValidator {
 
 		$firstNameField = $nameFormFieldSet->getFormField('first_name');
 
-		if ( !preg_match('~^[a-zA-Z ]{1,32}$~', $firstNameField->getValue() ) ) {
+		if ( !preg_match('~^[a-zA-Z -]{1,32}$~', $firstNameField->getValue() ) ) {
 			$firstNameField->setHasError( true );
 			$retVal = false;
 		} else {
@@ -54,7 +54,7 @@ class NameFormFieldSetValidator extends FormFieldSetValidator {
 
 		$lastNameField = $nameFormFieldSet->getFormField('last_name');
 
-		if ( !preg_match('~^[a-zA-Z ]{1,32}$~', $lastNameField->getValue() ) ) {
+		if ( !preg_match('~^[a-zA-Z -]{1,32}$~', $lastNameField->getValue() ) ) {
 			$lastNameField->setHasError( true );
 			$retVal = false;
 		} else {

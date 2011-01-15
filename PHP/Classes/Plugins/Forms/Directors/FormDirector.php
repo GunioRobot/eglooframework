@@ -300,6 +300,20 @@ final class FormDirector {
 						$formFieldSetLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
 					}
 
+					$formFieldSetErrorMessage = null;
+					$formFieldSetErrorMessageLocalizationToken = null;
+
+					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
+						$formFieldSetErrorMessage = (string) $legend;
+						$formFieldSetErrorMessageLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+					}
+
+					$formFieldSetErrorHandler = null;
+
+					foreach( $formFieldSet->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
+						$formFieldSetErrorHandler = (string) $errorHandlerNode;
+					}
+
 					$newFormFieldSet = array(	'id' => $formFieldSetID,
 												// 'displayLocalized' => $formFieldSetNodeDisplayLocalized,
 												'validated' => $formFieldSetNodeValidated,
@@ -308,7 +322,10 @@ final class FormDirector {
 												'required' => $formFieldSetNodeRequired,
 												'legend' => $formFieldSetLegend,
 												'legendToken' => $formFieldSetLegendLocalizationToken,
-												'formFields' => array()
+												'formFields' => array(),
+												'errorMessage' => $formFieldSetErrorMessage,
+												'errorMessageToken' => $formFieldSetErrorMessageLocalizationToken,
+												'errorHandler' => $formFieldSetErrorHandler
 											);
 
 					$formFieldSetFormFields = array();
@@ -989,6 +1006,20 @@ final class FormDirector {
 						$formFieldSetLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
 					}
 
+					$formFieldSetErrorMessage = null;
+					$formFieldSetErrorMessageLocalizationToken = null;
+
+					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
+						$formFieldSetErrorMessage = (string) $legend;
+						$formFieldSetErrorMessageLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+					}
+
+					$formFieldSetErrorHandler = null;
+
+					foreach( $formFieldSet->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
+						$formFieldSetErrorHandler = (string) $errorHandlerNode;
+					}
+
 					$newFormFieldSet = array(	'id' => $formFieldSetID,
 												// 'displayLocalized' => $formFieldSetNodeDisplayLocalized,
 												'validated' => $formFieldSetNodeValidated,
@@ -997,7 +1028,10 @@ final class FormDirector {
 												'required' => $formFieldSetNodeRequired,
 												'legend' => $formFieldSetLegend,
 												'legendToken' => $formFieldSetLegendLocalizationToken,
-												'formFields' => array()
+												'formFields' => array(),
+												'errorMessage' => $formFieldSetErrorMessage,
+												'errorMessageToken' => $formFieldSetErrorMessageLocalizationToken,
+												'errorHandler' => $formFieldSetErrorHandler
 											);
 
 					$formFieldSetFormFields = array();
@@ -1672,6 +1706,18 @@ final class FormDirector {
 				$newFormFieldSetObj->setLegendToken( $formFieldSet['legendToken'] );
 			}
 
+			if ( isset($formFieldSet['errorMessage']) ) {
+				$newFormFieldSetObj->setErrorMessage( $formFieldSet['errorMessage'] );
+			}
+
+			if ( isset($formFieldSet['errorMessageToken']) ) {
+				$newFormFieldSetObj->setErrorMessageToken( $formFieldSet['errorMessageToken'] );
+			}
+
+			if ( isset($formFieldSet['errorHandler']) ) {
+				$newFormFieldSetObj->setErrorHandler( $formFieldSet['errorHandler'] );
+			}
+
 			foreach( $formFieldSet['formFields'] as $formField ) {
 				$newFormFieldObj = null;
 
@@ -1924,6 +1970,18 @@ final class FormDirector {
 
 			if ( isset($formFieldSet['legendToken']) ) {
 				$newFormFieldSetObj->setLegendToken( $formFieldSet['legendToken'] );
+			}
+
+			if ( isset($formFieldSet['errorMessage']) ) {
+				$newFormFieldSetObj->setErrorMessage( $formFieldSet['errorMessage'] );
+			}
+
+			if ( isset($formFieldSet['errorMessageToken']) ) {
+				$newFormFieldSetObj->setErrorMessageToken( $formFieldSet['errorMessageToken'] );
+			}
+
+			if ( isset($formFieldSet['errorHandler']) ) {
+				$newFormFieldSetObj->setErrorHandler( $formFieldSet['errorHandler'] );
 			}
 
 			foreach( $formFieldSet['formFields'] as $formField ) {
