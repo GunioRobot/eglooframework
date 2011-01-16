@@ -39,10 +39,8 @@
 class TextFormFieldValidator extends FormFieldValidator {
 
 	public function validate( $textFormField ) {
-		$retVal = false;
+		$retVal = true;
 
-		$retVal = parent::validate( $textFormField );
-		
 		if ( $retVal ) {
 			// TODO Validation
 		}

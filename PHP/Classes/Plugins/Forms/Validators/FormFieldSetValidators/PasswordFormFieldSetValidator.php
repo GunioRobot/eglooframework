@@ -74,7 +74,7 @@ class PasswordFormFieldSetValidator extends FormFieldSetValidator {
 
 		$secondPasswordField = $passwordFormFieldSet->getFormField('password_two');
 
-		if ( $firstPasswordField->getValue() !== $secondPasswordField->getValue() ) {
+		if ( $retVal && $firstPasswordField->getValue() !== $secondPasswordField->getValue() ) {
 			$secondPasswordField->setHasError( true );
 			$retVal = false;
 		}

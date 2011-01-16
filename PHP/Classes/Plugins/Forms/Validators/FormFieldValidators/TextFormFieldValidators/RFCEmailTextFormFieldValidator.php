@@ -53,7 +53,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 	private function validateRFCEmail( $emailTextFormField ) {
 		$retVal = false;
 
-		$retVal = $this->isValidEmailAddress( $emailTextFormField->getContent->toString() );
+		$retVal = $this->isValidEmailAddress( $emailTextFormField->getValue() );
 
 		return $retVal;
 	}
@@ -74,7 +74,6 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 	 * from the inclusion of this code.
 	 */
 	private function isValidEmailAddress( $email, $options=array() ) {
-
 		#
 		# you can pass a few different named options as a second argument,
 		# but the defaults are usually a good choice.
@@ -270,7 +269,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 		# this was previously 256 based on RFC3696, but dominic's errata was accepted.
 		#
 
-		if (strlen($email) > 254) return 0;
+		if (strlen($email) > 254) return false;
 
 
 		#
@@ -289,7 +288,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 
 		if (!preg_match("!^$addr_spec$!", $email, $m)){
 
-			return 0;
+			return false;
 		}
 
 		$bits = array(
@@ -320,8 +319,8 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 		# length limits on segments
 		#
 
-		if (strlen($bits['local']) > 64) return 0;
-		if (strlen($bits['domain']) > 255) return 0;
+		if (strlen($bits['local']) > 64) return false;
+		if (strlen($bits['domain']) > 255) return false;
 
 
 		#
@@ -354,10 +353,10 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 
 			if ( preg_match("!^\[$IPv4_address_literal\]$!", $bits['domain'], $m) ) {
 
-				if (intval($m[1]) > 255) return 0;
-				if (intval($m[2]) > 255) return 0;
-				if (intval($m[3]) > 255) return 0;
-				if (intval($m[4]) > 255) return 0;
+				if (intval($m[1]) > 255) return false;
+				if (intval($m[2]) > 255) return false;
+				if (intval($m[3]) > 255) return false;
+				if (intval($m[4]) > 255) return false;
 
 			} else {
 
@@ -365,7 +364,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 				# this should be IPv6 - a bunch of tests are needed here :)
 				#
 
-				while (1) {
+				while (true) {
 
 					if ( preg_match("!^\[$IPv6_full\]$!", $bits['domain']) ) {
 						break;
@@ -375,16 +374,16 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 						list($a, $b) = explode('::', $m[1]);
 						$folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
 						$groups = explode(':', $folded);
-						if (count($groups) > 7) return 0;
+						if (count($groups) > 7) return false;
 						break;
 					}
 
 					if ( preg_match("!^\[$IPv6v4_full\]$!", $bits['domain'], $m) ) {
 
-						if (intval($m[1]) > 255) return 0;
-						if (intval($m[2]) > 255) return 0;
-						if (intval($m[3]) > 255) return 0;
-						if (intval($m[4]) > 255) return 0;
+						if (intval($m[1]) > 255) return false;
+						if (intval($m[2]) > 255) return false;
+						if (intval($m[3]) > 255) return false;
+						if (intval($m[4]) > 255) return false;
 						break;
 					}
 
@@ -393,7 +392,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 						$b = substr($b, 0, -1); # remove the trailing colon before the IPv4 address
 						$folded = (strlen($a) && strlen($b)) ? "$a:$b" : "$a$b";
 						$groups = explode(':', $folded);
-						if (count($groups) > 5) return 0;
+						if (count($groups) > 5) return false;
 						break;
 					}
 
@@ -416,7 +415,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 			#
 
 			if ($options['public_internet']){
-				if (count($labels) == 1) return 0;
+				if (count($labels) == 1) return false;
 			}
 
 
@@ -425,9 +424,9 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 			#
 
 			foreach ($labels as $label){
-				if (strlen($label) > 63) return 0;
-				if (substr($label, 0, 1) == '-') return 0;
-				if (substr($label, -1) == '-') return 0;
+				if (strlen($label) > 63) return false;
+				if (substr($label, 0, 1) == '-') return false;
+				if (substr($label, -1) == '-') return false;
 			}
 
 
@@ -470,7 +469,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 			#
 
 			if ($options['public_internet']){
-				if (preg_match('!^[0-9]+$!', array_pop($labels))) return 0;
+				if (preg_match('!^[0-9]+$!', array_pop($labels))) return false;
 			}
 		}
 
@@ -479,7 +478,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 	}
 
 	private function stripEmailComments($comment, $email, $replace=''){
-		while (1) {
+		while(true) {
 			$new = preg_replace("!$comment!", $replace, $email);
 			if (strlen($new) == strlen($email)){
 				return $email;

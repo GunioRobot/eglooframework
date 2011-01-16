@@ -69,8 +69,14 @@ class GenderValueSeeder extends ValueSeeder {
 		return $this->_defaultValue;
 	}
 
-	public function getValues() {
-		return $this->_genderValues;
+	public function getValues( $with_select_null = true ) {
+		$retVal = $this->_genderValues;
+
+		if ( !$with_select_null ) {
+			unset($retVal[0]);
+		}
+
+		return $retVal;
 	}
 
 }
