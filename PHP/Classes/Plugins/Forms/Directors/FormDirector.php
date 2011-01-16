@@ -1733,6 +1733,7 @@ final class FormDirector {
 				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
+					$newFormFieldObj->setDefaultValue( $formField['value'] );
 					$newFormFieldObj->setValue( $formField['value'] );
 				}
 
@@ -1769,6 +1770,7 @@ final class FormDirector {
 						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
+							$newChildFormFieldObj->setDefaultValue( $containerChild['value'] );
 							$newChildFormFieldObj->setValue( $containerChild['value'] );
 						}
 
@@ -1824,6 +1826,7 @@ final class FormDirector {
 			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
+				$newFormFieldObj->setDefaultValue( $formField['value'] );
 				$newFormFieldObj->setValue( $formField['value'] );
 			}
 
@@ -1860,6 +1863,7 @@ final class FormDirector {
 					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
+						$newChildFormFieldObj->setDefaultValue( $containerChild['value'] );
 						$newChildFormFieldObj->setValue( $containerChild['value'] );
 					}
 
@@ -1999,6 +2003,7 @@ final class FormDirector {
 				$newFormFieldObj->setIsRequired( $formField['required'] );
 
 				if ( isset($formField['value']) ) {
+					$newFormFieldObj->setDefaultValue( $formField['value'] );
 					$newFormFieldObj->setValue( $formField['value'] );
 				}
 
@@ -2027,6 +2032,7 @@ final class FormDirector {
 						$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 						if ( isset($containerChild['value']) ) {
+							$newChildFormFieldObj->setDefaultValue( $containerChild['value'] );
 							$newChildFormFieldObj->setValue( $containerChild['value'] );
 						}
 
@@ -2074,6 +2080,7 @@ final class FormDirector {
 			$newFormFieldObj->setIsRequired( $formField['required'] );
 
 			if ( isset($formField['value']) ) {
+				$newFormFieldObj->setDefaultValue( $formField['value'] );
 				$newFormFieldObj->setValue( $formField['value'] );
 			}
 
@@ -2102,6 +2109,7 @@ final class FormDirector {
 					$newChildFormFieldObj->setIsRequired( $containerChild['required'] );
 
 					if ( isset($containerChild['value']) ) {
+						$newChildFormFieldObj->setDefaultValue( $containerChild['value'] );
 						$newChildFormFieldObj->setValue( $containerChild['value'] );
 					}
 

@@ -51,6 +51,7 @@ class FormField {
 	protected $_formFieldData = null;
 	// protected $_formFieldLabel = null;
 	protected $_formFieldType = null;
+	protected $_formFieldDefaultValue = null;
 	protected $_formFieldValue = null;
 	protected $_formFieldValueSeeder = null;
 	protected $_formFieldValueSeederName = null;
@@ -253,9 +254,13 @@ class FormField {
 					$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
 						'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
 						$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
-						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getValue() .
-						'" />';
+						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getDefaultValue() . '" ';
 
+						if ( $this->getDefaultValue() === $this->getValue() ) {
+							$retVal .= 'checked';
+						}
+
+						$retVal .= ' />';
 					if ( $this->_isRequired ) {
 						$retVal .= '<span id="formfield-' . $this->getID() . '-form-formfield-label-required-marker" ' .
 							'class="form-formfield-required-marker"> ' . $this->requiredFieldMarker . '</span> ';
@@ -274,8 +279,7 @@ class FormField {
 					break;
 				case 'file' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
-						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="file" value="' .
-						$this->getValue() . '" ';
+						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="file" ';
 
 						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
 							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
@@ -557,6 +561,17 @@ class FormField {
 
 	public function setFormFieldType( $formFieldType ) {
 		$this->_formFieldType = $formFieldType;
+
+		return $this;
+	}
+
+	// FormField Default Value
+	public function getDefaultValue() {
+		return $this->_formFieldDefaultValue;
+	}
+
+	public function setDefaultValue( $formFieldDefaultValue ) {
+		$this->_formFieldDefaultValue = $formFieldDefaultValue;
 
 		return $this;
 	}
