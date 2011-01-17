@@ -563,7 +563,17 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Images" "$FRAMEWORK_PATH/Images"
 	else
-		echo "Symlink exists"
+		echo "Framework images symlink exists"
+	fi
+
+	if [ ! -e "$FRAMEWORK_PATH/Library" ] && [  ! -L "$FRAMEWORK_PATH/Library" ]
+	then
+		# mkdir -p "$FRAMEWORK_PATH"
+	
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+		ln -s "$PARENT_DIRECTORY/Library" "$FRAMEWORK_PATH/Library"
+	else
+		echo "Framework 3rd party library symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
@@ -573,7 +583,7 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
 	else
-		echo "Symlink exists"
+		echo "Framework PHP symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/Templates" ] && [  ! -L "$FRAMEWORK_PATH/Templates" ]
@@ -583,7 +593,7 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/Templates"
 	else
-		echo "Symlink exists"
+		echo "Framework templates symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/XML" ] && [  ! -L "$FRAMEWORK_PATH/XML" ]
@@ -595,7 +605,7 @@ then
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		# ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
 	else
-		echo "XML Symlink exists"
+		echo "Framework XML symlink exists"
 	fi
 
 else

@@ -54,6 +54,11 @@ if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
 }
 
+// Load Smarty
+if ( eGlooConfiguration::getUseS3() ) {
+	include( eGlooConfiguration::getS3IncludePath() );
+}
+
 // Load Doctrine
 if ( eGlooConfiguration::getUseDoctrine() ) {
 	include( eGlooConfiguration::getDoctrineIncludePath() );

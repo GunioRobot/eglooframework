@@ -1523,6 +1523,12 @@ final class eGlooConfiguration {
 		return self::$rewriteBase;
 	}
 
+	public static function getS3IncludePath() {
+		// TODO make this customizable
+		// return self::$configuration_options['S3Path'];
+		return self::$configuration_options['FrameworkRootPath'] . '/Library/S3/S3.php';
+	}
+
 	public static function getSmartyIncludePath() {
 		return self::$configuration_options['SmartyPath'];
 	}
@@ -1596,7 +1602,11 @@ final class eGlooConfiguration {
 	public static function getUseSmarty() {
 		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
 	}
-	
+
+	public static function getUseS3() {
+		return isset(self::$configuration_options['egUseS3']) ? self::$configuration_options['egUseS3'] : false;
+	}
+
 	public static function getWebRoot() {
 		if (self::$web_root === null) {
 			$matches = array();
