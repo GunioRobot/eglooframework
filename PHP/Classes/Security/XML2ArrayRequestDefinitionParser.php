@@ -50,8 +50,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * Request node definitions and request attribute set definitions are defined in a Requests.xml
 	 * file for every eGloo application.  This method is invoked in order to parse that definition file
 	 * and structure information about valid requests, request attribute sets, their arguments, decorators,
-	 * dependencies and associated RequestProcessors into a fast and cacheable hash map of node ID to
-	 * node definition.
+	 * dependencies, init routines and associated RequestProcessors into a fast and cacheable hash map of
+	 * node ID to node definition.
 	 *
 	 * This method will first parse request attribute sets, which are inheritable definitions for arguments,
 	 * decorators and dependencies that a request definition can include rather than explicitly repeating
@@ -859,6 +859,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$retVal = true;
 
+		// Validate Environment
+		if( !$this->validateEnvironment( $requestNode, $requestInfoBean ) ) {
+			// Should this instruct to build an ErrorRequestProcessor on failure?  Not sure...
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
+		// Execute InitRoutines
 		if ( !$this->executeInitRoutines( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
 				$retVal = false;
@@ -912,6 +923,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
+		// Process FileArguments
+		if( !$this->validateFileArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		// Process Depends
 		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
@@ -928,11 +948,13 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * If have gotten here with out returning... we're golden.
 		 * unset post and get and return
 		 */
-		 $_POST = null;
-		 $_GET = null;
+		$_POST = null;
+		$_GET = null;
+		// $_FILES = null;
 
 		return $retVal;
 	}
+
 
 	private function executeInitRoutines( $requestNode, $requestInfoBean ) {
 		$requestID = $requestInfoBean->getRequestID();
@@ -951,7 +973,28 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		return $retVal;
 	}
 
-// TODO Change array access to references	
+	/**
+	 * validate environment
+	 * 
+	 * @return true if environment passes the test, false otherwise
+	 */
+	private function validateEnvironment( $requestNode, $requestInfoBean ) {
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	/**
+	 * validate file arguments
+	 * 
+	 * @return true if all file arguments pass the test, false otherwise
+	 */
+	private function validateFileArguments( $requestNode, $requestInfoBean ) {
+		$retVal = true;
+
+		return $retVal;
+	}
+
 	/**
 	 * validate boolean arguments
 	 * 

@@ -2150,8 +2150,10 @@ final class FormDirector {
 				$formFieldValue = isset($formFieldSetArray['formFields'][$formField->getID()]) ?
 					$formFieldSetArray['formFields'][$formField->getID()] : null;
 
-				if ( !is_array($formFieldValue) ) {
+				if ( !is_array($formFieldValue) && $formField->getFormFieldType() !== 'file' ) {
 					$formField->setValue($formFieldValue);
+				} else if ( !is_array($formFieldValue) && $formField->getFormFieldType() === 'file' ) {
+					$formField->setValue( new eGlooHTTPFile( $retVal->getFormID() . ' formFieldSets ' . $formFieldSet->getID() . ' formFields ' . $formField->getID() ) );
 				} else if ( !isset( $formFieldValue['formFields'] ) ) {
 					// TODO ... this
 					// Not a container field, so process (probably a select)
@@ -2160,6 +2162,7 @@ final class FormDirector {
 						$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
 							$formFieldValue['formFields'][$childFormField->getID()] : null;
 
+						// TODO support file inputs here
 						$childFormField->setValue($childFormFieldValue);
 					}
 				}
@@ -2170,8 +2173,10 @@ final class FormDirector {
 			$formFieldValue = isset($form_array['formFields'][$formField->getID()]) ?
 				$form_array['formFields'][$formField->getID()] : null;
 
-			if ( !is_array($formFieldValue) ) {
+			if ( !is_array($formFieldValue) && $formField->getFormFieldType() !== 'file' ) {
 				$formField->setValue($formFieldValue);
+			} else if ( !is_array($formFieldValue) && $formField->getFormFieldType() === 'file' ) {
+				$formField->setValue( new eGlooHTTPFile( $retVal->getFormID() . ' formFields ' . $formField->getID() ) );
 			} else if ( !isset( $formFieldValue['formFields'] ) ) {
 				// TODO ... this
 				// Not a container field, so process (probably a select)
@@ -2180,6 +2185,7 @@ final class FormDirector {
 					$childFormFieldValue = isset($formFieldValue['formFields'][$childFormField->getID()]) ?
 						$formFieldValue['formFields'][$childFormField->getID()] : null;
 
+					// TODO support file inputs here
 					$childFormField->setValue($childFormFieldValue);
 				}
 			}
