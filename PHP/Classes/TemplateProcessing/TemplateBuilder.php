@@ -110,6 +110,8 @@ abstract class TemplateBuilder {
 	}
 
 	protected function processEngineFetchException( $e, $dispatchPath, $cacheID ) {
+		$retVal = null;
+
 		$template_engine_class = get_class($this->templateEngine);
 		$error_message = 'Template Engine of type "' . $template_engine_class . '" ';
 
@@ -174,6 +176,7 @@ abstract class TemplateBuilder {
 			throw new DefaultTemplateEngineException( $error_message );
 		}
 
+		return $retVal;
 	}
 
 }

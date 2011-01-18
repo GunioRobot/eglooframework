@@ -148,7 +148,7 @@ class JavascriptBuilder extends TemplateBuilder {
 				}
 			}
 		} catch (Exception $e) {
-			$this->processEngineFetchException( $e, $dispatchPath, $cacheID );
+			$retVal = $this->processEngineFetchException( $e, $dispatchPath, $cacheID );
 		}
 
 		return $retVal;

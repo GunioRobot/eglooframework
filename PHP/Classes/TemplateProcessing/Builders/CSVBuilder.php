@@ -137,7 +137,7 @@ class CSVBuilder extends TemplateBuilder {
 		try {
 			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
 		} catch ( Exception $e ) {
-			$this->processEngineFetchException( $e, $dispatchPath, $cacheID );
+			$retVal = $this->processEngineFetchException( $e, $dispatchPath, $cacheID );
 		}
 
 		return $retVal;
