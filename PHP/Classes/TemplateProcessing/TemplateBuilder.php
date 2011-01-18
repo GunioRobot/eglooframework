@@ -109,7 +109,7 @@ abstract class TemplateBuilder {
 		}
 	}
 
-	protected function processEngineFetchException( $e ) {
+	protected function processEngineFetchException( $e, $dispatchPath, $cacheID ) {
 		$template_engine_class = get_class($this->templateEngine);
 		$error_message = 'Template Engine of type "' . $template_engine_class . '" ';
 

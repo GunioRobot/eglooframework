@@ -118,7 +118,7 @@ class CSSBuilder extends TemplateBuilder {
 		try {
 			$retVal = $this->templateEngine->fetch( $dispatchPath, $cacheID );
 		} catch ( Exception $e ) {
-			$this->processEngineFetchException( $e );
+			$this->processEngineFetchException( $e, $dispatchPath, $cacheID );
 		}
 
 		return $retVal;
