@@ -266,6 +266,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['decorators'][$newDecorator['decoratorID']] = $newDecorator;
 			}
 
+			// Init Routines
+			$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'] = array();
+
+			foreach( $attributeSet->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+				$newInitRoutine = array();
+
+				$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
+				$newInitRoutine['order'] = (string) $initRoutine['order'];
+
+				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
+			}
+
 			$uniqueKey = ((string) $attributeSet['id']);
 			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
 
@@ -466,6 +478,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newDecorator['order'] = (string) $decorator['order'];
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$newDecorator['decoratorID']] = $newDecorator;
+				}
+
+				// InitRoutines
+				$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'] = array();
+
+				foreach( $request->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+					$newInitRoutine = array();
+
+					$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
+					$newInitRoutine['order'] = (string) $initRoutine['order'];
+
+					$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
 				}
 
 				// Request Attribute Set Includes
@@ -835,6 +859,14 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$retVal = true;
 
+		if ( !$this->executeInitRoutines( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		// Process BooleanArguments
 		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
@@ -898,6 +930,23 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 */
 		 $_POST = null;
 		 $_GET = null;
+
+		return $retVal;
+	}
+
+	private function executeInitRoutines( $requestNode, $requestInfoBean ) {
+		$requestID = $requestInfoBean->getRequestID();
+		$retVal = true;
+
+		foreach( $requestNode['initRoutines'] as $initRoutineName ) {
+			$initRoutineName = $initRoutineName['initRoutineID'];
+
+			$initRoutineObj = new $initRoutineName();
+
+			if ( !$initRoutineObj->init() ) {
+				$retVal = false;
+			}
+		}
 
 		return $retVal;
 	}

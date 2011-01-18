@@ -1,10 +1,10 @@
 <?php
 /**
- * SessionDecorator Class File
+ * SessionInitRoutine Class File
  *
- * Needs to be commented
+ * Contains the class definition for the SessionInitRoutine
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,26 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package RequestProcessing
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * Session
- * 
- * Needs to be commented
- * 
- * @package RequestProcessing
- * @subpackage Decorators
+ * SessionInitRoutine
+ *
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-class SessionDecorator extends RequestProcessorDecorator {
+class SessionInitRoutine {
 
-   /**
-    * do any pre processing here
-    */
-	protected function requestPreProcessing(){
+	public function init() {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG,
 			"SessionDecorator::requestPreProcessing - Starting session", 'Decorators' );
 
@@ -60,13 +60,5 @@ class SessionDecorator extends RequestProcessorDecorator {
 		return true;
 	}
 
-   /**
-    * do any post processing here
-    */
-	protected function requestPostProcessing(){
-		if ( isset($_SESSION) ) {
-			session_write_close();
-		}
-	}
+}
 
-  }

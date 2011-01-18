@@ -309,6 +309,22 @@ class FormField {
 					$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
 
 					break;
+				case 'radio' :
+					$valueSeeder = $this->getValueSeeder();
+
+					foreach( $valueSeeder->getValues() as $key => $value ) {
+						$retVal .= $prepend . "\t\t" .  $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() .
+							'-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() . ']" type="radio" class="' .
+							$this->getCSSClassesString() . '" value="' . $key . '"';
+
+						if ( $key == $this->_formFieldValue) {
+							$retVal .= ' checked';
+						}
+
+						$retVal .= '>' . $value . '</input>' . $this->getInputAppendHTML() . "\n";
+					}
+
+					break;
 				case 'select' :
 					$valueSeeder = $this->getValueSeeder();
 
@@ -346,8 +362,13 @@ class FormField {
 					break;
 				case 'textarea' :
 					$retVal .= $prepend . "\t" . '<textarea id="formfield-' . $this->getID() . '-form-formfield" name="' .
-						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' .
-						$this->getValue() . '</textarea>' . "\n";
+						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" ';
+
+					foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+						$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+					}
+
+					$retVal .= '>' . $this->getValue() . '</textarea>' . "\n";
 					break;
 				default :
 					eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Form: Invalid input type "' . $this->getFormFieldType() .
