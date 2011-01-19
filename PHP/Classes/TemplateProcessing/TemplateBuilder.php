@@ -148,7 +148,7 @@ abstract class TemplateBuilder {
 		} else if ( preg_match('~.*Unable to load template file.*~', $e->getMessage(), $matches ) ) {
 			if (count($matches) >= 1) {
 				$error_message .= 'failed to load template file with cache ID "' . $this->cacheID  .
-					'" at path: ' . "\n" . $this->dispatchPath;
+					'" at path: ' . "\n" . $this->dispatchPath . "\n" . $e->getMessage();
 
 				throw new DefaultTemplateEngineFailedReadTemplateException( $error_message );
 			}

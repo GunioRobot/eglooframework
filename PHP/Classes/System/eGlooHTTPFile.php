@@ -177,7 +177,9 @@ class eGlooHTTPFile {
 	}
 
 	public function __construct( $form_field_id ) {
-		die_r($form_field_id);
+		$form_field_id_chunks = explode( ' ', $form_field_id );
+
+		die_r($form_field_id_chunks);
 	}
 
 	public function __destruct() {
