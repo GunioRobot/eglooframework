@@ -1441,6 +1441,10 @@ final class eGlooConfiguration {
 		return isset(self::$configuration_options['ExtraClassPath']) ? self::$configuration_options['ExtraClassPath'] : '';
 	}
 
+	public static function getExtraConfigurationPath() {
+		return isset(self::$configuration_options['ExtraConfigurationPath']) ? self::$configuration_options['ExtraConfigurationPath'] : '';
+	}
+
 	public static function getExtraTemplatePath() {
 		return isset(self::$configuration_options['ExtraTemplatePath']) ? self::$configuration_options['ExtraTemplatePath'] : '';
 	}
