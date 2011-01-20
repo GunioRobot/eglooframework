@@ -4,7 +4,7 @@
  *
  * Needs to be commented
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class AbstractDAOFactory {
 	protected $_connection_name = null;
 
 	//singleton holder
-	private static $singleton;
+	protected static $singleton;
 
 
 	public function __construct( $connection_name ) {
@@ -57,11 +57,11 @@ class AbstractDAOFactory {
 	 * @return AbstractDAOFactory the singleton reference of the AbstractDAOFactory
 	 */
 	public static function getInstance() {
-		if ( !isset ( self::$singleton ) ) {
-			self::$singleton = new AbstractDAOFactory( null );
+		if ( !isset(static::$singleton) ) {
+			static::$singleton = new static( null );
 		}
 
-		return self::$singleton;
+		return static::$singleton;
 	}
 
 	/**
@@ -102,30 +102,6 @@ class AbstractDAOFactory {
 		return $this->getAppropriateFactory( $connection_name )->getSessionDAO();
 	}
 
-	public function getGlobalMenuBarDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getGlobalMenuBarDAO();
-	}
-
-	public function getInformationBoardIcingDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardIcingDAO();
-	}
-
-	public function getInformationBoardMusicDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardMusicDAO();
-	}
-
-	public function getInformationBoardPeopleDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardPeopleDAO();
-	}
-
-	public function getInformationBoardPicturesDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardPicturesDAO();
-	}
-
-	public function getInformationBoardVideoDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getInformationBoardVideoDAO();
-	}
-
 	public function getAccountDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getAccountDAO();
 	}
@@ -149,10 +125,6 @@ class AbstractDAOFactory {
 	public function getCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getCubeDAO();
 	}
-	
-	public function getFridgeDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getFridgeDAO();
-	}
 
 	public function getUserInvitesDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getUserInvitesDAO();
@@ -172,10 +144,6 @@ class AbstractDAOFactory {
 
 	public function getGenericCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getGenericCubeDAO();
-	}
-
-	public function getAuctionDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getAuctionDAO();
 	}
 
 	public function getGenericPLFunctionDAO( $connection_name = 'egPrimary' ) {

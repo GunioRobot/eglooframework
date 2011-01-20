@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class RedBeanDAOFactory extends ConcreteDAOFactory {
 		return new RedBeanSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new RedBeanGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new RedBeanInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new RedBeanInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new RedBeanInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new RedBeanInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new RedBeanInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new RedBeanAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class RedBeanDAOFactory extends ConcreteDAOFactory {
 		return new RedBeanCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new RedBeanFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new RedBeanUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class RedBeanDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new RedBeanGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new RedBeanAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new RedBeanGenericPLFunctionDAO( $this->_connection_name );
 	}

@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -909,49 +909,49 @@ class RegistrationDTO extends DataTransferObject implements FormDTOInterface {
 		// 	    _role_id
 		// 	    _userDTO:protected] =>
 		$addressFormFieldSet = $form->getFormFieldSet('address');
-		$this->_address_id = $addressFormFieldSet->getFormField('address_id')->getFormFieldValue();
-		$this->_address_attention = $addressFormFieldSet->getFormField('address_attention')->getFormFieldValue();
+		$this->_address_id = $addressFormFieldSet->getFormField('address_id')->getValue();
+		$this->_address_attention = $addressFormFieldSet->getFormField('address_attention')->getValue();
 
 		$this->_address_lines = array();
 
 		foreach( $addressFormFieldSet->getFormField('address_lines')->getFormFields() as $addressLine ) {
-			$this->_address_lines[$addressLine->getID()] = $addressLine->getFormFieldValue();
+			$this->_address_lines[$addressLine->getID()] = $addressLine->getValue();
 		}
 
-		$this->_address_locality = $addressFormFieldSet->getFormField('address_locality')->getFormFieldValue();
-		$this->_address_town = $addressFormFieldSet->getFormField('address_town')->getFormFieldValue();
-		$this->_address_region = $addressFormFieldSet->getFormField('address_region')->getFormFieldValue();
-		$this->_address_province = $addressFormFieldSet->getFormField('address_province')->getFormFieldValue();
-		$this->_address_postal_code = $addressFormFieldSet->getFormField('address_postal_code')->getFormFieldValue();
-		$this->_address_country = $addressFormFieldSet->getFormField('address_country')->getFormFieldValue();
-		$this->_address_additional_info = $addressFormFieldSet->getFormField('address_additional_info')->getFormFieldValue();
+		$this->_address_locality = $addressFormFieldSet->getFormField('address_locality')->getValue();
+		$this->_address_town = $addressFormFieldSet->getFormField('address_town')->getValue();
+		$this->_address_region = $addressFormFieldSet->getFormField('address_region')->getValue();
+		$this->_address_province = $addressFormFieldSet->getFormField('address_province')->getValue();
+		$this->_address_postal_code = $addressFormFieldSet->getFormField('address_postal_code')->getValue();
+		$this->_address_country = $addressFormFieldSet->getFormField('address_country')->getValue();
+		$this->_address_additional_info = $addressFormFieldSet->getFormField('address_additional_info')->getValue();
 
 		$nameFormFieldSet = $form->getFormFieldSet('name');
-		$this->_first_name = $nameFormFieldSet->getFormField('first_name')->getFormFieldValue();
+		$this->_first_name = $nameFormFieldSet->getFormField('first_name')->getValue();
 
 		if ( $nameFormFieldSet->issetFormField('middle_name_or_initial') ) {
-			$this->_middle_name_or_initial = $nameFormFieldSet->getFormField('middle_name_or_initial')->getFormFieldValue();
+			$this->_middle_name_or_initial = $nameFormFieldSet->getFormField('middle_name_or_initial')->getValue();
 		} else {
 			$this->_middle_name_or_initial = null;
 		}
 
-		$this->_last_name = $nameFormFieldSet->getFormField('last_name')->getFormFieldValue();
+		$this->_last_name = $nameFormFieldSet->getFormField('last_name')->getValue();
 
 		$birthdateFormFieldSet = $form->getFormFieldSet('birthdate');
-		$this->_birth_month = $birthdateFormFieldSet->getFormField('birthdate_month')->getFormFieldValue();
-		$this->_birth_day = $birthdateFormFieldSet->getFormField('birthdate_day')->getFormFieldValue();
-		$this->_birth_year = $birthdateFormFieldSet->getFormField('birthdate_year')->getFormFieldValue();
+		$this->_birth_month = $birthdateFormFieldSet->getFormField('birthdate_month')->getValue();
+		$this->_birth_day = $birthdateFormFieldSet->getFormField('birthdate_day')->getValue();
+		$this->_birth_year = $birthdateFormFieldSet->getFormField('birthdate_year')->getValue();
 
 		$passwordFormFieldSet = $form->getFormFieldSet('password');
-		$this->_password_field_one = $passwordFormFieldSet->getFormField('password_one')->getFormFieldValue();
-		$this->_password_field_two = $passwordFormFieldSet->getFormField('password_two')->getFormFieldValue();
+		$this->_password_field_one = $passwordFormFieldSet->getFormField('password_one')->getValue();
+		$this->_password_field_two = $passwordFormFieldSet->getFormField('password_two')->getValue();
 
-		$this->_gender = $form->getFormField('gender')->getFormFieldValue();
-		$this->_primary_email_address = $form->getFormField('email')->getFormFieldValue();
-		$this->_username = $form->getFormField('username')->getFormFieldValue();
-		$this->_primary_phone_number = $form->getFormField('phone_number')->getFormFieldValue();
+		$this->_gender = $form->getFormField('gender')->getValue();
+		$this->_primary_email_address = $form->getFormField('email')->getValue();
+		$this->_username = $form->getFormField('username')->getValue();
+		$this->_primary_phone_number = $form->getFormField('phone_number')->getValue();
 
-		if ( $form->issetFormField('acceptsTOS') && $form->getFormField('acceptsTOS')->getFormFieldValue() === 'acceptsTOS') {
+		if ( $form->issetFormField('acceptsTOS') && $form->getFormField('acceptsTOS')->getValue() === 'acceptsTOS') {
 			$this->_acceptsTOS = true;
 		} else {
 			$this->_acceptsTOS = false;

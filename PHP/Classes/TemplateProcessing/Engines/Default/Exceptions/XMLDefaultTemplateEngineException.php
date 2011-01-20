@@ -4,7 +4,7 @@
  *
  * Contains the class definition for the XMLDefaultTemplateEngineException
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@
 /**
  * Private exception subclass for use by XMLDefaultTemplateEngine
  */
-final class XMLDefaultTemplateEngineException extends DefaultTemplateEngineException {
+class XMLDefaultTemplateEngineException extends DefaultTemplateEngineException {
 
    /**
     * XMLDefaultTemplateEngineException constructor.  Takes a message and a code and invokes

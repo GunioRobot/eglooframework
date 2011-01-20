@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class CassandraDAOFactory extends ConcreteDAOFactory {
 		return new CassandraSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new CassandraGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new CassandraInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new CassandraInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new CassandraInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new CassandraInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new CassandraInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new CassandraAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class CassandraDAOFactory extends ConcreteDAOFactory {
 		return new CassandraCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new CassandraFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new CassandraUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class CassandraDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new CassandraGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new CassandraAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new CassandraGenericPLFunctionDAO( $this->_connection_name );
 	}

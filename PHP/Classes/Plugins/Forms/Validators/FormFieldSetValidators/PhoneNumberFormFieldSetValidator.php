@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,10 +39,8 @@
 class PhoneNumberFormFieldSetValidator extends FormFieldSetValidator {
 
 	public function validate( $phoneNumberFormFieldSet ) {
-		$retVal = false;
+		$retVal = true;
 
-		$retVal = parent::validate( $phoneNumberFormFieldSet );
-		
 		if ( $retVal ) {
 			// TODO Validation - should branch based upon localization
 		}

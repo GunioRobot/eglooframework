@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class OutletDAOFactory extends ConcreteDAOFactory {
 		return new OutletSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new OutletGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new OutletInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new OutletInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new OutletInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new OutletInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new OutletInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new OutletAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class OutletDAOFactory extends ConcreteDAOFactory {
 		return new OutletCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new OutletFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new OutletUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class OutletDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new OutletGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new OutletAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new OutletGenericPLFunctionDAO( $this->_connection_name );
 	}

@@ -1,2 +1,0 @@
-/*<!--{include file="Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/color_picker.js"}-->*/
-/*<!--{include file="Core/eGloo/Javascript/jQuery/Compressed/Plugins/ro.eyecon.interface/islider.js"}-->*/

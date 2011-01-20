@@ -4,7 +4,7 @@
  *
  * Needs to be commented
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,29 +42,31 @@ class SessionDecorator extends RequestProcessorDecorator {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG,
 			"SessionDecorator::requestPreProcessing - Starting session", 'Decorators' );
 
-	    // Initialize the session object
-	    $sessionHandler = new SessionHandler();
+		if ( !isset($_SESSION) ) {
+			// Initialize the session object
+			$sessionHandler = new SessionHandler();
 
-		// Start the session
-	    session_start();
+			// Start the session
+			session_start();
 
-	    //This is to get IE to accept cookies with its new security model
-		header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+			//This is to get IE to accept cookies with its new security model
+			header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
-		// Set the cookie
-		setcookie(session_name(), session_id(), time()+60*60*24*30, '/');
+			// Set the cookie
+			setcookie(session_name(), session_id(), time()+60*60*24*30, '/');
+		}
 
 		// No problems...
 		return true;
-   }
+	}
 
    /**
     * do any post processing here
     */
 	protected function requestPostProcessing(){
-		session_write_close();
+		if ( isset($_SESSION) ) {
+			session_write_close();
+		}
 	}
 
   }
-
-?>

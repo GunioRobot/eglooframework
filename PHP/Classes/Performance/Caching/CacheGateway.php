@@ -5,7 +5,7 @@
  * Contains the class definition for the CacheGateway, a wrapper class for
  * tiered caching access and use.
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -592,27 +592,38 @@ class CacheGateway {
 		if ( !isset(self::$_singleton) ) {
 			self::$_singleton = new CacheGateway();
 
-			if ($_SERVER['EG_CACHE'] === 'ON') {
+			if ( isset($_SERVER['EG_CACHE']) && $_SERVER['EG_CACHE'] === 'ON' ) {
+				self::$_singleton->_active = true;
+			} else if ( eGlooConfiguration::getUseCache() ) {
 				self::$_singleton->_active = true;
 			} else {
 				self::$_singleton->_active = false;
 			}
 
-			if ($_SERVER['EG_CACHE_APC'] === 'ON') {
+			if ( isset($_SERVER['EG_CACHE_APC']) && $_SERVER['EG_CACHE_APC'] === 'ON' ) {
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_APCCACHE;
+				self::$_singleton->loadAPCCache();
+			} else if ( eGlooConfiguration::getUseAPCCache() ) {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_APCCACHE;
 				self::$_singleton->loadAPCCache();
 			} else {
-				
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::USE_APCCACHE;
 			}
 
-			if ($_SERVER['EG_CACHE_FILE'] === 'ON') {
+			if ( isset($_SERVER['EG_CACHE_FILE']) && $_SERVER['EG_CACHE_FILE'] === 'ON' ) {
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_FILECACHE;
+				self::$_singleton->loadFileCache();
+			} else if ( eGlooConfiguration::getUseFileCache() ) {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_FILECACHE;
 				self::$_singleton->loadFileCache();
 			} else {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | !self::USE_FILECACHE;
 			}
 
-			if ($_SERVER['EG_CACHE_MEMCACHE'] === 'ON') {
+			if ( isset($_SERVER['EG_CACHE_MEMCACHE']) && $_SERVER['EG_CACHE_MEMCACHE'] === 'ON' ) {
+				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_MEMCACHE;
+				self::$_singleton->loadMemcache();
+			} else if ( eGlooConfiguration::getUseMemcache() ) {
 				self::$_singleton->_cache_tiers = self::$_singleton->_cache_tiers | self::USE_MEMCACHE;
 				self::$_singleton->loadMemcache();
 			} else {

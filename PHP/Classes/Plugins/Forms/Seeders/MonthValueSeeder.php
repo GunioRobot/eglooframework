@@ -41,6 +41,7 @@ class MonthValueSeeder extends ValueSeeder {
 	protected $_defaultValue = 'January';
 
 	protected $_monthValues = array(
+		0 => '-Select-',
 		1 => 'January',
 		2 => 'February',
 		3 => 'March',

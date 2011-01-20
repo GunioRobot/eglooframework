@@ -4,7 +4,7 @@
  *
  * Contains the class definition for the abstract eGloo request definition parser
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ abstract class eGlooRequestDefinitionParser {
 	const REQUEST_ID_KEY = 'eg_requestID';
 	const REQUEST_CLASS_KEY = 'eg_requestClass';
 	const PROCESSOR_ID_KEY = 'processorID';
-	const ERROR_PROCESSOR_ID_KEY = 'processorID';
+	const ERROR_PROCESSOR_ID_KEY = 'errorProcessorID';
 	const REQUEST_CLASS_WILDCARD_KEY = 'egDefault';
 	const REQUEST_ID_WILDCARD_KEY = 'egDefault';
 
@@ -108,7 +108,7 @@ abstract class eGlooRequestDefinitionParser {
 	 * @return the instantiated singleton of whichever subclass this method was invoked in using late static binding
 	 */
 	final public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
-		$calledDefinitionParser = get_called_class();
+		// $calledDefinitionParser = get_called_class();
 
 		if ( !isset(static::$singleton) ) {
 			static::$singleton = new static( $webapp, $uibundle );

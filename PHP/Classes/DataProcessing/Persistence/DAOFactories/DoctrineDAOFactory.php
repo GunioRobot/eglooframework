@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class DoctrineDAOFactory extends ConcreteDAOFactory {
 		return new DoctrineSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new DoctrineGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new DoctrineInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new DoctrineInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new DoctrineInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new DoctrineInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new DoctrineInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new DoctrineAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class DoctrineDAOFactory extends ConcreteDAOFactory {
 		return new DoctrineCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new DoctrineFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new DoctrineUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class DoctrineDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new DoctrineGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new DoctrineAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new DoctrineGenericPLFunctionDAO( $this->_connection_name );
 	}

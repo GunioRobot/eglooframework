@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,12 @@
 class AddressFormFieldSetValidator extends FormFieldSetValidator {
 
 	public function validate( $addressFormFieldSet ) {
-		$retVal = false;
+		$retVal = true;
 
-		$retVal = parent::validate( $addressFormFieldSet );
-		
 		if ( $retVal ) {
 			// TODO Validation - should branch based upon localization
+			// True for now
+			// $retVal = true;
 		}
 
 		return $retVal;

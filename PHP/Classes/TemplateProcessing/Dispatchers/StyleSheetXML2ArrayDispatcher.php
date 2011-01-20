@@ -4,20 +4,20 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *		  http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *	
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -276,21 +276,22 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		// if ( $dispatchPath === null ) {
-		// 	if (isset($stylesheetClients['Default'])) {
-		// 		foreach( $stylesheetClients['Default'] as $map ) {
-		// 			if( $userRequestID === (string) $map['id'] ) {
-		// 				$dispatchPath = (string) $map['dispatchPath'];
-		// 				$processTemplate = (string) $map['process'];
-		// 				break;
-		// 			}
-		// 		}
-		// 	}
+		//	if (isset($stylesheetClients['Default'])) {
+		//		foreach( $stylesheetClients['Default'] as $map ) {
+		//			if( $userRequestID === (string) $map['id'] ) {
+		//				$dispatchPath = (string) $map['dispatchPath'];
+		//				$processTemplate = (string) $map['process'];
+		//				break;
+		//			}
+		//		}
+		//	}
 		// } else {
-		// 	// TODO throw exception
+		//	// TODO throw exception
 		// }
 
 		if ( !$dispatchPath || $dispatchPath === '' ) {
-			$error_message = "StyleSheetXML2ArrayDispatcher: Dispatch node not found for '" . $userRequestID . ".css'" ;
+			$error_message = '"StyleSheetXML2ArrayDispatcher: Dispatch node not found for "' . $userRequestID . '.css".  ' .
+			 	'Please review your CSS Dispatch.xml';
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
 			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {

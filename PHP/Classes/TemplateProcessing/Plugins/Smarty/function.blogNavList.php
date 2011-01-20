@@ -4,7 +4,7 @@
  *
  * This file contains the definition for the smarty_function_blogNavList function.
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

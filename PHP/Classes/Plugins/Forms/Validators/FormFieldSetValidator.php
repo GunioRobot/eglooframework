@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,15 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FormFieldSetValidator {
+abstract class FormFieldSetValidator {
 
-	public function validate( $addressFormFieldSet ) {
-		$retVal = false;
-
-		// TODO Validation
-
-		return $retVal;
-	}
+	abstract public function validate( $formFieldSet );
 
 }
 

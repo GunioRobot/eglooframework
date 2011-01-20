@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ class FormAttributeSet {
 
 	protected $_displayLocalized = false;
 	protected $_displayLocalizer = null;
+
+	protected $_formEncoding = null;
 
 	protected $_inputLocalized = false;
 	protected $_inputLocalizer = null;
@@ -175,7 +177,7 @@ class FormAttributeSet {
 
 			foreach( $formFieldSet->getFormFields() as $formField ) {
 				$formField->setVariablePrepend($this->getID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-				$html .= $formField->render( true, true, false, "\t" );
+				$html .= $formField->render( true, true, true, false, "\t" );
 			}
 
 			if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
@@ -274,6 +276,17 @@ class FormAttributeSet {
 
 	public function setDTO( $formAttributeSetDTO ) {
 		$this->_formAttributeSetDTO = $formAttributeSetDTO;
+	}
+
+	// Encoding
+	public function getEncoding() {
+		return $this->_formEncoding;
+	}
+
+	public function setEncoding( $formEncoding ) {
+		$this->_formEncoding = $formEncoding;
+
+		return $this;
 	}
 
 	// Formatters

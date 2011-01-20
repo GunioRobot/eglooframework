@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ class Form {
 	protected $_formFieldSets = array();
 
 	protected $_formAction = null;
+	protected $_formEncoding = null;
 	protected $_formMethod = 'post';
 
 	protected $_renderedForm = null;
@@ -186,7 +187,7 @@ class Form {
 		return $this->_formID;
 	}
 
-	public function render() {
+	public function render( $render_errors = true ) {
 		$retVal = null;
 
 		// TODO needs to be able to set action and method
@@ -196,6 +197,10 @@ class Form {
 		
 		if ( isset($this->_formAction) ) {
 			$html .= ' action="' . $this->_formAction . '"';
+		}
+
+		if ( isset($this->_formEncoding) ) {
+			$html .= ' enctype="' . $this->_formEncoding . '"';
 		}
 
 		$html .= '>' . "\n";
@@ -213,37 +218,13 @@ class Form {
 				$variablePrepend = $this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]';
 				$formFieldSet->setVariablePrepend($variablePrepend);
 
-				$html .= $formFieldSet->render();
+				$html .= $formFieldSet->render( $render_errors );
 
-				// $html .= "\t" . '<!-- FormFieldSet: "' . $formFieldSet->getID() . '" -->' . "\n";
-				// 
-				// if ( trim($formFieldSet->getPrependHTML()) !== '' ) {
-				// 	$html .= "\t" . $formFieldSet->getPrependHTML() . "\n";
-				// }
-				// 
-				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				// 	$html .= "\t" . '<fieldset id="fieldset-' . $formFieldSet->getID() . '-form-fieldset" class="' .
-				// 		implode( ' ', $formFieldSet->getCSSClasses() ) . '">' . "\n";
-				// 	$html .= "\t" . '<legend>' . $formFieldSet->getLegend() . '</legend>' . "\n";
-				// }
-				// 
-				// foreach( $formFieldSet->getFormFields() as $formField ) {
-				// 	$formField->setVariablePrepend($this->getFormID() . '[formFieldSets][' . $formFieldSet->getID() . '][formFields]');
-				// 	$html .= $formField->render( true, true, false, "\t" );
-				// }
-				// 
-				// if ( $formFieldSet->getLegend() !== null && trim( $formFieldSet->getLegend() ) !== '' ) {
-				// 	$html .= "\t" . '</fieldset>' . "\n";
-				// }
-				// 
-				// if ( trim($formFieldSet->getAppendHTML()) !== '' ) {
-				// 	$html .= "\t" . $formFieldSet->getAppendHTML() . "\n";
-				// }
 			} else if ( isset( $this->_formFields[$element_id] ) ) {
 				$formField = $this->_formFields[$element_id];
 
 				$formField->setVariablePrepend($this->getFormID() . '[formFields]');
-				$html .= $formField->render();
+				$html .= $formField->render( $render_errors );
 			}
 		}
 
@@ -275,11 +256,11 @@ class Form {
 	}
 
 	// Action
-	public function getFormAction() {
+	public function getAction() {
 		return $this->_formAction;
 	}
 
-	public function setFormAction( $action ) {
+	public function setAction( $action ) {
 		$this->_formAction = $action;
 
 		return $this;
@@ -519,6 +500,17 @@ class Form {
 		return $this->_formAttributeSets[ $attribute_set_name ] = $form_attribute_set;
 	}
 
+	// Encoding Type
+	public function getEncoding() {
+		return $this->_formEncoding;
+	}
+
+	public function setEncoding( $formEncoding ) {
+		$this->_formEncoding = $formEncoding;
+
+		return $this;
+	}
+
 	// Formatters
 	public function getDataFormatter() {
 		return $this->_dataFormatter;
@@ -624,11 +616,11 @@ class Form {
 	}
 
 	// Method
-	public function getFormMethod() {
+	public function getMethod() {
 		return $this->_formMethod;
 	}
 
-	public function setFormMethod( $method ) {
+	public function setMethod( $method ) {
 		$this->_formMethod = $method;
 
 		return $this;

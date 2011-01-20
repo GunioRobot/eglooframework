@@ -5,7 +5,7 @@
 # Script should be chmod 700 and run as root from the working directory
 # using the command ./Install.sh
 #
-# Copyright 2010 eGloo, LLC
+# Copyright 2011 eGloo, LLC
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,6 +119,7 @@ then
 	DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
 	DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
 	DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+	DEFAULT_DATA_STORE="/Library/Application Support/eGloo/Data"
 	DEFAULT_DOCTRINE=`locate /opt/*lib/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
 	DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
@@ -139,6 +140,7 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/usr/lib/egloo/cubes"
+	DEFAULT_DATA_STORE="/var/egloo"
 	DEFAULT_DOCTRINE=`locate /usr/*/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/var/www/egloo"
@@ -160,6 +162,7 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/lib/egloo/cubes"
+	DEFAULT_DATA_STORE="/var/egloo"
 	DEFAULT_DOCTRINE="/usr/share/php/doctrine/Doctrine.php"
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
@@ -563,7 +566,17 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Images" "$FRAMEWORK_PATH/Images"
 	else
-		echo "Symlink exists"
+		echo "Framework images symlink exists"
+	fi
+
+	if [ ! -e "$FRAMEWORK_PATH/Library" ] && [  ! -L "$FRAMEWORK_PATH/Library" ]
+	then
+		# mkdir -p "$FRAMEWORK_PATH"
+	
+		# Even if we're using Windows, NTFS does not allow hardlinks to directories
+		ln -s "$PARENT_DIRECTORY/Library" "$FRAMEWORK_PATH/Library"
+	else
+		echo "Framework 3rd party library symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
@@ -573,7 +586,7 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
 	else
-		echo "Symlink exists"
+		echo "Framework PHP symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/Templates" ] && [  ! -L "$FRAMEWORK_PATH/Templates" ]
@@ -583,7 +596,7 @@ then
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Templates" "$FRAMEWORK_PATH/Templates"
 	else
-		echo "Symlink exists"
+		echo "Framework templates symlink exists"
 	fi
 
 	if [ ! -e "$FRAMEWORK_PATH/XML" ] && [  ! -L "$FRAMEWORK_PATH/XML" ]
@@ -595,7 +608,7 @@ then
 		# Only do this next bit on Ubuntu... getcwd() is broken
 		# ln -s "$PARENT_DIRECTORY/XML" "$PARENT_DIRECTORY/DocRoot/XML"
 	else
-		echo "XML Symlink exists"
+		echo "Framework XML symlink exists"
 	fi
 
 else
@@ -909,6 +922,70 @@ else
 fi
 
 echo
+echo "*************************"
+echo "* eGloo Data Store Path *"
+echo "*************************"
+echo
+echo -n "Default Location: "
+echo "\"$DEFAULT_DATA_STORE\""
+echo
+
+echo -n "Use this location? [Y/n]: "
+read -e CONFIRM_CONTINUE
+
+# Check if the user wants to use the default or specify their own data store path
+case "$CONFIRM_CONTINUE" in
+	# User chose to specify own data store path
+	"N" | "n" | "No" | "NO" | "no" )
+		NEW_PATH_SET=0
+		
+		# Loop until we have a new path and the user has confirmed the location
+		while [ "$NEW_PATH_SET" -ne 1 ]
+		do
+			echo -n "Enter New Location: "
+			read -e DATA_STORE_PATH
+			echo
+			echo "Location: \"$DATA_STORE_PATH\""
+			echo
+		
+			echo -n "Use this location? [y/N]: "
+			read -e CONFIRM_CONTINUE
+		
+			# Make sure user entered right path
+			case "$CONFIRM_CONTINUE" in
+				# New path is good, break the loop
+				"Y" | "y" | "Yes" | "YES" | "yes" )
+					NEW_PATH_SET=1
+				;;
+				# New path is no good, loop back
+				* )
+				;;
+			esac
+		done		
+	;;
+
+	# User chose the default path
+	* ) DATA_STORE_PATH=$DEFAULT_DATA_STORE
+	;;
+esac
+
+printf "Building data store path... "
+
+mkdir -p "$DATA_STORE_PATH"
+
+printf "done.\n"
+
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$DATA_STORE_PATH"
+	chmod -R 755 "$DATA_STORE_PATH"
+
+	checkUserCanRead "$WEB_USER" "$DATA_STORE_PATH"
+else
+	echo "Ignoring ownership and permissions of Data Store Path for Windows"
+fi
+
+echo
 echo "***********************"
 echo "* Supporting Software *"
 echo "***********************"
@@ -1141,6 +1218,7 @@ then
 		--CachePath="c:/cygwin$CACHE_PATH" \
 		--ConfigurationPath="c:/cygwin$CONFIG_PATH" \
 		--CubesPath="c:/cygwin$CUBES_PATH" \
+		--DataStorePath="c:/cygwin$DATA_STORE_PATH" \
 		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
 		--DocumentationPath="c:/cygwin$DOCUMENTATION_PATH" \
 		--DocumentRoot="c:$DOCUMENT_ROOT" \
@@ -1157,13 +1235,14 @@ else
 		--CachePath="$CACHE_PATH" \
 		--ConfigurationPath="$CONFIG_PATH" \
 		--CubesPath="$CUBES_PATH" \
+		--DataStorePath="$DATA_STORE_PATH" \
 		--DoctrinePath="$DOCTRINE_PATH" \
 		--DocumentationPath="$DOCUMENTATION_PATH" \
 		--DocumentRoot="$DOCUMENT_ROOT" \
 		--FrameworkRootPath="$FRAMEWORK_PATH" \
 		--LoggingPath="$LOGPATH" \
 		--SmartyPath="$SMARTY_PATH" \
-		--UseDoctrine="true" \
+		--UseDoctrine="false" \
 		--UseSmarty="true" \
 		--WriteLocalizationPaths="true"
 fi

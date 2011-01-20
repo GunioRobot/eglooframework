@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class AquinasDAOFactory extends ConcreteDAOFactory {
 		return new AquinasSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new AquinasGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new AquinasInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new AquinasInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new AquinasInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new AquinasInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new AquinasInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new AquinasAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class AquinasDAOFactory extends ConcreteDAOFactory {
 		return new AquinasCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new AquinasFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new AquinasUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class AquinasDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new AquinasGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new AquinasAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new AquinasGenericPLFunctionDAO( $this->_connection_name );
 	}

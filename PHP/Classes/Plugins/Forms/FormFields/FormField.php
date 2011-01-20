@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ class FormField {
 	protected $_formFieldData = null;
 	// protected $_formFieldLabel = null;
 	protected $_formFieldType = null;
+	protected $_formFieldDefaultValue = null;
 	protected $_formFieldValue = null;
 	protected $_formFieldValueSeeder = null;
 	protected $_formFieldValueSeederName = null;
@@ -86,12 +87,15 @@ class FormField {
 
 	protected $_formFieldHTMLAttributes = array();
 
-
+	protected $_hasError = false;
 
 	protected $_renderedFormField = null;
 	protected $_renderedErrors = null;
 
 	protected $_renderMode = self::RENDER_MODE_EDIT;
+
+	protected $_isRequired = false;
+	protected $requiredFieldMarker = '&#9733;';
 
 	protected $_variablePrepend = null;
 	protected $_variableAppend = null;
@@ -162,9 +166,43 @@ class FormField {
 		return $this;
 	}
 
+	public function getError( $error_id ) {
+		return $this->_formFieldErrors[$error_id];
+	}
+
+	public function setError( $error_id, $error_message, $error_token = null ) {
+		$this->_formFieldErrors[$error_id] =
+			array( 'default_message' => $error_message, 'localization_token' => $error_token );
+
+		return $this;
+	}
+
+	public function issetError( $error_id ) {
+		return isset( $this->_formFieldErrors[$error_id] );
+	}
+
+	public function unsetError( $error_id ) {
+		unset( $this->_formFieldErrors[$error_id] );
+	}
+
 	public function getErrors( $include_child_errors = true ) {
 		// TODO return child errors, too
 		return $this->_formFieldErrors;
+	}
+
+	public function setErrors( $formfield_errors ) {
+		// TODO return child errors, too
+		return $this->_formFieldErrors = $formfield_errors;
+	}
+
+	public function hasError() {
+		return $this->_hasError;
+	}
+
+	public function setHasError( $error_state ) {
+		$this->_hasError = $error_state;
+
+		return $this;
 	}
 
 	public function getChildErrors() {
@@ -189,18 +227,25 @@ class FormField {
 		return $this->_formFieldID;
 	}
 
-	public function render( $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
+	public function render( $render_errors = true, $render_labels = true, $render_children = true, $render_child_labels = false, $prepend = '', $append = '' ) {
 		$retVal = '';
 
 		if ( $this->_renderMode !== self::RENDER_MODE_NONE ) {
 			if ( trim($this->_prependHTML) !== '' ) {
 				$retVal = $prepend . "\t" . $this->_prependHTML . "\n";
 			}
-
+ 
 			// TODO localize this.  Also, we ignore checkbox labeling to have it wrap the input field
 			if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' && $this->getFormFieldType() !== 'checkbox' ) {
 				$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
-					'for="formfield-' . $this->getID() . '-form-formfield">' . $this->getDisplayLabel() . '</label>' . $this->getLabelAppendHTML() . "\n";
+					'for="formfield-' . $this->getID() . '-form-formfield">';
+
+				if ( $this->_isRequired ) {
+					$retVal .= '<span id="formfield-' . $this->getID() . '-form-formfield-label-required-marker" ' .
+						'class="form-formfield-required-marker">' . $this->requiredFieldMarker . '</span> ';
+				}
+
+				$retVal .= $this->getDisplayLabel() . '</label>' . $this->getLabelAppendHTML() . "\n";
 			}
 
 			switch ( $this->getFormFieldType() ) {
@@ -209,28 +254,53 @@ class FormField {
 					$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
 						'for="formfield-' . $this->getID() . '-form-formfield">' . "\n" . $prepend . "\t\t" . '<input id="formfield-' .
 						$this->getID() . '-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() .
-						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getFormFieldValue() .
-						'" />' . $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
+						']" class="' . $this->getCSSClassesString() . '" type="checkbox" value="' . $this->getDefaultValue() . '" ';
 
+						if ( $this->getDefaultValue() === $this->getValue() ) {
+							$retVal .= 'checked';
+						}
+
+						$retVal .= ' />';
+					if ( $this->_isRequired ) {
+						$retVal .= '<span id="formfield-' . $this->getID() . '-form-formfield-label-required-marker" ' .
+							'class="form-formfield-required-marker"> ' . $this->requiredFieldMarker . '</span> ';
+					}
+
+					$retVal .= $this->getDisplayLabel() . "\n" . $prepend . "\t" . '</label>' . $this->getLabelAppendHTML() . "\n";
 					break;
 				case 'container' :
 					$retVal .= $prepend . "\t" . '<!-- FormField Container: "' . $this->getID() . '" -->' . "\n";
 
 					foreach( $this->getFormFields() as $formField ) {
 						$formField->setVariablePrepend($this->getVariablePrepend() . '[' . $this->getID() . '][formFields]');
-						$retVal .= $formField->render( true, true, false, "\t" . $prepend );
+						$retVal .= $formField->render( true, true, true, false, "\t" . $prepend );
 					}
 
+					break;
+				case 'file' :
+					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
+						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="file" ';
+
+						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+						}
+
+						$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'hidden' :
 					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' . 
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="hidden" value="' . $this->getFormFieldValue() . '" />' . "\n";
+						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
+					break;
+				case 'max_file_size' :
+					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="MAX_FILE_SIZE" ' . 
+						'class="' . $this->getCSSClassesString() .
+						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
 					break;
 				case 'password' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="password" value="' . $this->getFormFieldValue() . '" ';
+						'" type="password" value="' . $this->getValue() . '" ';
 
 					foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
 						$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
@@ -239,14 +309,36 @@ class FormField {
 					$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
 
 					break;
+				case 'radio' :
+					$valueSeeder = $this->getValueSeeder();
+
+					foreach( $valueSeeder->getValues() as $key => $value ) {
+						$retVal .= $prepend . "\t\t" .  $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() .
+							'-form-formfield" name="' . $this->getVariablePrepend() . '[' . $this->getID() . ']" type="radio" class="' .
+							$this->getCSSClassesString() . '" value="' . $key . '"';
+
+						if ( $key == $this->_formFieldValue) {
+							$retVal .= ' checked';
+						}
+
+						$retVal .= '>' . $value . '</input>' . $this->getInputAppendHTML() . "\n";
+					}
+
+					break;
 				case 'select' :
-					$valueSeeder = $this->getFormFieldValueSeeder();
+					$valueSeeder = $this->getValueSeeder();
 
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<select id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' . "\n";
 
 					foreach( $valueSeeder->getValues() as $key => $value ) {
-						$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '">' . $value . '</option>' . "\n";
+						$retVal .= $prepend . "\t" . "\t" . '<option value="' . $key . '"';
+
+						if ( $key == $this->_formFieldValue) {
+							$retVal .= ' selected="true"';
+						}
+
+						$retVal .= '>' . $value . '</option>' . "\n";
 					}
 
 					$retVal .= $prepend . "\t" . '</select>' . $this->getInputAppendHTML() . "\n";
@@ -255,12 +347,12 @@ class FormField {
 				case 'submit' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
-						'" type="submit" value="' . $this->getFormFieldValue() . '" />' . $this->getInputAppendHTML() . "\n";
+						'" type="submit" value="' . $this->getValue() . '" />' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'text' :
 					$retVal .= $prepend . "\t" . $this->getInputPrependHTML() . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" type="text" value="' .
-						$this->getFormFieldValue() . '" ';
+						$this->getValue() . '" ';
 
 						foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
 							$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
@@ -270,8 +362,13 @@ class FormField {
 					break;
 				case 'textarea' :
 					$retVal .= $prepend . "\t" . '<textarea id="formfield-' . $this->getID() . '-form-formfield" name="' .
-						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '">' .
-						$this->getFormFieldValue() . '</textarea>' . "\n";
+						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() . '" ';
+
+					foreach( $this->_formFieldHTMLAttributes as $htmlAttributeName => $htmlAttributeValue ) {
+						$retVal .= $htmlAttributeName . '="' . $htmlAttributeValue . '" ';
+					}
+
+					$retVal .= '>' . $this->getValue() . '</textarea>' . "\n";
 					break;
 				default :
 					eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Form: Invalid input type "' . $this->getFormFieldType() .
@@ -281,6 +378,32 @@ class FormField {
 
 			if ( trim($this->_appendHTML) !== '' ) {
 				$retVal .= $prepend . "\t" . $this->_appendHTML . "\n";
+			}
+
+			if ( $render_errors && $this->_hasError && trim($this->_errorMessage) !== '' ) {
+				$retVal .= $prepend . "\t" . '<div id="formfield-' . $this->getID() .
+					'-form-formfield-errors" class="form-formfield-errors">' . "\n";
+				$retVal .= $prepend . "\t\t" . $this->_errorMessage . "\n";
+
+				if ( !empty( $this->_formFieldErrors ) ) {
+					// TODO Localize this
+					$retVal .= $prepend . "\t\t" . '<ul id="formfield-' . $this->getID() .
+						'-form-formfield-errors-list" class="form-formfield-errors-list">' . "\n";
+
+					foreach( $this->_formFieldErrors as $formFieldError ) {
+						$retVal .= $prepend . "\t\t\t" . '<li id="formfield-' . $this->getID() .
+							'-form-formfield-errors-list-item" class="form-formfield-errors-list-item">';
+
+						// TODO localize the messages here
+						$retVal .= $formFieldError['default_message'];
+
+						$retVal .= '</li>' . "\n";
+					}
+
+					$retVal .= $prepend . "\t\t" . '</ul>' . "\n";
+				}
+
+				$retVal .= $prepend . "\t" . '</div>' . "\n";
 			}
 
 		}
@@ -463,19 +586,30 @@ class FormField {
 		return $this;
 	}
 
+	// FormField Default Value
+	public function getDefaultValue() {
+		return $this->_formFieldDefaultValue;
+	}
+
+	public function setDefaultValue( $formFieldDefaultValue ) {
+		$this->_formFieldDefaultValue = $formFieldDefaultValue;
+
+		return $this;
+	}
+
 	// FormField Value
-	public function getFormFieldValue() {
+	public function getValue() {
 		return $this->_formFieldValue;
 	}
 
-	public function setFormFieldValue( $formFieldValue ) {
+	public function setValue( $formFieldValue ) {
 		$this->_formFieldValue = $formFieldValue;
 
 		return $this;
 	}
 
 	// FormField Value Seeder
-	public function getFormFieldValueSeeder() {
+	public function getValueSeeder() {
 		if ( !$this->_formFieldValueSeeder ) {
 			$formFieldValueSeederName = $this->_formFieldValueSeederName;
 
@@ -485,18 +619,18 @@ class FormField {
 		return $this->_formFieldValueSeeder;
 	}
 
-	public function setFormFieldValueSeeder( $formFieldValueSeeder ) {
+	public function setValueSeeder( $formFieldValueSeeder ) {
 		$this->_formFieldValueSeeder = $formFieldValueSeeder;
 
 		return $this;
 	}
 
 	// FormField Value Seeder
-	public function getFormFieldValueSeederName() {
+	public function getValueSeederName() {
 		return $this->_formFieldValueSeederName;
 	}
 
-	public function setFormFieldValueSeederName( $formFieldValueSeederName ) {
+	public function setValueSeederName( $formFieldValueSeederName ) {
 		$this->_formFieldValueSeederName = $formFieldValueSeederName;
 
 		return $this;
@@ -596,6 +730,28 @@ class FormField {
 
 	public function setRenderMode( $renderMode ) {
 		$this->_renderMode = $renderMode;
+
+		return $this;
+	}
+
+	// Whether this field is required or not
+	public function isRequired() {
+		return $this->_isRequired;
+	}
+
+	public function setIsRequired( $isRequired = true ) {
+		$this->_isRequired = $isRequired;
+
+		return $this;
+	}
+
+	// Required Field Marker
+	public function getRequiredMarker() {
+		return $this->requiredFieldMarker;
+	}
+
+	public function setRequiredMarker( $requiredFieldMarker ) {
+		$this->requiredFieldMarker = $requiredFieldMarker;
 
 		return $this;
 	}

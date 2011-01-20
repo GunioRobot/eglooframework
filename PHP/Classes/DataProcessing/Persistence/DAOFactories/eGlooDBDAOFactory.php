@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class eGlooDBDAOFactory extends ConcreteDAOFactory {
 		return new eGlooDBSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new eGlooDBGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new eGlooDBInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new eGlooDBInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new eGlooDBInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new eGlooDBInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new eGlooDBInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new eGlooDBAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class eGlooDBDAOFactory extends ConcreteDAOFactory {
 		return new eGlooDBCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new eGlooDBFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new eGlooDBUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class eGlooDBDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new eGlooDBGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new eGlooDBAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new eGlooDBGenericPLFunctionDAO( $this->_connection_name );
 	}

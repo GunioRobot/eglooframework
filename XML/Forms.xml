@@ -4,7 +4,7 @@
  *
  * Dispatches framework provided Forms requests for an eGloo application
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -372,7 +372,7 @@
 			<ErrorHandler><![CDATA[]]></ErrorHandler>
 		</FormField>
 		<FormField id="submit" type="submit" value="Submit">
-			<DisplayLabel localizationToken="submit"><![CDATA[Submit: ]]></DisplayLabel>
+			<DisplayLabel localizationToken="submit"><![CDATA[]]></DisplayLabel>
 			<PrependHTML><![CDATA[]]></PrependHTML>
 			<AppendHTML><![CDATA[]]></AppendHTML>
 			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
@@ -417,6 +417,75 @@
 		</CRUD>
 	</Form>
 
+	<Form id="login" displayLocalized="true" displayLocalizer="GenericFormDisplayLocalizer" inputLocalized="true"
+			inputLocalizer="GenericFormInputLocalizer" daoFactory="AbstractDAOFactory" daoConnectionName="egPrimary" dao="LoginDAO"
+			dto="LoginDTO" validated="true" secure="false" validator="LoginFormValidator" dataFormatter="LoginFormDataFormatter"
+			displayFormatter="LoginFormDisplayFormatter">
+		<Legend legendToken="login_form"><![CDATA[]]></Legend>
+		<PrependHTML><![CDATA[]]></PrependHTML>
+		<AppendHTML><![CDATA[]]></AppendHTML>
+		<CSSClasses><![CDATA[egloo-form]]></CSSClasses>
+		<FormField id="username" type="text">
+			<DisplayLabel localizationToken="username"><![CDATA[Username: ]]></DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
+			<LabelAppendHTML><![CDATA[]]></LabelAppendHTML>
+			<InputPrependHTML><![CDATA[]]></InputPrependHTML>
+			<InputAppendHTML><![CDATA[]]></InputAppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="username_error"></ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+		<FormField id="email" type="text">
+			<DisplayLabel localizationToken="email"><![CDATA[Email: ]]></DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
+			<LabelAppendHTML><![CDATA[]]></LabelAppendHTML>
+			<InputPrependHTML><![CDATA[]]></InputPrependHTML>
+			<InputAppendHTML><![CDATA[]]></InputAppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="email_error"></ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+		<FormField id="user_id" type="text">
+			<DisplayLabel localizationToken="user_id"><![CDATA[User ID: ]]></DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
+			<LabelAppendHTML><![CDATA[]]></LabelAppendHTML>
+			<InputPrependHTML><![CDATA[]]></InputPrependHTML>
+			<InputAppendHTML><![CDATA[]]></InputAppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="user_id_error"></ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+		<FormField id="password" type="password">
+			<DisplayLabel localizationToken="password"><![CDATA[Password: ]]></DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
+			<LabelAppendHTML><![CDATA[]]></LabelAppendHTML>
+			<InputPrependHTML><![CDATA[]]></InputPrependHTML>
+			<InputAppendHTML><![CDATA[]]></InputAppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="password_error"></ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+		<FormField id="submit" type="submit" value="Submit">
+			<DisplayLabel localizationToken="submit"><![CDATA[Submit: ]]></DisplayLabel>
+			<PrependHTML><![CDATA[]]></PrependHTML>
+			<AppendHTML><![CDATA[]]></AppendHTML>
+			<LabelPrependHTML><![CDATA[]]></LabelPrependHTML>
+			<LabelAppendHTML><![CDATA[]]></LabelAppendHTML>
+			<InputPrependHTML><![CDATA[]]></InputPrependHTML>
+			<InputAppendHTML><![CDATA[]]></InputAppendHTML>
+			<CSSClasses><![CDATA[egloo-form-formfield]]></CSSClasses>
+			<ErrorMessage localizationToken="submit_error"><![CDATA[Invalid username or password]]></ErrorMessage>
+			<ErrorHandler><![CDATA[]]></ErrorHandler>
+		</FormField>
+	</Form>
 	<!-- Common eGloo Form Attribute Sets -->
 	<FormAttributeSet id="attribute_test" displayLocalized="true" displayLocalizer="GenericFormDisplayLocalizer" inputLocalized="true"
 			inputLocalizer="GenericFormInputLocalizer" daoFactory="AbstractDAOFactory" daoConnectionName="egPrimary" dao="AttributeTestFormAttributeSetDAO"

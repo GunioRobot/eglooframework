@@ -6,7 +6,7 @@
  * This script is invoked with parameters to build or rebuild the eGloo configuration file based upon
  * the installation settings chosen.
  *
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ $configuration_options = array(
 		'CachePath' 			=> '',
 		'ConfigurationPath'		=> '',
 		'CubesPath'				=> '',
+		'DataStorePath'			=> '',
 		'DoctrinePath'			=> '',
 		'DocumentationPath'		=> '',
 		'DocumentRoot'			=> '',
@@ -48,8 +49,15 @@ $configuration_options = array(
 		'egMaintenanceVersion'	=> '0',
 		'egMajorVersion'		=> '1',
 		'egMinorVersion'		=> '0',
-		'egUseDoctrine'			=> 'true',
+		'egUseDoctrine'			=> 'false',
+		'egUseDoctrine2DBAL'	=> 'false',
+		'egUseDoctrine2ORM'		=> 'false',
+		'egUseS3'				=> 'false',
 		'egUseSmarty'			=> 'true',
+		'egUseSmarty2'			=> 'false',
+		'egUseSmarty3'			=> 'false',
+		'egUseSwift4'			=> 'false',
+		'egUseTwig'				=> 'false',
 		);
 
 $xml_config_options = array(
@@ -65,6 +73,9 @@ $xml_config_options = array(
 				'value' => ''
 				),
 			'CubesPath' => array(
+				'value' => ''
+				),
+			'DataStorePath' => array(
 				'value' => ''
 				),
 			'DoctrinePath' => array(
@@ -155,39 +166,7 @@ foreach($xml_config_options['System']['Options'] as $option_name => $option) {
 	}
 }
 
-// Check if we're going to be writing out localization cache paths
-// if (isset($value_pairs['WriteLocalizationPaths']) && $value_pairs['WriteLocalizationPaths'] === 'true') {
-// 	echo "Writing localization paths in cache path...\n";
-// 	$countries = eval('return ' . file_get_contents('./Countries.php') .';');
-// 	$languages = eval('return ' . file_get_contents('./Languages.php') .';');
-// 
-	// // Build paths for each locale
-	// foreach($countries as $country) {
-	// 	if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'])) {
-	// 		mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'], 0755, true);
-	// 	}
-	// 
-	// 	if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'])) {
-	// 		mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'], 0755, true);
-	// 	}
-	// 
-	// 	// Build paths for each language in each country
-	// 	foreach($languages as $language) {
-	// 		if (!file_exists($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'])) {
-	// 			mkdir($configuration_options['CachePath'] . '/CompiledTemplates/' . $country['A2'] . '/' . $language['code'], 0755, true);
-	// 		}
-	// 		if (!file_exists($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'])) {
-	// 			mkdir($configuration_options['CachePath'] . '/SmartyCache/' . $country['A2'] . '/' . $language['code'], 0755, true);
-	// 		}
-	// 	}
-	// }
-// }
-
 eGlooConfiguration::writeFrameworkSystemXML( $xml_config_options, true, '../XML/System.skeleton.xml', './System.xml');
-
-// Dump our fresh configuration set
-// $config_dump = var_export($configuration_options, TRUE);
-// file_put_contents('ConfigCache.php', $config_dump);
 
 // We're good, let's get out of here
 exit;

@@ -4,7 +4,7 @@
  *
  * Contains the class definition for the xml request definition parser
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * Request node definitions and request attribute set definitions are defined in a Requests.xml
 	 * file for every eGloo application.  This method is invoked in order to parse that definition file
 	 * and structure information about valid requests, request attribute sets, their arguments, decorators,
-	 * dependencies and associated RequestProcessors into a fast and cacheable hash map of node ID to
-	 * node definition.
+	 * dependencies, init routines and associated RequestProcessors into a fast and cacheable hash map of
+	 * node ID to node definition.
 	 *
 	 * This method will first parse request attribute sets, which are inheritable definitions for arguments,
 	 * decorators and dependencies that a request definition can include rather than explicitly repeating
@@ -266,6 +266,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['decorators'][$newDecorator['decoratorID']] = $newDecorator;
 			}
 
+			// Init Routines
+			$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'] = array();
+
+			foreach( $attributeSet->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+				$newInitRoutine = array();
+
+				$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
+				$newInitRoutine['order'] = (string) $initRoutine['order'];
+
+				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
+			}
+
 			$uniqueKey = ((string) $attributeSet['id']);
 			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
 
@@ -466,6 +478,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$newDecorator['order'] = (string) $decorator['order'];
 
 					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$newDecorator['decoratorID']] = $newDecorator;
+				}
+
+				// InitRoutines
+				$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'] = array();
+
+				foreach( $request->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+					$newInitRoutine = array();
+
+					$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
+					$newInitRoutine['order'] = (string) $initRoutine['order'];
+
+					$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
 				}
 
 				// Request Attribute Set Includes
@@ -835,6 +859,25 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		$retVal = true;
 
+		// Validate Environment
+		if( !$this->validateEnvironment( $requestNode, $requestInfoBean ) ) {
+			// Should this instruct to build an ErrorRequestProcessor on failure?  Not sure...
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
+		// Execute InitRoutines
+		if ( !$this->executeInitRoutines( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		// Process BooleanArguments
 		if( !$this->validateBooleanArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
@@ -880,6 +923,15 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
+		// Process FileArguments
+		if( !$this->validateFileArguments( $requestNode, $requestInfoBean ) ) {
+			if ($errorProcessorID) {
+				$retVal = false;
+			} else {
+				return false;
+			}
+		}
+
 		// Process Depends
 		if( !$this->validateDependArguments( $requestNode, $requestInfoBean ) ) {
 			if ($errorProcessorID) {
@@ -896,13 +948,55 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 * If have gotten here with out returning... we're golden.
 		 * unset post and get and return
 		 */
-		 $_POST = null;
-		 $_GET = null;
+		$_POST = null;
+		$_GET = null;
+
+		// TODO scrub files eventually
+		// $_FILES = null;
 
 		return $retVal;
 	}
 
-// TODO Change array access to references	
+
+	private function executeInitRoutines( $requestNode, $requestInfoBean ) {
+		$requestID = $requestInfoBean->getRequestID();
+		$retVal = true;
+
+		foreach( $requestNode['initRoutines'] as $initRoutineName ) {
+			$initRoutineName = $initRoutineName['initRoutineID'];
+
+			$initRoutineObj = new $initRoutineName();
+
+			if ( !$initRoutineObj->init() ) {
+				$retVal = false;
+			}
+		}
+
+		return $retVal;
+	}
+
+	/**
+	 * validate environment
+	 * 
+	 * @return true if environment passes the test, false otherwise
+	 */
+	private function validateEnvironment( $requestNode, $requestInfoBean ) {
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	/**
+	 * validate file arguments
+	 * 
+	 * @return true if all file arguments pass the test, false otherwise
+	 */
+	private function validateFileArguments( $requestNode, $requestInfoBean ) {
+		$retVal = true;
+
+		return $retVal;
+	}
+
 	/**
 	 * validate boolean arguments
 	 * 
@@ -1412,8 +1506,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 							$formProcessedAndValid = true;
 						}
 					}
-
-					$formProcessedAndValid = true;
 
 					if ( isset($formProcessedAndValid) && $formProcessedAndValid ) {
 						$requestInfoBean->setPOST( $formArg['id'],  $formObj );

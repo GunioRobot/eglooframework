@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,19 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 
 		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $this->requestInfoBean );
 		$templateDirector->setTemplateBuilder( $this->getTemplateBuilder() );
-		$templateDirector->preProcessTemplate();
+
+		try {
+			$templateDirector->preProcessTemplate();
+		} catch (ErrorException $e) {
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw $e;
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Template requested for RequestClass/RequestID "' .
+					$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
+				eGlooHTTPResponse::issueCustom404Response();
+			}
+		}
 
 		$this->populateErrorTemplateVariables();
 

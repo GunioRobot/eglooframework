@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,13 +60,23 @@ class FormFieldSet {
 	protected $_formFieldChildren = array();
 	protected $_formFieldChildData = array();
 
+	protected $_errorMessage = null;
+	protected $_errorMessageToken = null;
+
+	protected $_errorHandler = null;
+
 	protected $_appendHTML = '';
 
 	protected $_cssClasses = array();
 
 	protected $_prependHTML = '';
 
+	protected $_hasError = false;
+
 	protected $_renderMode = self::RENDER_MODE_EDIT;
+
+	protected $_isRequired = false;
+	protected $requiredFieldMarker = '&#9733;';
 
 	protected $_renderedFormFieldSet = null;
 	protected $_renderedErrors = null;
@@ -121,7 +131,51 @@ class FormFieldSet {
 	}
 
 	public function getChildErrors() {
-		return $this->_formFieldChildErrors;
+		// This should probably inquire from the FormFields themselves
+		// return $this->_formFieldChildErrors;
+	}
+
+	public function hasError() {
+		return $this->_hasError;
+	}
+
+	public function setHasError( $error_state ) {
+		$this->_hasError = $error_state;
+
+		return $this;
+	}
+
+	// Error Message
+	public function getErrorMessage() {
+		return $this->_errorMessage;
+	}
+
+	public function setErrorMessage( $errorMessage ) {
+		$this->_errorMessage = $errorMessage;
+
+		return $this;
+	}
+
+	// Error Message Token
+	public function getErrorMessageToken() {
+		return $this->_errorMessageToken;
+	}
+
+	public function setErrorMessageToken( $errorMessageToken ) {
+		$this->_errorMessageToken = $errorMessageToken;
+
+		return $this;
+	}
+
+	// Error Handler
+	public function getErrorHandler() {
+		return $this->_errorHandler;
+	}
+
+	public function setErrorHandler( $errorHandler ) {
+		$this->_errorHandler = $errorHandler;
+
+		return $this;
 	}
 
 	public function getChildren() {
@@ -142,7 +196,7 @@ class FormFieldSet {
 		return $this->_formFieldSetID;
 	}
 
-	public function render( $render_legend = true, $render_children = true, $render_child_labels = true, $render_frameset = true ) {
+	public function render( $render_errors = true, $render_legend = true, $render_children = true, $render_child_labels = true, $render_frameset = true ) {
 		$retVal = '';
 
 		if ( $this->_renderMode !== self::RENDER_MODE_NONE ) {
@@ -155,12 +209,46 @@ class FormFieldSet {
 			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
 				$retVal .= "\t" . '<fieldset id="fieldset-' . $this->getID() . '-form-fieldset" class="' .
 					implode( ' ', $this->getCSSClasses() ) . '">' . "\n";
-				$retVal .= "\t" . '<legend>' . $this->getLegend() . '</legend>' . "\n";
+
+				$retVal .= "\t" . '<legend>';
+
+				if ( $this->_isRequired ) {
+					$retVal .= '<span id="fieldset-' . $this->getID() . '-form-fieldset-frameset-required-marker" ' .
+						'class="form-fieldset-required-marker">' . $this->requiredFieldMarker . '</span> ';
+				}
+
+				$retVal .= $this->getLegend() . '</legend>' . "\n";
 			}
 
 			foreach( $this->getFormFields() as $formField ) {
 				$formField->setVariablePrepend($this->getVariablePrepend());
-				$retVal .= $formField->render( true, true, false, "\t" );
+				$retVal .= $formField->render( true, true, true, false, "\t" );
+			}
+
+			if ( $render_errors && $this->_hasError && trim($this->_errorMessage) !== '' ) {
+				$retVal .= "\t" . '<div id="fieldset-' . $this->getID() .
+					'-form-fieldset-errors" class="form-fieldset-errors">' . "\n";
+				$retVal .= "\t\t" . $this->_errorMessage . "\n";
+
+				if ( !empty( $this->_formFieldChildErrors ) ) {
+					// TODO Localize this
+					$retVal .= "\t\t" . '<ul id="fieldset-' . $this->getID() .
+						'-form-fieldset-errors-list" class="form-fieldset-errors-list">' . "\n";
+
+					foreach( $this->_formFieldErrors as $formFieldError ) {
+						$retVal .= "\t\t\t" . '<li id="fieldset-' . $this->getID() .
+							'-form-fieldset-errors-list-item" class="form-fieldset-errors-list-item">';
+
+						// TODO localize the messages here
+						$retVal .= $formFieldError['default_message'];
+
+						$retVal .= '</li>' . "\n";
+					}
+
+					$retVal .= "\t\t" . '</ul>' . "\n";
+				}
+
+				$retVal .= "\t" . '</div>' . "\n";
 			}
 
 			if ( $this->getLegend() !== null && trim( $this->getLegend() ) !== '' ) {
@@ -170,6 +258,8 @@ class FormFieldSet {
 			if ( trim($this->getAppendHTML()) !== '' ) {
 				$retVal .= "\t" . $this->getAppendHTML() . "\n";
 			}
+			
+
 		}
 
 		return $retVal;
@@ -332,6 +422,28 @@ class FormFieldSet {
 
 	public function setLegendToken( $formFieldSetLegendToken ) {
 		$this->_formFieldSetLegendToken = $formFieldSetLegendToken;
+
+		return $this;
+	}
+
+	// Whether this field is required or not
+	public function isRequired() {
+		return $this->_isRequired;
+	}
+
+	public function setIsRequired( $isRequired = true ) {
+		$this->_isRequired = $isRequired;
+
+		return $this;
+	}
+
+	// Required Field Marker
+	public function getRequiredMarker() {
+		return $this->requiredFieldMarker;
+	}
+
+	public function setRequiredMarker( $requiredFieldMarker ) {
+		$this->requiredFieldMarker = $requiredFieldMarker;
 
 		return $this;
 	}

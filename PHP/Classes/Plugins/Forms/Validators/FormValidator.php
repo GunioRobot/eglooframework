@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FormValidator {
+abstract class FormValidator {
+
+	abstract public function validate( $form );
 
 }
 

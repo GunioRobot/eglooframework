@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class SOAPDAOFactory extends ConcreteDAOFactory {
 		return new SOAPSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new SOAPGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new SOAPInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new SOAPInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new SOAPInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new SOAPInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new SOAPInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new SOAPAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class SOAPDAOFactory extends ConcreteDAOFactory {
 		return new SOAPCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new SOAPFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new SOAPUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class SOAPDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new SOAPGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new SOAPAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new SOAPGenericPLFunctionDAO( $this->_connection_name );
 	}

@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  *	
  * @author George Cooper
  * @copyright 2011 eGloo, LLC

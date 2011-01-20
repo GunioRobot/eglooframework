@@ -4,7 +4,7 @@
  *
  * This file contains the function definition for the __autoload runtime handler.
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ eGlooConfiguration::loadConfigurationOptions();
 
 // Bring up the eGlooLogger
 if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/Utilities/eGlooLogger.php' );
+	include( 'PHP/Classes/System/eGlooLogger.php' );
 }
 
 // Initialize the eGlooLogger
@@ -52,6 +52,11 @@ spl_autoload_register('eglooAutoload');
 // Load Smarty
 if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
+}
+
+// Load Smarty
+if ( eGlooConfiguration::getUseS3() ) {
+	include( eGlooConfiguration::getS3IncludePath() );
 }
 
 // Load Doctrine

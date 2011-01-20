@@ -1,4 +1,4 @@
-sudo apt-get install php-apc php5-imagick php5-mcrypt php5-memcache php5-memcached php5-suhosin smarty3 php5-cli php5 php5-common php5-dev php5-mysql php5-pgsql php5-sqlite php-soap php-openid php5-odbc php5-gd php5-xmlrpc
+sudo apt-get install php-apc php5-imagick php5-mcrypt php5-memcache php5-memcached php5-suhosin php5-cli php5 php5-common php5-dev php5-mysql php5-pgsql php5-sqlite php-soap php-openid php5-odbc php5-gd php5-xmlrpc
 
 sudo apt-get install apache2
 
@@ -12,8 +12,52 @@ sudo apt-get install postgresql-9.0 postgresql-client-9.0 postgresql-doc-9.0
 
 sudo apt-get install mysql-server-5.1 mysql-client-5.1
 
+NOTE: Make sure apache has mod_rewrite enabled and AllowOverride All set (.htaccess allowed)
+
 Useful:
 Filezilla
 MySQL Query Browser
 MySQL Administrator
 pgAdmin3
+
+Known issue: eGloo expects Smarty and Doctrine to be installed and able to be found by locate.  This is a bug, but
+you should know to have them already in the PHP path somewhere and run sudo updatedb before running the eGloo installer.
+
+After downloading eglooframework:
+
+tar -zxvf eglooframework-1dp1.tar.gz
+cd eglooframework-1dp1/Build
+sudo ./Install.sh
+
+*** Follow all instructions in installer ***
+
+To see how to make an eGloo application, please refer to Skeleton.app in the eGloo application directory (set during install)
+
+The webroot that is setup during install contains several files:
+
+index.php (eGloo Bootloader)
+PHP -> eglooframework/PHP (Symlink)
+Config.xml (Local Configuration Options)
+System.xml (eGloo System Configuration Information - DO NOT MODIFY)
+.htaccess (Environment variables and DB connection settings)
+
+eGloo Installer is "non-destructive".  If your webroot gets hosed, you can rerun the installer and it will not delete any
+files/symlinks currently set.  It will move your old .htaccess file to .htaccess-{timestamp}.
+
+Important directories:
+
+Configuration Cache: /var/tmp/com.egloo.cache/
+Template Cache: /var/cache/egloo/{Application.app} (Exact directory OS-dependent, check System.xml for specific path)
+
+Hot-caching of CSS, XCSS, JS, XJS and Images happens in the webroot dynamically.  These directories can be safely deleted to
+clear static cache and eGloo will repopulate them as needed.
+
+Finally, it is recommended that you: sudo cp ./Scripts/restartmemcache to /usr/bin/restartmemcache or /usr/local/bin/restartmemcache
+
+eGloo, by default, expects several memcache daemons on specific ports on localhost to be made available if memcache is used.
+These can be changed by editing eglooframework/PHP/Classes/Performance/Caching/CacheGateway.php and the restartmemcache script
+
+In exchange for rapid development and proper SE design, eGloo sacrifices speed in development mode and ability to run without caching support.
+
+NOTE: eGloo is NOT meant to be run without the use of APC or memcached.  There are no plans to support running without a caching engine available for production.
+

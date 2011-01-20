@@ -1,10 +1,10 @@
 <?php
 /**
- * ContentPurchasable Interface File
+ * ContentPurchasable Class File
  *
- * Needs to be commented
+ * Contains the class definition for the ContentPurchasable
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,17 +21,22 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Content
- * @subpackage Interface
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
  * ContentPurchasable
- * 
- * Needs to be commented
  *
- * @package Content
- * @subpackage Interface
+ * $short_description
+ *
+ * $long_description
+ *
+ * @package $package
+ * @subpackage $subpackage
  */
-?>
+interface ContentPurchasable {
+
+}
+

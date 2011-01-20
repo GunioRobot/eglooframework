@@ -4,7 +4,7 @@
  *
  * $file_block_description
  * 
- * Copyright 2010 eGloo, LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,30 +45,6 @@ class RoutingDAOFactory extends ConcreteDAOFactory {
 		return new RoutingSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getGlobalMenuBarDAO() {
-		return new RoutingGlobalMenuBarDAO( $this->_connection_name );
-	}
-	
-	public function getInformationBoardIcingDAO() {
-		return new RoutingInformationBoardIcingDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardMusicDAO() {
-		return new RoutingInformationBoardMusicDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPeopleDAO() {
-		return new RoutingInformationBoardPeopleDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardPicturesDAO() {
-		return new RoutingInformationBoardPicturesDAO( $this->_connection_name );
-	}
-
-	public function getInformationBoardVideoDAO() {
-		return new RoutingInformationBoardVideoDAO( $this->_connection_name );
-	}
-
 	public function getAccountDAO() {
 		return new RoutingAccountDAO( $this->_connection_name );
 	}
@@ -93,10 +69,6 @@ class RoutingDAOFactory extends ConcreteDAOFactory {
 		return new RoutingCubeDAO( $this->_connection_name );
 	}
 
-	public function getFridgeDAO() {
-		return new RoutingFridgeDAO( $this->_connection_name );
-	}
-
 	public function getUserInvitesDAO() {
 		return new RoutingUserInvitesDAO( $this->_connection_name );	
 	}
@@ -116,11 +88,7 @@ class RoutingDAOFactory extends ConcreteDAOFactory {
 	public function getGenericCubeDAO() {
 		return new RoutingGenericCubeDAO( $this->_connection_name );
 	}
-	
-	public function getAuctionDAO() {
-		return new RoutingAuctionDAO( $this->_connection_name );
-	}
-	
+
 	public function getGenericPLFunctionDAO() {
 		return new RoutingGenericPLFunctionDAO( $this->_connection_name );
 	}
