@@ -45,6 +45,7 @@ class ImageContentDTO extends DataTransferObject {
 	private $_imageMIMEType = null;
 	private $_imageFileHash = null;
 	private $_imageFileName = null;
+	private $_imageFilePath = null;
 	private $_imageFileSize = null;
 	private $_imageDateUploaded = null;
 	private $_imageUploader = null;

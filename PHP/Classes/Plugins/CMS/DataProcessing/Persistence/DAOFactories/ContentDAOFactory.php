@@ -72,5 +72,9 @@ class ContentDAOFactory extends AbstractDAOFactory {
 		return $this->getAppropriateFactory( $connection_name )->getImageContentDAO();
 	}
 
+	public function getGenericFileContentDAO( $connection_name = 'egDataStore' ) {
+		return $this->getAppropriateFactory( $connection_name )->getGenericFileContentDAO();
+	}
+
 }
 

@@ -44,7 +44,7 @@ class AbstractDAOFactory {
 	protected $_connection_name = null;
 
 	//singleton holder
-	private static $singleton;
+	protected static $singleton;
 
 
 	public function __construct( $connection_name ) {
@@ -57,11 +57,11 @@ class AbstractDAOFactory {
 	 * @return AbstractDAOFactory the singleton reference of the AbstractDAOFactory
 	 */
 	public static function getInstance() {
-		if ( !isset ( self::$singleton ) ) {
-			self::$singleton = new AbstractDAOFactory( null );
+		if ( !isset(static::$singleton) ) {
+			static::$singleton = new static( null );
 		}
 
-		return self::$singleton;
+		return static::$singleton;
 	}
 
 	/**

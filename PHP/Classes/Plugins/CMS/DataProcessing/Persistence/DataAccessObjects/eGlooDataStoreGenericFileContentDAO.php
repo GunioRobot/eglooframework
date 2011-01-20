@@ -65,7 +65,67 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 	}
 
 	public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
-		
+		// $data_store_path = eGlooConfiguration::getDataStorePath();
+		// $client_id = eGlooConfiguration::getCustomVariable('client_id');
+		// 
+		// $data_store_image_path = $data_store_path . '/client/images/' . $imageType . '/';
+		// 
+		// $full_data_store_image_path = $data_store_image_path . $imageTableID .
+		// 	'_ref' . $referenceTableID . '_ins' . $imageInstanceID . '.' . $imageFileTypeExtension;
+		// 
+		// if ( !is_writable( $data_store_image_path ) ) {
+		// 	try {
+		// 		$mode = 0777;
+		// 		$recursive = true;
+		// 
+		// 		mkdir( $data_store_image_path, $mode, $recursive );
+		// 	} catch (Exception $e){
+		// 		echo_r($e->getMessage());
+		// 	}
+		// }
+		// 
+		// copy($imagePath, $full_data_store_image_path);
+		// 
+		// return $full_data_store_image_path;
+	}
+
+	public function storeUploadedFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+		$mimeType = $fileContentDTO->getFileMIMEType();
+		$localID = $fileContentDTO->getFileLocalID();
+		$mod = $fileContentDTO->getFileMod();
+		// Going to refactor this out later...
+		$category = 'Generic';
+
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/Upload/' .
+			$category . '/' . $file_bucket . '/' . $mod . '/';
+
+		$extension = '';
+
+		switch( $mimeType ) {
+			case 'image/jpeg' :
+				$extension = 'jpg';
+				break;
+			default :
+				$extension = 'unknown';
+				break;
+		}
+
+		$data_store_file_path = $data_store_file_folder_path . $localID . '.' . $extension;
+
+		if ( !is_writable( $data_store_file_folder_path ) ) {
+			try {
+				$mode = 0777;
+				$recursive = true;
+
+				mkdir( $data_store_file_folder_path, $mode, $recursive );
+			} catch (Exception $e){
+				echo_r($e->getMessage());
+			}
+		}
+
+		copy($fileContentDTO->getFilePath(), $data_store_file_path);
+
+		return $data_store_file_path;
 	}
 
 	// Prefix Methods

@@ -108,7 +108,7 @@ abstract class eGlooRequestDefinitionParser {
 	 * @return the instantiated singleton of whichever subclass this method was invoked in using late static binding
 	 */
 	final public static function getInstance( $webapp = "Default", $uibundle = "Default" ) {
-		$calledDefinitionParser = get_called_class();
+		// $calledDefinitionParser = get_called_class();
 
 		if ( !isset(static::$singleton) ) {
 			static::$singleton = new static( $webapp, $uibundle );

@@ -40,13 +40,31 @@ class GenericFileContentDTO extends DataTransferObject {
 
 	private $_fileContent = null;
 	private $_fileMIMEType = null;
-	private $_fileFileHash = null;
-	private $_fileFileName = null;
-	private $_fileFileSize = null;
+	private $_fileHash = null;
+	private $_fileLocalID = null;
+	private $_fileMasterID = null;
+	private $_fileMod = null;
+	private $_fileName = null;
+	private $_fileNetworkID = null;
+	private $_filePath = null;
+	private $_filePeerID = null;
+	private $_fileSize = null;
 	private $_fileDateUploaded = null;
 	private $_fileUploader = null;
 
+	public function __construct() {
+		
+	}
+
 	// Need mod/mutation members
+
+	public function getFileLocalID() {
+		return $this->_fileLocalID;
+	}
+
+	public function setFileLocalID( $fileLocalID ) {
+		$this->_fileLocalID = $fileLocalID;
+	}
 	
 	public function getFileContent() {
 		return $this->_fileContent;
@@ -56,28 +74,44 @@ class GenericFileContentDTO extends DataTransferObject {
 		$this->_fileContent = $fileContent;
 	}
 
-	public function getFileFileHash() {
-		return $this->_fileFileHash;
+	public function getFileHash() {
+		return $this->_fileHash;
 	}
 
-	public function setFileFileHash( $fileFileHash ) {
-		$this->_fileFileHash = $fileFileHash;
+	public function setFileHash( $fileHash ) {
+		$this->_fileHash = $fileHash;
 	}
 
-	public function getFileFileName() {
-		return $this->_fileFileName;
+	public function getFileMod() {
+		return $this->_fileMod;
 	}
 
-	public function setFileFileName( $fileFileName ) {
-		$this->_fileFileName = $fileFileName;
+	public function setFileMod( $fileMod ) {
+		$this->_fileMod = $fileMod;
 	}
 
-	public function getFileFileSize() {
-		return $this->_fileFileSize;
+	public function getFileName() {
+		return $this->_fileName;
 	}
 
-	public function setFileFileSize( $fileFileSize ) {
-		$this->_fileFileSize = $fileFileSize;
+	public function setFileName( $fileName ) {
+		$this->_fileName = $fileName;
+	}
+
+	public function getFilePath() {
+		return $this->_filePath;
+	}
+
+	public function setFilePath( $filePath ) {
+		$this->_filePath = $filePath;
+	}
+
+	public function getFileSize() {
+		return $this->_fileSize;
+	}
+
+	public function setFileSize( $fileSize ) {
+		$this->_fileSize = $fileSize;
 	}
 
 	public function getFileMIMEType() {
@@ -102,6 +136,29 @@ class GenericFileContentDTO extends DataTransferObject {
 
 	public function setFileUploader( $uploader ) {
 		$this->_fileUploader = $uploader;
+	}
+
+	public static function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
+		$newFileDTO = new GenericFileContentDTO();
+
+		$newFileDTO->setFileName( $eglooHTTPFile->getFileName() );
+		$newFileDTO->setFileMIMEType( $eglooHTTPFile->getFileType() );
+		$newFileDTO->setFilePath( $eglooHTTPFile->getTemporaryFileName() );
+		$newFileDTO->setFileSize( $eglooHTTPFile->getFileSize() );
+
+		if ( $extended_processing ) {
+			// Extended processing
+		}
+
+		if ( $load_content ) {
+			// Load content
+		}
+
+		return $newFileDTO;
+	}
+
+	public function __destruct() {
+		
 	}
 
 }
