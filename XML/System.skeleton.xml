@@ -88,6 +88,7 @@
 		<Component id="CachePath" displayName="Cache Path" override="false" type="path" value="" required="true"/>
 		<Component id="ConfigurationPath" displayName="Configuration Path" override="false" type="path" value="" required="true"/>
 		<Component id="CubesPath" displayName="Cubes Path" override="false" type="path" value="" required="true"/>
+		<Component id="DataStorePath" displayName="Data Store Path" override="true" type="path" value="" required="true"/>
 		<Component id="DoctrinePath" displayName="Doctrine Path" override="false" type="path" value="" required="true"/>
 		<Component id="DocumentationPath" displayName="Documentation Path" override="false" type="path" value="" required="true"/>
 		<Component id="DocumentRoot" displayName="Document Root" override="false" type="path" value="" required="true"/>

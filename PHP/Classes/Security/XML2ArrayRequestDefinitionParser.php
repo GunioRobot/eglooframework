@@ -950,6 +950,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		 */
 		$_POST = null;
 		$_GET = null;
+
+		// TODO scrub files eventually
 		// $_FILES = null;
 
 		return $retVal;

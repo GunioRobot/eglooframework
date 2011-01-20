@@ -179,7 +179,57 @@ class eGlooHTTPFile {
 	public function __construct( $form_field_id ) {
 		$form_field_id_chunks = explode( ' ', $form_field_id );
 
-		die_r($form_field_id_chunks);
+		if ( isset($form_field_id_chunks[0]) ) {
+			$file_info_array = $_FILES[$form_field_id_chunks[0]];
+			$field_name_chunk_count = count($form_field_id_chunks);
+
+			$curNode = $file_info_array['name'];
+
+			for( $i = 1; $i < $field_name_chunk_count; $i++ ) {
+				$curNode = $curNode[$form_field_id_chunks[$i]];
+			}
+
+			$file_info_name = $curNode;
+
+			$curNode = $file_info_array['type'];
+
+			for( $i = 1; $i < $field_name_chunk_count; $i++ ) {
+				$curNode = $curNode[$form_field_id_chunks[$i]];
+			}
+
+			$file_info_type = $curNode;
+
+			$curNode = $file_info_array['tmp_name'];
+
+			for( $i = 1; $i < $field_name_chunk_count; $i++ ) {
+				$curNode = $curNode[$form_field_id_chunks[$i]];
+			}
+
+			$file_info_tmp_name = $curNode;
+
+			$curNode = $file_info_array['error'];
+
+			for( $i = 1; $i < $field_name_chunk_count; $i++ ) {
+				$curNode = $curNode[$form_field_id_chunks[$i]];
+			}
+
+			$file_info_error = $curNode;
+
+			$curNode = $file_info_array['size'];
+
+			for( $i = 1; $i < $field_name_chunk_count; $i++ ) {
+				$curNode = $curNode[$form_field_id_chunks[$i]];
+			}
+
+			$file_info_size = $curNode;
+		}
+
+		$this->setInputFieldID( $form_field_id );
+		$this->setFileName( $file_info_name );
+		$this->setFileType( $file_info_type );
+		$this->setTemporaryFileName( $file_info_tmp_name );
+		$this->setErrorCode( $file_info_error );
+		$this->setFileSize( $file_info_size );
 	}
 
 	public function __destruct() {

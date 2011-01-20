@@ -36,6 +36,7 @@ $configuration_options = array(
 		'CachePath' 			=> '',
 		'ConfigurationPath'		=> '',
 		'CubesPath'				=> '',
+		'DataStorePath'			=> '',
 		'DoctrinePath'			=> '',
 		'DocumentationPath'		=> '',
 		'DocumentRoot'			=> '',
@@ -72,6 +73,9 @@ $xml_config_options = array(
 				'value' => ''
 				),
 			'CubesPath' => array(
+				'value' => ''
+				),
+			'DataStorePath' => array(
 				'value' => ''
 				),
 			'DoctrinePath' => array(

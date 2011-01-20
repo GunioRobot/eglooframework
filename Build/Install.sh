@@ -119,6 +119,7 @@ then
 	DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
 	DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
 	DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
+	DEFAULT_DATA_STORE="/Library/Application Support/eGloo/Data"
 	DEFAULT_DOCTRINE=`locate /opt/*lib/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/Library/Documentation/eGlooFramework"
 	DEFAULT_DOCUMENTROOT="/Library/WebServer/eGloo"
@@ -139,6 +140,7 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/usr/lib/egloo/cubes"
+	DEFAULT_DATA_STORE="/var/egloo"
 	DEFAULT_DOCTRINE=`locate /usr/*/Doctrine.php | head -n 1`
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/var/www/egloo"
@@ -160,6 +162,7 @@ then
 	DEFAULT_CACHE_DIR="/var/cache/egloo"
 	DEFAULT_CONFIG="/etc/egloo/"
 	DEFAULT_CUBES="/lib/egloo/cubes"
+	DEFAULT_DATA_STORE="/var/egloo"
 	DEFAULT_DOCTRINE="/usr/share/php/doctrine/Doctrine.php"
 	DEFAULT_DOCUMENTATION="/usr/share/doc/egloo"
 	DEFAULT_DOCUMENTROOT="/cygdrive/c/wamp/www/egloo"
@@ -919,6 +922,70 @@ else
 fi
 
 echo
+echo "*************************"
+echo "* eGloo Data Store Path *"
+echo "*************************"
+echo
+echo -n "Default Location: "
+echo "\"$DEFAULT_DATA_STORE\""
+echo
+
+echo -n "Use this location? [Y/n]: "
+read -e CONFIRM_CONTINUE
+
+# Check if the user wants to use the default or specify their own data store path
+case "$CONFIRM_CONTINUE" in
+	# User chose to specify own data store path
+	"N" | "n" | "No" | "NO" | "no" )
+		NEW_PATH_SET=0
+		
+		# Loop until we have a new path and the user has confirmed the location
+		while [ "$NEW_PATH_SET" -ne 1 ]
+		do
+			echo -n "Enter New Location: "
+			read -e DATA_STORE_PATH
+			echo
+			echo "Location: \"$DATA_STORE_PATH\""
+			echo
+		
+			echo -n "Use this location? [y/N]: "
+			read -e CONFIRM_CONTINUE
+		
+			# Make sure user entered right path
+			case "$CONFIRM_CONTINUE" in
+				# New path is good, break the loop
+				"Y" | "y" | "Yes" | "YES" | "yes" )
+					NEW_PATH_SET=1
+				;;
+				# New path is no good, loop back
+				* )
+				;;
+			esac
+		done		
+	;;
+
+	# User chose the default path
+	* ) DATA_STORE_PATH=$DEFAULT_DATA_STORE
+	;;
+esac
+
+printf "Building data store path... "
+
+mkdir -p "$DATA_STORE_PATH"
+
+printf "done.\n"
+
+if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
+then
+	chown -R $WEB_USER:$WEB_GROUP "$DATA_STORE_PATH"
+	chmod -R 755 "$DATA_STORE_PATH"
+
+	checkUserCanRead "$WEB_USER" "$DATA_STORE_PATH"
+else
+	echo "Ignoring ownership and permissions of Data Store Path for Windows"
+fi
+
+echo
 echo "***********************"
 echo "* Supporting Software *"
 echo "***********************"
@@ -1151,6 +1218,7 @@ then
 		--CachePath="c:/cygwin$CACHE_PATH" \
 		--ConfigurationPath="c:/cygwin$CONFIG_PATH" \
 		--CubesPath="c:/cygwin$CUBES_PATH" \
+		--DataStorePath="c:/cygwin$DATA_STORE_PATH" \
 		--DoctrinePath="c:/cygwin$DOCTRINE_PATH" \
 		--DocumentationPath="c:/cygwin$DOCUMENTATION_PATH" \
 		--DocumentRoot="c:$DOCUMENT_ROOT" \
@@ -1167,6 +1235,7 @@ else
 		--CachePath="$CACHE_PATH" \
 		--ConfigurationPath="$CONFIG_PATH" \
 		--CubesPath="$CUBES_PATH" \
+		--DataStorePath="$DATA_STORE_PATH" \
 		--DoctrinePath="$DOCTRINE_PATH" \
 		--DocumentationPath="$DOCUMENTATION_PATH" \
 		--DocumentRoot="$DOCUMENT_ROOT" \

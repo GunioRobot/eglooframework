@@ -1389,6 +1389,10 @@ final class eGlooConfiguration {
 		return self::$configuration_options['DoctrinePath'];
 	}
 
+	public static function getDataStorePath() {
+		return self::$configuration_options['DataStorePath'];
+	}
+
     public static function getDocumentationPath() {
 		return self::$configuration_options['DocumentationPath'];
 	}
