@@ -38,6 +38,22 @@
  */
 abstract class ImageContentDAO extends AbstractDAO {
 
+	public function CRUDCreate( $formDTO ) {
+		
+	}
+
+	public function CRUDRead( $formDTO ) {
+		
+	}
+
+	public function CRUDUpdate( $formDTO ) {
+		
+	}
+
+	public function CRUDDestroy( $formDTO ) {
+		
+	}
+
 	// Bucket Methods
 	// TBD
 
