@@ -123,6 +123,10 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 			}
 		}
 
+		// die_r($fileContentDTO);
+		// TODO make sure the file uploaded properly, no errors
+		echo_r($fileContentDTO->getFilePath());
+		echo_r($data_store_file_path);
 		copy($fileContentDTO->getFilePath(), $data_store_file_path);
 
 		return $data_store_file_path;

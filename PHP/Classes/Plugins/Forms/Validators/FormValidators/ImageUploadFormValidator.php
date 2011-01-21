@@ -1,8 +1,8 @@
 <?php
 /**
- * ImageFileFormFieldValidator Class File
+ * ImageUploadFormValidator Class File
  *
- * Contains the class definition for the ImageFileFormFieldValidator
+ * Contains the class definition for the ImageUploadFormValidator
  * 
  * Copyright 2011 eGloo, LLC
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * ImageFileFormFieldValidator
+ * ImageUploadFormValidator
  *
  * $short_description
  *
@@ -36,17 +36,31 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ImageFileFormFieldValidator extends FileFormFieldValidator {
+class ImageUploadFormValidator extends FormValidator {
 
-	public function validate( $imageFileFormField ) {
-		$retVal = false;
+	public function validate( $imageUploadForm ) {
+		$retVal = true;
 
-		$retVal = parent::validate( $imageFileFormField );
+		foreach( $imageUploadForm->getFormFieldSets() as $formFieldSet ) {
+			$formFieldSetValidatorName = $formFieldSet->getValidator();
+			$formFieldSetValidatorObj = new $formFieldSetValidatorName();
 
-		if ( $retVal )	{
-			// $retVal = $this->validateRFCEmail( $imageFileFormField );
+			if ( !$formFieldSetValidatorObj->validate($formFieldSet) ) {
+				$retVal = false;
+			}
 		}
+
+		// Not sure this is necessary
+		// foreach( $registrationForm->getFormFields() as $formField ) {
+		// 	$formFieldValidatorName = $formField->getValidator();
+		// 	$formFieldValidatorObj = new $formFieldValidatorName();
+		// 
+		// 	$formFieldValidatorObj->validate($formField);
+		// }
+
+		// TODO Run validation and such on FormAttributeSets dumped in
 
 		return $retVal;
 	}
+
 }

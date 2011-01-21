@@ -36,17 +36,32 @@
  * @package $package
  * @subpackage $subpackage
  */
-class GenericFileUploadFormValidator extends FileFormFieldValidator {
+class GenericFileUploadFormValidator extends FormValidator {
 
-	public function validate( $genericFileFormField ) {
-		$retVal = false;
+	public function validate( $genericFileUploadForm ) {
+		$retVal = true;
 
-		$retVal = parent::validate( $genericFileFormField );
+		foreach( $genericFileUploadForm->getFormFieldSets() as $formFieldSet ) {
+			$formFieldSetValidatorName = $formFieldSet->getValidator();
+			$formFieldSetValidatorObj = new $formFieldSetValidatorName();
 
-		if ( $retVal )	{
-			// $retVal = $this->validateRFCEmail( $imageFileFormField );
+			if ( !$formFieldSetValidatorObj->validate($formFieldSet) ) {
+				$retVal = false;
+			}
 		}
+
+		// Not sure this is necessary
+		// foreach( $registrationForm->getFormFields() as $formField ) {
+		// 	$formFieldValidatorName = $formField->getValidator();
+		// 	$formFieldValidatorObj = new $formFieldValidatorName();
+		// 
+		// 	$formFieldValidatorObj->validate($formField);
+		// }
+
+		// TODO Run validation and such on FormAttributeSets dumped in
 
 		return $retVal;
 	}
+
 }
+
