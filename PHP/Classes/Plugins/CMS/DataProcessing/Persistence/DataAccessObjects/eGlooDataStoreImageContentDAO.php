@@ -81,7 +81,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		$localID = $imageContentDTO->getFileLocalID();
 		$mod = $imageContentDTO->getFileMod();
 		// Going to refactor this out later...
-		$category = 'Generic';
+		$category = 'Images';
 
 		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
 			$category . '/' . $file_bucket . '/' . $mod . '/';
