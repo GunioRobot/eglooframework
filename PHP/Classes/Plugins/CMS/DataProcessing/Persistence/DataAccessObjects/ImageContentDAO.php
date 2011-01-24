@@ -38,23 +38,39 @@
  */
 abstract class ImageContentDAO extends AbstractDAO {
 
+	public function CRUDCreate( $formDTO ) {
+		
+	}
+
+	public function CRUDRead( $formDTO ) {
+		
+	}
+
+	public function CRUDUpdate( $formDTO ) {
+		
+	}
+
+	public function CRUDDestroy( $formDTO ) {
+		
+	}
+
 	// Bucket Methods
 	// TBD
 
 	// Image Methods
-	abstract public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local' );
+	abstract public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
-	abstract public function deleteImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function deleteImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local' );
+	abstract public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
-	abstract public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' );
 
 	// Prefix Methods
 	// TBD

@@ -124,5 +124,31 @@ class ImageContentDTO extends DataTransferObject {
 		$this->_imageUploader = $uploader;
 	}
 
+	public static function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
+		$newFileDTO = new ImageContentDTO();
+
+		$newFileDTO->setFileName( $eglooHTTPFile->getFileName() );
+		$newFileDTO->setFileMIMEType( $eglooHTTPFile->getFileType() );
+		$newFileDTO->setFilePath( $eglooHTTPFile->getTemporaryFileName() );
+		$newFileDTO->setFileSize( $eglooHTTPFile->getFileSize() );
+
+		if ( $extended_processing ) {
+			// Extended processing
+		}
+
+		if ( $load_content ) {
+			// Load content
+		}
+
+		return $newFileDTO;
+	}
+
+	public static function initWithForm( Form $form ) {
+	}
+
+	public function __destruct() {
+		
+	}
+
 }
 

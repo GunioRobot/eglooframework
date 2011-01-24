@@ -73,18 +73,6 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 				// Just ignore this for now
 			}
 
-/*
-Date	Fri, 20 Nov 2009 16:08:31 GMT
-Server	Apache/2.2.14 (Unix) DAV/2
-Last-Modified	Tue, 17 Nov 2009 21:41:58 GMT
-Etag	"196764a-17f41f-47897fedaf580"
-Accept-Ranges	bytes
-Content-Length	1569823
-Keep-Alive	timeout=5, max=97
-Connection	Keep-Alive
-Content-Type	image/png
-Cache-Control	max-age=86400
-*/
 			$output = file_get_contents( $app_path . '/' . $file_name );
 			$length = strlen($output);
 
@@ -121,12 +109,71 @@ Cache-Control	max-age=86400
 						eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
 				}
 			}
+		} else if ( ( $data_store_path = $this->getDataStorePath( $file_name ) ) !== null ) {
+			$imageMIMEType = '';
+
+			try {
+				$info = new finfo( FILEINFO_MIME, '/usr/share/file/magic' );
+				$imageMIMEType = $info->file( $data_store_path );
+			} catch (Exception $e) {
+				// Just ignore this for now
+			}
+
+			$output = file_get_contents( $data_store_path );
+			$length = strlen($output);
+
+			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+			header( 'Content-type: ' . $imageMIMEType );
+			header( 'Content-Length: ' . $length);
+
+			echo $output;
+
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
+				$matches = array();
+				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
+
+				if (!empty($matches)) {
+					$cached_file_path = $matches[1] . '/';
+				} else {
+					$cached_file_path = '';
+				}
+
+				if ( !is_writable( eGlooConfiguration::getWebRoot() . 'images/' . $cached_file_path ) ) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( eGlooConfiguration::getWebRoot() . 'images/' . $cached_file_path, $mode, $recursive );
+					} catch (Exception $e){
+						// TODO figure out what to do here
+					}
+				}
+
+				if ( !copy($data_store_path, eGlooConfiguration::getWebRoot() . 'images/' . $file_name ) ) {
+					throw new Exception( 'File copy failed from ' . $data_store_path . ' to ' .
+						eGlooConfiguration::getWebRoot() . 'images/' . $file_name );
+				}
+			}
 		} else {
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Exiting processRequest()' );
     }
+
+	protected function getDataStorePath( $file_name ) {
+		$retVal = null;
+
+		$contentDAOFactory = ContentDAOFactory::getInstance();
+		$imageContentDAO = $contentDAOFactory->getImageContentDAO();
+
+		if ( !$imageContentDAO->storeUploadedFile( $imageContentDTO ) ) {
+			throw new Exception('Gasp I die');
+		}
+
+		return $retVal;
+	}
 
 }
 
