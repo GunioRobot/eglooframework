@@ -51,11 +51,15 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		
 	}
 
-	public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
 		
 	}
 
-	public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
+		
+	}
+
+	public function getImageStorePath( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
 		
 	}
 
@@ -65,7 +69,47 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	}
 
 	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
-		
+		$mimeType = $imageContentDTO->getFileMIMEType();
+		$localID = $imageContentDTO->getFileLocalID();
+		$mod = $imageContentDTO->getFileMod();
+		// Going to refactor this out later...
+		$category = 'Generic';
+
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/Upload/' .
+			$category . '/' . $file_bucket . '/' . $mod . '/';
+
+		$extension = '';
+
+		switch( $mimeType ) {
+			case 'image/jpeg' :
+				$extension = 'jpg';
+				break;
+			default :
+				$extension = 'unknown';
+				break;
+		}
+
+		$data_store_file_path = $data_store_file_folder_path . $localID . '.' . $extension;
+
+		if ( !is_writable( $data_store_file_folder_path ) ) {
+			try {
+				$mode = 0777;
+				$recursive = true;
+
+				mkdir( $data_store_file_folder_path, $mode, $recursive );
+			} catch (Exception $e){
+				echo_r($e->getMessage());
+			}
+		}
+
+		// die_r($imageContentDTO);
+		// TODO make sure the file uploaded properly, no errors
+		echo_r($imageContentDTO->getFilePath());
+		echo_r($data_store_file_path);
+		copy($imageContentDTO->getFilePath(), $data_store_file_path);
+
+		return $data_store_file_path;
+
 	}
 
 	// Prefix Methods

@@ -165,7 +165,12 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 	protected function getDataStorePath( $file_name ) {
 		$retVal = null;
 
-		
+		$contentDAOFactory = ContentDAOFactory::getInstance();
+		$imageContentDAO = $contentDAOFactory->getImageContentDAO();
+
+		if ( !$imageContentDAO->storeUploadedFile( $imageContentDTO ) ) {
+			throw new Exception('Gasp I die');
+		}
 
 		return $retVal;
 	}
