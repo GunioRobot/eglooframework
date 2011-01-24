@@ -42,67 +42,54 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 	// TBD
 
 	// File Methods
-	public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local' ) {
+	public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
 
-	public function deleteFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function deleteFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function getFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function getFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function getFileMeta( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function getFileMeta( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local' ) {
+	public function getFileStorePath( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
+		
+	}
+
+	public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
 
-	public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
-		// $data_store_path = eGlooConfiguration::getDataStorePath();
-		// $client_id = eGlooConfiguration::getCustomVariable('client_id');
-		// 
-		// $data_store_image_path = $data_store_path . '/client/images/' . $imageType . '/';
-		// 
-		// $full_data_store_image_path = $data_store_image_path . $imageTableID .
-		// 	'_ref' . $referenceTableID . '_ins' . $imageInstanceID . '.' . $imageFileTypeExtension;
-		// 
-		// if ( !is_writable( $data_store_image_path ) ) {
-		// 	try {
-		// 		$mode = 0777;
-		// 		$recursive = true;
-		// 
-		// 		mkdir( $data_store_image_path, $mode, $recursive );
-		// 	} catch (Exception $e){
-		// 		echo_r($e->getMessage());
-		// 	}
-		// }
-		// 
-		// copy($imagePath, $full_data_store_image_path);
-		// 
-		// return $full_data_store_image_path;
+	public function storeMasterFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+		return $this->storeFile( $fileContentDTO, $file_bucket, $store_prefix, 'Master' );
 	}
 
 	public function storeUploadedFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' ) {
+		return $this->storeFile( $fileContentDTO, $file_bucket, $store_prefix, 'Uploaded' );
+	}
+
+	public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
 		$mimeType = $fileContentDTO->getFileMIMEType();
 		$localID = $fileContentDTO->getFileLocalID();
 		$mod = $fileContentDTO->getFileMod();
 		// Going to refactor this out later...
 		$category = 'Generic';
 
-		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/Upload/' .
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
 			$category . '/' . $file_bucket . '/' . $mod . '/';
 
 		$extension = '';
 
 		switch( $mimeType ) {
-			case 'image/jpeg' :
+			case 'file/jpeg' :
 				$extension = 'jpg';
 				break;
 			default :

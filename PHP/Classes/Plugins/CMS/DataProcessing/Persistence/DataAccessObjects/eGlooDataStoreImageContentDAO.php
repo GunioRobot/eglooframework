@@ -42,40 +42,48 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	// TBD
 
 	// Image Methods
-	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local' ) {
+	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
 
-	public function deleteImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function deleteImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
+	public function getImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
+	public function getImageMeta( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function getImageStorePath( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $check_upload = true ) {
+	public function getImageStorePath( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
 		
 	}
 
-	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local' ) {
+	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
 
-	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+	public function storeMasterImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+		return $this->storeImage( $imageContentDTO, $image_bucket, $store_prefix, 'Master' );
+	}
+
+	public function storeUploadedImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+		return $this->storeImage( $imageContentDTO, $image_bucket, $store_prefix, 'Uploaded' );
+	}
+
+	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
 		$mimeType = $imageContentDTO->getFileMIMEType();
 		$localID = $imageContentDTO->getFileLocalID();
 		$mod = $imageContentDTO->getFileMod();
 		// Going to refactor this out later...
 		$category = 'Generic';
 
-		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/Upload/' .
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
 			$category . '/' . $file_bucket . '/' . $mod . '/';
 
 		$extension = '';

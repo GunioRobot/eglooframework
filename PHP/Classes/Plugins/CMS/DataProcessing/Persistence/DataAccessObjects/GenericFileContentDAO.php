@@ -42,19 +42,19 @@ abstract class GenericFileContentDAO extends AbstractDAO {
 	// TBD
 
 	// File Methods
-	abstract public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local' );
+	abstract public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
-	abstract public function deleteFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function deleteFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function getFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function getFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function getFileMeta( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function getFileMeta( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local',
-		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local' );
+	abstract public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
-	abstract public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local' );
+	abstract public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' );
 
 	// Prefix Methods
 	// TBD
