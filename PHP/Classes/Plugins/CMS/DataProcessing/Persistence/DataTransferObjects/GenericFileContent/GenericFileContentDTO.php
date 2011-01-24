@@ -138,7 +138,7 @@ class GenericFileContentDTO extends DataTransferObject {
 		$this->_fileUploader = $uploader;
 	}
 
-	public static function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
+	public function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
 		$newFileDTO = new GenericFileContentDTO();
 
 		$newFileDTO->setFileName( $eglooHTTPFile->getFileName() );

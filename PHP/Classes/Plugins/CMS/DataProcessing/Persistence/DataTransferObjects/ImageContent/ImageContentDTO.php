@@ -84,6 +84,14 @@ class ImageContentDTO extends DataTransferObject {
 		$this->_imageFileSize = $imageFileSize;
 	}
 
+	public function getImageFilePath() {
+		return $this->_imageFilePath;
+	}
+
+	public function setImageFilePath( $imageFilePath ) {
+		$this->_imageFilePath = $imageFilePath;
+	}
+
 	public function getImageDimensionX() {
 		return $this->_imageDimensionX;
 	}
@@ -124,13 +132,13 @@ class ImageContentDTO extends DataTransferObject {
 		$this->_imageUploader = $uploader;
 	}
 
-	public static function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
+	public function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
 		$newFileDTO = new ImageContentDTO();
 
-		$newFileDTO->setFileName( $eglooHTTPFile->getFileName() );
-		$newFileDTO->setFileMIMEType( $eglooHTTPFile->getFileType() );
-		$newFileDTO->setFilePath( $eglooHTTPFile->getTemporaryFileName() );
-		$newFileDTO->setFileSize( $eglooHTTPFile->getFileSize() );
+		$newFileDTO->setImageFileName( $eglooHTTPFile->getFileName() );
+		$newFileDTO->setImageMIMEType( $eglooHTTPFile->getFileType() );
+		$newFileDTO->setImageFilePath( $eglooHTTPFile->getTemporaryFileName() );
+		$newFileDTO->setImageFileSize( $eglooHTTPFile->getFileSize() );
 
 		if ( $extended_processing ) {
 			// Extended processing
