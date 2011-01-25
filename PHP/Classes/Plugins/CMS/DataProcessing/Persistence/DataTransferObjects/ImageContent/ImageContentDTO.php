@@ -38,7 +38,6 @@
  */
 class ImageContentDTO extends DataTransferObject {
 
-
 	private $_imageContent = null;
 	private $_imageDimensionX = null;
 	private $_imageDimensionY = null;
@@ -49,8 +48,26 @@ class ImageContentDTO extends DataTransferObject {
 	private $_imageFileSize = null;
 	private $_imageDateUploaded = null;
 	private $_imageUploader = null;
+	private $_imageFileLocalID = null;
+	private $_imageFileMod = null;
 
 	// Need mod/mutation members
+	
+	public function getImageFileLocalID() {
+		return $this->_imageFileLocalID;
+	}
+
+	public function setImageFileLocalID( $imageFileLocalID ) {
+		$this->_imageFileLocalID = $imageFileLocalID;
+	}
+
+	public function getImageFileMod() {
+		return $this->_imageFileMod;
+	}
+
+	public function setImageFileMod( $imageFileMod ) {
+		$this->_imageFileMod = $imageFileMod;
+	}
 	
 	public function getImageContent() {
 		return $this->_imageContent;

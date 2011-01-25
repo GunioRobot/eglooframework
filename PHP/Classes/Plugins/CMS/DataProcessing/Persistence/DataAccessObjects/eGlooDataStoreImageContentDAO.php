@@ -77,14 +77,14 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	}
 
 	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
-		$mimeType = $imageContentDTO->getFileMIMEType();
-		$localID = $imageContentDTO->getFileLocalID();
-		$mod = $imageContentDTO->getFileMod();
+		$mimeType = $imageContentDTO->getImageMIMEType();
+		$localID = $imageContentDTO->getImageFileLocalID();
+		$mod = $imageContentDTO->getImageFileMod();
 		// Going to refactor this out later...
 		$category = 'Images';
 
 		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
-			$category . '/' . $file_bucket . '/' . $mod . '/';
+			$category . '/' . $image_bucket . '/' . $mod . '/';
 
 		$extension = '';
 
@@ -112,9 +112,9 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 
 		// die_r($imageContentDTO);
 		// TODO make sure the file uploaded properly, no errors
-		echo_r($imageContentDTO->getFilePath());
+		echo_r($imageContentDTO->getImageFilePath());
 		echo_r($data_store_file_path);
-		copy($imageContentDTO->getFilePath(), $data_store_file_path);
+		copy($imageContentDTO->getImageFilePath(), $data_store_file_path);
 
 		return $data_store_file_path;
 
