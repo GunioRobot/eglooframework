@@ -107,8 +107,14 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		$extension = '';
 
 		switch( $mimeType ) {
+			case 'image/gif' :
+				$extension = 'gif';
+				break;
 			case 'image/jpeg' :
 				$extension = 'jpg';
+				break;
+			case 'image/png' :
+				$extension = 'png';
 				break;
 			default :
 				$extension = 'unknown';

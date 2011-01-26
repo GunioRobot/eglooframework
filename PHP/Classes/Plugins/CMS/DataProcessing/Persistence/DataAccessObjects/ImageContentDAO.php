@@ -75,5 +75,32 @@ abstract class ImageContentDAO extends AbstractDAO {
 	// Prefix Methods
 	// TBD
 
+	// Utility Methods
+	public function getMIMETypeFromExtension( $extension ) {
+		$retVal = null;
+
+		$extension = strtolower( $extension );
+
+		switch( $extension ) {
+			case 'gif' :
+				$retVal = 'image/gif';
+				break;
+			case 'jpeg' :
+				$retVal = 'image/jpeg';
+				break;
+			case 'jpg' :
+				$retVal = 'image/jpeg';
+				break;
+			case 'png' :
+				$retVal = 'image/png';
+				break;
+			default :
+				$retVal = null;
+				break;
+		}
+
+		return $retVal;
+	}
+
 }
 
