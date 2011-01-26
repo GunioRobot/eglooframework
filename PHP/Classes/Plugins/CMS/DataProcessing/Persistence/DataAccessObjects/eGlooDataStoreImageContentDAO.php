@@ -60,7 +60,25 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	}
 
 	public function getImageStorePath( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' ) {
-		
+		$retVal = null;
+
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
+			$category . '/' . $image_bucket . '/' . $mod . '/';
+
+		return $retVal;
+	}
+
+	public function getUploadedImageStorePath( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local' ) {
+		$retVal = null;
+
+		$mimeType = $imageContentDTO->getImageMIMEType();
+		$localID = $imageContentDTO->getImageFileLocalID();
+		$mod = $imageContentDTO->getImageFileMod();
+
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/Upload/' .
+			$category . '/' . $image_bucket . '/' . $mod . '/';
+
+		return $retVal;
 	}
 
 	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
