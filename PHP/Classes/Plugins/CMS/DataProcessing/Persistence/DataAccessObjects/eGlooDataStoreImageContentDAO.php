@@ -101,27 +101,15 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		// Going to refactor this out later...
 		$category = 'Images';
 
-		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/' .
-			$category . '/' . $image_bucket . '/' . $mod . '/';
+		$external_path = $category . '/' . $image_bucket . '/' . $mod . '/';
 
-		$extension = '';
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/';
 
-		switch( $mimeType ) {
-			case 'image/gif' :
-				$extension = 'gif';
-				break;
-			case 'image/jpeg' :
-				$extension = 'jpg';
-				break;
-			case 'image/png' :
-				$extension = 'png';
-				break;
-			default :
-				$extension = 'unknown';
-				break;
-		}
+		$extension = $this->getExtensionFromMIMEType( $mimeType );
 
-		$data_store_file_path = $data_store_file_folder_path . $localID . '.' . $extension;
+		$external_path .= $localID . '.' . $extension;
+
+		$data_store_file_path = $data_store_file_folder_path . $external_path;
 
 		if ( !is_writable( $data_store_file_folder_path ) ) {
 			try {
@@ -136,12 +124,15 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 
 		// die_r($imageContentDTO);
 		// TODO make sure the file uploaded properly, no errors
-		echo_r($imageContentDTO->getImageFilePath());
-		echo_r($data_store_file_path);
+		// echo_r($imageContentDTO->getImageFilePath());
+		// echo_r($data_store_file_path);
 		copy($imageContentDTO->getImageFilePath(), $data_store_file_path);
 
-		return $data_store_file_path;
+		$imageContentDTO->setImageBucket( $image_bucket );
+		$imageContentDTO->setImageStore( $store_prefix );
+		$imageContentDTO->setImageZone( $zone );
 
+		return strtolower($external_path);
 	}
 
 	// Prefix Methods

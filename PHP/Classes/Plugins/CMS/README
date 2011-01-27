@@ -1,1 +1,14 @@
 Requires: Forms
+
+Table Creation:
+
+CREATE TABLE data_store_images (
+         image_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+         image_file_id VARCHAR(128),
+         image_bucket VARCHAR(128),
+         image_store VARCHAR(128),
+         image_mimetype VARCHAR(24),
+         image_mod VARCHAR(128),
+         image_view VARCHAR(32),
+         image_zone VARCHAR(32)
+);

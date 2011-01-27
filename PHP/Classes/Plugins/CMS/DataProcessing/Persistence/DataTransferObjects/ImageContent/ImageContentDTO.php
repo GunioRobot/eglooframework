@@ -51,6 +51,99 @@ class ImageContentDTO extends DataTransferObject {
 	private $_imageFileLocalID = null;
 	private $_imageFileMod = null;
 
+	/**
+	 * @var string Bucket image is contained in
+	 */
+	protected $_imageBucket = null;
+
+	/**
+	 * Returns protected class member $_imageBucket
+	 *
+	 * @return string Bucket image is contained in
+	 */
+	public function getImageBucket() {
+		return $this->_imageBucket;
+	}
+
+	/**
+	 * Sets protected class member $_imageBucket
+	 *
+	 * @param imageBucket string Bucket image is contained in
+	 */
+	public function setImageBucket( $imageBucket ) {
+		$this->_imageBucket = $imageBucket;
+	}
+
+	/**
+	 * @var string Store the image is contained in
+	 */
+	protected $_image_store = null;
+
+	/**
+	 * Returns protected class member $_image_store
+	 *
+	 * @return string Store the image is contained in
+	 */
+	public function getImageStore() {
+		return $this->_image_store;
+	}
+
+	/**
+	 * Sets protected class member $_image_store
+	 *
+	 * @param image_store string Store the image is contained in
+	 */
+	public function setImageStore( $image_store ) {
+		$this->_image_store = $image_store;
+	}
+
+	/**
+	 * @var string View/angle this image represents
+	 */
+	protected $_image_view = null;
+
+	/**
+	 * Returns protected class member $_image_view
+	 *
+	 * @return string View/angle this image represents
+	 */
+	public function getImageView() {
+		return $this->_image_view;
+	}
+
+	/**
+	 * Sets protected class member $_image_view
+	 *
+	 * @param image_view string View/angle this image represents
+	 */
+	public function setImageView( $image_view ) {
+		$this->_image_view = $image_view;
+	}
+
+	/**
+	 * @var string Zone this image is located in
+	 */
+	protected $_image_zone = null;
+
+	/**
+	 * Returns protected class member $_image_zone
+	 *
+	 * @return string Zone this image is located in
+	 */
+	public function getImageZone() {
+		return $this->_image_zone;
+	}
+
+	/**
+	 * Sets protected class member $_image_zone
+	 *
+	 * @param image_zone string Zone this image is located in
+	 */
+	public function setImageZone( $image_zone ) {
+		$this->_image_zone = $image_zone;
+	}
+
+
 	// Need mod/mutation members
 	
 	public function getImageFileLocalID() {
