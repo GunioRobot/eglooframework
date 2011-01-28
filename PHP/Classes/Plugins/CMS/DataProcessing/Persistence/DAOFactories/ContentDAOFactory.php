@@ -38,6 +38,9 @@
  */
 class ContentDAOFactory extends AbstractDAOFactory {
 
+	//singleton holder
+	protected static $singleton;
+
 	/**
 	 * This class returns the appropriate DAO factory as specified by
 	 * an external property
@@ -66,6 +69,19 @@ class ContentDAOFactory extends AbstractDAOFactory {
 		}
 
 		return $retVal;
+	}
+
+	/**
+	 * Singleton access to this AbstractDAOFactory
+	 * 
+	 * @return AbstractDAOFactory the singleton reference of the AbstractDAOFactory
+	 */
+	public static function getInstance() {
+		if ( !isset(static::$singleton) ) {
+			static::$singleton = new static( null );
+		}
+
+		return static::$singleton;
 	}
 
 	public function getImageContentDAO( $connection_name = 'egDataStore' ) {

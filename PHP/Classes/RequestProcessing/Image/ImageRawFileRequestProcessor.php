@@ -168,7 +168,56 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 		$contentDAOFactory = ContentDAOFactory::getInstance();
 		$imageContentDAO = $contentDAOFactory->getImageContentDAO();
 
-		if ( !$imageContentDAO->storeUploadedFile( $imageContentDTO ) ) {
+		$matches = array();
+		preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
+		$imageFileMod = null;
+
+		if ( !empty($matches) && isset($matches[1]) && isset($matches[2]) ) {
+			$fileModChunks = explode('/', $matches[1]);
+
+			foreach( $fileModChunks as $key => $value ) {
+				$fileModChunks[$key] = ucfirst($value);
+			}
+
+			$imageFileMod = implode('/', $fileModChunks);
+			$imageFileName = $matches[2];
+
+			$imageFileExtension = null;
+			$imageFileID = null;
+
+			$extension_match = array();
+			preg_match( '~^([^.]+)\.([^.]+)$~', $imageFileName, $extension_match );
+
+			if ( !empty($extension_match) && isset($extension_match[1]) && isset($extension_match[2]) ) {
+				$imageFileID = $extension_match[1];
+				$imageFileExtension = $extension_match[2];
+			} else {
+				// TODO throw relevant exception or something
+			}
+		} else {
+			$imageFileExtension = null;
+			$imageFileID = null;
+
+			$extension_match = array();
+			preg_match( '~^([^.]+)\.([^.]+)$~', $file_name, $extension_match );
+
+			if ( !empty($extension_match) && isset($extension_match[1]) && isset($extension_match[2]) ) {
+				$imageFileID = $extension_match[1];
+				$imageFileExtension = $extension_match[2];
+			} else {
+				// TODO throw relevant exception or something
+			}
+		}
+
+		$imageContentDTO = new ImageContentDTO();
+		$imageContentDTO->setImageFileLocalID($imageFileID);
+		$imageContentDTO->setImageFileMod($imageFileMod);
+
+		die_r($imageContentDTO);
+
+			// $imageContentDTO->setImageFileLocalID( $product_id . '_a' );
+
+		if ( !$imageContentDAO->getImageStorePath( $imageContentDTO ) ) {
 			throw new Exception('Gasp I die');
 		}
 

@@ -38,7 +38,6 @@
  */
 class ImageContentDTO extends DataTransferObject {
 
-
 	private $_imageContent = null;
 	private $_imageDimensionX = null;
 	private $_imageDimensionY = null;
@@ -49,8 +48,119 @@ class ImageContentDTO extends DataTransferObject {
 	private $_imageFileSize = null;
 	private $_imageDateUploaded = null;
 	private $_imageUploader = null;
+	private $_imageFileLocalID = null;
+	private $_imageFileMod = null;
+
+	/**
+	 * @var string Bucket image is contained in
+	 */
+	protected $_imageBucket = null;
+
+	/**
+	 * Returns protected class member $_imageBucket
+	 *
+	 * @return string Bucket image is contained in
+	 */
+	public function getImageBucket() {
+		return $this->_imageBucket;
+	}
+
+	/**
+	 * Sets protected class member $_imageBucket
+	 *
+	 * @param imageBucket string Bucket image is contained in
+	 */
+	public function setImageBucket( $imageBucket ) {
+		$this->_imageBucket = $imageBucket;
+	}
+
+	/**
+	 * @var string Store the image is contained in
+	 */
+	protected $_image_store = null;
+
+	/**
+	 * Returns protected class member $_image_store
+	 *
+	 * @return string Store the image is contained in
+	 */
+	public function getImageStore() {
+		return $this->_image_store;
+	}
+
+	/**
+	 * Sets protected class member $_image_store
+	 *
+	 * @param image_store string Store the image is contained in
+	 */
+	public function setImageStore( $image_store ) {
+		$this->_image_store = $image_store;
+	}
+
+	/**
+	 * @var string View/angle this image represents
+	 */
+	protected $_image_view = null;
+
+	/**
+	 * Returns protected class member $_image_view
+	 *
+	 * @return string View/angle this image represents
+	 */
+	public function getImageView() {
+		return $this->_image_view;
+	}
+
+	/**
+	 * Sets protected class member $_image_view
+	 *
+	 * @param image_view string View/angle this image represents
+	 */
+	public function setImageView( $image_view ) {
+		$this->_image_view = $image_view;
+	}
+
+	/**
+	 * @var string Zone this image is located in
+	 */
+	protected $_image_zone = null;
+
+	/**
+	 * Returns protected class member $_image_zone
+	 *
+	 * @return string Zone this image is located in
+	 */
+	public function getImageZone() {
+		return $this->_image_zone;
+	}
+
+	/**
+	 * Sets protected class member $_image_zone
+	 *
+	 * @param image_zone string Zone this image is located in
+	 */
+	public function setImageZone( $image_zone ) {
+		$this->_image_zone = $image_zone;
+	}
+
 
 	// Need mod/mutation members
+	
+	public function getImageFileLocalID() {
+		return $this->_imageFileLocalID;
+	}
+
+	public function setImageFileLocalID( $imageFileLocalID ) {
+		$this->_imageFileLocalID = $imageFileLocalID;
+	}
+
+	public function getImageFileMod() {
+		return $this->_imageFileMod;
+	}
+
+	public function setImageFileMod( $imageFileMod ) {
+		$this->_imageFileMod = $imageFileMod;
+	}
 	
 	public function getImageContent() {
 		return $this->_imageContent;
@@ -82,6 +192,14 @@ class ImageContentDTO extends DataTransferObject {
 
 	public function setImageFileSize( $imageFileSize ) {
 		$this->_imageFileSize = $imageFileSize;
+	}
+
+	public function getImageFilePath() {
+		return $this->_imageFilePath;
+	}
+
+	public function setImageFilePath( $imageFilePath ) {
+		$this->_imageFilePath = $imageFilePath;
 	}
 
 	public function getImageDimensionX() {
@@ -124,13 +242,13 @@ class ImageContentDTO extends DataTransferObject {
 		$this->_imageUploader = $uploader;
 	}
 
-	public static function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
+	public function initFromHTTPFile( $eglooHTTPFile, $load_content = false, $extended_processing = false ) {
 		$newFileDTO = new ImageContentDTO();
 
-		$newFileDTO->setFileName( $eglooHTTPFile->getFileName() );
-		$newFileDTO->setFileMIMEType( $eglooHTTPFile->getFileType() );
-		$newFileDTO->setFilePath( $eglooHTTPFile->getTemporaryFileName() );
-		$newFileDTO->setFileSize( $eglooHTTPFile->getFileSize() );
+		$newFileDTO->setImageFileName( $eglooHTTPFile->getFileName() );
+		$newFileDTO->setImageMIMEType( $eglooHTTPFile->getFileType() );
+		$newFileDTO->setImageFilePath( $eglooHTTPFile->getTemporaryFileName() );
+		$newFileDTO->setImageFileSize( $eglooHTTPFile->getFileSize() );
 
 		if ( $extended_processing ) {
 			// Extended processing
