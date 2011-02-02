@@ -71,21 +71,42 @@ class MediaRawFileRequestProcessor extends RequestProcessor {
 				// Just ignore this for now
 			}
 
-/*
-Date	Fri, 20 Nov 2009 16:08:31 GMT
-Server	Apache/2.2.14 (Unix) DAV/2
-Last-Modified	Tue, 17 Nov 2009 21:41:58 GMT
-Etag	"196764a-17f41f-47897fedaf580"
-Accept-Ranges	bytes
-Content-Length	1569823
-Keep-Alive	timeout=5, max=97
-Connection	Keep-Alive
-Content-Type	media/png
-Cache-Control	max-age=86400
-*/
+			$output = file_get_contents( $app_path . '/' . $file_name );
+			$length = strlen($output);
 
+			// header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+			// header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 			header( 'Content-type: ' . $mediaMIMEType );
-			echo file_get_contents( $app_path . '/' . $file_name );
+			header( 'Content-Length: ' . $length);
+
+			echo $output;
+
+			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ) {
+				$matches = array();
+				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
+
+				if (!empty($matches)) {
+					$cached_file_path = $matches[1] . '/';
+				} else {
+					$cached_file_path = '';
+				}
+
+				if ( !is_writable( eGlooConfiguration::getWebRoot() . 'media/' . $cached_file_path ) ) {
+					try {
+						$mode = 0777;
+						$recursive = true;
+
+						mkdir( eGlooConfiguration::getWebRoot() . 'media/' . $cached_file_path, $mode, $recursive );
+					} catch (Exception $e){
+						// TODO figure out what to do here
+					}
+				}
+
+				if ( !copy($app_path . '/' . $file_name, eGlooConfiguration::getWebRoot() . 'media/' . $file_name ) ) {
+					throw new Exception( 'File copy failed from ' . $app_path . '/' . $file_name . ' to ' .
+						eGlooConfiguration::getWebRoot() . 'media/' . $file_name );
+				}
+			}
 		} else {
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
 		}
