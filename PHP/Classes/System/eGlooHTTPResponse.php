@@ -112,12 +112,11 @@ class eGlooHTTPResponse {
 		// Reset headers on this request
 		self::resetHeaders();
 
-		$requestProcessor = new $requestProcessorID;
-
-		$requestProcessor->processRequest();
-
 		header("Content-type: text/html; charset=UTF-8");
 		header('HTTP/1.0 404 Not Found', true, 404);
+
+		$requestProcessor = new $requestProcessorID;
+		$requestProcessor->processRequest();
 
 		// TODO buffer output
 		echo $output;        
