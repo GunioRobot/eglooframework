@@ -106,6 +106,25 @@ class eGlooHTTPResponse {
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting issueCustom404Response()" );
 	}
 
+	public static function processCustom404Request( $requestProcessorID = null ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered processCustom404Request()" );
+
+		// Reset headers on this request
+		self::resetHeaders();
+
+		$requestProcessor = new $requestProcessorID;
+
+		$requestProcessor->processRequest();
+
+		header("Content-type: text/html; charset=UTF-8");
+		header('HTTP/1.0 404 Not Found', true, 404);
+
+		// TODO buffer output
+		echo $output;        
+
+        eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting processCustom404Request()" );
+	}
+
 	public static function resetHeaders() {
 		header_remove('Cache-Control');
 		header_remove('Content-type');
