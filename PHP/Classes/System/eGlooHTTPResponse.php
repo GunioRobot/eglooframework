@@ -118,9 +118,6 @@ class eGlooHTTPResponse {
 		$requestProcessor = new $requestProcessorID;
 		$requestProcessor->processRequest();
 
-		// TODO buffer output
-		echo $output;        
-
         eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting processCustom404Request()" );
 	}
 
