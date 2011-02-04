@@ -105,22 +105,23 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 
 		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/';
 
+		if ( !is_writable( $data_store_file_folder_path . $external_path ) ) {
+			try {
+				$mode = 0777;
+				$recursive = true;
+
+				mkdir( $data_store_file_folder_path . $external_path, $mode, $recursive );
+			} catch (Exception $e){
+				echo_r($e->getMessage());
+			}
+		}
+
 		$extension = $this->getExtensionFromMIMEType( $mimeType );
 
 		$external_path .= $localID . '.' . $extension;
 
 		$data_store_file_path = $data_store_file_folder_path . $external_path;
 
-		if ( !is_writable( $data_store_file_folder_path ) ) {
-			try {
-				$mode = 0777;
-				$recursive = true;
-
-				mkdir( $data_store_file_folder_path, $mode, $recursive );
-			} catch (Exception $e){
-				echo_r($e->getMessage());
-			}
-		}
 
 		// die_r($imageContentDTO);
 		// TODO make sure the file uploaded properly, no errors
