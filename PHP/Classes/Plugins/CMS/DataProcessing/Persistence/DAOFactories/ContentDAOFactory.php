@@ -50,22 +50,29 @@ class ContentDAOFactory extends AbstractDAOFactory {
 	private function getAppropriateFactory( $connection_name = 'egDataStore' ) {
 		$retVal = null;
 
-		// $connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
-
-		// if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
-		// 	$retVal = new PostgreSQLDAOFactory( $connection_name );
-		// } else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLIOOP ) {
-		// 	$retVal = new MySQLiOOPDAOFactory( $connection_name );
-		// } else {
-		// 	// No connection specified and no default given...
-		// }
-
-		if ( $connection_name = 'egDataStore' ) {
+		if ( $connection_name === 'egDataStore' ) {
 			$retVal = new eGlooDataStoreContentDAOFactory( $connection_name );
-		} else if ( $connection_name = 'CloudFront' ) {
+		} else if ( $connection_name === 'Akamai' ) {
+			$retVal = new AkamaiContentDAOFactory( $connection_name );
+		} else if ( $connection_name === 'CloudFront' ) {
 			$retVal = new CloudFrontContentDAOFactory( $connection_name );
 		} else {
-			
+			// If we didn't match a proper request for a non-DB ContentDAOFactory, we assume DB ContentDAOFactory
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
+
+			if ( $connection_info['engine'] === eGlooConfiguration::POSTGRESQL ) {
+				$retVal = new PostgreSQLContentDAOFactory( $connection_name );
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLIOOP ) {
+				$retVal = new MySQLiOOPContentDAOFactory( $connection_name );
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQLI ) {
+				$retVal = new MySQLiContentDAOFactory( $connection_name );
+			} else if ( $connection_info['engine'] === eGlooConfiguration::MYSQL ) {
+				$retVal = new MySQLContentDAOFactory( $connection_name );
+			} else if ( $connection_info['engine'] === eGlooConfiguration::DOCTRINE ) {
+				$retVal = new DoctrineContentDAOFactory( $connection_name );
+			} else {
+				// No connection specified and no default given...
+			}
 		}
 
 		return $retVal;

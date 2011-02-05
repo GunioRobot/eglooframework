@@ -38,5 +38,39 @@
  */
 class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 
+	public function storeContent( $imageDTO, $storage_method = 'egDataStore' ) {
+		$contentDAOFactory = ContentDAOFactory::getInstance();
+
+		if ( $storage_method === 'egDataStore' ) {
+			$data_store_path = $this->storeContentIneGlooDataStore( $imageDTO );
+
+			$imageContentDBDAO = $contentDAOFactory->getImageContentDAO( 'egPrimary' );
+
+			$imageContentDBDAO->storeUploadedImage( $imageDTO );
+		}
+
+		// TODO get path on FS
+
+		// TODO update image location entry in DB
+
+
+		// TODO Synchronize content across web servers
+
+		// TODO update CDN entry
+	}
+
+	private function storeContentIneGlooDataStore( $imageDTO ) {
+		$data_store_path = null;
+
+		$contentDAOFactory = ContentDAOFactory::getInstance();
+		$imageContentDAO = $contentDAOFactory->getImageContentDAO();
+
+		if ( !( $data_store_path = $imageContentDAO->storeUploadedImage( $imageDTO ) ) ) {
+			throw new ErrorException( 'No valid storage path returned' );
+		}
+
+		return $data_store_path;
+	}
+
 }
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * FullPopulationImageContentRetrievalRoutine Class File
+ * PostgreSQLContentDAOFactory Class File
  *
- * Contains the class definition for the FullPopulationImageContentRetrievalRoutine
+ * Contains the class definition for the PostgreSQLContentDAOFactory
  * 
- * Copyright 2011 eGloo LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * FullPopulationImageContentRetrievalRoutine
+ * PostgreSQLContentDAOFactory
  *
  * $short_description
  *
@@ -36,26 +36,13 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FullPopulationImageContentRetrievalRoutine extends RetrievalRoutine {
+class PostgreSQLContentDAOFactory extends ConcreteContentDAOFactory {
 
-	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore' ) {
-		// Copied from storage pattern, reverse this or whatever
-		// TODO get path on FS
-
-		// TODO update image location entry in DB
-
-
-		// TODO Synchronize content across web servers
-
-		// TODO update CDN entry
-
-		if ( $storage_method === 'egDataStore' ) {
-			$this->retrieveContentFromeGlooDataStore( $imageDTO );
-		}
+	public function __call( $method, $args ) {
+		$genericDAORequested = substr( $method, 3 );
+		$concreteDAORequested = 'PostgreSQL' . $genericDAORequested;
+		return new $concreteDAORequested( $this->_connection_name );
 	}
 
-	private function retrieveContentFromeGlooDataStore( $imageDTO ) {
-		
-	}
 }
 

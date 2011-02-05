@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class StorageRoutine extends ContentRoutine {
+abstract class StorageRoutine extends ContentRoutine {
+
+	abstract public function storeContent( $imageDTO, $storage_method = 'egDataStore' );
 
 }
 

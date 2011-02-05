@@ -1,10 +1,10 @@
 <?php
 /**
- * eGlooImageContentDirector Class File
+ * MySQLiContentDAOFactory Class File
  *
- * Contains the class definition for the eGlooImageContentDirector
+ * Contains the class definition for the MySQLiContentDAOFactory
  * 
- * Copyright 2011 eGloo LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * eGlooImageContentDirector
+ * MySQLiContentDAOFactory
  *
  * $short_description
  *
@@ -36,7 +36,13 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooImageContentDirector extends {
+class MySQLiContentDAOFactory extends ConcreteContentDAOFactory {
+
+	public function __call( $method, $args ) {
+		$genericDAORequested = substr( $method, 3 );
+		$concreteDAORequested = 'MySQLi' . $genericDAORequested;
+		return new $concreteDAORequested( $this->_connection_name );
+	}
 
 }
 

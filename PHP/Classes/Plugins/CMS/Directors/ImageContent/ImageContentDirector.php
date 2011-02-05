@@ -39,11 +39,28 @@
 class ImageContentDirector extends ContentDirector {
 
 	public function storeContent( $imageDTO, $storage_method = 'egDataStore', $storage_routine = 'FullPopulationImageContentStorageRoutine' ) {
-		
+		$storageRoutineObj = null;
+
+		if ( $storage_routine === 'FullPopulationImageContentStorageRoutine' ) {
+			$storageRoutineObj = new FullPopulationImageContentStorageRoutine();
+		} else {
+			throw new ErrorException( 'Unknown storage routine specified' );
+		}
+
+		$storageRoutineObj->storeContent( $imageDTO, $storage_method );
 	}
 
-	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore', $storage_routine = 'FullPopulationImageContentRetrievalRoutine' ) {
-		
+
+	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore', $retrieval_routine = 'FullPopulationImageContentRetrievalRoutine' ) {
+		$retrievalRoutineObj = null;
+
+		if ( $retrieval_routine === 'FullPopulationImageContentRetrievalRoutine' ) {
+			$retrievalRoutineObj = new FullPopulationImageContentRetrievalRoutine();
+		} else {
+			throw new ErrorException( 'Unknown retrieval routine specified' );
+		}
+
+		$retrievalRoutineObj->retrieveContent( $imageDTO, $storage_method );
 	}
 
 }
