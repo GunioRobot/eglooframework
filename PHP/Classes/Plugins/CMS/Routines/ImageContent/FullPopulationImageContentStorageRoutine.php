@@ -42,21 +42,23 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 		$contentDAOFactory = ContentDAOFactory::getInstance();
 
 		if ( $storage_method === 'egDataStore' ) {
+			// Store image in data store on FS
 			$data_store_path = $this->storeContentIneGlooDataStore( $imageDTO );
 
+			// Update image location entry in DB
 			$imageContentDBDAO = $contentDAOFactory->getImageContentDAO( 'egPrimary' );
-
 			$imageContentDBDAO->storeUploadedImage( $imageDTO );
+
+			// TODO Synchronize content across web servers
+
+			// Update CDN entry if using a CDN
+			if ( eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
+				$imageContentCDNDAO = $contentDAOFactory->getImageContentDAO( 'egCDNPrimary' );
+
+				$imageContentDBDAO->storeImage( $imageDTO );
+			}
 		}
 
-		// TODO get path on FS
-
-		// TODO update image location entry in DB
-
-
-		// TODO Synchronize content across web servers
-
-		// TODO update CDN entry
 	}
 
 	private function storeContentIneGlooDataStore( $imageDTO ) {

@@ -54,7 +54,7 @@ if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
 }
 
-// Load Smarty
+// Load S3/CloudFront
 if ( eGlooConfiguration::getUseS3() ) {
 	include( eGlooConfiguration::getS3IncludePath() );
 }

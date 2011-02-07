@@ -43,6 +43,7 @@ final class eGlooConfiguration {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
 		// TODO move this somewhere cleaner
+		self::$configuration_options['egCDNConnections'] = array();
 		self::$configuration_options['egDatabaseConnections'] = array();
 
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
@@ -98,44 +99,99 @@ final class eGlooConfiguration {
 		$webRootConfigOptions['egApplicationName']		= preg_replace('~([a-zA-Z0-9/ ])+?/([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
 		$webRootConfigOptions['egInterfaceBundle']		= $_SERVER['EG_UI'];
 
-		switch( $_SERVER['EG_CACHE'] ) {
-			case 'ON' :
-				$webRootConfigOptions['egCacheEnabled'] = true;
-				break;
-			case 'OFF' :
-			default :
-				$webRootConfigOptions['egCacheEnabled'] = false;
-				break;
+		if ( isset($_SERVER['EG_CACHE']) ) {
+			switch( $_SERVER['EG_CACHE'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egCacheEnabled'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egCacheEnabled'] = false;
+					break;
+			}
+		} else if ( !isset(self::$configuration_options['egCacheEnabled']) ) {
+			self::$configuration_options['egCacheEnabled'] = true;
 		}
 
-		switch( $_SERVER['EG_CACHE_APC'] ) {
-			case 'ON' :
-				$webRootConfigOptions['egAPCCacheEnabled'] = true;
-				break;
-			case 'OFF' :
-			default :
-				$webRootConfigOptions['egAPCCacheEnabled'] = false;
-				break;
+		if ( isset($_SERVER['EG_CACHE_APC']) ) {
+			switch( $_SERVER['EG_CACHE_APC'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egAPCCacheEnabled'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egAPCCacheEnabled'] = false;
+					break;
+			}
+		} else if ( !isset(self::$configuration_options['egAPCCacheEnabled']) ) {
+			self::$configuration_options['egAPCCacheEnabled'] = false;
 		}
 
-		switch( $_SERVER['EG_CACHE_FILE'] ) {
-			case 'ON' :
-				$webRootConfigOptions['egFileCacheEnabled'] = true;
-				break;
-			case 'OFF' :
-			default :
-				$webRootConfigOptions['egFileCacheEnabled'] = false;
-				break;
+		if ( isset($_SERVER['EG_CACHE_CDN']) ) {
+			switch( $_SERVER['EG_CACHE_CDN'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egCDNEnabled'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egCDNEnabled'] = false;
+					break;
+			}
+		} else if ( !isset(self::$configuration_options['egCDNEnabled']) ) {
+			self::$configuration_options['egCDNEnabled'] = false;
 		}
 
-		switch( $_SERVER['EG_CACHE_MEMCACHE'] ) {
-			case 'ON' :
-				$webRootConfigOptions['egMemcacheCacheEnabled'] = true;
-				break;
-			case 'OFF' :
-			default :
-				$webRootConfigOptions['egMemcacheCacheEnabled'] = false;
-				break;
+		if ( isset($_SERVER['EG_CACHE_FILE']) ) {
+			switch( $_SERVER['EG_CACHE_FILE'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egFileCacheEnabled'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egFileCacheEnabled'] = false;
+					break;
+			}
+		} else if ( !isset(self::$configuration_options['egFileCacheEnabled']) ) {
+			self::$configuration_options['egFileCacheEnabled'] = false;
+		}
+
+		if ( isset($_SERVER['EG_CACHE_MEMCACHE']) ) {
+			switch( $_SERVER['EG_CACHE_MEMCACHE'] ) {
+				case 'ON' :
+					$webRootConfigOptions['egMemcacheCacheEnabled'] = true;
+					break;
+				case 'OFF' :
+				default :
+					$webRootConfigOptions['egMemcacheCacheEnabled'] = false;
+					break;
+			}
+		} else if ( !isset(self::$configuration_options['egMemcacheCacheEnabled']) ) {
+			self::$configuration_options['egMemcacheCacheEnabled'] = true;
+		}
+
+		// Primary CDN info, if any
+		if ( isset($_SERVER['EG_CDN_CONNECTION_PRIMARY']) ) {
+			self::$configuration_options['egCDNConnections']['egCDNPrimary'] = array();
+
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['name']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_NAME'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['host']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_HOST'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['port']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_PORT'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['database']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_DATABASE'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['user']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_USER'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['password']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_PASSWORD'];
+
+			// Determine which CDN system we're using
+			switch( $_SERVER['EG_CDN_CONNECTION_PRIMARY_ENGINE'] ) {
+				case 'AKAMAI' :
+					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::AKAMAI;
+					break;
+				case 'CLOUDFRONT' :
+					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::CLOUDFRONT;
+					break;
+				default:
+					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::CLOUDFRONT;
+					break;
+			}
 		}
 
 		// Determine our deployment type
@@ -1361,6 +1417,26 @@ final class eGlooConfiguration {
 		return self::$configuration_options['CustomVariables'];
 	}
 
+	public static function getCDNConnectionInfo( $connection_name = 'egCDNPrimary' ) {
+		$retVal = null;
+
+		if (isset(self::$configuration_options['egCDNConnections'][$connection_name])) {
+			$retVal = self::$configuration_options['egCDNConnections'][$connection_name];
+		} else {
+			throw new ErrorException('Details for unknown CDN connection \'' . $connection_name . '\' requested');
+		}
+
+		return $retVal;
+	}
+
+	public static function issetCDNConnection( $connection_name ) {
+		return isset(self::$configuration_options['egCDNConnections'][$connection_name]);
+	}
+
+	public static function getCDNConnections() {
+		return self::$configuration_options['egCDNConnections'];
+	}
+
 	public static function getDatabaseConnectionInfo( $connection_name = 'egPrimary' ) {
 		$retVal = null;
 
@@ -1371,6 +1447,14 @@ final class eGlooConfiguration {
 		}
 
 		return $retVal;
+	}
+
+	public static function issetDatabaseConnection( $connection_name ) {
+		return isset(self::$configuration_options['egDatabaseConnections'][$connection_name]);
+	}
+
+	public static function getDatabaseConnections() {
+		return self::$configuration_options['egDatabaseConnections'];
 	}
 
     public static function getDeploymentType() {
@@ -1551,6 +1635,10 @@ final class eGlooConfiguration {
 
 	public static function getUseCache() {
 		return self::$configuration_options['egCacheEnabled'];
+	}
+
+	public static function getUseCDN() {
+		return self::$configuration_options['egCDNEnabled'];
 	}
 
 	public static function getUseDefaultRequestClassHandler() {
