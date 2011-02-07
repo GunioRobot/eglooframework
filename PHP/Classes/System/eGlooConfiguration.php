@@ -9,6 +9,10 @@ final class eGlooConfiguration {
 	const STAGING		= 0xfe;
 	const PRODUCTION	= 0xf8;
 
+	// CDN Providers
+	const AKAMAI		= 0x00;
+	const CLOUDFRONT	= 0x01;
+
 	// Database Engines
 	const AQUINAS		= 0x00;
 	const CASSANDRA		= 0x01;
@@ -170,26 +174,25 @@ final class eGlooConfiguration {
 		}
 
 		// Primary CDN info, if any
-		if ( isset($_SERVER['EG_CDN_CONNECTION_PRIMARY']) ) {
+		if ( isset($_SERVER['EG_CDN_CONNECTION_PRIMARY_NAME']) ) {
 			self::$configuration_options['egCDNConnections']['egCDNPrimary'] = array();
 
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['name']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_NAME'];
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['host']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_HOST'];
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['port']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_PORT'];
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['database']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_DATABASE'];
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['user']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_USER'];
-			self::$configuration_options['egCDNConnections']['egCDNPrimary']['password']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_PASSWORD'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['name']				= $_SERVER['EG_CDN_CONNECTION_PRIMARY_NAME'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['bucket']				= $_SERVER['EG_CDN_CONNECTION_PRIMARY_BUCKET'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['distribution_url']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_DISTRIBUTION_URL'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['access_key_id']		= $_SERVER['EG_CDN_CONNECTION_PRIMARY_ACCESS_KEY_ID'];
+			self::$configuration_options['egCDNConnections']['egCDNPrimary']['secret_access_key']	= $_SERVER['EG_CDN_CONNECTION_PRIMARY_SECRET_ACCESS_KEY'];
 
 			// Determine which CDN system we're using
-			switch( $_SERVER['EG_CDN_CONNECTION_PRIMARY_ENGINE'] ) {
+			switch( $_SERVER['EG_CDN_CONNECTION_PRIMARY_PROVIDER'] ) {
 				case 'AKAMAI' :
-					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::AKAMAI;
+					self::$configuration_options['egCDNConnections']['egCDNPrimary']['provider'] = self::AKAMAI;
 					break;
 				case 'CLOUDFRONT' :
-					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::CLOUDFRONT;
+					self::$configuration_options['egCDNConnections']['egCDNPrimary']['provider'] = self::CLOUDFRONT;
 					break;
 				default:
-					self::$configuration_options['egCDNConnections']['egPrimary']['engine'] = self::CLOUDFRONT;
+					self::$configuration_options['egCDNConnections']['egCDNPrimary']['provider'] = self::CLOUDFRONT;
 					break;
 			}
 		}

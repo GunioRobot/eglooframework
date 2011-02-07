@@ -56,6 +56,17 @@ class ContentDAOFactory extends AbstractDAOFactory {
 			$retVal = new AkamaiContentDAOFactory( $connection_name );
 		} else if ( $connection_name === 'CloudFront' ) {
 			$retVal = new CloudFrontContentDAOFactory( $connection_name );
+		} else if ( $connection_name === 'egCDNPrimary' ) {
+			// If we didn't match a proper request for a non-DB ContentDAOFactory, we assume DB ContentDAOFactory
+			$connection_info = eGlooConfiguration::getCDNConnectionInfo($connection_name);
+
+			if ( $connection_info['provider'] === eGlooConfiguration::AKAMAI ) {
+				$retVal = new AkamaiContentDAOFactory( $connection_name );
+			} else if ( $connection_info['provider'] === eGlooConfiguration::CLOUDFRONT ) {
+				$retVal = new CloudFrontContentDAOFactory( $connection_name );
+			} else {
+				// No connection specified and no default given...
+			}
 		} else {
 			// If we didn't match a proper request for a non-DB ContentDAOFactory, we assume DB ContentDAOFactory
 			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
