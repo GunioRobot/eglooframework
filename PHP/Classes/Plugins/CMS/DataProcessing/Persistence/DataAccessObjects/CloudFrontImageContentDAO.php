@@ -192,7 +192,9 @@ class CloudFrontImageContentDAO extends ImageContentDAO {
 	}
 
 	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
-		
+		S3::setAuth( $this->_access_key_id, $this->_secret_access_key );
+		die_r(S3);
+		die_r('herlkj;adsf');
 	}
 
 	// Prefix Methods

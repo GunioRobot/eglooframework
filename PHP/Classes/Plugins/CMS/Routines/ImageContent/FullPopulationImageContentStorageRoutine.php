@@ -55,13 +55,8 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 			if ( eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
 				$imageContentCDNDAO = $contentDAOFactory->getImageContentDAO( 'egCDNPrimary' );
 
-				die_r($imageContentCDNDAO);
-/*
-$conf['cloudfront_access_key_id'] = 'AKIAIZL3SSPQEZSIJOSQ';
-$conf['cloudfront_secret_access_key'] = '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';
-
-*/
-				$imageContentDBDAO->storeImage( $imageDTO );
+				$imageContentCDNDAO->storeImage( $imageDTO );
+				die;
 			}
 		}
 
