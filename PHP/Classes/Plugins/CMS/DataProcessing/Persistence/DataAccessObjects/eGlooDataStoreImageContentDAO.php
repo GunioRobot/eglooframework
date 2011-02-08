@@ -42,7 +42,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	// TBD
 
 	// Image Methods
-	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -81,7 +81,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		return $retVal;
 	}
 
-	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -94,7 +94,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		return $this->storeImage( $imageContentDTO, $image_bucket, $store_prefix, 'Uploaded' );
 	}
 
-	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
+	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
 		$mimeType = $imageContentDTO->getImageMIMEType();
 		$localID = $imageContentDTO->getImageFileLocalID();
 		$mod = $imageContentDTO->getImageFileMod();

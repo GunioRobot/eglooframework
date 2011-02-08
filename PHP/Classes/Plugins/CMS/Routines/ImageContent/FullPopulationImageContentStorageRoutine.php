@@ -41,6 +41,9 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 	public function storeContent( $imageDTO, $storage_method = 'egDataStore' ) {
 		$contentDAOFactory = ContentDAOFactory::getInstance();
 
+		// TODO Apply any image modifications/adjustments needed
+
+		// Store this somewhere
 		if ( $storage_method === 'egDataStore' ) {
 			// Store image in data store on FS
 			$data_store_path = $this->storeContentIneGlooDataStore( $imageDTO );
@@ -52,9 +55,9 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 
 		// TODO Synchronize content across web servers
 
+		// Update CDN entry if using a CDN
 		$distribution_image_url = null;
 
-		// Update CDN entry if using a CDN
 		if ( eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
 			$imageContentCDNDAO = $contentDAOFactory->getImageContentDAO( 'egCDNPrimary' );
 

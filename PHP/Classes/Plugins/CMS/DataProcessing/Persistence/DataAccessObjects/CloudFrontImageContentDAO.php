@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CloudFrontImageContentDAO extends ImageContentDAO {
+class CloudFrontImageContentDAO extends ImageContentDAO implements ContentDistributionNetworkDAOInterface {
+
+	// Here's a thought - 'Default' bucket == egCDNPrimary bucket
 
 	/**
 	 * @var string Name of CDN connection
@@ -169,7 +171,7 @@ class CloudFrontImageContentDAO extends ImageContentDAO {
 	// TBD
 
 	// Image Methods
-	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -186,12 +188,13 @@ class CloudFrontImageContentDAO extends ImageContentDAO {
 		
 	}
 
-	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
 
 	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
+		// Here's a thought - 'Default' bucket == egCDNPrimary bucket
 		$retVal = null;
 
 		$s3Obj = new S3( $this->_access_key_id,  $this->_secret_access_key );
