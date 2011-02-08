@@ -191,10 +191,36 @@ class CloudFrontImageContentDAO extends ImageContentDAO {
 			
 	}
 
-	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
-		S3::setAuth( $this->_access_key_id, $this->_secret_access_key );
-		die_r(S3);
-		die_r('herlkj;adsf');
+	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
+		$retVal = null;
+
+		$s3Obj = new S3( $this->_access_key_id,  $this->_secret_access_key );
+
+		$mimeType = $imageContentDTO->getImageMIMEType();
+		$localID = $imageContentDTO->getImageFileLocalID();
+		$mod = $imageContentDTO->getImageFileMod();
+		// Going to refactor this out later...
+		$category = 'Images';
+
+		$external_path = $category . '/' . $image_bucket . '/' . $mod . '/';
+
+		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/';
+
+		$extension = $this->getExtensionFromMIMEType( $mimeType );
+
+		$external_path .= $localID . '.' . $extension;
+
+		$data_store_file_path = $data_store_file_folder_path . $external_path;
+
+		$inputFile = $s3Obj->inputFile( $data_store_file_path );
+
+		$result = $s3Obj->putObject( $inputFile, $this->_bucket, strtolower($external_path), S3::ACL_PUBLIC_READ );
+
+		$retVal = $this->_distribution_url . '/' . strtolower($external_path);
+
+		// $contents = $s3Obj->getBucket( $this->_bucket );
+
+		return $retVal;
 	}
 
 	// Prefix Methods
