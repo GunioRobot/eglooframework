@@ -43,14 +43,16 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 
 		// TODO Apply any image modifications/adjustments needed
 
+		$storedImageDTO = null;
+
 		// Store this somewhere
 		if ( $storage_method === 'egDataStore' ) {
 			// Store image in data store on FS
-			$data_store_path = $this->storeContentIneGlooDataStore( $imageDTO );
+			$storedImageDTO = $this->storeContentIneGlooDataStore( $imageDTO );
 
 			// Update image location entry in DB
 			$imageContentDBDAO = $contentDAOFactory->getImageContentDAO( 'egPrimary' );
-			$imageContentDBDAO->storeUploadedImage( $imageDTO );
+			$imageContentDBDAO->storeUploadedImage( $storedImageDTO );
 		}
 
 		// TODO Synchronize content across web servers
@@ -60,28 +62,27 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 
 		if ( eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
 			$imageContentCDNDAO = $contentDAOFactory->getImageContentDAO( 'egCDNPrimary' );
-
-			$distribution_image_url = $imageContentCDNDAO->storeImage( $imageDTO );
+			$distribution_image_url = $imageContentCDNDAO->storeImage( $storedImageDTO );
 		}
 
 		if ( $distribution_image_url !== null ) {
 			// Update image distribution url entry in DB
 			$imageContentDBDAO = $contentDAOFactory->getImageContentDAO( 'egPrimary' );
-			$imageContentDBDAO->setImageDistributionURL( $imageDTO, $distribution_image_url );
+			$imageContentDBDAO->setImageDistributionURL( $storedImageDTO, $distribution_image_url );
 		}
 	}
 
 	private function storeContentIneGlooDataStore( $imageDTO ) {
-		$data_store_path = null;
+		$storedImageDTO = null;
 
 		$contentDAOFactory = ContentDAOFactory::getInstance();
 		$imageContentDAO = $contentDAOFactory->getImageContentDAO();
 
-		if ( !( $data_store_path = $imageContentDAO->storeUploadedImage( $imageDTO ) ) ) {
+		if ( !( $storedImageDTO = $imageContentDAO->storeUploadedImage( $imageDTO ) ) ) {
 			throw new ErrorException( 'No valid storage path returned' );
 		}
 
-		return $data_store_path;
+		return $storedImageDTO;
 	}
 
 }

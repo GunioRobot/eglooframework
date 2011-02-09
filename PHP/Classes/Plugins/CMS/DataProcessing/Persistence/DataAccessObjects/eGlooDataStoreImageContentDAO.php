@@ -95,6 +95,8 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	}
 
 	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
+		$retVal = null;
+
 		$mimeType = $imageContentDTO->getImageMIMEType();
 		$localID = $imageContentDTO->getImageFileLocalID();
 		$mod = $imageContentDTO->getImageFileMod();
@@ -132,8 +134,14 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		$imageContentDTO->setImageBucket( $image_bucket );
 		$imageContentDTO->setImageStore( $store_prefix );
 		$imageContentDTO->setImageZone( $zone );
-echo_r(strtolower($external_path));
-		return strtolower($external_path);
+		
+		$storedImageContentDTO = clone $imageContentDTO;
+		$storedImageContentDTO->setImageURI( strtolower($external_path) );
+		$storedImageContentDTO->setImageFilePath( $store_prefix . '/' . $zone . '/' . $external_path );
+
+		$retVal = $storedImageContentDTO;
+
+		return $retVal;
 	}
 
 	// Prefix Methods

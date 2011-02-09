@@ -199,29 +199,23 @@ class CloudFrontImageContentDAO extends ImageContentDAO implements ContentDistri
 
 		$s3Obj = new S3( $this->_access_key_id,  $this->_secret_access_key );
 
-		$mimeType = $imageContentDTO->getImageMIMEType();
-		$localID = $imageContentDTO->getImageFileLocalID();
-		$mod = $imageContentDTO->getImageFileMod();
-		// Going to refactor this out later...
-		$category = 'Images';
+		$contentDAOFactory = ContentDAOFactory::getInstance();
 
-		$external_path = $category . '/' . $image_bucket . '/' . $mod . '/';
+		$imageContentDBDAO = $contentDAOFactory->getImageContentDAO( 'egPrimary' );
+		$current_distribution_url = $imageContentDBDAO->getImageDistributionURL( $imageContentDTO );
 
-		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/';
+		if ( $current_distribution_url !== null ) {
+			echo_r("Deleting CF image first...");
+			$s3Obj->deleteObject( $this->_bucket, $imageContentDTO->getImageURI() );
+		}
 
-		$extension = $this->getExtensionFromMIMEType( $mimeType );
-
-		$external_path .= $localID . '.' . $extension;
-
-		$data_store_file_path = $data_store_file_folder_path . $external_path;
+		$data_store_file_path = eGlooConfiguration::getDataStorePath() . '/' . $imageContentDTO->getImageFilePath();
 
 		$inputFile = $s3Obj->inputFile( $data_store_file_path );
 
-		$result = $s3Obj->putObject( $inputFile, $this->_bucket, strtolower($external_path), S3::ACL_PUBLIC_READ );
+		$result = $s3Obj->putObject( $inputFile, $this->_bucket, $imageContentDTO->getImageURI(), S3::ACL_PUBLIC_READ );
 
-		$retVal = $this->_distribution_url . '/' . strtolower($external_path);
-
-		// $contents = $s3Obj->getBucket( $this->_bucket );
+		$retVal = $this->_distribution_url . '/' . $imageContentDTO->getImageURI();
 
 		return $retVal;
 	}
