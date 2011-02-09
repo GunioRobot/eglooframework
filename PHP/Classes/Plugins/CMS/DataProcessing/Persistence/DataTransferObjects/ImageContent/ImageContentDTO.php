@@ -98,6 +98,29 @@ class ImageContentDTO extends DataTransferObject {
 	}
 
 	/**
+	 * @var string URI of the image
+	 */
+	protected $_imageURI = null;
+
+	/**
+	 * Returns protected class member $_imageURI
+	 *
+	 * @return string URI of the image
+	 */
+	public function getImageURI() {
+		return $this->_imageURI;
+	}
+
+	/**
+	 * Sets protected class member $_imageURI
+	 *
+	 * @param imageURI string URI of the image
+	 */
+	public function setImageURI( $imageURI ) {
+		$this->_imageURI = $imageURI;
+	}
+
+	/**
 	 * @var string View/angle this image represents
 	 */
 	protected $_image_view = null;

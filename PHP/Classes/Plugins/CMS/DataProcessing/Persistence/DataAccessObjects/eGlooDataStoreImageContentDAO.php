@@ -132,7 +132,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		$imageContentDTO->setImageBucket( $image_bucket );
 		$imageContentDTO->setImageStore( $store_prefix );
 		$imageContentDTO->setImageZone( $zone );
-
+echo_r(strtolower($external_path));
 		return strtolower($external_path);
 	}
 
