@@ -205,7 +205,6 @@ class CloudFrontImageContentDAO extends ImageContentDAO implements ContentDistri
 		$current_distribution_url = $imageContentDBDAO->getImageDistributionURL( $imageContentDTO );
 
 		if ( $current_distribution_url !== null ) {
-			echo_r("Deleting CF image first...");
 			$s3Obj->deleteObject( $this->_bucket, $imageContentDTO->getImageURI() );
 		}
 
