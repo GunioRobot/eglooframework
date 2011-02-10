@@ -42,7 +42,7 @@ abstract class GenericFileContentDAO extends AbstractDAO {
 	// TBD
 
 	// File Methods
-	abstract public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	abstract public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
 	abstract public function deleteFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
@@ -51,10 +51,10 @@ abstract class GenericFileContentDAO extends AbstractDAO {
 
 	abstract public function getFileMeta( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Master' );
 
-	abstract public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	abstract public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' );
 
-	abstract public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' );
+	abstract public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' );
 
 	// Prefix Methods
 	// TBD

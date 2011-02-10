@@ -42,7 +42,7 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 	// TBD
 
 	// File Methods
-	public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function copyFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -63,7 +63,7 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 		
 	}
 
-	public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function moveFile( $fileContentDTO, $src_file_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_file_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -76,7 +76,7 @@ class eGlooDataStoreGenericFileContentDAO extends GenericFileContentDAO {
 		return $this->storeFile( $fileContentDTO, $file_bucket, $store_prefix, 'Uploaded' );
 	}
 
-	public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
+	public function storeFile( $fileContentDTO, $file_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
 		$mimeType = $fileContentDTO->getFileMIMEType();
 		$localID = $fileContentDTO->getFileLocalID();
 		$mod = $fileContentDTO->getFileMod();

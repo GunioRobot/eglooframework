@@ -42,7 +42,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 	// TBD
 
 	// Image Methods
-	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function copyImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -81,7 +81,7 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		return $retVal;
 	}
 
-	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Upload',
+	public function moveImage( $imageContentDTO, $src_image_bucket = 'Default', $src_store_prefix = 'Local', $src_zone = 'Uploaded',
 		$dest_image_bucket = 'Default', $dest_store_prefix = 'Local', $dest_zone = 'Master' ) {
 			
 	}
@@ -94,7 +94,9 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		return $this->storeImage( $imageContentDTO, $image_bucket, $store_prefix, 'Uploaded' );
 	}
 
-	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Upload' ) {
+	public function storeImage( $imageContentDTO, $image_bucket = 'Default', $store_prefix = 'Local', $zone = 'Uploaded' ) {
+		$retVal = null;
+
 		$mimeType = $imageContentDTO->getImageMIMEType();
 		$localID = $imageContentDTO->getImageFileLocalID();
 		$mod = $imageContentDTO->getImageFileMod();
@@ -105,22 +107,23 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 
 		$data_store_file_folder_path = eGlooConfiguration::getDataStorePath() . '/' . $store_prefix . '/' . $zone . '/';
 
+		if ( !is_writable( $data_store_file_folder_path . $external_path ) ) {
+			try {
+				$mode = 0777;
+				$recursive = true;
+
+				mkdir( $data_store_file_folder_path . $external_path, $mode, $recursive );
+			} catch (Exception $e){
+				echo_r($e->getMessage());
+			}
+		}
+
 		$extension = $this->getExtensionFromMIMEType( $mimeType );
 
 		$external_path .= $localID . '.' . $extension;
 
 		$data_store_file_path = $data_store_file_folder_path . $external_path;
 
-		if ( !is_writable( $data_store_file_folder_path ) ) {
-			try {
-				$mode = 0777;
-				$recursive = true;
-
-				mkdir( $data_store_file_folder_path, $mode, $recursive );
-			} catch (Exception $e){
-				echo_r($e->getMessage());
-			}
-		}
 
 		// die_r($imageContentDTO);
 		// TODO make sure the file uploaded properly, no errors
@@ -131,8 +134,14 @@ class eGlooDataStoreImageContentDAO extends ImageContentDAO {
 		$imageContentDTO->setImageBucket( $image_bucket );
 		$imageContentDTO->setImageStore( $store_prefix );
 		$imageContentDTO->setImageZone( $zone );
+		
+		$storedImageContentDTO = clone $imageContentDTO;
+		$storedImageContentDTO->setImageURI( strtolower($external_path) );
+		$storedImageContentDTO->setImageFilePath( $store_prefix . '/' . $zone . '/' . $external_path );
 
-		return strtolower($external_path);
+		$retVal = $storedImageContentDTO;
+
+		return $retVal;
 	}
 
 	// Prefix Methods

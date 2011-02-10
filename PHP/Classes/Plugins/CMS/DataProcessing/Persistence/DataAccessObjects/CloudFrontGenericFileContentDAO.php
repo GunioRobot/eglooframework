@@ -36,7 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class CloudFrontGenericFileContentDAO extends GenericFileContentDAO {
+class CloudFrontGenericFileContentDAO extends GenericFileContentDAO implements ContentDistributionNetworkDAOInterface {
+
+	// Here's a thought - 'Default' bucket == egCDNPrimary bucket
 
 	// Bucket Methods
 	// TBD
