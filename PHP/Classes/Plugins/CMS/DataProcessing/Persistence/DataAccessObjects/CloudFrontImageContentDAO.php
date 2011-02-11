@@ -110,6 +110,30 @@ class CloudFrontImageContentDAO extends ImageContentDAO implements ContentDistri
 	}
 
 	/**
+	 * @var array Array of headers to send to CloudFront for the content
+	 */
+	protected $_headers = null;
+
+	/**
+	 * Returns protected class member $_headers
+	 *
+	 * @return array Array of headers to send to CloudFront for the content
+	 */
+	public function getHeaders() {
+		return $this->_headers;
+	}
+
+	/**
+	 * Sets protected class member $_headers
+	 *
+	 * @param headers array Array of headers to send to CloudFront for the content
+	 */
+	public function setHeaders( $headers ) {
+		$this->_headers = $headers;
+	}
+
+
+	/**
 	 * @var string Access Key ID for this connection
 	 */
 	protected $_access_key_id = null;
