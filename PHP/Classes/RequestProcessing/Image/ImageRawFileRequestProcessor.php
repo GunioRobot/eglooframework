@@ -213,7 +213,16 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 		$imageContentDTO->setImageFileLocalID($imageFileID);
 		$imageContentDTO->setImageFileMod($imageFileMod);
 
-		die_r($imageContentDTO);
+		$imageContentDBDAO = ContentDAOFactory::getInstance()->getImageContentDAO( 'egPrimary' );
+
+		$data_store_image_url = $imageContentDBDAO->getImageStorePath( $imageContentDTO );
+
+		die_r($data_store_image_url);
+		if ( $data_store_image_url !== null ) {
+			return $data_store_image_url;
+		}
+
+		
 
 			// $imageContentDTO->setImageFileLocalID( $product_id . '_a' );
 
