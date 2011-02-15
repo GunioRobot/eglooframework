@@ -174,6 +174,7 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 		if ( !empty($matches) && isset($matches[1]) && isset($matches[2]) ) {
 			$fileModChunks = explode('/', $matches[1]);
+			$imageBucket = ucfirst( array_shift( $fileModChunks ) );
 
 			foreach( $fileModChunks as $key => $value ) {
 				$fileModChunks[$key] = ucfirst($value);
@@ -212,23 +213,13 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 		$imageContentDTO = new ImageContentDTO();
 		$imageContentDTO->setImageFileLocalID($imageFileID);
 		$imageContentDTO->setImageFileMod($imageFileMod);
+		$imageContentDTO->setImageBucket($imageBucket);
 
 		$imageContentDBDAO = ContentDAOFactory::getInstance()->getImageContentDAO( 'egPrimary' );
 
 		$data_store_image_url = $imageContentDBDAO->getImageStorePath( $imageContentDTO );
 
-		die_r($data_store_image_url);
-		if ( $data_store_image_url !== null ) {
-			return $data_store_image_url;
-		}
-
-		
-
-			// $imageContentDTO->setImageFileLocalID( $product_id . '_a' );
-
-		if ( !$imageContentDAO->getImageStorePath( $imageContentDTO ) ) {
-			throw new Exception('Gasp I die');
-		}
+		$retVal = eGlooConfiguration::getDataStorePath() . '/' .  $data_store_image_url;
 
 		return $retVal;
 	}
