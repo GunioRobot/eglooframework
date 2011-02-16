@@ -1626,7 +1626,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
 
-					if ( isset($validatedInput) && $validatedInput ) {
+					if ( isset($validatedInput) && $validatedInput !== false && $validatedInput !== null ) { 
 						$requestInfoBean->setGET( $complexArg['id'],  $validatedInput );
 					} else {
 						$errorMessage = "Complex parameter: " . $complexArg['id'] . 
