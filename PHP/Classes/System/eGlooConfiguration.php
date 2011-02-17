@@ -100,7 +100,7 @@ final class eGlooConfiguration {
 	public static function loadWebRootConfig( $overwrite = true ) {
 		$webRootConfigOptions = array();
 		$webRootConfigOptions['egApplication']		= $_SERVER['EG_APP'];
-		$webRootConfigOptions['egApplicationName']		= preg_replace('~([a-zA-Z0-9/ ])+?/([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
+		$webRootConfigOptions['egApplicationName']		= preg_replace('~([a-zA-Z0-9/ ]*/)?([a-zA-Z0-9 ]*?)\.gloo~', '$2', $_SERVER['EG_APP']);
 		$webRootConfigOptions['egInterfaceBundle']		= $_SERVER['EG_UI'];
 
 		if ( isset($_SERVER['EG_CACHE']) ) {
