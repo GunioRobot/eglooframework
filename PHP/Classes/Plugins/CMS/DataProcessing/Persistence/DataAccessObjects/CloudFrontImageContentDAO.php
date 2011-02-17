@@ -236,7 +236,12 @@ class CloudFrontImageContentDAO extends ImageContentDAO implements ContentDistri
 
 		$inputFile = $s3Obj->inputFile( $data_store_file_path );
 
-		$result = $s3Obj->putObject( $inputFile, $this->_bucket, $imageContentDTO->getImageURI(), S3::ACL_PUBLIC_READ );
+		$request_headers = array(
+		  'Cache-Control' => 'max-age=1209600, private, must-revalidate',
+		  'Expires' => date('D, d M Y H:i:s T', strtotime('+2 hour')),
+		);
+
+		$result = $s3Obj->putObject( $inputFile, $this->_bucket, $imageContentDTO->getImageURI(), S3::ACL_PUBLIC_READ, array(), $request_headers );
 
 		$retVal = $this->_distribution_url . '/' . $imageContentDTO->getImageURI();
 
