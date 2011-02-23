@@ -38,18 +38,18 @@
  */
 class ImageContentDTO extends DataTransferObject {
 
-	private $_imageContent = null;
-	private $_imageDimensionX = null;
-	private $_imageDimensionY = null;
-	private $_imageMIMEType = null;
-	private $_imageFileHash = null;
-	private $_imageFileName = null;
-	private $_imageFilePath = null;
-	private $_imageFileSize = null;
-	private $_imageDateUploaded = null;
-	private $_imageUploader = null;
-	private $_imageFileLocalID = null;
-	private $_imageFileMod = null;
+	protected $_imageContent = null;
+	protected $_imageDimensionX = null;
+	protected $_imageDimensionY = null;
+	protected $_imageMIMEType = null;
+	protected $_imageFileHash = null;
+	protected $_imageFileName = null;
+	protected $_imageFilePath = null;
+	protected $_imageFileSize = null;
+	protected $_imageDateUploaded = null;
+	protected $_imageUploader = null;
+	protected $_imageFileLocalID = null;
+	protected $_imageFileMod = null;
 
 	/**
 	 * @var string Bucket image is contained in
