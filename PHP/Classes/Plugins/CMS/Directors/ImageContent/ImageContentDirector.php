@@ -38,20 +38,9 @@
  */
 class ImageContentDirector extends ContentDirector {
 
-	public function storeContent( $imageDTO, $storage_method = 'egDataStore', $storage_routine = 'FullPopulationImageContentStorageRoutine' ) {
-		$storageRoutineObj = null;
+	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore',
+		$retrieval_routine = 'FullPopulationImageContentRetrievalRoutine', $manipulation_routine = null ) {
 
-		if ( $storage_routine === 'FullPopulationImageContentStorageRoutine' ) {
-			$storageRoutineObj = new FullPopulationImageContentStorageRoutine();
-		} else {
-			throw new ErrorException( 'Unknown storage routine specified' );
-		}
-
-		$storageRoutineObj->storeContent( $imageDTO, $storage_method );
-	}
-
-
-	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore', $retrieval_routine = 'FullPopulationImageContentRetrievalRoutine' ) {
 		$retrievalRoutineObj = null;
 
 		if ( $retrieval_routine === 'FullPopulationImageContentRetrievalRoutine' ) {
@@ -60,7 +49,35 @@ class ImageContentDirector extends ContentDirector {
 			throw new ErrorException( 'Unknown retrieval routine specified' );
 		}
 
-		$retrievalRoutineObj->retrieveContent( $imageDTO, $storage_method );
+		return $retrievalRoutineObj->retrieveContent( $imageDTO, $storage_method, $manipulation_routine );
+	}
+
+	public function manipulateContent( $imageDTO, $manipulation_routine ) {
+		$retVal = null;
+
+		if ( is_object( $manipulation_routine ) ) {
+			$retVal = $manipulation_routine->manipulateContent( $imageDTO );
+		} else if ( is_string( $manipulation_routine ) ) {
+			$manipulationRoutineObj = new $manipulation_routine();
+
+			$retVal = $manipulationRoutineObj->manipulateContent( $imageDTO );
+		}
+
+		return $retVal;
+	}
+
+	public function storeContent( $imageDTO, $storage_method = 'egDataStore',
+		$storage_routine = 'FullPopulationImageContentStorageRoutine', $manipulation_routine = null ) {
+
+		$storageRoutineObj = null;
+
+		if ( $storage_routine === 'FullPopulationImageContentStorageRoutine' ) {
+			$storageRoutineObj = new FullPopulationImageContentStorageRoutine();
+		} else {
+			throw new ErrorException( 'Unknown storage routine specified' );
+		}
+
+		return $storageRoutineObj->storeContent( $imageDTO, $storage_method, $manipulation_routine );
 	}
 
 }

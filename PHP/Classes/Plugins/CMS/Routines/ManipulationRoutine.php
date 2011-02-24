@@ -1,8 +1,8 @@
 <?php
 /**
- * FullPopulationImageContentRetrievalRoutine Class File
+ * ManipulationRoutine Class File
  *
- * Contains the class definition for the FullPopulationImageContentRetrievalRoutine
+ * Contains the class definition for the ManipulationRoutine
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * FullPopulationImageContentRetrievalRoutine
+ * ManipulationRoutine
  *
  * $short_description
  *
@@ -36,26 +36,9 @@
  * @package $package
  * @subpackage $subpackage
  */
-class FullPopulationImageContentRetrievalRoutine extends RetrievalRoutine {
+abstract class ManipulationRoutine extends ContentRoutine {
 
-	public function retrieveContent( $imageDTO, $storage_method = 'egDataStore', $manipulation_routine = null ) {
-		// Copied from storage pattern, reverse this or whatever
-		// TODO get path on FS
+	abstract public function manipulateContent( $contentDTO );
 
-		// TODO update image location entry in DB
-
-
-		// TODO Synchronize content across web servers
-
-		// TODO update CDN entry
-
-		if ( $storage_method === 'egDataStore' ) {
-			$this->retrieveContentFromeGlooDataStore( $imageDTO );
-		}
-	}
-
-	private function retrieveContentFromeGlooDataStore( $imageDTO ) {
-		
-	}
 }
 

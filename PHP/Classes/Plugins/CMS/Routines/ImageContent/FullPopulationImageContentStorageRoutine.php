@@ -38,10 +38,19 @@
  */
 class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 
-	public function storeContent( $imageDTO, $storage_method = 'egDataStore' ) {
+	public function storeContent( $imageDTO, $storage_method = 'egDataStore', $manipulation_routine = null ) {
 		$contentDAOFactory = ContentDAOFactory::getInstance();
 
 		// TODO Apply any image modifications/adjustments needed
+		if ( $manipulation_routine !== null ) {
+			if ( is_object( $manipulation_routine ) ) {
+				$imageDTO = $manipulation_routine->manipulateContent( $imageDTO );
+			} else if ( is_string( $manipulation_routine ) ) {
+				$manipulationRoutineObj = new $manipulation_routine();
+
+				$imageDTO = $manipulationRoutineObj->manipulateContent( $imageDTO );
+			}
+		}
 
 		$storedImageDTO = null;
 
