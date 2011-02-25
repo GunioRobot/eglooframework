@@ -210,12 +210,15 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 			}
 		}
 
+		$imageContentDBDAO = ContentDAOFactory::getInstance()->getImageContentDAO( 'egPrimary' );
+
+		$mime_type = $imageContentDBDAO->getMIMETypeFromExtension( $imageFileExtension );
+
 		$imageContentDTO = new ImageContentDTO();
 		$imageContentDTO->setImageFileLocalID($imageFileID);
 		$imageContentDTO->setImageFileMod($imageFileMod);
 		$imageContentDTO->setImageBucket($imageBucket);
-
-		$imageContentDBDAO = ContentDAOFactory::getInstance()->getImageContentDAO( 'egPrimary' );
+		$imageContentDTO->setImageMIMEType( $mime_type );
 
 		$data_store_image_url = $imageContentDBDAO->getImageStorePath( $imageContentDTO );
 
