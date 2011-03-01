@@ -262,6 +262,12 @@ final class DBConnectionManager extends ConnectionManager {
 				throw new Exception($exception_message);
 			}
 
+			// This might not be what you want, but if it isn't, that's your problem.  Welcome to 2011.  Learn to UTF-8, kids
+			if ( !$mysqli->set_charset('utf8') ) {
+				$exception_message = 'DBConnectionManager: Error loading character set UTF-8.  MySQLiOOP Error: ' . $mysqli->error;
+				throw new Exception($exception_message);
+			}
+
 			self::$connections['MySQLiOOP'][$connection_name] = new MySQLiOOPDBConnection( $mysqli );
 			$retVal = self::$connections['MySQLiOOP'][$connection_name];
 		}
