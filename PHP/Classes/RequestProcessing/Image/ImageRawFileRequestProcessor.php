@@ -170,7 +170,11 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 		$matches = array();
 		preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
+
 		$imageFileMod = null;
+		$imageFileID = null;
+		$imageBucket = null;
+		$mime_type = null;
 
 		if ( !empty($matches) && isset($matches[1]) && isset($matches[2]) ) {
 			$fileModChunks = explode('/', $matches[1]);
