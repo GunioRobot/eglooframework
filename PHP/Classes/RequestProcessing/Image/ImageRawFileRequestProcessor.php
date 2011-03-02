@@ -222,7 +222,9 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 		$data_store_image_url = $imageContentDBDAO->getImageStorePath( $imageContentDTO );
 
-		$retVal = eGlooConfiguration::getDataStorePath() . '/' .  $data_store_image_url;
+		if ( $data_store_image_url !== null && is_string($data_store_image_url) && trim($data_store_image_url) !== '' ) {
+			$retVal = eGlooConfiguration::getDataStorePath() . '/' .  $data_store_image_url;
+		}
 
 		return $retVal;
 	}
