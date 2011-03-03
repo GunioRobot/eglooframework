@@ -70,13 +70,23 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 		try {
 			$templateDirector->preProcessTemplate();
 		} catch (ErrorException $e) {
+			// TODO Error checking / branching should be more fine-tuned here
 			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
 				throw $e;
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Template requested for RequestClass/RequestID "' .
 					$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
-				eGlooHTTPResponse::issueCustom404Response();
+
+				try {
+					eGlooHTTPResponse::issueCustom404Response();
+				} catch (Exception $e) {
+					eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Custom 404 template requested for RequestClass/RequestID "' .
+						$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
+
+					// TODO this is rather primitive, even as a raw fallback.  Make this better
+					eGlooHTTPResponse::issueRaw404Response( 'We\'re sorry, but the page you requested was not found' );
+				}
 			}
 		}
 

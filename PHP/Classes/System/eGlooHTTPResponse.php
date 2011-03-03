@@ -44,11 +44,16 @@ class eGlooHTTPResponse {
 	// Response Code Constants
 	const HTTP_RESPONSE_404 = '404';
 
-	public static function issueRaw404Response() {
+	public static function issueRaw404Response( $output = null ) {
 		self::resetHeaders();
 
 		// TODO branch on different 404 type if using FastCGI: header("Status: 404 Not Found"); or header("HTTP/1.0 404 Not Found")
 		header('HTTP/1.0 404 Not Found', true, 404);
+
+		if ( $output !== null ) {
+			echo $output;
+		}
+
 		exit;
 	}
 
