@@ -21,8 +21,8 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  * @version 1.0
  */
 
@@ -33,10 +33,14 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  */
-class XMLTwigTemplateEngine implements TemplateEngineInterface {
+class XMLTwigTemplateEngine extends TwigTemplateEngine implements TemplateEngineInterface {
+
+	protected $packagePrefix = 'XML';
+	protected $_custom_left_delimiter = '<!--{';
+	protected $_custom_right_delimiter = '}-->';
 
 }
 

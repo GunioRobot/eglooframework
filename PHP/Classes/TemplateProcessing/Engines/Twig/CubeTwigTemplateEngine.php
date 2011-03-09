@@ -2,7 +2,8 @@
 /**
  * CubeTwigTemplateEngine Class File
  *
- * $file_block_description
+ * Contains the class definition for the CubeTwigTemplateEngine, a subclass of 
+ * the TemplateEngine class.
  * 
  * Copyright 2011 eGloo, LLC
  * 
@@ -21,22 +22,24 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  * @version 1.0
  */
 
 /**
  * CubeTwigTemplateEngine
+ * 
+ * Provides a class definition for a Cube template engine subclass of
+ * the TemplateEngine class.
  *
- * $short_description
- *
- * $long_description
- *
- * @package $package
- * @subpackage $subpackage
+ * @package TemplateProcessing
+ * @subpackage TemplateEngines
  */
-class CubeTwigTemplateEngine implements TemplateEngineInterface {
+class CubeTwigTemplateEngine extends TwigTemplateEngine implements TemplateEngineInterface {
+
+	protected $packagePrefix = 'Cube';
+	protected $_custom_left_delimiter = '<!--{';
+	protected $_custom_right_delimiter = '}-->';
 
 }
-

@@ -49,9 +49,24 @@ if ( !class_exists( 'CacheGateway', false ) ) {
 // Register eGloo Autoloader
 spl_autoload_register('eglooAutoload');
 
+/**
+ * These conditional includes are ordered for speed; do not reorganize without benchmarking and serious testing
+ */
+
+// Load Haanga
+if ( eGlooConfiguration::getUseHaanga() ) {
+	include( eGlooConfiguration::getHaangaIncludePath() );
+}
+
 // Load Smarty
 if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
+}
+
+// Load Twig
+if ( eGlooConfiguration::getUseTwig() ) {
+	include( eGlooConfiguration::getTwigIncludePath() );
+	spl_autoload_register(array('Twig_Autoloader', 'autoload'));
 }
 
 // Load S3/CloudFront

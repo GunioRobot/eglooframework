@@ -39,6 +39,7 @@
 		<Option id="egUseDoctrine" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseDoctrine2DBAL" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseDoctrine2ORM" displayName="" override="true" type="" value="false" required="false"/>
+		<Option id="egUseHaanga" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseS3" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseSmarty" displayName="" override="true" type="" value="true" required="false"/>
 		<Option id="egUseSmarty2" displayName="" override="true" type="" value="false" required="false"/>

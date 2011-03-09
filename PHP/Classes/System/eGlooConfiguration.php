@@ -1544,7 +1544,13 @@ final class eGlooConfiguration {
 		return self::$configuration_options['FrameworkRootPath'];
 	}
 
-    public static function getLogFormat() {
+	public static function getHaangaIncludePath() {
+		// TODO make this customizable
+		// return self::$configuration_options['HaangaPath'];
+		return self::$configuration_options['FrameworkRootPath'] . '/Library/Haanga/lib/Haanga.php';
+	}
+
+	public static function getLogFormat() {
 		if ( !isset(self::$configuration_options['egLogFormat']) ) {
 			self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
 			self::writeFrameworkConfigurationCache();
@@ -1628,6 +1634,12 @@ final class eGlooConfiguration {
 		return self::$configuration_options['SmartyPath'];
 	}
 
+	public static function getTwigIncludePath() {
+		// TODO make this customizable
+		// return self::$configuration_options['TwigPath'];
+		return self::$configuration_options['FrameworkRootPath'] . '/Library/Twig/lib/Twig/Autoloader.php';
+	}
+
 	public static function getUniqueInstanceIdentifier() {
 		return self::$uniqueInstanceID;
 	}
@@ -1652,8 +1664,16 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egEnableDefaultRequestID'];
 	}
 
+	public static function getUseDoctrine() {
+		return isset(self::$configuration_options['egUseDoctrine']) ? self::$configuration_options['egUseDoctrine'] : false;
+	}
+
 	public static function getUseFileCache() {
 		return self::$configuration_options['egFileCacheEnabled'];
+	}
+
+	public static function getUseHaanga() {
+		return isset(self::$configuration_options['egUseHaanga']) ? self::$configuration_options['egUseHaanga'] : false;
 	}
 
 	public static function getUseHotFileCSSClustering() {
@@ -1676,10 +1696,6 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egMemcacheCacheEnabled'];
 	}
 
-	public static function getUseDoctrine() {
-		return isset(self::$configuration_options['egUseDoctrine']) ? self::$configuration_options['egUseDoctrine'] : false;
-	}
-
 	public static function getUseRuntimeCache() {
 		$retVal = false;
 
@@ -1698,12 +1714,16 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
+	public static function getUseS3() {
+		return isset(self::$configuration_options['egUseS3']) ? self::$configuration_options['egUseS3'] : false;
+	}
+
 	public static function getUseSmarty() {
 		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
 	}
 
-	public static function getUseS3() {
-		return isset(self::$configuration_options['egUseS3']) ? self::$configuration_options['egUseS3'] : false;
+	public static function getUseTwig() {
+		return isset(self::$configuration_options['egUseTwig']) ? self::$configuration_options['egUseTwig'] : false;
 	}
 
 	public static function getWebRoot() {

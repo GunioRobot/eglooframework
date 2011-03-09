@@ -171,18 +171,18 @@ class Twig_Extension_Core extends Twig_Extension
         );
     }
 
-    public function parseNotTestExpression($parser, $node)
+    public function parseNotTestExpression(Twig_Parser $parser, $node)
     {
         return new Twig_Node_Expression_Unary_Not($this->parseTestExpression($parser, $node), $parser->getCurrentToken()->getLine());
     }
 
-    public function parseTestExpression($parser, $node)
+    public function parseTestExpression(Twig_Parser $parser, $node)
     {
         $stream = $parser->getStream();
         $name = $stream->expect(Twig_Token::NAME_TYPE);
         $arguments = null;
         if ($stream->test(Twig_Token::PUNCTUATION_TYPE, '(')) {
-            $arguments = $parser->getExpressionParser()->parseArguments($node);
+            $arguments = $parser->getExpressionParser()->parseArguments();
         }
 
         return new Twig_Node_Expression_Test($node, $name->getValue(), $arguments, $parser->getCurrentToken()->getLine());
@@ -388,7 +388,7 @@ function _twig_escape_js_callback($matches)
 if (function_exists('mb_get_info')) {
     function twig_length_filter(Twig_Environment $env, $thing)
     {
-        return is_string($thing) ? mb_strlen($thing, $env->getCharset()) : count($thing);
+        return is_scalar($thing) ? mb_strlen($thing, $env->getCharset()) : count($thing);
     }
 
     function twig_upper_filter(Twig_Environment $env, $string)
@@ -433,7 +433,7 @@ else
 {
     function twig_length_filter(Twig_Environment $env, $thing)
     {
-        return is_string($thing) ? strlen($thing) : count($thing);
+        return is_scalar($thing) ? strlen($thing) : count($thing);
     }
 
     function twig_title_string_filter(Twig_Environment $env, $string)
