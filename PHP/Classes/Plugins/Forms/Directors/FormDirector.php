@@ -99,6 +99,8 @@ final class FormDirector {
 					throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
 				}
 
+				$formAttributeSetNodeIDCamel = eGlooString::toCamelCase( $formAttributeSetNodeID );
+
 				$formAttributeSetNodeDisplayLocalized = isset( $formAttributeSetNode['displayLocalized'] ) ? strtolower( (string) $formAttributeSetNode['displayLocalized'] ) : NULL;
 				$formAttributeSetNodeDisplayLocalizer = isset( $formAttributeSetNode['displayLocalizer'] ) ? (string) $formAttributeSetNode['displayLocalizer'] : NULL;
 
