@@ -130,4 +130,17 @@ class eGlooString {
 
 		return implode( '', $chunks );
 	}
+
+	public static function toPrettyPrint( $string, $separator = '_', $ucfirst = false ) {
+		$chunks = explode( $separator, $string );
+		$chunks = $chunks ? array_map( 'ucfirst', $chunks ) : array( $string );
+		$chunks[0] = $ucfirst ? ucfirst( $chunks[0] ) : lcfirst( $chunks[0] );
+
+		return implode( ' ', $chunks );
+	}
+
+	public static function toPrettyPrintFromCamelCase( $string, $separator = '_', $ucfirst = false ) {
+		// TODO
+	}
+
 }

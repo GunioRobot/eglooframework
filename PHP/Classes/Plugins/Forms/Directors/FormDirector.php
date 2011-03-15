@@ -99,10 +99,10 @@ final class FormDirector {
 					throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeIDCamel = eGlooString::toCamelCase( $formAttributeSetNodeID );
+				$formAttributeSetNodeIDCamel = eGlooString::toCamelCase( $formAttributeSetNodeID, '_', true );
 
-				$formAttributeSetNodeDisplayLocalized = isset( $formAttributeSetNode['displayLocalized'] ) ? strtolower( (string) $formAttributeSetNode['displayLocalized'] ) : NULL;
-				$formAttributeSetNodeDisplayLocalizer = isset( $formAttributeSetNode['displayLocalizer'] ) ? (string) $formAttributeSetNode['displayLocalizer'] : NULL;
+				$formAttributeSetNodeDisplayLocalized = isset( $formAttributeSetNode['displayLocalized'] ) ? strtolower( (string) $formAttributeSetNode['displayLocalized'] ) : 'true';
+				$formAttributeSetNodeDisplayLocalizer = isset( $formAttributeSetNode['displayLocalizer'] ) ? (string) $formAttributeSetNode['displayLocalizer'] : 'GenericFormDisplayLocalizer';
 
 				if ( !$formAttributeSetNodeDisplayLocalized || trim($formAttributeSetNodeDisplayLocalized) === '' ) {
 					throw new ErrorException('No display localization setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
@@ -117,7 +117,7 @@ final class FormDirector {
 				// NOTE: If no DisplayLocalizer is specified, token replacement is based on DisplayLabels in Forms.xml
 				// If no alternate DisplayLabel for a localization exists, the default is returned
 
-				$formAttributeSetNodeInputLocalized = isset( $formAttributeSetNode['inputLocalized'] ) ? strtolower( (string) $formAttributeSetNode['inputLocalized'] ) : NULL;
+				$formAttributeSetNodeInputLocalized = isset( $formAttributeSetNode['inputLocalized'] ) ? strtolower( (string) $formAttributeSetNode['inputLocalized'] ) : 'true';
 
 				if ( !$formAttributeSetNodeInputLocalized || trim($formAttributeSetNodeInputLocalized) === '' ) {
 					throw new ErrorException('No input localization setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
@@ -129,14 +129,14 @@ final class FormDirector {
 					throw new ErrorException('Invalid input localization setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeInputLocalizer = isset( $formAttributeSetNode['inputLocalizer'] ) ? (string) $formAttributeSetNode['inputLocalizer'] : NULL;
+				$formAttributeSetNodeInputLocalizer = isset( $formAttributeSetNode['inputLocalizer'] ) ? (string) $formAttributeSetNode['inputLocalizer'] : 'GenericFormInputLocalizer';
 
 				// NOTE: If the Form states it needs InputLocalization support, but doesn't specify an InputLocalizer, it's in error
 				if ( $formAttributeSetNodeDisplayLocalized && (!$formAttributeSetNodeInputLocalizer || trim($formAttributeSetNodeInputLocalizer) === '') ) {
 					throw new ErrorException('No input localizer specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeValidated = isset( $formAttributeSetNode['validated'] ) ? strtolower( (string) $formAttributeSetNode['validated'] ) : NULL;
+				$formAttributeSetNodeValidated = isset( $formAttributeSetNode['validated'] ) ? strtolower( (string) $formAttributeSetNode['validated'] ) : 'true';
 
 				if ( !$formAttributeSetNodeValidated || trim($formAttributeSetNodeValidated) === '' ) {
 					throw new ErrorException('No validation setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
@@ -148,7 +148,7 @@ final class FormDirector {
 					throw new ErrorException('Invalid validation setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeSecure = isset( $formAttributeSetNode['secure'] ) ? strtolower( (string) $formAttributeSetNode['secure'] ) : NULL;
+				$formAttributeSetNodeSecure = isset( $formAttributeSetNode['secure'] ) ? strtolower( (string) $formAttributeSetNode['secure'] ) : 'false';
 
 				if ( !$formAttributeSetNodeSecure || trim($formAttributeSetNodeSecure) === '' ) {
 					throw new ErrorException('No secure setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
@@ -160,43 +160,46 @@ final class FormDirector {
 					throw new ErrorException('Invalid secure setting specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDAOConnectionName = isset($formAttributeSetNode['daoConnectionName']) ? (string) $formAttributeSetNode['daoConnectionName'] : NULL;
+				$formAttributeSetNodeDAOConnectionName = isset($formAttributeSetNode['daoConnectionName']) ? (string) $formAttributeSetNode['daoConnectionName'] : 'egPrimary';
 
 				if ( !$formAttributeSetNodeDAOConnectionName || trim($formAttributeSetNodeDAOConnectionName) === '' ) {
 					throw new ErrorException('No DAOConnectionName specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDAOFactory = isset($formAttributeSetNode['daoFactory']) ? (string) $formAttributeSetNode['daoFactory'] : NULL;
+				$formAttributeSetNodeDAOFactory = isset($formAttributeSetNode['daoFactory']) ? (string) $formAttributeSetNode['daoFactory'] : 'AbstractDAOFactory';
 
 				if ( !$formAttributeSetNodeDAOFactory || trim($formAttributeSetNodeDAOFactory) === '' ) {
 					throw new ErrorException('No DAOFactory specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDAO = isset($formAttributeSetNode['dao']) ? (string) $formAttributeSetNode['dao'] : NULL;
+				$formAttributeSetNodeDAO = isset($formAttributeSetNode['dao']) ? (string) $formAttributeSetNode['dao'] : $formAttributeSetNodeIDCamel . 'DAO';
 
 				if ( !$formAttributeSetNodeDAO || trim($formAttributeSetNodeDAO) === '' ) {
 					throw new ErrorException('No DAO specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDTO = isset($formAttributeSetNode['dto']) ? (string) $formAttributeSetNode['dto'] : NULL;
+				$formAttributeSetNodeDTO = isset($formAttributeSetNode['dto']) ? (string) $formAttributeSetNode['dto'] : $formAttributeSetNodeIDCamel . 'DTO';
 
 				if ( !$formAttributeSetNodeDTO || trim($formAttributeSetNodeDTO) === '' ) {
 					throw new ErrorException('No DTO specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeValidator = isset($formAttributeSetNode['validator']) ? (string) $formAttributeSetNode['validator'] : NULL;
+				$formAttributeSetNodeValidator = isset($formAttributeSetNode['validator']) ?
+					(string) $formAttributeSetNode['validator'] : $formAttributeSetNodeIDCamel . 'FormAttributeSetValidator';
 
 				if ( !$formAttributeSetNodeValidator || trim($formAttributeSetNodeValidator) === '' ) {
 					throw new ErrorException('No validator specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDataFormatter = isset($formAttributeSetNode['dataFormatter']) ? (string) $formAttributeSetNode['dataFormatter'] : NULL;
+				$formAttributeSetNodeDataFormatter = isset($formAttributeSetNode['dataFormatter']) ?
+					(string) $formAttributeSetNode['dataFormatter'] : $formAttributeSetNodeIDCamel . 'FormAttributeSetDataFormatter';
 
 				if ( !$formAttributeSetNodeDataFormatter || trim($formAttributeSetNodeDataFormatter) === '' ) {
 					throw new ErrorException('No data formatter specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetNodeDisplayFormatter = isset($formAttributeSetNode['displayFormatter']) ? (string) $formAttributeSetNode['displayFormatter'] : NULL;
+				$formAttributeSetNodeDisplayFormatter = isset($formAttributeSetNode['displayFormatter']) ?
+					(string) $formAttributeSetNode['displayFormatter'] : $formAttributeSetNodeIDCamel . 'FormAttributeSetDisplayFormatter';
 
 				if ( !$formAttributeSetNodeDisplayFormatter || trim($formAttributeSetNodeDisplayFormatter) === '' ) {
 					throw new ErrorException('No display formatter specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
@@ -208,12 +211,15 @@ final class FormDirector {
 				$appendHTML = null;
 				$cssClasses = null;
 
-				$formLegend = null;
-				$formLegendLocalizationToken = null;
+				$formLegend = eGlooString::toPrettyPrint( $formAttributeSetNodeID, '_', true );
+				$formLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_legend';
 
 				foreach( $formAttributeSetNode->xpath( 'child::Legend' ) as $legend ) {
 					$formLegend = (string) $legend;
-					$formLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
+
+					if ( isset($legend['legendToken']) ) {
+						$formLegendLocalizationToken = (string) $legend['legendToken'];
+					}
 				}
 
 				foreach( $formAttributeSetNode->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
@@ -228,7 +234,8 @@ final class FormDirector {
 					$cssClasses = (string) $childCSSClassesNode;
 				}
 
-				$formAttributeSetNodes[$formAttributeSetNodeID] = array(	'formID' => $formAttributeSetNodeID,
+				$formAttributeSetNodes[$formAttributeSetNodeID] = array(
+													'formID' => $formAttributeSetNodeID,
 													'legend' => $formLegend,
 													'legendToken' => $formLegendLocalizationToken,
 													'displayLocalized' => $formAttributeSetNodeDisplayLocalized,
@@ -261,7 +268,9 @@ final class FormDirector {
 							"'.	 Please review your Forms.xml");
 					}
 
-					$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : NULL;
+					$formFieldSetIDCamel = eGlooString::toCamelCase( $formFieldSetID, '_', true );
+
+					$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : 'true';
 
 					if ( !$formFieldSetNodeValidated || trim($formFieldSetNodeValidated) === '' ) {
 						throw new ErrorException('No validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
@@ -273,7 +282,7 @@ final class FormDirector {
 						throw new ErrorException('Invalid validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					}
 
-					$formFieldSetNodeSecure = isset( $formFieldSet['secure'] ) ? strtolower( (string) $formFieldSet['secure'] ) : NULL;
+					$formFieldSetNodeSecure = isset( $formFieldSet['secure'] ) ? strtolower( (string) $formFieldSet['secure'] ) : 'false';
 
 					if ( !$formFieldSetNodeSecure || trim($formFieldSetNodeSecure) === '' ) {
 						throw new ErrorException('No secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
@@ -285,7 +294,7 @@ final class FormDirector {
 						throw new ErrorException('Invalid secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					}
 
-					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
+					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : $formFieldSetIDCamel . 'FormFieldSetValidator';
 					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
 
 					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
@@ -294,20 +303,26 @@ final class FormDirector {
 						$formFieldSetNodeRequired = false;
 					}
 
-					$formFieldSetLegend = null;
-					$formFieldSetLegendLocalizationToken = null;
+					$formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID, '_', true );
+					$formFieldSetLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_legend';
 
 					foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
 						$formFieldSetLegend = (string) $legend;
-						$formFieldSetLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
+
+						if ( isset($legend['legendToken']) ) {
+							$formFieldSetLegendLocalizationToken = (string) $legend['legendToken'];
+						}
 					}
 
-					$formFieldSetErrorMessage = null;
-					$formFieldSetErrorMessageLocalizationToken = null;
+					$formFieldSetErrorMessage = NULL;
+					$formFieldSetErrorMessageLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_error';
 
 					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
 						$formFieldSetErrorMessage = (string) $legend;
-						$formFieldSetErrorMessageLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+
+						if ( isset($legend['localizationToken']) ) {
+							$formFieldSetErrorMessageLocalizationToken = (string) $legend['localizationToken'];
+						}
 					}
 
 					$formFieldSetErrorHandler = null;
@@ -396,6 +411,9 @@ final class FormDirector {
 								$childInputPrependHTML = null;
 								$childInputAppendHTML = null;
 								$childCSSClasses = null;
+
+								// $formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID );
+								// $formFieldSetLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_legend';
 
 								$childDisplayLabelLocalizationToken = null;
 								$childErrorMessageLocalizationToken = null;
@@ -788,8 +806,10 @@ final class FormDirector {
 					throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
 				}
 
-				$formNodeDisplayLocalized = isset( $formNode['displayLocalized'] ) ? strtolower( (string) $formNode['displayLocalized'] ) : NULL;
-				$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? (string) $formNode['displayLocalizer'] : NULL;
+				$formNodeIDCamel = eGlooString::toCamelCase( $formNodeID, '_', true );
+
+				$formNodeDisplayLocalized = isset( $formNode['displayLocalized'] ) ? strtolower( (string) $formNode['displayLocalized'] ) : 'true';
+				$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? (string) $formNode['displayLocalizer'] : 'GenericFormDisplayLocalizer';
 
 				if ( !$formNodeDisplayLocalized || trim($formNodeDisplayLocalized) === '' ) {
 					throw new ErrorException('No display localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -804,7 +824,7 @@ final class FormDirector {
 				// NOTE: If no DisplayLocalizer is specified, token replacement is based on DisplayLabels in Forms.xml
 				// If no alternate DisplayLabel for a localization exists, the default is returned
 
-				$formNodeInputLocalized = isset( $formNode['inputLocalized'] ) ? strtolower( (string) $formNode['inputLocalized'] ) : NULL;
+				$formNodeInputLocalized = isset( $formNode['inputLocalized'] ) ? strtolower( (string) $formNode['inputLocalized'] ) : 'true';
 
 				if ( !$formNodeInputLocalized || trim($formNodeInputLocalized) === '' ) {
 					throw new ErrorException('No input localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -816,14 +836,14 @@ final class FormDirector {
 					throw new ErrorException('Invalid input localization setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeInputLocalizer = isset( $formNode['inputLocalizer'] ) ? (string) $formNode['inputLocalizer'] : NULL;
+				$formNodeInputLocalizer = isset( $formNode['inputLocalizer'] ) ? (string) $formNode['inputLocalizer'] : 'GenericFormInputLocalizer';
 
 				// NOTE: If the Form states it needs InputLocalization support, but doesn't specify an InputLocalizer, it's in error
 				if ( $formNodeDisplayLocalized && (!$formNodeInputLocalizer || trim($formNodeInputLocalizer) === '') ) {
 					throw new ErrorException('No input localizer specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeValidated = isset( $formNode['validated'] ) ? strtolower( (string) $formNode['validated'] ) : NULL;
+				$formNodeValidated = isset( $formNode['validated'] ) ? strtolower( (string) $formNode['validated'] ) : 'true';
 
 				if ( !$formNodeValidated || trim($formNodeValidated) === '' ) {
 					throw new ErrorException('No validation setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -835,7 +855,7 @@ final class FormDirector {
 					throw new ErrorException('Invalid validation setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeSecure = isset( $formNode['secure'] ) ? strtolower( (string) $formNode['secure'] ) : NULL;
+				$formNodeSecure = isset( $formNode['secure'] ) ? strtolower( (string) $formNode['secure'] ) : 'false';
 
 				if ( !$formNodeSecure || trim($formNodeSecure) === '' ) {
 					throw new ErrorException('No secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -847,43 +867,43 @@ final class FormDirector {
 					throw new ErrorException('Invalid secure setting specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDAOConnectionName = isset($formNode['daoConnectionName']) ? (string) $formNode['daoConnectionName'] : NULL;
+				$formNodeDAOConnectionName = isset($formNode['daoConnectionName']) ? (string) $formNode['daoConnectionName'] : 'egPrimary';
 
 				if ( !$formNodeDAOConnectionName || trim($formNodeDAOConnectionName) === '' ) {
 					throw new ErrorException('No DAOConnectionName specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDAOFactory = isset($formNode['daoFactory']) ? (string) $formNode['daoFactory'] : NULL;
+				$formNodeDAOFactory = isset($formNode['daoFactory']) ? (string) $formNode['daoFactory'] : 'AbstractDAOFactory';
 
 				if ( !$formNodeDAOFactory || trim($formNodeDAOFactory) === '' ) {
 					throw new ErrorException('No DAOFactory specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDAO = isset($formNode['dao']) ? (string) $formNode['dao'] : NULL;
+				$formNodeDAO = isset($formNode['dao']) ? (string) $formNode['dao'] : $formNodeIDCamel . 'DAO';
 
 				if ( !$formNodeDAO || trim($formNodeDAO) === '' ) {
 					throw new ErrorException('No DAO specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDTO = isset($formNode['dto']) ? (string) $formNode['dto'] : NULL;
+				$formNodeDTO = isset($formNode['dto']) ? (string) $formNode['dto'] : $formNodeIDCamel . 'DTO';
 
 				if ( !$formNodeDTO || trim($formNodeDTO) === '' ) {
 					throw new ErrorException('No DTO specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeValidator = isset($formNode['validator']) ? (string) $formNode['validator'] : NULL;
+				$formNodeValidator = isset($formNode['validator']) ? (string) $formNode['validator'] : $formNodeIDCamel . 'FormValidator';
 
 				if ( !$formNodeValidator || trim($formNodeValidator) === '' ) {
 					throw new ErrorException('No validator specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDataFormatter = isset($formNode['dataFormatter']) ? (string) $formNode['dataFormatter'] : NULL;
+				$formNodeDataFormatter = isset($formNode['dataFormatter']) ? (string) $formNode['dataFormatter'] : $formNodeIDCamel . 'FormDataFormatter';
 
 				if ( !$formNodeDataFormatter || trim($formNodeDataFormatter) === '' ) {
 					throw new ErrorException('No data formatter specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeDisplayFormatter = isset($formNode['displayFormatter']) ? (string) $formNode['displayFormatter'] : NULL;
+				$formNodeDisplayFormatter = isset($formNode['displayFormatter']) ? (string) $formNode['displayFormatter'] : $formNodeIDCamel . 'FormDisplayFormatter';
 
 				if ( !$formNodeDisplayFormatter || trim($formNodeDisplayFormatter) === '' ) {
 					throw new ErrorException('No display formatter specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
@@ -897,12 +917,15 @@ final class FormDirector {
 				$appendHTML = null;
 				$cssClasses = null;
 
-				$formLegend = null;
-				$formLegendLocalizationToken = null;
+				$formLegend = eGlooString::toPrettyPrint( $formNodeID, '_', true );
+				$formLegendLocalizationToken = $formNodeID . '_form_legend';
 
 				foreach( $formNode->xpath( 'child::Legend' ) as $legend ) {
 					$formLegend = (string) $legend;
-					$formLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
+
+					if ( isset($legend['legendToken']) ) {
+						$formLegendLocalizationToken = (string) $legend['legendToken'];
+					}
 				}
 
 				foreach( $formNode->xpath( 'child::PrependHTML' ) as $childPrependHTMLNode ) {
@@ -952,6 +975,8 @@ final class FormDirector {
 							"'.	 Please review your Forms.xml");
 					}
 
+					$formFieldSetIDCamel = eGlooString::toCamelCase( $formFieldSetID, '_', true );
+
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
@@ -967,7 +992,7 @@ final class FormDirector {
 					// 	throw new ErrorException('Invalid localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					// }
 
-					$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : NULL;
+					$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : 'true';
 
 					if ( !$formFieldSetNodeValidated || trim($formFieldSetNodeValidated) === '' ) {
 						throw new ErrorException('No validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
@@ -979,7 +1004,7 @@ final class FormDirector {
 						throw new ErrorException('Invalid validation setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					}
 
-					$formFieldSetNodeSecure = isset( $formFieldSet['secure'] ) ? strtolower( (string) $formFieldSet['secure'] ) : NULL;
+					$formFieldSetNodeSecure = isset( $formFieldSet['secure'] ) ? strtolower( (string) $formFieldSet['secure'] ) : 'false';
 
 					if ( !$formFieldSetNodeSecure || trim($formFieldSetNodeSecure) === '' ) {
 						throw new ErrorException('No secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
@@ -991,7 +1016,8 @@ final class FormDirector {
 						throw new ErrorException('Invalid secure setting specified in form node \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					}
 
-					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : NULL;
+
+					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : $formFieldSetIDCamel . 'FormFieldSetValidator';;
 					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
 
 					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
@@ -1000,20 +1026,26 @@ final class FormDirector {
 						$formFieldSetNodeRequired = false;
 					}
 
-					$formFieldSetLegend = null;
-					$formFieldSetLegendLocalizationToken = null;
+					$formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID, '_', true );
+					$formFieldSetLegendLocalizationToken = $formNodeID . '_form_' . $formFieldSetID . '_form_field_set_legend';
 
 					foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
 						$formFieldSetLegend = (string) $legend;
-						$formFieldSetLegendLocalizationToken = isset($legend['legendToken']) ? (string) $legend['legendToken'] : NULL;
+
+						if ( isset($legend['legendToken']) ) {
+							$formFieldSetLegendLocalizationToken = (string) $legend['legendToken'];
+						}
 					}
 
 					$formFieldSetErrorMessage = null;
-					$formFieldSetErrorMessageLocalizationToken = null;
+					$formFieldSetErrorMessageLocalizationToken = $formNodeID . '_form_' . $formFieldSetID . '_form_field_set_error';
 
 					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
 						$formFieldSetErrorMessage = (string) $legend;
-						$formFieldSetErrorMessageLocalizationToken = isset($legend['localizationToken']) ? (string) $legend['localizationToken'] : NULL;
+
+						if ( isset($legend['localizationToken']) ) {
+							$formFieldSetErrorMessageLocalizationToken = (string) $legend['localizationToken'];
+						}
 					}
 
 					$formFieldSetErrorHandler = null;
@@ -1571,6 +1603,11 @@ final class FormDirector {
 						$formNodes[$formNodeID]['CRUD']['create'] = $createTriggers;
 					}
 
+					// No create trigger for CRUD specified, so let's just set an empty array
+					if ( !isset($formNodes[$formNodeID]['CRUD']['create']) ) {
+						$formNodes[$formNodeID]['CRUD']['create'] = array();
+					}
+
 					foreach( $crudNode->xpath( 'child::Read' ) as $readNode ) {
 						$readTriggers = array();
 
@@ -1585,6 +1622,11 @@ final class FormDirector {
 						}
 
 						$formNodes[$formNodeID]['CRUD']['read'] = $readTriggers;
+					}
+
+					// No read trigger for CRUD specified, so let's just set an empty array
+					if ( !isset($formNodes[$formNodeID]['CRUD']['read']) ) {
+						$formNodes[$formNodeID]['CRUD']['read'] = array();
 					}
 
 					foreach( $crudNode->xpath( 'child::Update' ) as $updateNode ) {
@@ -1603,6 +1645,11 @@ final class FormDirector {
 						$formNodes[$formNodeID]['CRUD']['update'] = $updateTriggers;
 					}
 
+					// No update trigger for CRUD specified, so let's just set an empty array
+					if ( !isset($formNodes[$formNodeID]['CRUD']['update']) ) {
+						$formNodes[$formNodeID]['CRUD']['update'] = array();
+					}
+
 					foreach( $crudNode->xpath( 'child::Destroy' ) as $destroyNode ) {
 						$destroyTriggers = array();
 
@@ -1617,6 +1664,11 @@ final class FormDirector {
 						}
 
 						$formNodes[$formNodeID]['CRUD']['destroy'] = $destroyTriggers;
+					}
+
+					// No destroy trigger for CRUD specified, so let's just set an empty array
+					if ( !isset($formNodes[$formNodeID]['CRUD']['destroy']) ) {
+						$formNodes[$formNodeID]['CRUD']['destroy'] = array();
 					}
 				}
 
