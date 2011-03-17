@@ -100,6 +100,7 @@ final class FormDirector {
 				}
 
 				$formAttributeSetNodeIDCamel = eGlooString::toCamelCase( $formAttributeSetNodeID, '_', true );
+				$formAttributeSetNodeTokenPrefix = $formAttributeSetNodeID . '_form_attribute_set_';
 
 				$formAttributeSetNodeDisplayLocalized = isset( $formAttributeSetNode['displayLocalized'] ) ? strtolower( (string) $formAttributeSetNode['displayLocalized'] ) : 'true';
 				$formAttributeSetNodeDisplayLocalizer = isset( $formAttributeSetNode['displayLocalizer'] ) ? (string) $formAttributeSetNode['displayLocalizer'] : 'GenericFormDisplayLocalizer';
@@ -209,10 +210,10 @@ final class FormDirector {
 
 				$prependHTML = null;
 				$appendHTML = null;
-				$cssClasses = null;
+				$cssClasses = $defaultFormAttributeSetCSS = 'egloo-formattributeset';
 
 				$formLegend = eGlooString::toPrettyPrint( $formAttributeSetNodeID, '_', true );
-				$formLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_legend';
+				$formLegendLocalizationToken = $formAttributeSetNodeTokenPrefix . 'legend';
 
 				foreach( $formAttributeSetNode->xpath( 'child::Legend' ) as $legend ) {
 					$formLegend = (string) $legend;
@@ -269,6 +270,7 @@ final class FormDirector {
 					}
 
 					$formFieldSetIDCamel = eGlooString::toCamelCase( $formFieldSetID, '_', true );
+					$formFieldSetTokenPrefix = $formAttributeSetNodeTokenPrefix . $formFieldSetID . '_formfieldset_';
 
 					$formFieldSetNodeValidated = isset( $formFieldSet['validated'] ) ? strtolower( (string) $formFieldSet['validated'] ) : 'true';
 
@@ -303,8 +305,22 @@ final class FormDirector {
 						$formFieldSetNodeRequired = false;
 					}
 
+					// TODO support these later - currently not used except to maintain scope
+					$displayLabel = null;
+					$errorMessage = null;
+					$errorHandler = null;
+					$prependHTML = null;
+					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
+
+					$defaultFormFieldSetCSS = $defaultFormAttributeSetCSS . '-formfieldset';
+					$cssClasses = $defaultFormFieldSetCSS;
+
 					$formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID, '_', true );
-					$formFieldSetLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_legend';
+					$formFieldSetLegendLocalizationToken = $formFieldSetTokenPrefix . 'legend';
 
 					foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
 						$formFieldSetLegend = (string) $legend;
@@ -315,7 +331,7 @@ final class FormDirector {
 					}
 
 					$formFieldSetErrorMessage = NULL;
-					$formFieldSetErrorMessageLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_error';
+					$formFieldSetErrorMessageLocalizationToken = $formFieldSetTokenPrefix . 'error';
 
 					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
 						$formFieldSetErrorMessage = (string) $legend;
@@ -355,6 +371,8 @@ final class FormDirector {
 								"'.	 Please review your Forms.xml");
 						}
 
+						$formFieldTokenPrefix = $formFieldSetTokenPrefix . $formFieldID . '_formfield_';
+
 						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
@@ -371,10 +389,34 @@ final class FormDirector {
 							$formFieldRequired = false;
 						}
 
+						$displayLabel = null;
+						$errorMessage = null;
+						$errorHandler = null;
+						$prependHTML = null;
+						$appendHTML = null;
+						$labelPrependHTML = null;
+						$labelAppendHTML = null;
+						$inputPrependHTML = null;
+						$inputAppendHTML = null;
+
+						$defaultFormFieldCSS = $defaultFormAttributeSetCSS . '-formfield ' . $defaultFormFieldSetCSS . '-formfield';
+						$cssClasses = $defaultFormFieldCSS;
+
+						$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 						$containerChildren = array();
 
 						// Let's process the children of any FormField that fancies itself a container
 						if ($formFieldType === 'container') {
+							$defaultFormFieldCSS .= '-container';
+							$cssClasses = $defaultFormFieldCSS;
+
+							$formFieldTokenPrefix .= 'container_';
+
+							$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+							$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 							foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
 								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
 
@@ -382,6 +424,8 @@ final class FormDirector {
 									throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
 										'\'.	 Please review your Forms.xml');
 								}
+
+								$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
 								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
@@ -410,24 +454,25 @@ final class FormDirector {
 								$childLabelAppendHTML = null;
 								$childInputPrependHTML = null;
 								$childInputAppendHTML = null;
-								$childCSSClasses = null;
+								$childCSSClasses = $defaultFormFieldCSS . '-formfield';
 
-								// $formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID );
-								// $formFieldSetLegendLocalizationToken = $formAttributeSetNodeID . '_form_attribute_set_' . $formFieldSetID . '_form_field_set_legend';
-
-								$childDisplayLabelLocalizationToken = null;
-								$childErrorMessageLocalizationToken = null;
+								$childDisplayLabelLocalizationToken = $formFieldContainerTokenPrefix . 'displaylabel';
+								$childErrorMessageLocalizationToken = $formFieldContainerTokenPrefix . 'error';
 
 								foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 									$childDisplayLabel = (string) $childDisplayLabelNode;
-									$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
-										(string) $childDisplayLabelNode['localizationToken'] : NULL;
+
+									if ( isset($childDisplayLabelNode['localizationToken']) ) {
+										$childDisplayLabelLocalizationToken = (string) $childDisplayLabelNode['localizationToken'];
+									}
 								}
 
 								foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 									$childErrorMessage = (string) $childErrorMessageNode;
-									$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
-										(string) $childErrorMessageNode['localizationToken'] : NULL;
+
+									if ( isset($childErrorMessageNode['localizationToken']) ) {
+										$childErrorMessageLocalizationToken = (string) $childErrorMessageNode['localizationToken'];
+									}
 								}
 
 								foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -486,30 +531,20 @@ final class FormDirector {
 							}
 						}
 
-						$displayLabel = null;
-						$errorMessage = null;
-						$errorHandler = null;
-						$prependHTML = null;
-						$appendHTML = null;
-						$labelPrependHTML = null;
-						$labelAppendHTML = null;
-						$inputPrependHTML = null;
-						$inputAppendHTML = null;
-						$cssClasses = null;
-
-						$displayLabelLocalizationToken = null;
-						$errorMessageLocalizationToken = null;
-
 						foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 							$displayLabel = (string) $displayLabelNode;
-							$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
-								(string) $displayLabelNode['localizationToken'] : NULL;
+
+							if ( isset($displayLabelNode['localizationToken']) ) {
+								$displayLabelLocalizationToken = (string) $displayLabelNode['localizationToken'];
+							}
 						}
 
 						foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 							$errorMessage = (string) $errorMessageNode;
-							$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
-								(string) $errorMessageNode['localizationToken'] : NULL;
+
+							if ( isset($errorMessageNode['localizationToken']) ) {
+								$errorMessageLocalizationToken = (string) $errorMessageNode['localizationToken'];
+							}
 						}
 
 						foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -575,6 +610,7 @@ final class FormDirector {
 					$formAttributeSetNodes[$formAttributeSetNodeID]['formFieldSets'][$formFieldSetID] = $newFormFieldSet;
 				}
 
+				// FormField Nodes
 				foreach( $formAttributeSetNode->xpath( 'child::FormField' ) as $formField ) {
 					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
 
@@ -583,10 +619,18 @@ final class FormDirector {
 							"'.	 Please review your Forms.xml");
 					}
 
+					$formFieldIDCamel = eGlooString::toCamelCase( $formFieldID, '_', true );
+					$formFieldTokenPrefix = $formAttributeSetNodeTokenPrefix . $formFieldID . '_formfield_';
+
 					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
 					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+
+					if ( !$formFieldType || trim($formFieldType) === '' ) {
+						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
+							'\'.	 Please review your Forms.xml');
+					}
 
 					if ( $formFieldRequired && $formFieldRequired === 'true' ) {
 						$formFieldRequired = true;
@@ -594,14 +638,33 @@ final class FormDirector {
 						$formFieldRequired = false;
 					}
 
-					if ( !$formFieldType || trim($formFieldType) === '' ) {
-						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
-							'\'.	 Please review your Forms.xml');
-					}
+					$displayLabel = null;
+					$errorMessage = null;
+					$errorHandler = null;
+					$prependHTML = null;
+					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
+
+					$defaultFormFieldCSS = $defaultFormAttributeSetCSS . '-formfield';
+					$cssClasses = $defaultFormFieldCSS;
+
+					$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+					$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 					$containerChildren = array();
 
 					if ($formFieldType === 'container') {
+						$defaultFormFieldCSS .= ' ' . $defaultFormFieldCSS . '-container';
+						$cssClasses = $defaultFormFieldCSS;
+
+						$formFieldTokenPrefix .= 'container_';
+
+						$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
 							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
 
@@ -609,6 +672,8 @@ final class FormDirector {
 								throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
 									'\'.	 Please review your Forms.xml');
 							}
+
+							$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
 							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
@@ -637,21 +702,25 @@ final class FormDirector {
 							$childLabelAppendHTML = null;
 							$childInputPrependHTML = null;
 							$childInputAppendHTML = null;
-							$childCSSClasses = null;
+							$childCSSClasses = $defaultFormFieldCSS . '-formfield';
 
-							$childDisplayLabelLocalizationToken = null;
-							$childErrorMessageLocalizationToken = null;
+							$childDisplayLabelLocalizationToken = $formFieldContainerTokenPrefix . 'displaylabel';
+							$childErrorMessageLocalizationToken = $formFieldContainerTokenPrefix . 'error';
 
 							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 								$childDisplayLabel = (string) $childDisplayLabelNode;
-								$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
-									(string) $childDisplayLabelNode['localizationToken'] : NULL;
+								
+								if ( isset($childDisplayLabelNode['localizationToken']) ) {
+									$childDisplayLabelLocalizationToken = (string) $childDisplayLabelNode['localizationToken'];
+								}
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 								$childErrorMessage = (string) $childErrorMessageNode;
-								$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
-									(string) $childErrorMessageNode['localizationToken'] : NULL;
+
+								if ( isset($childErrorMessageNode['localizationToken']) ) {
+									$childErrorMessageLocalizationToken = (string) $childErrorMessageNode['localizationToken'];
+								}
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -710,30 +779,20 @@ final class FormDirector {
 						}
 					}
 
-					$displayLabel = null;
-					$errorMessage = null;
-					$errorHandler = null;
-					$prependHTML = null;
-					$appendHTML = null;
-					$labelPrependHTML = null;
-					$labelAppendHTML = null;
-					$inputPrependHTML = null;
-					$inputAppendHTML = null;
-					$cssClasses = null;
-
-					$displayLabelLocalizationToken = null;
-					$errorMessageLocalizationToken = null;
-
 					foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 						$displayLabel = (string) $displayLabelNode;
-						$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
-							(string) $displayLabelNode['localizationToken'] : NULL;
+
+						if ( isset($displayLabelNode['localizationToken']) ) {
+							$displayLabelLocalizationToken = (string) $displayLabelNode['localizationToken'];
+						}
 					}
 
 					foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 						$errorMessage = (string) $errorMessageNode;
-						$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
-							(string) $errorMessageNode['localizationToken'] : NULL;
+
+						if ( isset($errorMessageNode['localizationToken']) ) {
+							$errorMessageLocalizationToken = (string) $errorMessageNode['localizationToken'];
+						}
 					}
 
 					foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -807,6 +866,7 @@ final class FormDirector {
 				}
 
 				$formNodeIDCamel = eGlooString::toCamelCase( $formNodeID, '_', true );
+				$formNodeTokenPrefix = $formNodeID . '_form_';
 
 				$formNodeDisplayLocalized = isset( $formNode['displayLocalized'] ) ? strtolower( (string) $formNode['displayLocalized'] ) : 'true';
 				$formNodeDisplayLocalizer = isset( $formNode['displayLocalizer'] ) ? (string) $formNode['displayLocalizer'] : 'GenericFormDisplayLocalizer';
@@ -915,10 +975,10 @@ final class FormDirector {
 
 				$prependHTML = null;
 				$appendHTML = null;
-				$cssClasses = null;
+				$cssClasses = $defaultFormCSS = 'egloo-form';
 
 				$formLegend = eGlooString::toPrettyPrint( $formNodeID, '_', true );
-				$formLegendLocalizationToken = $formNodeID . '_form_legend';
+				$formLegendLocalizationToken = $formNodeTokenPrefix . 'legend';
 
 				foreach( $formNode->xpath( 'child::Legend' ) as $legend ) {
 					$formLegend = (string) $legend;
@@ -976,6 +1036,7 @@ final class FormDirector {
 					}
 
 					$formFieldSetIDCamel = eGlooString::toCamelCase( $formFieldSetID, '_', true );
+					$formFieldSetTokenPrefix = $formNodeTokenPrefix . $formFieldSetID . '_formfieldset_';
 
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
@@ -1026,8 +1087,22 @@ final class FormDirector {
 						$formFieldSetNodeRequired = false;
 					}
 
+					// TODO support these later - currently not used except to maintain scope
+					$displayLabel = null;
+					$errorMessage = null;
+					$errorHandler = null;
+					$prependHTML = null;
+					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
+
+					$defaultFormFieldSetCSS = $defaultFormCSS . '-formfieldset';
+					$cssClasses = $defaultFormFieldSetCSS;
+
 					$formFieldSetLegend = eGlooString::toPrettyPrint( $formFieldSetID, '_', true );
-					$formFieldSetLegendLocalizationToken = $formNodeID . '_form_' . $formFieldSetID . '_form_field_set_legend';
+					$formFieldSetLegendLocalizationToken = $formFieldSetTokenPrefix . 'legend';
 
 					foreach( $formFieldSet->xpath( 'child::Legend' ) as $legend ) {
 						$formFieldSetLegend = (string) $legend;
@@ -1038,7 +1113,7 @@ final class FormDirector {
 					}
 
 					$formFieldSetErrorMessage = null;
-					$formFieldSetErrorMessageLocalizationToken = $formNodeID . '_form_' . $formFieldSetID . '_form_field_set_error';
+					$formFieldSetErrorMessageLocalizationToken = $formFieldSetTokenPrefix . 'error';
 
 					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
 						$formFieldSetErrorMessage = (string) $legend;
@@ -1078,6 +1153,8 @@ final class FormDirector {
 								"'.	 Please review your Forms.xml");
 						}
 
+						$formFieldTokenPrefix = $formFieldSetTokenPrefix . $formFieldID . '_formfield_';
+
 						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
@@ -1111,10 +1188,34 @@ final class FormDirector {
 						// 	$formFieldNodeDisplayLocalized = false;
 						// }
 
+						$displayLabel = null;
+						$errorMessage = null;
+						$errorHandler = null;
+						$prependHTML = null;
+						$appendHTML = null;
+						$labelPrependHTML = null;
+						$labelAppendHTML = null;
+						$inputPrependHTML = null;
+						$inputAppendHTML = null;
+
+						$defaultFormFieldCSS = $defaultFormCSS . '-formfield ' . $defaultFormFieldSetCSS . '-formfield';
+						$cssClasses = $defaultFormFieldCSS;
+
+						$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 						$containerChildren = array();
 
 						// Let's process the children of any FormField that fancies itself a container
 						if ($formFieldType === 'container') {
+							$defaultFormFieldCSS .= '-container';
+							$cssClasses = $defaultFormFieldCSS;
+
+							$formFieldTokenPrefix .= 'container_';
+
+							$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+							$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 							foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
 								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
 
@@ -1122,6 +1223,8 @@ final class FormDirector {
 									throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
 										'\'.	 Please review your Forms.xml');
 								}
+
+								$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
 								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
@@ -1167,21 +1270,25 @@ final class FormDirector {
 								$childLabelAppendHTML = null;
 								$childInputPrependHTML = null;
 								$childInputAppendHTML = null;
-								$childCSSClasses = null;
+								$childCSSClasses = $defaultFormFieldCSS . '-formfield';
 
-								$childDisplayLabelLocalizationToken = null;
-								$childErrorMessageLocalizationToken = null;
+								$childDisplayLabelLocalizationToken = $formFieldContainerTokenPrefix . 'displaylabel';
+								$childErrorMessageLocalizationToken = $formFieldContainerTokenPrefix . 'error';
 
 								foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 									$childDisplayLabel = (string) $childDisplayLabelNode;
-									$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
-										(string) $childDisplayLabelNode['localizationToken'] : NULL;
+
+									if ( isset($childDisplayLabelNode['localizationToken']) ) {
+										$childDisplayLabelLocalizationToken = (string) $childDisplayLabelNode['localizationToken'];
+									}
 								}
 
 								foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 									$childErrorMessage = (string) $childErrorMessageNode;
-									$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
-										(string) $childErrorMessageNode['localizationToken'] : NULL;
+
+									if ( isset($childErrorMessageNode['localizationToken']) ) {
+										$childErrorMessageLocalizationToken = (string) $childErrorMessageNode['localizationToken'];
+									}
 								}
 
 								foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -1240,30 +1347,20 @@ final class FormDirector {
 							}
 						}
 
-						$displayLabel = null;
-						$errorMessage = null;
-						$errorHandler = null;
-						$prependHTML = null;
-						$appendHTML = null;
-						$labelPrependHTML = null;
-						$labelAppendHTML = null;
-						$inputPrependHTML = null;
-						$inputAppendHTML = null;
-						$cssClasses = null;
-
-						$displayLabelLocalizationToken = null;
-						$errorMessageLocalizationToken = null;
-
 						foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 							$displayLabel = (string) $displayLabelNode;
-							$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
-								(string) $displayLabelNode['localizationToken'] : NULL;
+
+							if ( isset($displayLabelNode['localizationToken']) ) {
+								$displayLabelLocalizationToken = (string) $displayLabelNode['localizationToken'];
+							}
 						}
 
 						foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 							$errorMessage = (string) $errorMessageNode;
-							$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
-								(string) $errorMessageNode['localizationToken'] : NULL;
+
+							if ( isset($errorMessageNode['localizationToken']) ) {
+								$errorMessageLocalizationToken = (string) $errorMessageNode['localizationToken'];
+							}
 						}
 
 						foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -1338,6 +1435,9 @@ final class FormDirector {
 							"'.	 Please review your Forms.xml");
 					}
 
+					$formFieldIDCamel = eGlooString::toCamelCase( $formFieldID, '_', true );
+					$formFieldTokenPrefix = $formNodeTokenPrefix . $formFieldID . '_formfield_';
+
 					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
 					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
 					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
@@ -1353,6 +1453,22 @@ final class FormDirector {
 					} else {
 						$formFieldRequired = false;
 					}
+
+					$displayLabel = null;
+					$errorMessage = null;
+					$errorHandler = null;
+					$prependHTML = null;
+					$appendHTML = null;
+					$labelPrependHTML = null;
+					$labelAppendHTML = null;
+					$inputPrependHTML = null;
+					$inputAppendHTML = null;
+
+					$defaultFormFieldCSS = $defaultFormCSS . '-formfield';
+					$cssClasses = $defaultFormFieldCSS;
+
+					$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+					$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
@@ -1374,6 +1490,14 @@ final class FormDirector {
 					$containerChildren = array();
 
 					if ($formFieldType === 'container') {
+						$defaultFormFieldCSS .= ' ' . $defaultFormFieldCSS . '-container';
+						$cssClasses = $defaultFormFieldCSS;
+
+						$formFieldTokenPrefix .= 'container_';
+
+						$displayLabelLocalizationToken = $formFieldTokenPrefix . 'displaylabel';
+						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
+
 						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
 							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
 
@@ -1381,6 +1505,8 @@ final class FormDirector {
 								throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
 									'\'.	 Please review your Forms.xml');
 							}
+
+							$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
 							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
 							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
@@ -1426,21 +1552,25 @@ final class FormDirector {
 							$childLabelAppendHTML = null;
 							$childInputPrependHTML = null;
 							$childInputAppendHTML = null;
-							$childCSSClasses = null;
+							$childCSSClasses = $defaultFormFieldCSS . '-formfield';
 
-							$childDisplayLabelLocalizationToken = null;
-							$childErrorMessageLocalizationToken = null;
+							$childDisplayLabelLocalizationToken = $formFieldContainerTokenPrefix . 'displaylabel';
+							$childErrorMessageLocalizationToken = $formFieldContainerTokenPrefix . 'error';
 
 							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 								$childDisplayLabel = (string) $childDisplayLabelNode;
-								$childDisplayLabelLocalizationToken = isset($childDisplayLabelNode['localizationToken']) ? 
-									(string) $childDisplayLabelNode['localizationToken'] : NULL;
+
+								if ( isset($childDisplayLabelNode['localizationToken']) ) {
+									$childDisplayLabelLocalizationToken = (string) $childDisplayLabelNode['localizationToken'];
+								}
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorMessage' ) as $childErrorMessageNode ) {
 								$childErrorMessage = (string) $childErrorMessageNode;
-								$childErrorMessageLocalizationToken = isset($childErrorMessageNode['localizationToken']) ? 
-									(string) $childErrorMessageNode['localizationToken'] : NULL;
+
+								if ( isset($childErrorMessageNode['localizationToken']) ) {
+									$childErrorMessageLocalizationToken = (string) $childErrorMessageNode['localizationToken'];
+								}
 							}
 
 							foreach( $formFieldChild->xpath( 'child::ErrorHandler' ) as $childErrorHandlerNode ) {
@@ -1499,30 +1629,20 @@ final class FormDirector {
 						}
 					}
 
-					$displayLabel = null;
-					$errorMessage = null;
-					$errorHandler = null;
-					$prependHTML = null;
-					$appendHTML = null;
-					$labelPrependHTML = null;
-					$labelAppendHTML = null;
-					$inputPrependHTML = null;
-					$inputAppendHTML = null;
-					$cssClasses = null;
-
-					$displayLabelLocalizationToken = null;
-					$errorMessageLocalizationToken = null;
-
 					foreach( $formField->xpath( 'child::DisplayLabel' ) as $displayLabelNode ) {
 						$displayLabel = (string) $displayLabelNode;
-						$displayLabelLocalizationToken = isset($displayLabelNode['localizationToken']) ? 
-							(string) $displayLabelNode['localizationToken'] : NULL;
+
+						if ( isset($displayLabelNode['localizationToken']) ) {
+							$displayLabelLocalizationToken = (string) $displayLabelNode['localizationToken'];
+						}
 					}
 
 					foreach( $formField->xpath( 'child::ErrorMessage' ) as $errorMessageNode ) {
 						$errorMessage = (string) $errorMessageNode;
-						$errorMessageLocalizationToken = isset($errorMessageNode['localizationToken']) ? 
-							(string) $errorMessageNode['localizationToken'] : NULL;
+
+						if ( isset($errorMessageNode['localizationToken']) ) {
+							$errorMessageLocalizationToken = (string) $errorMessageNode['localizationToken'];
+						}
 					}
 
 					foreach( $formField->xpath( 'child::ErrorHandler' ) as $errorHandlerNode ) {
@@ -1593,6 +1713,7 @@ final class FormDirector {
 						foreach( $createNode->xpath( 'child::Trigger' ) as $triggerNode ) {
 							$newTrigger = array();
 
+							// TODO throw exception if this is malformed.  Unused triggers / malformed triggers shouldn't be put in
 							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
 							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
 							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
@@ -1946,16 +2067,19 @@ final class FormDirector {
 		}
 
 		// CRUD
-		$crudInfo = $formNode['CRUD'];
+		if ( isset( $formNode['CRUD'] ) && !empty( $formNode['CRUD'] ) ) {
+			$crudInfo = $formNode['CRUD'];
 
-		if ( !empty($crudInfo['create']) || !empty($crudInfo['read']) || !empty($crudInfo['update']) || !empty($crudInfo['destroy']) ) {
-			$newFormObj->setIsCRUDable( true );
+			// If one was set, all have to be set, so once we hit one we build out our CRUD triggers, whatever is provided
+			if ( !empty($crudInfo['create']) || !empty($crudInfo['read']) || !empty($crudInfo['update']) || !empty($crudInfo['destroy']) ) {
+				$newFormObj->setIsCRUDable( true );
+
+				$newFormObj->setCRUDCreateTriggers( $crudInfo['create'] );
+				$newFormObj->setCRUDReadTriggers( $crudInfo['read'] );
+				$newFormObj->setCRUDUpdateTriggers( $crudInfo['update'] );
+				$newFormObj->setCRUDDestroyTriggers( $crudInfo['destroy'] );
+			}
 		}
-
-		$newFormObj->setCRUDCreateTriggers( $crudInfo['create'] );
-		$newFormObj->setCRUDReadTriggers( $crudInfo['read'] );
-		$newFormObj->setCRUDUpdateTriggers( $crudInfo['update'] );
-		$newFormObj->setCRUDDestroyTriggers( $crudInfo['destroy'] );
 
 		$retVal = $newFormObj;
 
