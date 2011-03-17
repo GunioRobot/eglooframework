@@ -92,6 +92,8 @@ class MySQLiOOPQueryExecutionRoutine extends QueryExecutionRoutine {
 			$retVal = self::convertResponseResourceIntoResponseTransaction($responseResource);
 		}
 
+		// TODO make this conditional on decorator and add ability for error code tracking
+		self::$historyOfQueriesExecuted[] = array( 'executedQuery' => $preparedQueryString, 'executedQueryResult' => $resultSet, 'error' => 0 );
 		self::$numberOfQueriesExecuted += 1;
 
 		return $retVal;

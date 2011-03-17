@@ -389,9 +389,11 @@ final class FormDirector {
 							$formFieldRequired = false;
 						}
 
-						$displayLabel = null;
+						$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
+							eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
+
 						$errorMessage = null;
-						$errorHandler = null;
+						$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 						$prependHTML = null;
 						$appendHTML = null;
 						$labelPrependHTML = null;
@@ -445,9 +447,11 @@ final class FormDirector {
 									$formFieldChildRequired = false;
 								}
 
-								$childDisplayLabel = null;
+								$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
+									eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
+
 								$childErrorMessage = null;
-								$childErrorHandler = null;
+								$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
 								$childLabelPrependHTML = null;
@@ -638,9 +642,11 @@ final class FormDirector {
 						$formFieldRequired = false;
 					}
 
-					$displayLabel = null;
+					$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
+						eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
+
 					$errorMessage = null;
-					$errorHandler = null;
+					$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 					$prependHTML = null;
 					$appendHTML = null;
 					$labelPrependHTML = null;
@@ -693,9 +699,11 @@ final class FormDirector {
 								$formFieldChildRequired = false;
 							}
 
-							$childDisplayLabel = null;
+							$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
+								eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
+
 							$childErrorMessage = null;
-							$childErrorHandler = null;
+							$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
 							$childLabelPrependHTML = null;
@@ -1188,9 +1196,11 @@ final class FormDirector {
 						// 	$formFieldNodeDisplayLocalized = false;
 						// }
 
-						$displayLabel = null;
+						$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
+							eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
+
 						$errorMessage = null;
-						$errorHandler = null;
+						$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 						$prependHTML = null;
 						$appendHTML = null;
 						$labelPrependHTML = null;
@@ -1261,9 +1271,11 @@ final class FormDirector {
 								// 	$formFieldChildNodeDisplayLocalized = false;
 								// }
 
-								$childDisplayLabel = null;
+								$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
+									eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
+
 								$childErrorMessage = null;
-								$childErrorHandler = null;
+								$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
 								$childLabelPrependHTML = null;
@@ -1454,9 +1466,11 @@ final class FormDirector {
 						$formFieldRequired = false;
 					}
 
-					$displayLabel = null;
+					$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
+						eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
+
 					$errorMessage = null;
-					$errorHandler = null;
+					$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 					$prependHTML = null;
 					$appendHTML = null;
 					$labelPrependHTML = null;
@@ -1543,9 +1557,11 @@ final class FormDirector {
 							// 	$formFieldChildNodeDisplayLocalized = false;
 							// }
 
-							$childDisplayLabel = null;
+							$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
+								eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
+
 							$childErrorMessage = null;
-							$childErrorHandler = null;
+							$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
 							$childLabelPrependHTML = null;

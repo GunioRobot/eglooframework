@@ -115,6 +115,10 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 		}
 
 		$queryTransaction->setDataPackage(array('preparedQueryString' => $populatedDataPackageString, 'preparedStatementObject' => $statement));
+
+		// TODO only maintain this if trace decorator detected and add error tracking
+		self::$historyOfQueriesPopulated[] =
+			array('unpreparedQueryString' => $dataPackageString, 'parameters' => $queryParameters, 'preparedQueryString' => $populatedDataPackageString, 'error' => 0 );
 	}
 
 	private function populateQueryWithSTMT( $queryTransaction, $queryParameters, $associative = false, $sort = false ) {

@@ -38,11 +38,16 @@
  */
 class QueryExecutionRoutine extends ExecutionRoutine {
 
+	public static $historyOfQueriesExecuted = array();
 	public static $numberOfQueriesExecuted = 0;
 
 	public static function executeTransaction( $queryTransaction ) {}
 
 	public static function executeTransactionWithConnection( $queryTransaction, $connection ) {}
+
+	public static function getHistoryOfQueriesExecuted() {
+		return self::$historyOfQueriesExecuted;
+	}
 
 	public static function getNumberOfQueriesExecuted() {
 		return self::$numberOfQueriesExecuted;
