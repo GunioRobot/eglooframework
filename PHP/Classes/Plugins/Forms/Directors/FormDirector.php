@@ -392,7 +392,16 @@ final class FormDirector {
 						$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
 							eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
 
-						$errorMessage = null;
+						switch( $formFieldType ) {
+							case 'password':
+							case 'text':
+								$errorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldID, '_', false, false );
+								break;
+							default :
+								$errorMessage = null;
+								break;
+						}
+
 						$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 						$prependHTML = null;
 						$appendHTML = null;
@@ -450,7 +459,16 @@ final class FormDirector {
 								$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
 									eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
 
-								$childErrorMessage = null;
+								switch( $formFieldChildType ) {
+									case 'password':
+									case 'text':
+										$childErrorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldChildID, '_', false, false );
+										break;
+									default :
+										$childErrorMessage = null;
+										break;
+								}
+
 								$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
@@ -645,7 +663,16 @@ final class FormDirector {
 					$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
 						eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
 
-					$errorMessage = null;
+					switch( $formFieldType ) {
+						case 'password':
+						case 'text':
+							$errorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldID, '_', false, false );
+							break;
+						default :
+							$errorMessage = null;
+							break;
+					}
+
 					$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 					$prependHTML = null;
 					$appendHTML = null;
@@ -702,7 +729,16 @@ final class FormDirector {
 							$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
 								eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
 
-							$childErrorMessage = null;
+							switch( $formFieldChildType ) {
+								case 'password':
+								case 'text':
+									$childErrorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldChildID, '_', false, false );
+									break;
+								default :
+									$childErrorMessage = null;
+									break;
+							}
+
 							$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
@@ -1199,7 +1235,16 @@ final class FormDirector {
 						$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
 							eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
 
-						$errorMessage = null;
+						switch( $formFieldType ) {
+							case 'password':
+							case 'text':
+								$errorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldID, '_', false, false );
+								break;
+							default :
+								$errorMessage = null;
+								break;
+						}
+
 						$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 						$prependHTML = null;
 						$appendHTML = null;
@@ -1274,7 +1319,16 @@ final class FormDirector {
 								$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
 									eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
 
-								$childErrorMessage = null;
+								switch( $formFieldChildType ) {
+									case 'password':
+									case 'text':
+										$childErrorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldChildID, '_', false, false );
+										break;
+									default :
+										$childErrorMessage = null;
+										break;
+								}
+
 								$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 								$childPrependHTML = null;
 								$childAppendHTML = null;
@@ -1469,7 +1523,16 @@ final class FormDirector {
 					$displayLabel = $formFieldType !== 'container' && $formFieldType !== 'hidden' && $formFieldType !== 'submit' ?
 						eGlooString::toPrettyPrint( $formFieldID, '_', true ) . ': ' : null;
 
-					$errorMessage = null;
+					switch( $formFieldType ) {
+						case 'password':
+						case 'text':
+							$errorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldID, '_', false, false );
+							break;
+						default :
+							$errorMessage = null;
+							break;
+					}
+
 					$errorHandler = $formFieldType === 'hidden' ? 'FormErrorHandler' : null;
 					$prependHTML = null;
 					$appendHTML = null;
@@ -1560,7 +1623,16 @@ final class FormDirector {
 							$childDisplayLabel = $formFieldChildType !== 'container' && $formFieldChildType !== 'hidden' && $formFieldChildType !== 'submit' ?
 								eGlooString::toPrettyPrint( $formFieldChildID, '_', true ) . ': ' : null;
 
-							$childErrorMessage = null;
+							switch( $formFieldChildType ) {
+								case 'password':
+								case 'text':
+									$childErrorMessage = 'Please enter a valid ' . eGlooString::toPrettyPrint( $formFieldChildID, '_', false, false );
+									break;
+								default :
+									$childErrorMessage = null;
+									break;
+							}
+
 							$childErrorHandler = $formFieldChildType === 'hidden' ? 'FormErrorHandler' : null;
 							$childPrependHTML = null;
 							$childAppendHTML = null;
