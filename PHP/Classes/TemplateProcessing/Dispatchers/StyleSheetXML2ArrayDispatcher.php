@@ -271,6 +271,11 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( !$dispatchPath || $dispatchPath === '' ) {
+			$error_message = '"StyleSheetXML2ArrayDispatcher: Dispatch node not found for "' . $userRequestID . '.css".  ' .
+				'Please review your CSS Dispatch.xml';
+
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
+
 			throw new ErrorException($error_message);
 		}
 
