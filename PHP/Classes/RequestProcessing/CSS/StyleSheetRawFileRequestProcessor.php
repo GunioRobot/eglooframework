@@ -74,7 +74,7 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 			$file_name = $matches[2];
 			$user_agent_hash = $matches[1];
 
-			if (trim($user_agent_hash) === hash('sha256', $_SERVER['HTTP_USER_AGENT'])) {
+			if ( trim($user_agent_hash) === eGlooRequest::getUserAgentHash() ) {
 				$cache_to_webroot = true;
 			}
 		}
@@ -91,7 +91,7 @@ class StyleSheetRawFileRequestProcessor extends RequestProcessor {
 				throw $e;
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'StyleSheetRawFileRequestProcessor: Template requested but not found: "' .
-				 	$this->requestInfoBean->getGET( 'css_name' ) . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
+				 	$this->requestInfoBean->getGET( 'css_name' ) . '" from user-agent "' . eGlooRequest::getUserAgent() . '"' );
 				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}

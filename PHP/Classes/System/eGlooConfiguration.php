@@ -1736,14 +1736,6 @@ final class eGlooConfiguration {
 		return self::$web_root;
 	}
 
-	public static function getUserAgentHash() {
-		if (self::$userAgentHash === null) {
-			self::$userAgentHash = hash('sha256', $_SERVER['HTTP_USER_AGENT']);
-		}
-
-		return self::$userAgentHash;
-	}
-
 	public static function issetCustomVariable( $index ) {
 		$retVal = false;
 		

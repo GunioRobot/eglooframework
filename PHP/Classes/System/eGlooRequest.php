@@ -38,5 +38,112 @@
  */
 class eGlooRequest {
 
+	const NOT_FOUND_IN_HEADERS_MESSAGE = 'Not found in HTTP headers';
+
+	private static $http_host = null;
+	private static $query_string = null;
+	private static $referer = null;
+	private static $remote_address = null;
+	private static $request_uri = null;
+	private static $server_address = null;
+	private static $server_name = null;
+	private static $server_protocol = null;
+	private static $user_agent = null;
+	private static $user_agent_hash = null;
+
+// eGlooRequest::getRemoteAddress()
+
+	public static function getHTTPHost() {
+		if ( self::$http_host === null ) {
+			self::$http_host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+		}
+
+		return self::$http_host;
+	}
+
+	public static function getQueryString() {
+		if ( self::$query_string === null ) {
+			self::$query_string = isset( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : '';
+		}
+
+		return self::$query_string;
+	}
+
+	public static function getReferer() {
+		if ( self::$referer === null ) {
+			self::$referer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
+		}
+
+		return self::$referer;
+	}
+
+	public static function getRemoteAddress() {
+		if ( self::$remote_address === null ) {
+			self::$remote_address = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+		}
+
+		return self::$remote_address;
+	}
+
+	public static function getRequestTime() {
+		if ( self::$request_time === null ) {
+			self::$request_time = isset( $_SERVER['REQUEST_TIME'] ) ? $_SERVER['REQUEST_TIME'] : '';
+		}
+
+		return self::$request_time;
+	}
+
+	public static function getRequestURI() {
+		if ( self::$request_uri === null ) {
+			self::$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+		}
+
+		return self::$request_uri;
+	}
+
+	public static function getServerAddress() {
+		if ( self::$server_address === null ) {
+			self::$server_address = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : '';
+		}
+
+		return self::$server_address;
+	}
+
+	public static function getServerName() {
+		if ( self::$server_name === null ) {
+			self::$server_name = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : '';
+		}
+
+		return self::$server_name;
+	}
+
+	public static function getServerProtocol() {
+		if ( self::$server_protocol === null ) {
+			self::$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : '';
+		}
+
+		return self::$server_protocol;
+	}
+
+	public static function getUserAgent() {
+		if ( self::$user_agent === null ) {
+			self::$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : 'Default';
+		}
+
+		return self::$user_agent;
+	}
+
+	public static function getUserAgentHash() {
+		if ( self::$user_agent_hash === null ) {
+			self::$user_agent_hash = hash( 'sha256', self::getUserAgent() );
+		}
+
+		return self::$user_agent_hash;
+	}
+
+	public static function isSSL() {
+		return isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '';
+	}
+
 }
 

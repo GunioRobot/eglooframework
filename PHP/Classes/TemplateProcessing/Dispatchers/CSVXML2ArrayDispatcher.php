@@ -133,14 +133,9 @@ class CSVXML2ArrayDispatcher extends TemplateDispatcher {
 
 			return false;
 		}
-			   
-		if ( !isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			$userAgent = 'Default';
-			// TODO skip checks or error out ?
-		} else {
-			$userAgent = $_SERVER['HTTP_USER_AGENT'];
-		}
-		
+
+		$userAgent = eGlooRequest::getUserAgent();
+
 		/**
 		 * If this is a valid request class/id, get the request denoted 
 		 * by this request class and id.

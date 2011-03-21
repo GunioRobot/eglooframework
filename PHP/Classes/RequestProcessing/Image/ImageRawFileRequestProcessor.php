@@ -156,7 +156,7 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 				}
 			}
 		} else {
-			header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found ' );
+			header( eGlooRequest::getServerProtocol() . ' 404 Not Found ' );
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'ImageRawFileRequestProcessor: Exiting processRequest()' );

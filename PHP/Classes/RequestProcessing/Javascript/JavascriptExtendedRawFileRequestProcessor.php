@@ -104,7 +104,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 			$file_name = $matches[2];
 			$user_agent_hash = $matches[1];
 
-			if ( trim($user_agent_hash) === hash('sha256', $_SERVER['HTTP_USER_AGENT']) ) {
+			if ( trim($user_agent_hash) === eGlooRequest::getUserAgentHash() ) {
 				$cache_to_webroot = true;
 			}
 		}
@@ -121,7 +121,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 				throw $e;
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'JavascriptExtendedRawFileRequestProcessor: Template requested but not found: "' .
-					$this->requestInfoBean->getGET( 'javascript_name' ) . '" from user-agent "' . $_SERVER['HTTP_USER_AGENT'] . '"' );
+					$this->requestInfoBean->getGET( 'javascript_name' ) . '" from user-agent "' . eGlooRequest::getUserAgent() . '"' );
 				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}

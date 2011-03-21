@@ -173,12 +173,7 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "JavascriptXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 		}
 
-		if ( !isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			$userAgent = 'Default';
-			// TODO skip checks or error out ?
-		} else {
-			$userAgent = $_SERVER['HTTP_USER_AGENT'];
-		}
+		$userAgent = eGlooRequest::getUserAgent();
 
 		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
 

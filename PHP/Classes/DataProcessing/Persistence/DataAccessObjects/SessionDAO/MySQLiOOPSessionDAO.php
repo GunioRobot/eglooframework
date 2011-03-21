@@ -53,9 +53,9 @@ class MySQLiOOPSessionDAO extends SessionDAO {
 		$sessionDataSerialized = base64_encode( $sessionDTO->getSessionData() );
 
 		$queryParameters = array();
-		$queryParameters[] = array('type' => 'string', 'value' => $sessionDTO->getSessionID());
-		$queryParameters[] = array('type' => 'string', 'value' => $_SERVER['REMOTE_ADDR']);
-		$queryParameters[] = array('type' => 'string', 'value' => $sessionDataSerialized);
+		$queryParameters[] = array( 'type' => 'string', 'value' => $sessionDTO->getSessionID() );
+		$queryParameters[] = array( 'type' => 'string', 'value' => eGlooRequest::getRemoteAddress() );
+		$queryParameters[] = array( 'type' => 'string', 'value' => $sessionDataSerialized );
 
 		QueryPopulationManager::populateQueryTransaction($preparedQueryTransaction, $queryParameters);
 		$queryExecutionRoutine = QueryExecutionRoutineManager::getQueryExecutionRoutine($preparedQueryTransaction);

@@ -10,14 +10,14 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *		  http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *	
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -36,33 +36,33 @@
 class ForceSSLDecorator extends RequestProcessorDecorator {
 
    /**
-    * do any pre processing here
-    */
+	* do any pre processing here
+	*/
 	protected function requestPreProcessing(){
-   	
+	
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
 		
-		if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ) {
+		if ( eGlooRequest::isSSL() ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
-	   		return true;
-        } else {
-        	eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Inactive, Redirecting", 'Decorators' );
-        	eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'], 'Decorators' );
-        	header( 'Location: ' . 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
-            return false;
-        }
+			return true;
+		} else {
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Inactive, Redirecting", 'Decorators' );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI(), 'Decorators' );
+			header( 'Location: ' . 'https://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI() );
+			return false;
+		}
 		
-   	
+	
    }
 
    /**
-    * do any post processing here
-    */
+	* do any post processing here
+	*/
 	protected function requestPostProcessing(){
 		
 	}
    
-    
+	
   }
  
  

@@ -126,9 +126,9 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			if (!isset($tokenArray['rewriteBase'])) {
 				if (!$system_variable_whitelist || ($system_variable_whitelist !== null && isset($system_variable_whitelist['rewriteBase']))) {
 					$tokenArray['rewriteBase'] = eGlooConfiguration::getRewriteBase();
-					$tokenArray['userAgentHash'] = eGlooConfiguration::getUserAgentHash();
-					$tokenArray['eGlooCSS'] = eGlooConfiguration::getRewriteBase() . 'css/' . eGlooConfiguration::getUserAgentHash() . '/';
-					$tokenArray['eGlooJS'] = eGlooConfiguration::getRewriteBase() . 'js/' . eGlooConfiguration::getUserAgentHash() . '/';
+					$tokenArray['userAgentHash'] = eGlooRequest::getUserAgentHash();
+					$tokenArray['eGlooCSS'] = eGlooConfiguration::getRewriteBase() . 'css/' . eGlooRequest::getUserAgentHash() . '/';
+					$tokenArray['eGlooJS'] = eGlooConfiguration::getRewriteBase() . 'js/' . eGlooRequest::getUserAgentHash() . '/';
 				}
 			}
 		}
@@ -156,7 +156,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 			if (!isset($this->cacheID)) {
 				// TODO specify caching parameters for the smarty templates
 				// This needs to be base64_encoded because the cacheID is sued to create directories
-				$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
+				$userAgentToken = substr( base64_encode( eGlooRequest::getUserAgent() ), 0, 64 );
 				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
 			}
 
@@ -170,7 +170,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 		if ($cacheID === null) {
 			// TODO specify caching parameters for the smarty templates
 			// This needs to be base64_encoded because the cacheID is sued to create directories
-			$userAgentToken = substr( base64_encode( $_SERVER['HTTP_USER_AGENT'] ), 0, 64 );
+			$userAgentToken = substr( base64_encode( eGlooRequest::getUserAgent() ), 0, 64 );
 			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
 		}
 

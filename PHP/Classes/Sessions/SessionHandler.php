@@ -105,7 +105,7 @@ class SessionHandler {
 		$sessionDAO = $daoFactory->getSessionDAO();
 		$sessionDTO = $sessionDAO->getSessionData($sessionID);
 
-		//eGlooLogger::writeLog( eGlooLogger::DEBUG, $_SERVER['HTTP_USER_AGENT'] );
+		//eGlooLogger::writeLog( eGlooLogger::DEBUG, eGlooRequest::getUserAgent() );
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ: User ID returned from database is: ". $sessionDTO->getUserID(), eGlooLogger::SESSION  );
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "SessionHandler::READ: Session exists in database?: ". $sessionDTO->sessionExists(), eGlooLogger::SESSION  );
 		
@@ -125,7 +125,7 @@ class SessionHandler {
 			 */
 			if( $sessionDTO->getUserAgent() !== null ) {
 	
-	    		if( $sessionDTO->getUserAgent() != $_SERVER['HTTP_USER_AGENT'] ) {
+	    		if( $sessionDTO->getUserAgent() != eGlooRequest::getUserAgent() ) {
 	        		
 	        		/**
 	        		 * TODO throw user agent doesn't match exception
@@ -172,7 +172,7 @@ class SessionHandler {
 		$sessionDTO = new SessionDTO();
 		$sessionDTO->setSessionID( $sessionID );
 		$sessionDTO->setSessionData( $sessionData );
-		$sessionDTO->setUserAgent( $_SERVER['HTTP_USER_AGENT'] );
+		$sessionDTO->setUserAgent( eGlooRequest::getUserAgent() );
 		
 		if( isset( $_SESSION['USER_ID'] ) ){
 			$sessionDTO->setUserID( $_SESSION['USER_ID'] );
