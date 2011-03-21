@@ -87,7 +87,7 @@ class eGlooRequest {
 
 	public static function getRequestTime() {
 		if ( self::$request_time === null ) {
-			self::$request_time = isset( $_SERVER['REQUEST_TIME'] ) ? $_SERVER['REQUEST_TIME'] : '';
+			self::$request_time = isset( $_SERVER['REQUEST_TIME'] ) ? $_SERVER['REQUEST_TIME'] : time();
 		}
 
 		return self::$request_time;
