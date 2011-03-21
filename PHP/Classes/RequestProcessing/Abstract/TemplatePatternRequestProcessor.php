@@ -73,16 +73,28 @@ abstract class TemplatePatternRequestProcessor extends RequestProcessor {
 			// TODO Error checking / branching should be more fine-tuned here
 			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
 				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+
 				throw $e;
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Template requested for RequestClass/RequestID "' .
 					$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
 
 				try {
+					// Let's make sure we clean up the output buffer so the custom 404 comes out clean
+					if ( ob_get_level() ) {
+						ob_clean();
+					}
+
+					// Try to issue the custom 404
 					eGlooHTTPResponse::issueCustom404Response();
 				} catch (Exception $e) {
 					eGlooLogger::writeLog( eGlooLogger::WARN, 'TemplatePatternRequestProcessor: Custom 404 template requested for RequestClass/RequestID "' .
 						$this->requestInfoBean->getRequestClass() . '/' . $this->requestInfoBean->getRequestID() . '" but not found.' );
+
+					// Let's make sure we clean up the output buffer so the raw 404 comes out clean
+					if ( ob_get_level() ) {
+						ob_clean();
+					}
 
 					// TODO this is rather primitive, even as a raw fallback.  Make this better
 					eGlooHTTPResponse::issueRaw404Response( 'We\'re sorry, but the page you requested was not found' );

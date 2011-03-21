@@ -279,11 +279,7 @@ class JavascriptXML2ArrayDispatcher extends TemplateDispatcher {
 				'Please review your Javascript Dispatch.xml';
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
-			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
-				throw new ErrorException($error_message);
-			}
-
-			return false;
+			throw new ErrorException($error_message);
 		}
 
 		$this->dispatchPath = $dispatchPath;

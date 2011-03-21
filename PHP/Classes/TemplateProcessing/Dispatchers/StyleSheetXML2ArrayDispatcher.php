@@ -270,30 +270,8 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 			}
 		}
 
-		// if ( $dispatchPath === null ) {
-		//	if (isset($stylesheetClients['Default'])) {
-		//		foreach( $stylesheetClients['Default'] as $map ) {
-		//			if( $userRequestID === (string) $map['id'] ) {
-		//				$dispatchPath = (string) $map['dispatchPath'];
-		//				$processTemplate = (string) $map['process'];
-		//				break;
-		//			}
-		//		}
-		//	}
-		// } else {
-		//	// TODO throw exception
-		// }
-
 		if ( !$dispatchPath || $dispatchPath === '' ) {
-			$error_message = '"StyleSheetXML2ArrayDispatcher: Dispatch node not found for "' . $userRequestID . '.css".  ' .
-			 	'Please review your CSS Dispatch.xml';
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
-
-			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
-				throw new ErrorException($error_message);
-			}
-
-			return false;
+			throw new ErrorException($error_message);
 		}
 
 		$this->dispatchPath = $dispatchPath;

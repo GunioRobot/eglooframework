@@ -91,7 +91,7 @@ class JavascriptRawFileRequestProcessor extends RequestProcessor {
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'JavascriptRawFileRequestProcessor: Template requested but not found: "' .
 					$this->requestInfoBean->getGET( 'javascript_name' ) . '" from user-agent "' . eGlooRequest::getUserAgent() . '"' );
-				eGlooHTTPResponse::issueCustom404Response();
+				eGlooHTTPResponse::issueRaw404Response();
 			}
 		}
 

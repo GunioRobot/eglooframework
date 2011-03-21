@@ -219,7 +219,9 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 		if ( $localizationNode !== null ) {
 			if ( $localizationNode['variesOnUserAgent'] ) {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, "XHTMLXML2ArrayDispatcher: Processing Clients" );
-				
+
+				$userClient = null;
+
 				foreach( $localizationNode['Clients'] as $client ) {
 					$matchFormat = $client['matches'];
 					$match = preg_match ( $matchFormat, $userAgent ); 
@@ -248,20 +250,16 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 			// TODO throw exception
 		}
 
-		$dispatchPath = eGlooConfiguration::getApplicationsPath() . '/' . $this->application . '/InterfaceBundles/' . 
-			$this->interfaceBundle . '/XHTML/' . $dispatchPath;
-
 		$dispatchPath = trim( $dispatchPath );
 
 		if ( $dispatchPath === '' ) {
 			$error_message = "XHTMLXML2ArrayDispatcher: Dispatch path did not match for request class : '" . $userRequestClass . "' and request ID '" . $userRequestID . "'";
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, $error_message );
 
-			if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
-				throw new ErrorException($error_message);
-			}
-
-			return false;
+			throw new ErrorException($error_message);
+		} else {
+			$dispatchPath = eGlooConfiguration::getApplicationsPath() . '/' . $this->application . '/InterfaceBundles/' . 
+				$this->interfaceBundle . '/XHTML/' . $dispatchPath;
 		}
 
 		return $dispatchPath;
