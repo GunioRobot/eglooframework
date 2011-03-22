@@ -40,5 +40,9 @@ abstract class QueryResponseResource extends ResponseResource {
 
 	abstract public function fetchNextRowAssociative();
 
+	abstract public function fetchNextRowGenericDTO();
+
+	abstract public function fetchGenericDTOArray();
+
 }
 

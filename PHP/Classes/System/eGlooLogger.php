@@ -265,12 +265,42 @@ final class eGlooLogger {
 		$http_cookie = isset($_SERVER['HTTP_COOKIE']) ? $_SERVER['HTTP_COOKIE'] : $not_found;
 		$http_cache_control = isset($_SERVER['HTTP_CACHE_CONTROL']) ? $_SERVER['HTTP_CACHE_CONTROL'] : $not_found;
 
+		$server_address = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $not_found;
+		$server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : $not_found;
+		$server_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : $not_found;
+
+		$remote_address = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : $not_found;
+		$remote_port = isset($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : $not_found;
+
+		$request_domain = null;
+
+		if ( $http_host !== $not_found && preg_match( '~^[a-zA-Z0-9.]*$~', $http_host ) && strpos( $http_host, $server_name) !==false ) {
+			$request_domain = $http_host;
+		}
+
+		$request_port = null;
+
+		if ( $server_port !== $not_found && preg_match( '~^[0-9]+$~', $server_port ) ) {
+			$request_port = $server_port !== '80' ? ':' . $server_port : '';
+		}
+
+		$request_url = null;
+
+		if ( $request_domain !== null && $request_port !== null ) {
+			$request_protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ? 'https://' : 'http://';
+
+			$request_url = $request_protocol . $request_domain . $request_port . $request_uri;
+		} else {
+			$request_url = 'Could not be reliably constructed from HTTP headers';
+		}
+
 		self::writeLog( self::EMERGENCY,
 			'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
 			"\n\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
 			"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
 			"\n\n\t" . 'Request URI: ' . $request_uri .
 			"\n\t" . 'Redirect Query String: ' . $redirect_query_string .
+			"\n\t" . 'Request URL: ' . $request_url .
 			"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
 			"\n\t" . 'Exception Message: ' . $exception->getMessage() .
 			"\n\n\t" . 'See trace file "' . eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces/' . $trace . '" for details' .
@@ -281,8 +311,14 @@ final class eGlooLogger {
 			"\n\t" . 'HTTP Accept-Encoding: ' . $http_accept_encoding .
 			"\n\t" . 'HTTP Accept-Language: ' . $http_accept_language .
 			"\n\n\t" . 'HTTP Cookie: ' . $http_cookie .
-			"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control
+			"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control .
+			"\n\n\t" . 'Remote IP: ' . $remote_address .
+			"\n\t" . 'Remote Port: ' . $remote_port .
+			"\n\n\t" . 'Server Name: ' . $server_name .
+			"\n\t" . 'Server IP: ' . $server_address .
+			"\n\t" . 'Server Port: ' . $server_port
 		);
+
 
 		if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors() ) {
 			echo_r(
@@ -302,6 +338,7 @@ final class eGlooLogger {
 				"<br />" . '<b>InterfaceBundle:</b> ' . eGlooConfiguration::getUIBundleName() .
 				'<br /><br />' . '<b>Request URI:</b> ' . $request_uri .
 				'<br />' . '<b>Redirect Query String:</b> ' . $redirect_query_string .
+				'<br />' . '<b>Request URL:</b> ' . $request_url .
 				"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
 				'<br /><br />' . '<b>HTTP Host:</b> ' . $http_host .
 				'<br />' . '<b>HTTP User-Agent:</b> ' . $http_user_agent .
@@ -311,6 +348,11 @@ final class eGlooLogger {
 				'<br />' . '<b>HTTP Accept-Language:</b> ' . $http_accept_language .
 				'<br /><br />' . '<b>HTTP Cookie:</b> ' . $http_cookie .
 				'<br />' . '<b>HTTP Cache-Control:</b> ' . $http_cache_control .
+				'<br /><br />' . '<b>Remote IP:</b> ' . $remote_address .
+				'<br />' . '<b>Remote Port:</b> ' . $remote_port .
+				'<br /><br />' . '<b>Server Name:</b> ' . $server_name .
+				'<br />' . '<b>Server IP:</b> ' . $server_address .
+				'<br />' . '<b>Server Port:</b> ' . $server_port .
 				'<br /><br /><b>Backtrace:</b><br />' .
 				$exception->getTraceAsString()
 			);

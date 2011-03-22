@@ -145,5 +145,20 @@ class eGlooRequest {
 		return isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '';
 	}
 
+	/*
+
+// If you use only one hostname with several subdomains (using wildcard), these can be done to reduce the risk:
+// 
+// 1) Set "UseCanonicalName On" and set your "ServerName".
+// 
+// 2) Ensure that $_SERVER["HTTP_HOST"] is not empty and does not contains any unexpected characters, something like:
+// 
+// preg_match("/^[a-zA-Z0-9]*$/",$_SERVER["HTTP_HOST"])
+// 
+// 3) Check whether the value of $_SERVER["HTTP_HOST"] is contained in $_SERVER["SERVER_NAME"], for example: subdomain.example.com in example.com
+// 
+// strpos( $_SERVER["HTTP_HOST"], $_SERVER["SERVER_NAME"]) !==false )
+
+	*/
 }
 

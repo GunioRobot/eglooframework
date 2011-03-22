@@ -58,5 +58,9 @@ class MySQLiQueryResponseResource extends QueryResponseResource {
 		return $retVal;
 	}
 
+	public function fetchNextRowGenericDTO() {}
+
+	public function fetchGenericDTOArray() {}
+
 }
 
