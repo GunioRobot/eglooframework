@@ -44,6 +44,7 @@ class eGlooRequest {
 	private static $query_string = null;
 	private static $referer = null;
 	private static $remote_address = null;
+	private static $request_time = null;
 	private static $request_uri = null;
 	private static $server_address = null;
 	private static $server_name = null;
