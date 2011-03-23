@@ -274,12 +274,14 @@ final class eGlooLogger {
 
 		$request_domain = null;
 
+		// Partially to make sure this is something sane, partially to check for spoofing
 		if ( $http_host !== $not_found && preg_match( '~^[a-zA-Z0-9.]*$~', $http_host ) && strpos( $http_host, $server_name) !==false ) {
 			$request_domain = $http_host;
 		}
 
 		$request_port = null;
 
+		// Partially to make sure this is something sane, partially to check for spoofing
 		if ( $server_port !== $not_found && preg_match( '~^[0-9]+$~', $server_port ) ) {
 			$request_port = $server_port !== '80' ? ':' . $server_port : '';
 		}
@@ -318,7 +320,6 @@ final class eGlooLogger {
 			"\n\t" . 'Server IP: ' . $server_address .
 			"\n\t" . 'Server Port: ' . $server_port
 		);
-
 
 		if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors() ) {
 			echo_r(
