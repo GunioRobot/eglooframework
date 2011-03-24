@@ -63,6 +63,11 @@ if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
 }
 
+// Load Swift
+if ( eGlooConfiguration::getUseSwift() ) {
+	include( eGlooConfiguration::getSwiftIncludePath() );
+}
+
 // Load Twig
 if ( eGlooConfiguration::getUseTwig() ) {
 	include( eGlooConfiguration::getTwigIncludePath() );

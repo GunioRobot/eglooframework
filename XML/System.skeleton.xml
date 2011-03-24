@@ -44,6 +44,7 @@
 		<Option id="egUseSmarty" displayName="" override="true" type="" value="true" required="false"/>
 		<Option id="egUseSmarty2" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseSmarty3" displayName="" override="true" type="" value="false" required="false"/>
+		<Option id="egUseSwift" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseSwift4" displayName="" override="true" type="" value="false" required="false"/>
 		<Option id="egUseTwig" displayName="" override="true" type="" value="false" required="false"/>
 	</Applications>

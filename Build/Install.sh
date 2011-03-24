@@ -1265,7 +1265,18 @@ printf "Copying generated configuration to appropriate paths... "
 
 cp "System.xml" "Config.xml"
 
+if [ -e "$DOCUMENT_ROOT/System.xml" ]
+then
+	cp "$DOCUMENT_ROOT/System.xml" "$DOCUMENT_ROOT/System.xml.$TIMESTAMP.old"
+fi
+
 mv "System.xml" "$DOCUMENT_ROOT/System.xml"
+
+if [ -e "$DOCUMENT_ROOT/Config.xml" ]
+then
+	cp "$DOCUMENT_ROOT/Config.xml" "$DOCUMENT_ROOT/Config.xml.$TIMESTAMP.old"
+fi
+
 mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
 
 printf "done.\n"

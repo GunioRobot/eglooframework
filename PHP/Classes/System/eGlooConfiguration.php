@@ -1631,7 +1631,14 @@ final class eGlooConfiguration {
 	}
 
 	public static function getSmartyIncludePath() {
+		// TODO make this customizable based upon version
 		return self::$configuration_options['SmartyPath'];
+	}
+
+	public static function getSwiftIncludePath() {
+		// TODO make this customizable
+		// return self::$configuration_options['SwiftPath'];
+		return self::$configuration_options['FrameworkRootPath'] . '/Library/Swift4/lib/swift_required.php';
 	}
 
 	public static function getTwigIncludePath() {
@@ -1720,6 +1727,10 @@ final class eGlooConfiguration {
 
 	public static function getUseSmarty() {
 		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
+	}
+
+	public static function getUseSwift() {
+		return isset(self::$configuration_options['egUseSwift']) ? self::$configuration_options['egUseSwift'] : false;
 	}
 
 	public static function getUseTwig() {
