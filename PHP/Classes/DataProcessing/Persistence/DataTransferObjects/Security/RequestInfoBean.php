@@ -474,6 +474,20 @@ class RequestInfoBean {
 		return $retVal;
 	}
 
+	/**
+	 * A convenience method for grabbing a slug.  If no slug provided, null is just as accurate as
+	 * an exception, but it doesn't go all Rick James on your call stack.
+	 */
+	public function getSlug() {
+		$retVal = null;
+
+		if ( $this->requestInfoBean->issetGET('eg_slug') ) {
+			$retVal = $this->requestInfoBean->getGET('eg_slug');
+		}
+
+		return $retVal;
+	}
+
 	public function setDecoratorArray( $decoratorArray ) {
 		$this->decoratorArray = $decoratorArray;
 	}
