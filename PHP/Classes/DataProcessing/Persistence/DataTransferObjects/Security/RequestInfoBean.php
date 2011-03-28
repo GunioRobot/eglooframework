@@ -460,6 +460,10 @@ class RequestInfoBean {
 		return $this->errorRequestProcessorID;
 	}	
 
+	/**
+	 * A convenience method for getting a fully qualified URI based on validated GET parameters
+	 * provided to this request.
+	 */
 	public function getFullyQualifiedRequestString( $keys_to_ignore = array() ) {
 		$retVal = $this->requestClass . '/' . $this->requestID . '?';
 

@@ -69,11 +69,13 @@ final class eGlooLogger {
 	const LOG_XML		= "xml";	// write to error.xml
 
 	// Attributes
+	private static $aggregateApplicationLogs = true;
 	private static $loggingLevel;
 	private static $loggingType = "log";	//set to log by default
 	private static $requestID = '';
 	private static $requestDate = null;
 	private static $showErrors = false;
+	private static $timezone = 'America/New_York';
 
 	// Maps log level bitmasks to the appropriate strings
 	private static $logLevelStrings = null;
@@ -152,9 +154,8 @@ final class eGlooLogger {
 	 * @throws eGlooLoggerException		if there was an error writing to the log file
 	 * @returns NULL 
 	 */
-	public static function writeLog( $level, $message, $logPackage = 'Default', $data = NULL, $timezone = 'America/New_York' ) {
-	   if ( $level & self::$loggingLevel ) {
-
+	public static function writeLog( $level, $message, $logPackage = 'Default', $data = NULL, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
+		if ( $level & self::$loggingLevel ) {
 			$dateTime = new DateTime( 'now' );
 			$server_local_time = $dateTime->format( 'Y.m.d h:i:sa T' );
 
@@ -166,52 +167,36 @@ final class eGlooLogger {
 
 			$message = wordwrap( $message, 120, "\n\t" );
 
-			if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate ) ) {
-				mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate );
+			$log_path = eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate;
+
+			if ( $aggregateApplicationLogs && preg_match( '~^[a-zA-Z0-9.]+$~', eGlooConfiguration::getApplicationName() ) ) {
+				$log_path .= '/Applications/' . eGlooConfiguration::getApplicationName();
 			}
-			
+
+			if ( !is_writable( $log_path ) ) {
+				try {
+					if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT ) {
+						$mode = 0755;
+					} else {
+						$mode = 0750;
+					}
+
+					$recursive = true;
+
+					mkdir( $log_path, $mode, $recursive );
+				} catch (Exception $e){
+					echo_r($e->getMessage());
+				}
+			}
+
 			//Default, write to error.log
 			if( self::$loggingType == self::LOG_LOG){
-				if ( (file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
+				if ( (file_put_contents( $log_path . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
 					throw new eGlooLoggerException( 'Error writing to log' );
 				}
 			}
-			
-			//If HTML, write correct headers
-			if( self::$loggingType == self::LOG_HTML){
-				
-				//if Emergency, Alert, Critical, or Error
-				//write in red
-				if($level & self::EMERGENCY OR $level & self::ALERT OR $level & self::CRITICAL OR $level & self::ERROR){
-					$message = '<font color="#FF0000">'.$message.'</font></body></html>';
-					//print $message;
-					if ( (file_put_contents( self::$logFilePath, $message . "<BR><BR>", FILE_APPEND ) ) === false ) {
-						throw new eGlooLoggerException( 'Error writing to log' );
-					}
-				}
-				
-				//if Warning or Notice
-				//write in yellow
-				if( $level & self::NOTICE OR $level & self::WARN){
-					$message = '<font color="#FFFF00">'.$message.'</font></body></html>';
-					if ( (file_put_contents( self::$logFilePath, $message . "<BR><BR>", FILE_APPEND ) ) === false ) {
-						throw new eGlooLoggerException( 'Error writing to log' );
-					}
-				}
-				
-				//if Debug or Info
-				//write in green
-				if($level & self::INFO OR $level & self::DEBUG){
-					$message = '<font color="#00FF00">'.$message.'</font></body></html>';
-					if ( (file_put_contents( self::$logFilePath, $message . "<BR><BR>", FILE_APPEND ) ) === false ) {
-						throw new eGlooLoggerException( 'Error writing to log' );
-					}
-				}
-				
-			}//if html
-			
-			
-		}//if correct logging level
+		}
+
 	}
 
 	/**
@@ -225,25 +210,70 @@ final class eGlooLogger {
 	public static function global_exception_handler( $exception ) {
 		$exceptionType = get_class($exception);
 
-		$trace = time() . '.' . self::$requestID . '.eglootrace';
+		$dump_prefix = time() . '.' . self::$requestID;
 
-		if ( !is_writable( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces' ) ) {
+		$cookie = 'cookie.log';
+		$files = 'files.log';
+		$server = 'server.log';
+		$session = 'session.log';
+		$trace = 'trace.log';
+
+		$dump_file_path = eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate;
+
+		if ( self::$aggregateApplicationLogs ) {
+			$dump_file_path .= '/Applications/' . eGlooConfiguration::getApplicationName() . '/Dumps/' . $dump_prefix;
+		} else {
+			$dump_file_path .= '/Dumps/' . $dump_prefix;
+		}
+
+		if ( !is_writable( $dump_file_path ) ) {
 			try {
-				$mode = 0777;
+				if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT ) {
+					$mode = 0755;
+				} else {
+					$mode = 0750;
+				}
+
 				$recursive = true;
 
-				mkdir( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces', $mode, $recursive );
+				mkdir( $dump_file_path, $mode, $recursive );
 			} catch (Exception $e){
 				echo_r($e->getMessage());
 			}
 		}
 
-		file_put_contents( eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces/' . $trace, $exception->getTraceAsString() );
-
-		// TODO record request ID in trace / log
-
 		// TODO have options to be able to log information per log call, like session. That way we can log stuff if needed, but not default
 		// to possibly revealing confidential info
+		file_put_contents( $dump_file_path . '/' . $server, print_r( $_SERVER, true ) );
+		file_put_contents( $dump_file_path . '/' . $trace, $exception->getTraceAsString() );
+
+		if ( isset( $_COOKIE ) && !empty( $_COOKIE ) ) {
+			file_put_contents( $dump_file_path . '/' . $cookie, print_r( $_COOKIE, true ) );
+		}
+
+		if ( isset( $_FILES ) && !empty( $_FILES ) ) {
+			file_put_contents( $dump_file_path . '/' . $files, print_r( $_FILES, true ) );
+		}
+
+		if ( isset( $_SESSION ) ) {
+			file_put_contents( $dump_file_path . '/' . $session, print_r( $_SESSION, true ) );
+		}
+
+		if ( class_exists( 'RequestInfoBean' ) ) {
+			$rib = 'rib.log';
+
+			$requestInfoBean = RequestInfoBean::getInstance();
+
+			file_put_contents( $dump_file_path . '/' . $rib, print_r( $requestInfoBean, true ) );
+		} else if ( isset( $_GET ) && isset( $_POST ) ) {
+			$get = 'get.log';
+			$post = 'post.log';
+
+			file_put_contents( $dump_file_path . '/' . $get, print_r( $_GET, true ) );
+			file_put_contents( $dump_file_path . '/' . $post, print_r( $_POST, true ) );
+		}
+
+		// TODO record request ID in trace / log
 
 		// TODO determine how to handle multiple app logging -- branching folders or unique trace hashes
 		// Should probably be a deployment option
@@ -256,6 +286,8 @@ final class eGlooLogger {
 
 		$http_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $not_found;
 		$http_user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : $not_found;
+
+		$http_referer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : $not_found;
 
 		$http_accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : $not_found;
 		$http_accept_charset = isset($_SERVER['HTTP_ACCEPT_CHARSET']) ? $_SERVER['HTTP_ACCEPT_CHARSET'] : $not_found;
@@ -271,6 +303,8 @@ final class eGlooLogger {
 
 		$remote_address = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : $not_found;
 		$remote_port = isset($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : $not_found;
+
+		$using_ssl = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ? 'Yes' : 'No';
 
 		$request_domain = null;
 
@@ -297,28 +331,34 @@ final class eGlooLogger {
 		}
 
 		self::writeLog( self::EMERGENCY,
-			'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
-			"\n\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
-			"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
-			"\n\n\t" . 'Request URI: ' . $request_uri .
-			"\n\t" . 'Redirect Query String: ' . $redirect_query_string .
-			"\n\t" . 'Request URL: ' . $request_url .
-			"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
-			"\n\t" . 'Exception Message: ' . $exception->getMessage() .
-			"\n\n\t" . 'See trace file "' . eGlooConfiguration::getLoggingPath() . '/' . self::$requestDate . '/Traces/' . $trace . '" for details' .
-			"\n\n\t" . 'HTTP Host: ' . $http_host .
-			"\n\t" . 'HTTP User-Agent: ' . $http_user_agent .
-			"\n\n\t" . 'HTTP Accept: ' . $http_accept .
-			"\n\t" . 'HTTP Accept-Charset: ' . $http_accept_charset .
-			"\n\t" . 'HTTP Accept-Encoding: ' . $http_accept_encoding .
-			"\n\t" . 'HTTP Accept-Language: ' . $http_accept_language .
-			"\n\n\t" . 'HTTP Cookie: ' . $http_cookie .
-			"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control .
-			"\n\n\t" . 'Remote IP: ' . $remote_address .
-			"\n\t" . 'Remote Port: ' . $remote_port .
-			"\n\n\t" . 'Server Name: ' . $server_name .
-			"\n\t" . 'Server IP: ' . $server_address .
-			"\n\t" . 'Server Port: ' . $server_port
+				'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
+				"\n\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
+				"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
+				"\n\n\t" . 'Request URI: ' . $request_uri .
+				"\n\t" . 'Redirect Query String: ' . $redirect_query_string .
+				"\n\t" . 'Request URL: ' . $request_url .
+				"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
+				"\n\t" . 'Exception Message: ' . $exception->getMessage() .
+				"\n\n\t" . 'See dump files under "' . $dump_file_path . '" for details' .
+				"\n\n\t" . 'HTTP Host: ' . $http_host .
+				"\n\t" . 'HTTP User-Agent: ' . $http_user_agent .
+				"\n\t" . 'HTTP Referrer: ' . $http_referer .
+				"\n\n\t" . 'HTTP Accept: ' . $http_accept .
+				"\n\t" . 'HTTP Accept-Charset: ' . $http_accept_charset .
+				"\n\t" . 'HTTP Accept-Encoding: ' . $http_accept_encoding .
+				"\n\t" . 'HTTP Accept-Language: ' . $http_accept_language .
+				"\n\n\t" . 'HTTP Cookie: ' . $http_cookie .
+				"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control .
+				"\n\n\t" . 'Remote IP: ' . $remote_address .
+				"\n\t" . 'Remote Port: ' . $remote_port .
+				"\n\n\t" . 'Server Name: ' . $server_name .
+				"\n\t" . 'Server IP: ' . $server_address .
+				"\n\t" . 'Server Port: ' . $server_port .
+				"\n\t" . 'Using SSL: ' . $using_ssl,
+			'Default',
+			null,
+			self::$timezone,
+			self::$aggregateApplicationLogs
 		);
 
 		if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors() ) {
@@ -341,8 +381,10 @@ final class eGlooLogger {
 				'<br />' . '<b>Redirect Query String:</b> ' . $redirect_query_string .
 				'<br />' . '<b>Request URL:</b> ' . $request_url .
 				"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
+				'<br /><br />' . 'See dump files under <b>"' . $dump_file_path . '"</b> for details' .
 				'<br /><br />' . '<b>HTTP Host:</b> ' . $http_host .
 				'<br />' . '<b>HTTP User-Agent:</b> ' . $http_user_agent .
+				'<br />' . '<b>HTTP Referrer:</b> ' . $http_referer .
 				'<br /><br />' . '<b>HTTP Accept:</b> ' . $http_accept .
 				'<br />' . '<b>HTTP Accept-Charset:</b> ' . $http_accept_charset .
 				'<br />' . '<b>HTTP Accept-Encoding:</b> ' . $http_accept_encoding .
@@ -354,6 +396,7 @@ final class eGlooLogger {
 				'<br /><br />' . '<b>Server Name:</b> ' . $server_name .
 				'<br />' . '<b>Server IP:</b> ' . $server_address .
 				'<br />' . '<b>Server Port:</b> ' . $server_port .
+				'<br />' . '<b>Using SSL:</b> ' . $using_ssl .
 				'<br /><br /><b>Backtrace:</b><br />' .
 				$exception->getTraceAsString()
 			);
@@ -368,57 +411,6 @@ final class eGlooLogger {
 
 	public static function global_error_handler($severity, $message, $filename, $linenum, $context ) {
 		throw new ErrorException($message, 0, $severity, $filename, $linenum);
-	}
-
-	/**
-	 * Defines the default error runtime handler.
-	 * 
-	 * Long Description Goes Here
-	 * 
-	 * @todo Finish commenting
-	 */
-	public static function default_error_handler( $severity, $message, $filename, $linenum, $errcontext ) {
-		$killRequest = false;
-
-		switch( $severity ) {
-			case E_USER_NOTICE :
-				$levelString = 'USER NOTICE';
-				break;
-			case E_USER_WARNING :
-				$levelString = 'USER WARNING';
-				break;
-			case E_USER_ERROR :
-				$levelString = 'USER ERROR';
-				$killRequest = true;
-				break;
-			case E_ERROR :
-				$levelString = 'RUN-TIME ERROR';
-				$killRequest = true;
-				break;		  
-			case E_WARNING :
-				$levelString = 'RUN-TIME WARNING';	   // Non-fatal error
-				break;
-			case E_NOTICE :
-				$levelString = 'RUN-TIME NOTICE';	   // Could indicate an error
-				break;
-			case E_RECOVERABLE_ERROR :
-				$levelString = 'RECOVERABLE ERROR';	   // Recoverable error
-				break;
-			case E_STRICT :
-				$levelString = 'STRICT NOTICE';		   // Could indicate an error
-				break;
-			default :
-				$levelString = 'UNKNOWN';
-				break;
-		}
-
-		self::writeLog( self::EMERGENCY, $levelString . ' ' . 
-									  $message . ' ' . $filename . ' ' . $linenum );			
-
-		if ( $killRequest === true ) {
-			exit;
-		}
-
 	}
 
 }
