@@ -142,7 +142,7 @@ class StyleSheetExtendedRawFileRequestProcessor extends RequestProcessor {
 		// TODO buffer output
 		echo $output;
 
-		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
+		if ( $cache_to_webroot && (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileCSSClustering()) ) {
 
 			StaticContentCacheManager::buildStaticContentCache('xcss', $user_agent_hash . $key_value_set_string, $file_name . '.css', $output );

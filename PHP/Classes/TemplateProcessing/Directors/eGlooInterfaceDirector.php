@@ -63,7 +63,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 	public function preProcessTemplate() {
 		if ($this->useSmartCaching) {
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION) {
 				$requestClass = $this->requestInfoBean->getRequestClass();
 				$requestID = $this->requestInfoBean->getRequestID();
 				$cacheID = isset($this->cacheID) ? $this->cacheID : '';
@@ -78,8 +78,8 @@ class eGlooInterfaceDirector extends TemplateDirector {
 						$this->templateBuilder->setCacheID( $this->cacheID, $this->ttl );
 					}
 				}
-			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
-			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::STAGING) {
+			} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::DEVELOPMENT) {
 				$this->templateBuilder->setDispatchPath();
 				$this->templateBuilder->resolveTemplateRoot();
 
@@ -101,12 +101,12 @@ class eGlooInterfaceDirector extends TemplateDirector {
 		$retVal = null;
 
 		if ($this->useSmartCaching) {
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION) {
 				$retVal = $this->templateBuilder->run();
-			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+			} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::STAGING) {
 				// TODO
 				$retVal = $this->templateBuilder->run();
-			} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+			} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::DEVELOPMENT) {
 				$retVal = $this->templateBuilder->run();
 			}
 		} else {

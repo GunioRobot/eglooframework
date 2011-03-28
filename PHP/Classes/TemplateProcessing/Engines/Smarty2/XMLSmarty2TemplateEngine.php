@@ -85,19 +85,19 @@ class XMLSmarty2TemplateEngine extends Smarty2TemplateEngine implements Template
 
 		// $this->cache_handler_func = 'smarty_cache_memcache';
 
-		if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION) {
+		if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION) {
 			$this->compile_check = false;
 			$this->force_compile = false;
 			// $this->caching = true;
 			// $this->caching = 2;
 			$this->caching = false;
-		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::STAGING) {
+		} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::STAGING) {
 			$this->compile_check = true;
 			$this->force_compile = false;
 			// $this->caching = true;
 			// $this->caching = 2;
 			$this->caching = false;
-		} else if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::DEVELOPMENT) {
+		} else if (eGlooConfiguration::getDeployment() == eGlooConfiguration::DEVELOPMENT) {
 			$this->compile_check = true;
 			$this->force_compile = true;
 			$this->caching = false;

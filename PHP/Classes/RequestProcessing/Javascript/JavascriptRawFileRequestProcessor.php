@@ -106,7 +106,7 @@ class JavascriptRawFileRequestProcessor extends RequestProcessor {
 		// TODO buffer output
 		echo $output;
 
-		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
+		if ( $cache_to_webroot && (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileJavascriptClustering()) ) {
 			// Depending on the requests.xml rules, this could be a security hole
 

@@ -137,7 +137,7 @@ class JavascriptExtendedRawFileRequestProcessor extends RequestProcessor {
 		// TODO buffer output
 		echo $output;
 
-		if ( $cache_to_webroot && (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ||
+		if ( $cache_to_webroot && (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION ||
 			eGlooConfiguration::getUseHotFileJavascriptClustering()) ) {
 
 			StaticContentCacheManager::buildStaticContentCache('xjs', $user_agent_hash . $key_value_set_string, $file_name . '.js', $output );

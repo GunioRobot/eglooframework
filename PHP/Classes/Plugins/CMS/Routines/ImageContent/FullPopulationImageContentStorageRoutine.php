@@ -69,7 +69,7 @@ class FullPopulationImageContentStorageRoutine extends StorageRoutine {
 		// Update CDN entry if using a CDN
 		$distribution_image_url = null;
 
-		if ( eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
+		if ( eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION && eGlooConfiguration::getUseCDN() ) {
 			$imageContentCDNDAO = $contentDAOFactory->getImageContentDAO( 'egCDNPrimary' );
 			$distribution_image_url = $imageContentCDNDAO->storeImage( $storedImageDTO );
 		}

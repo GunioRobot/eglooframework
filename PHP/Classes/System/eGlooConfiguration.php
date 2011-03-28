@@ -1461,7 +1461,8 @@ final class eGlooConfiguration {
 	}
 
     public static function getDeploymentType() {
-		return self::$configuration_options['egEnvironment'];
+		// TODO deprecate this
+		return self::getDeployment();
 	}
 
     public static function getDisplayErrors() {

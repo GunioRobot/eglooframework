@@ -83,7 +83,7 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 			echo $output;
 
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
+			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
 				$matches = array();
 				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
 
@@ -129,7 +129,7 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 
 			echo $output;
 
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
+			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
 				$matches = array();
 				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
 

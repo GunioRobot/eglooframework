@@ -81,7 +81,7 @@ class MediaRawFileRequestProcessor extends RequestProcessor {
 
 			echo $output;
 
-			if (eGlooConfiguration::getDeploymentType() == eGlooConfiguration::PRODUCTION ) {
+			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION ) {
 				$matches = array();
 				preg_match('~^(.*)?/([^/]*)$~', $file_name, $matches);
 
