@@ -325,7 +325,7 @@ final class eGlooLogger {
 		if ( $request_domain !== null && $request_port !== null ) {
 			$request_protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== '' ? 'https://' : 'http://';
 
-			if ( $request_port === '' || ($request_port !== '' && !strpos($request_domain, ':' . $request_port)) ) {
+			if ( $request_port === '' || ($request_port !== '' && !strpos($request_domain, $request_port)) ) {
 				$request_url = $request_protocol . $request_domain . $request_port . $request_uri;
 			} else {
 				$request_url = $request_protocol . $request_domain . $request_uri;
