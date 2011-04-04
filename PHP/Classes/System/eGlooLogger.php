@@ -309,7 +309,7 @@ final class eGlooLogger {
 		$request_domain = null;
 
 		// Partially to make sure this is something sane, partially to check for spoofing
-		if ( $http_host !== $not_found && preg_match( '~^[a-zA-Z0-9.]*$~', $http_host ) && strpos( $http_host, $server_name) !==false ) {
+		if ( $http_host !== $not_found && preg_match( '~^[a-zA-Z0-9.:]*$~', $http_host ) && strpos( $http_host, $server_name) !==false ) {
 			$request_domain = $http_host;
 		}
 

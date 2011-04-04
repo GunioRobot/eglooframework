@@ -30,7 +30,7 @@ final class eGlooConfiguration {
 
 	/* Static Members */
 	private static $rewriteBase = '/';
- 	private static $web_root = null;
+	private static $web_root = null;
 	private static $userAgentHash = null;
 
 	// Configuration Attributes
@@ -434,7 +434,7 @@ final class eGlooConfiguration {
 		if (!$runtime_cache_path) {
 			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
 				$old_umask = umask(0);
-			    mkdir( self::getRuntimeConfigurationCachePath(), 0775 );
+				mkdir( self::getRuntimeConfigurationCachePath(), 0775 );
 				umask($old_umask);
 			}
 
@@ -534,13 +534,13 @@ final class eGlooConfiguration {
 			// echo_r($errors);
 
 			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Component' ) as $component ) {
-			// 	$componentID = (string) $component['id'];
+			//	$componentID = (string) $component['id'];
 			// 
-			// 	if (isset(self::$configuration_possible_options[$componentID])) {
-			// 		// if (!isset(self::$configuration_options[$componentID])) {
-			// 			self::$configuration_options[$componentID] = (string) $component['value'];
-			// 		// }
-			// 	}
+			//	if (isset(self::$configuration_possible_options[$componentID])) {
+			//		// if (!isset(self::$configuration_options[$componentID])) {
+			//			self::$configuration_options[$componentID] = (string) $component['value'];
+			//		// }
+			//	}
 			// }
 			// 
 			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option' ) as $option ) {
@@ -567,13 +567,13 @@ final class eGlooConfiguration {
 			// 
 			// // Load applications after system... 
 			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
-			// 	$componentID = (string) $component['id'];
+			//	$componentID = (string) $component['id'];
 			// 
-			// 	if (isset(self::$configuration_possible_options[$componentID])) {
-			// 		// if (!isset(self::$configuration_options[$componentID])) {
-			// 			self::$configuration_options[$componentID] = (string) $component['value'];
-			// 		// }
-			// 	}
+			//	if (isset(self::$configuration_possible_options[$componentID])) {
+			//		// if (!isset(self::$configuration_options[$componentID])) {
+			//			self::$configuration_options[$componentID] = (string) $component['value'];
+			//		// }
+			//	}
 			// }
 
 			if (!isset(self::$configuration_options['CustomVariables'])) {
@@ -595,7 +595,7 @@ final class eGlooConfiguration {
 		if (!$config_cache_path) {
 			if ( !is_writable( self::getApplicationConfigurationCachePath() ) ) {
 				$old_umask = umask(0);
-			    mkdir( self::getApplicationConfigurationCachePath(), 0775 );
+				mkdir( self::getApplicationConfigurationCachePath(), 0775 );
 				umask($old_umask);
 			}
 
@@ -682,8 +682,8 @@ final class eGlooConfiguration {
 			}
 		}
 		// We don't have eGlooLogger access at this point
-		//  else {
-		// 	eGlooLogger::writeLog( eGlooLogger::NOTICE, 'Could not read ' . $config_cache_path);
+		//	else {
+		//	eGlooLogger::writeLog( eGlooLogger::NOTICE, 'Could not read ' . $config_cache_path);
 		// }
 
 		return $retVal;
@@ -756,7 +756,7 @@ final class eGlooConfiguration {
 		if (!$config_cache_path) {
 			if ( !is_writable( self::getFrameworkConfigurationCachePath() ) ) {
 				$old_umask = umask(0);
-			    mkdir( self::getFrameworkConfigurationCachePath(), 0775 );
+				mkdir( self::getFrameworkConfigurationCachePath(), 0775 );
 				umask($old_umask);
 			}
 
@@ -795,16 +795,16 @@ final class eGlooConfiguration {
 
 			$xmlObject = new SimpleXMLElement($xmlData);
 
-			$applicationsXMLObject 	= $xmlObject->addChild('Applications');
-			$cachingXMLObject 		= $xmlObject->addChild('Caching');
-			$cubesXMLObject 		= $xmlObject->addChild('Cubes');
-			$databasesXMLObject 	= $xmlObject->addChild('Databases');
-			$documentsXMLObject 	= $xmlObject->addChild('Documents');
-			$frameworkXMLObject 	= $xmlObject->addChild('Framework');
-			$libraryXMLObject 		= $xmlObject->addChild('Library');
-			$networkXMLObject 		= $xmlObject->addChild('Network');
-			$peeringXMLObject 		= $xmlObject->addChild('Peering');
-			$systemXMLObject 		= $xmlObject->addChild('System');
+			$applicationsXMLObject	= $xmlObject->addChild('Applications');
+			$cachingXMLObject		= $xmlObject->addChild('Caching');
+			$cubesXMLObject			= $xmlObject->addChild('Cubes');
+			$databasesXMLObject		= $xmlObject->addChild('Databases');
+			$documentsXMLObject		= $xmlObject->addChild('Documents');
+			$frameworkXMLObject		= $xmlObject->addChild('Framework');
+			$libraryXMLObject		= $xmlObject->addChild('Library');
+			$networkXMLObject		= $xmlObject->addChild('Network');
+			$peeringXMLObject		= $xmlObject->addChild('Peering');
+			$systemXMLObject		= $xmlObject->addChild('System');
 			
 			foreach (self::$configuration_possible_options as $key => $value) {
 				$childXMLObject = null;
@@ -877,9 +877,9 @@ final class eGlooConfiguration {
 			die;
 		}
 
-        if ( is_writable( $config_xml_path ) ) {
+		if ( is_writable( $config_xml_path ) ) {
 
-        } else {
+		} else {
 	
 		}
 
@@ -1007,7 +1007,7 @@ final class eGlooConfiguration {
 
 			}
 
-			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?  Should be application array set
+			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?	Should be application array set
 			foreach($system_configuration['Applications']['Components'] as $component) {
 				if ($component['override'] === 'true') {
 					self::$configuration_possible_options[$component['id']] = $component;
@@ -1017,7 +1017,7 @@ final class eGlooConfiguration {
 				self::$configuration_options[$component['id']] = $component['value'];
 			}
 
-			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?  Should be application array set
+			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?	Should be application array set
 			foreach($system_configuration['Applications']['Options'] as $option) {
 				if ($option['override'] === 'true') {
 					self::$configuration_possible_options[$option['id']] = $option;
@@ -1065,7 +1065,7 @@ final class eGlooConfiguration {
 		if (!$system_cache_path) {
 			if ( !is_writable( self::getFrameworkSystemCachePath() ) ) {
 				$old_umask = umask(0);
-			    mkdir( self::getFrameworkSystemCachePath(), 0775 );
+				mkdir( self::getFrameworkSystemCachePath(), 0775 );
 				umask($old_umask);
 			}
 
@@ -1388,15 +1388,15 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egEnvironment'];
 	}
 
-    public static function getApplicationsPath() {
+	public static function getApplicationsPath() {
 		return self::$configuration_options['ApplicationsPath'];
 	}
 
-    public static function getCachePath() {
+	public static function getCachePath() {
 		return self::$configuration_options['CachePath'];
 	}
 
-    public static function getConfigurationPath() {
+	public static function getConfigurationPath() {
 		return self::$configuration_options['ConfigurationPath'];
 	}
 
@@ -1460,16 +1460,16 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egDatabaseConnections'];
 	}
 
-    public static function getDeploymentType() {
+	public static function getDeploymentType() {
 		// TODO deprecate this
 		return self::getDeployment();
 	}
 
-    public static function getDisplayErrors() {
+	public static function getDisplayErrors() {
 		return self::$configuration_options['egDisplayErrors'];
 	}
 
-    public static function getDisplayTraces() {
+	public static function getDisplayTraces() {
 		return self::$configuration_options['egDisplayTraces'];
 	}
 
@@ -1481,11 +1481,11 @@ final class eGlooConfiguration {
 		return self::$configuration_options['DataStorePath'];
 	}
 
-    public static function getDocumentationPath() {
+	public static function getDocumentationPath() {
 		return self::$configuration_options['DocumentationPath'];
 	}
 
-    public static function getDocumentRoot() {
+	public static function getDocumentRoot() {
 		return self::$configuration_options['DocumentRoot'];
 	}
 
@@ -1541,7 +1541,7 @@ final class eGlooConfiguration {
 		return isset(self::$configuration_options['ExtraTemplatePath']) ? self::$configuration_options['ExtraTemplatePath'] : '';
 	}
 
-    public static function getFrameworkRootPath() {
+	public static function getFrameworkRootPath() {
 		return self::$configuration_options['FrameworkRootPath'];
 	}
 
@@ -1579,7 +1579,7 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egLogFormat'];
 	}
 
-    public static function getLoggingPath() {
+	public static function getLoggingPath() {
 		return self::$configuration_options['LoggingPath'];
 	}
 	
