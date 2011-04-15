@@ -193,7 +193,7 @@ class Form {
 		// TODO needs to be able to set action and method
 		// TODO localize this whole thing
 		$html = '<!-- Form: "' . $this->_formID . '" -->' . "\n";
-		$html .= '<form method="' . $this->_formMethod . '"';
+		$html .= '<form id="' . $this->_formID . '" method="' . $this->_formMethod . '"';
 		
 		if ( isset($this->_formAction) ) {
 			$html .= ' action="' . $this->_formAction . '"';
