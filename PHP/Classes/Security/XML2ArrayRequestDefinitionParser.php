@@ -89,7 +89,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Entered loadRequestNodes()", 'Security' );
 
 		// Grab the absolute file system path to the Requests.xml we're concerned with.  $this->webapp is set
-		// during construction of this XML2ArrayRequestDefinitionParser singleton.  See eGlooReqeuestDefinitionParser
+		// during construction of this XML2ArrayRequestDefinitionParser singleton.  See eGlooRequestDefinitionParser
 		// for details.
 		$requests_xml_path = eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
 
