@@ -36,7 +36,44 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooDPDirector {
+final class eGlooDPDirector {
+
+	// Parsers (this needs to be refactored)
+	private static $dataProcessingDefinitionParser;
+	private static $singleton;
+
+	// Protected variables for children to inherit
+	protected $_connection_name = null;
+	protected $_engine_mode = null;
+
+	/**
+	 * Private constructor because this class is a singleton
+	 */
+	private function __construct( $connection_name, $engine_mode ) {
+		if ( isset(static::$singleton) ) {
+			throw new Exception('Attempted __construct(): An instance of eGlooDPDirector already exists');
+		} else {
+			$this->_connection_name = $connection_name;
+			$this->_engine_mode = $engine_mode;
+
+			// We'll do a conditional check, but for now let's just build an XML parser
+			self::$dataProcessingDefinitionParser = XML2ArrayDPDefinitionParser::getInstance( $this->_connection_name, $this->_engine_mode );
+		}
+	}
+
+	/**
+	 * Returns the singleton of this class
+	 */
+    public static function getInstance( $connection_name = 'egDefault', $engine_mode ) {
+		if ( !isset(self::$singleton) ) {
+			self::$singleton = new eGlooDPDirector( $connection_name, $engine_mode );
+		}
+
+		return self::$singleton;
+    }
+
+	final private function __clone() {
+		throw new Exception('Attempted __clone(): An instance of eGlooDPDirector already exists');
+	}
 
 }
-

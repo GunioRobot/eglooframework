@@ -1,10 +1,10 @@
 <?php
 /**
- * MaintenanceDPDispatcher Class File
+ * eGlooDPObject Class File
  *
- * $file_block_description
+ * Contains the class definition for the eGlooDPObject
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @package $package
  * @subpackage $subpackage
@@ -27,7 +27,7 @@
  */
 
 /**
- * MaintenanceDPDispatcher
+ * eGlooDPObject
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class MaintenanceDPDispatcher extends DPDispatcher {
+class eGlooDPObject {
 
 }
 

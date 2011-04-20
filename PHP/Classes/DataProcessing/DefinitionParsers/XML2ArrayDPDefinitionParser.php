@@ -65,11 +65,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		// Attempt to load the specified DataProcessing.xml file
 		$dataProcessingXMLObject = simplexml_load_file( $dp_xml_path );
 
-		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
-		// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
-		// and do more granulated inspection and cache clearing
-		$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
-
 		// If reading the DataProcessing.xml file failed, log the error
 		// TODO determine if we should throw an exception here...
 		if ( !$dataProcessingXMLObject ) {
@@ -78,6 +73,18 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		}
 
 		// Setup an array to hold all of our processed DPSequence definitions
+		$dataProcessingSequences = $this->loadDataProcessingSequences( $dataProcessingXMLObject );
+
+		// Setup an array to hold all of our processed DPStatement definitions
+		$dataProcessingStatements = $this->loadDataProcessingStatements( $dataProcessingXMLObject );
+
+		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: DataProcessing.xml successfully processed", 'DataProcessing' );
+	}
+
+	protected function loadDataProcessingSequences( $dataProcessingXMLObject ) {
+		$retVal = null;
+
 		$dataProcessingSequences = array();
 
 		// Iterate over the DPSequence nodes so that we can parse each DPSequence definition
@@ -92,57 +99,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 			// Assign an array to hold this DPSequence node definition.  Associative key is the DPSequence ID
 			$dataProcessingSequences[$dpSequenceID] = array('dataProcessingSequence' => $dpSequenceID, 'attributes' => array());
-
-			// Arguments
-			$dataProcessingSequences[$dpSequenceID]['attributes']['boolArguments'] = array();
-
-			foreach( $dpSequence->xpath( 'child::BoolArgument' ) as $boolArgument ) {
-				$newBoolArgument = array();
-
-				$newBoolArgument['id'] = (string) $boolArgument['id'];
-				$newBoolArgument['type'] = strtolower( (string) $boolArgument['type'] );
-				$newBoolArgument['required'] = strtolower( (string) $boolArgument['required'] );
-
-				if ($newBoolArgument['required'] === 'false' && isset($boolArgument['default'])) {
-					$defaultBoolValue = strtolower( (string) $boolArgument['default'] );
-					
-					if ($defaultBoolValue === 'true' || $defaultBoolValue === 'false') {
-						$newBoolArgument['default'] = $defaultBoolValue;
-					}
-				}
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['boolArguments'][$newBoolArgument['id']] = $newBoolArgument;
-			}
-
-			$dataProcessingSequences[$dpSequenceID]['attributes']['selectArguments'] = array();
-
-			foreach( $dpSequence->xpath( 'child::SelectArgument' ) as $selectArgument ) {
-				$newSelectArgument = array();
-
-				$newSelectArgument['id'] = (string) $selectArgument['id'];
-				$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
-				$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
-
-				if ( isset($selectArgument['scalarType']) ) {
-					$newSelectArgument['scalarType'] =	strtolower( (string) $selectArgument['scalarType'] );
-				}
-
-				$newSelectArgument['values'] = array();
-
-				foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
-					$newSelectArgument['values'][] = (string) $selectArgumentValue;
-				}
-
-				if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
-					$defaultSelectValue = (string) $selectArgument['default'];
-					
-					if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
-						$newSelectArgument['default'] = $defaultSelectValue;
-					}
-				}
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
-			}
 
 			$dataProcessingSequences[$dpSequenceID]['attributes']['variableArguments'] = array();
 
@@ -182,68 +138,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				$dataProcessingSequences[$dpSequenceID]['attributes']['formArguments'][$newFormArgument['id']] = $newFormArgument;
 			}
 
-			$dataProcessingSequences[$dpSequenceID]['attributes']['complexArguments'] = array();
-
-			foreach( $dpSequence->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
-				$newComplexArgument = array();
-
-				$newComplexArgument['id'] = (string) $complexArgument['id'];
-				$newComplexArgument['type'] = strtolower( (string) $complexArgument['type'] );
-				$newComplexArgument['required'] = strtolower( (string) $complexArgument['required'] );
-				$newComplexArgument['validator'] = (string) $complexArgument['validator'];
-
-				if ( isset($complexArgument['scalarType']) ) {
-					$newComplexArgument['scalarType'] =	 (string) $complexArgument['scalarType'];
-				} else if ( isset($complexArgument['complexType']) ) {
-					$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
-				}
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['complexArguments'][$newComplexArgument['id']] = $newComplexArgument;
-			}
-
-			$dataProcessingSequences[$dpSequenceID]['attributes']['depends'] = array();
-
-			foreach( $dpSequence->xpath( 'child::Depend' ) as $depend ) {
-				$newDepend = array();
-
-				$newDepend['id'] = (string) $depend['id'];
-				$newDepend['type'] = (string) $depend['type'];
-				$newDepend['children'] = array();
-
-				foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
-					$dependChildID = (string) $dependChild['id'];
-					$dependChildType = strtolower( (string) $dependChild['type'] );
-
-					$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
-				}
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['depends'][$newDepend['id']] = $newDepend;
-			}
-
-			// Decorators
-			$dataProcessingSequences[$dpSequenceID]['attributes']['decorators'] = array();
-
-			foreach( $dpSequence->xpath( 'child::Decorator' ) as $decorator ) {
-				$newDecorator = array();
-
-				$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
-				$newDecorator['order'] = (string) $decorator['order'];
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['decorators'][$newDecorator['decoratorID']] = $newDecorator;
-			}
-
-			// Init Routines
-			$dataProcessingSequences[$dpSequenceID]['attributes']['initRoutines'] = array();
-
-			foreach( $dpSequence->xpath( 'child::InitRoutine' ) as $initRoutine ) {
-				$newInitRoutine = array();
-
-				$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
-				$newInitRoutine['order'] = (string) $initRoutine['order'];
-
-				$dataProcessingSequences[$dpSequenceID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
-			}
-
 			$uniqueKey = ((string) $dpSequence['id']);
 			$this->dataProcessingSequences[ $uniqueKey ] = $dataProcessingSequences[$dpSequenceID];
 
@@ -256,16 +150,28 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				$uniqueKey, $dataProcessingSequences[$dpSequenceID], 'DataProcessing', 0, true );
 		}
 
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
+		// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
+		// and do more granulated inspection and cache clearing
+		$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
 		// We're done processing our DPSequences, so let's store the structured array in cache for faster lookup
 		// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
 		$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserAttributeSets',
 			$this->dataProcessingSequences, 'DataProcessing', 0, true );
 
-		// Setup an array to hold all of our processed DPSequence definitions
-		$dataProcessingStatements = array();
+		$retVal = $dataProcessingSequences;
+
+		return $retVal;
+	}
+
+	protected function loadDataProcessingStatements( $dataProcessingXMLObject ) {
+		$retVal = null;
+
+		$dataProcessingSequences = array();
 
 		// Iterate over the DPStatement nodes so that we can parse each request definition
-		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPStatement' ) as $dataProcessingStatement ) {
+		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPStatements' ) as $dataProcessingStatement ) {
 			// Grab the ID for this particular DPStatement
 			$dataProcessingStatementID = isset($dataProcessingStatement['id']) ? (string) $dataProcessingStatement['id'] : NULL;
 
@@ -309,57 +215,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				// Request Properties
 				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID] =
 					array('dataProcessingStatement' => $dataProcessingStatementID, 'requestID' => $requestID, 'processorID' => $processorID, 'errorProcessorID' => $errorProcessorID );
-
-				// Arguments
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'] = array();
-
-				foreach( $request->xpath( 'child::BoolArgument' ) as $boolArgument ) {
-					$newBoolArgument = array();
-
-					$newBoolArgument['id'] = (string) $boolArgument['id'];
-					$newBoolArgument['type'] = strtolower( (string) $boolArgument['type'] );
-					$newBoolArgument['required'] = strtolower( (string) $boolArgument['required'] );
-
-					if ($newBoolArgument['required'] === 'false' && isset($boolArgument['default'])) {
-						$defaultBoolValue = strtolower( (string) $boolArgument['default'] );
-						
-						if ($defaultBoolValue === 'true' || $defaultBoolValue === 'false') {
-							$newBoolArgument['default'] = $defaultBoolValue;
-						}
-					}
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$newBoolArgument['id']] = $newBoolArgument;
-				}
-
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'] = array();
-
-				foreach( $request->xpath( 'child::SelectArgument' ) as $selectArgument ) {
-					$newSelectArgument = array();
-
-					$newSelectArgument['id'] = (string) $selectArgument['id'];
-					$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
-					$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
-
-					if ( isset($selectArgument['scalarType']) ) {
-						$newSelectArgument['scalarType'] = strtolower( (string) $selectArgument['scalarType'] );
-					}
-
-					$newSelectArgument['values'] = array();
-
-					foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
-						$newSelectArgument['values'][] = (string) $selectArgumentValue;
-					}
-
-					if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
-						$defaultSelectValue = (string) $selectArgument['default'];
-						
-						if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
-							$newSelectArgument['default'] = $defaultSelectValue;
-						}
-					}
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
-				}
 
 				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'] = array();
 
@@ -620,8 +475,9 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		$dataProcessingCacheRegionHandler->storeObject( 
 			eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::NodesCached', true, 'DataProcessing', 0, true );
 
-		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: DataProcessing.xml successfully processed", 'DataProcessing' );
+		$retVal = $dataProcessingStatements;
+
+		return $retVal;
 	}
 
 	/**
