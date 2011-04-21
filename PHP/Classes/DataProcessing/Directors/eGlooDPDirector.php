@@ -49,10 +49,15 @@ final class eGlooDPDirector {
 	/**
 	 * Private constructor because this class is a singleton
 	 */
-	private function __construct( $connection_name, $engine_mode ) {
+	private function __construct( $connection_name = 'egPrimary', $engine_mode = null ) {
 		if ( isset(static::$singleton) ) {
 			throw new Exception('Attempted __construct(): An instance of eGlooDPDirector already exists');
 		} else {
+			if ( $engine_mode === null ) {
+				$connection_info = eGlooConfiguration::getDatabaseConnectionInfo( $connection_name );
+				$engine_mode = $connection_info['engine'];
+			}
+
 			$this->_connection_name = $connection_name;
 			$this->_engine_mode = $engine_mode;
 
@@ -61,10 +66,22 @@ final class eGlooDPDirector {
 		}
 	}
 
+	public function getDPProcedureDefinition( $statement_class, $statement_id ) {
+		return self::$dataProcessingDefinitionParser->getDPProcedureDefinition( $statement_class, $statement_id );
+	}
+
+	public function getDPSequenceDefinition( $statement_class, $statement_id ) {
+		return self::$dataProcessingDefinitionParser->getDPSequenceDefinition( $statement_class, $statement_id );
+	}
+
+	public function getDPStatementDefinition( $statement_class, $statement_id ) {
+		return self::$dataProcessingDefinitionParser->getDPStatementDefinition( $statement_class, $statement_id );
+	}
+
 	/**
 	 * Returns the singleton of this class
 	 */
-    public static function getInstance( $connection_name = 'egDefault', $engine_mode ) {
+    public static function getInstance( $connection_name = 'egPrimary', $engine_mode = null ) {
 		if ( !isset(self::$singleton) ) {
 			self::$singleton = new eGlooDPDirector( $connection_name, $engine_mode );
 		}

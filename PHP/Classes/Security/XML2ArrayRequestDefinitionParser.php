@@ -121,7 +121,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			// If no ID is set for this RequestAttributeSet, this is not a valid Requests.xml and we should get out of here
 			if ( !$attributeSetID || trim($attributeSetID) === '' ) {
-				throw new ErrorException("No ID specified in request attribute set.	 Please review your Requests.xml");
+				throw new ErrorException("No ID specified in request attribute set. Please review your Requests.xml");
 			}
 
 			// Assign an array to hold this RequestAttributeSet node definition.  Associative key is the RequestAttributeSet ID
@@ -302,7 +302,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			// If no ID is set for this RequestClass, this is not a valid Requests.xml and we should get out of here
 			if ( !$requestClassID || trim($requestClassID) === '' ) {
-				throw new ErrorException("No ID specified in request class.	 Please review your Requests.xml");
+				throw new ErrorException("No ID specified in request class. Please review your Requests.xml");
 			}
 
 			// Assign an array to hold this RequestClass node definition.  Associative key is the RequestClass ID

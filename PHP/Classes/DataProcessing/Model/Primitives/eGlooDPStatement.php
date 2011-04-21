@@ -38,8 +38,33 @@
  */
 class eGlooDPStatement extends eGlooDPPrimitive {
 
-	public function execute() {
-		
+	public function execute( $id = null, $parameters = null ) {
+		if ( $this->_class === null ) {
+			throw new Exception( 'No statement class provided for execution' );
+		}
+
+		if ( $id === null ) {
+			if ( $this->_id !== null ) {
+				$id = $this->_id;
+			} else {
+				throw new Exception( 'No statement ID provided for execution' );
+			}
+		}
+
+		$eglooDPDirector = eGlooDPDirector::getInstance();
+
+		$statement_definition = $eglooDPDirector->getDPStatementDefinition( $this->_class, $id );
+
+		$statement_variant = null;
+
+		if ( isset( $statement_definition['statement_variants'][$this->_connection_name]['engineModes'][$this->_engine_mode] ) ) {
+			echo_r('here');
+			$statement_variant = $statement_definition['statement_variants'][$this->_connection_name]['engineModes'][$this->_engine_mode];
+		}
+
+		echo_r($statement_variant);
+
+		die_r( $statement_definition );
 	}
 
 }

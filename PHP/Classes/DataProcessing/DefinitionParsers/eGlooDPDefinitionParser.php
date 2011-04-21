@@ -46,13 +46,13 @@ abstract class eGlooDPDefinitionParser {
 	protected $REQUESTS_XML_LOCATION = '';
 
 	// An array representing the DPSequence node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingSequences = array();
+	protected $dataProcessingSequences = null;
 
 	// An array representing the DPProcedure node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingProcedures = array();
+	protected $dataProcessingProcedures = null;
 
 	// An array representing the DPStatement node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingStatements = array();
+	protected $dataProcessingStatements = null;
 
 	// Protected variables for children to inherit
 	protected $_connection_name = null;
@@ -104,18 +104,24 @@ abstract class eGlooDPDefinitionParser {
         return static::$singleton;
 	}
 
+	abstract public function getDPProcedureDefinition( $statement_class, $statement_id );
+
+	abstract public function getDPSequenceDefinition( $statement_class, $statement_id );
+
+	abstract public function getDPStatementDefinition( $statement_class, $statement_id );
+
 	/**
 	 * A definition parser must include this method to handle loading  and processing request
 	 * nodes and requests attribute sets from the requests definition XML (Requests.xml)
 	 */
-	abstract protected function loadDPNodes();
+	abstract protected function loadDataProcessingNodes();
 
 	/**
 	 * This method gets called when a definition parser is instantiated.  It allows
 	 * subclasses to handle their initialization without overriding their parent's constructor
 	 */
 	protected function init() {
-		static::loadDPNodes();
+		static::loadDataProcessingNodes();
 	}
 
 	/**

@@ -48,9 +48,31 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 	 */
 	protected $_id = null;
 
-	public function __construct( $class = null, $id = null ) {
+	/**
+	 * @var string Name of the connection we'll be using
+	 */
+	protected $_connection_name = null;
+
+	/**
+	 * @var integer Engine mode of the connection we're using
+	 */
+	protected $_engine_mode = null;
+
+	public function __construct( $class = null, $id = null, $connection_name = null, $engine_mode ) {
 		$this->_class = $class;
 		$this->_id = $id;
+
+		if ( $connection_name !== null ) {
+			
+		} else {
+			
+		}
+
+		if ( $engine_mode !== null ) {
+			
+		} else {
+			
+		}
 	}
 
 	public function __destruct() {
@@ -65,7 +87,7 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 		
 	}
 
-	abstract public function execute();
+	abstract public function execute( $id = null, $parameters = null );
 
 	/**
 	 * Returns protected class member $_class
@@ -86,6 +108,42 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 	}
 
 	/**
+	 * Returns protected class member $_connection_name
+	 *
+	 * @return string Name of the connection we'll be using
+	 */
+	public function getConnectionName() {
+		return $this->_connection_name;
+	}
+
+	/**
+	 * Sets protected class member $_connection_name
+	 *
+	 * @param connection_name string Name of the connection we'll be using
+	 */
+	public function setConnectionName( $connection_name ) {
+		$this->_connection_name = $connection_name;
+	}
+
+	/**
+	 * Returns protected class member $_engine_mode
+	 *
+	 * @return integer Engine mode of the connection we're using
+	 */
+	public function getEngineMode() {
+		return $this->_engine_mode;
+	}
+
+	/**
+	 * Sets protected class member $_engine_mode
+	 *
+	 * @param engine_mode integer Engine mode of the connection we're using
+	 */
+	public function setEngineMode( $engine_mode ) {
+		$this->_engine_mode = $engine_mode;
+	}
+
+	/**
 	 * Returns protected class member $_id
 	 *
 	 * @return string ID of this primitive
@@ -103,8 +161,8 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 		$this->_id = $id;
 	}
 
-	public static function execute() {
-		
+	public static function executeOnce() {
+		echo 'b';
 	}
 
 }

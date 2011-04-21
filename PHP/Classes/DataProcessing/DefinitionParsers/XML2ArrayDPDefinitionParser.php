@@ -44,13 +44,55 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	// Singleton data member to enforce the singleton pattern for eGlooDPDefinitionParser subclasses
 	protected static $singleton;
 
+	public function getDPProcedureDefinition( $procedure_class, $procedure_id ) {
+		$retVal = null;
+
+		if ( !isset( $this->dataProcessingProcedures ) ) {
+			$this->loadDataProcessingNodes();
+		}
+
+		if ( isset( $this->dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id] ) ) {
+			$retVal = $this->dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id];
+		}
+
+		return $retVal;
+	}
+
+	public function getDPSequenceDefinition( $sequence_class, $sequence_id ) {
+		$retVal = null;
+
+		if ( !isset( $this->dataProcessingSequences ) ) {
+			$this->loadDataProcessingNodes();
+		}
+
+		if ( isset( $this->dataProcessingSequences[$sequence_class]['sequences'][$sequence_id] ) ) {
+			$retVal = $this->dataProcessingSequences[$sequence_class]['sequences'][$sequence_id];
+		}
+
+		return $retVal;
+	}
+
+	public function getDPStatementDefinition( $statement_class, $statement_id ) {
+		$retVal = null;
+
+		if ( !isset( $this->dataProcessingStatements ) ) {
+			$this->loadDataProcessingNodes();
+		}
+
+		if ( isset( $this->dataProcessingStatements[$statement_class]['statements'][$statement_id] ) ) {
+			$retVal = $this->dataProcessingStatements[$statement_class]['statements'][$statement_id];
+		}
+
+		return $retVal;
+	}
+
 	/**
 	 * Method to load data processing nodes from DataProcessing.xml definitions file
 	 * 
 	 * @throws ErrorException	if definition file cannot be read, has syntax errors, is missing
 	 *							required values or provides invalid values
 	 */
-	protected function loadRequestNodes() {
+	protected function loadDataProcessingNodes() {
 		// Mark entrance into this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Entered loadRequestNodes()", 'DataProcessing' );
 
@@ -168,301 +210,176 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	protected function loadDataProcessingStatements( $dataProcessingXMLObject ) {
 		$retVal = null;
 
-		$dataProcessingSequences = array();
+		$dataProcessingStatements = array();
 
-		// Iterate over the DPStatement nodes so that we can parse each request definition
-		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPStatements' ) as $dataProcessingStatement ) {
-			// Grab the ID for this particular DPStatement
-			$dataProcessingStatementID = isset($dataProcessingStatement['id']) ? (string) $dataProcessingStatement['id'] : NULL;
+		// Iterate over each DPStatementClass
+		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPStatements/DPStatementClass' ) as $dataProcessingStatementClass ) {
+			// Grab the ID for this particular DPStatementClass
+			$dataProcessingStatementClassID = isset($dataProcessingStatementClass['id']) ? (string) $dataProcessingStatementClass['id'] : NULL;
 
-			// If no ID is set for this DPStatement, this is not a valid DataProcessing.xml and we should get out of here
-			if ( !$dataProcessingStatementID || trim($dataProcessingStatementID) === '' ) {
-				throw new ErrorException("No ID specified in request class.	 Please review your DataProcessing.xml");
+			// If no ID is set for this DPStatementClass, this is not a valid DataProcessing.xml and we should get out of here
+			if ( !$dataProcessingStatementClassID || trim($dataProcessingStatementClassID) === '' ) {
+				throw new ErrorException("No ID specified in DPStatementClass. Please review your DataProcessing.xml");
 			}
 
-			// Assign an array to hold this DPStatement node definition.  Associative key is the DPStatement ID
-			$dataProcessingStatements[$dataProcessingStatementID] = array('dataProcessingStatement' => $dataProcessingStatementID, 'requests' => array());
+			$dpStatementClassStatements = array();
 
-			// Iterate over the Request nodes for this DPStatement so that we can parse each request definition
-			foreach( $dataProcessingStatement->xpath( 'child::Request' ) as $request ) {
-				// Grab the ID for this particular Request
-				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
+			// Iterate over each DPStatement in this DPStatementClass
+			foreach( $dataProcessingStatementClass->xpath( 'child::DPStatement' ) as $dataProcessingStatement ) {
+				// Grab the ID for this particular DPStatement
+				$dataProcessingStatementID = isset($dataProcessingStatement['id']) ? (string) $dataProcessingStatement['id'] : NULL;
 
-				// Grab the name of the RequestProcessor specified to handle this particular Request
-				// Example:
-				// $requestProcessor = new $processorID();
-				// $requestProcessor->processRequest();
-				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
-
-				// Grab the name of the RequestProcessor specified to handle errors for this particular Request
-				// Example:
-				// $errorRequestProcessor = new $errorProcessorID();
-				// $errorRequestProcessor->processErrorRequest();
-				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
-
-				// If no ID is set for this Request, this is not a valid DataProcessing.xml and we should get out of here
-				if ( !$requestID || trim($requestID) === '' ) {
-					throw new ErrorException("No request ID specified in request class: '" . $dataProcessingStatementID .
-						"'.	 Please review your DataProcessing.xml");
+				// If no ID is set for this DPStatement, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingStatementID || trim($dataProcessingStatementID) === '' ) {
+					throw new ErrorException("No ID specified in DPStatement. Please review your DataProcessing.xml");
 				}
 
-				// If no RequestProcessor is specified, this is not a valid DataProcessing.xml and we should get out of here
-				if ( !$processorID || trim($processorID) === '' ) {
-					throw new ErrorException("No processor ID specified in request ID: '" . $requestID .
-					"'.	 Please review your DataProcessing.xml");
+				// Grab the type for this particular DPStatement
+				$dataProcessingStatementType = isset($dataProcessingStatement['type']) ? (string) $dataProcessingStatement['type'] : NULL;
+
+				// If no type is set for this DPStatement, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingStatementType || trim($dataProcessingStatementType) === '' ) {
+					throw new ErrorException("No type specified in DPStatement. Please review your DataProcessing.xml");
 				}
 
-				// Request Properties
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID] =
-					array('dataProcessingStatement' => $dataProcessingStatementID, 'requestID' => $requestID, 'processorID' => $processorID, 'errorProcessorID' => $errorProcessorID );
+				$dpStatementClassStatements[$dataProcessingStatementID] = array( 'id' => $dataProcessingStatementID, 'type' => $dataProcessingStatementType );
 
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'] = array();
+				$argumentLists = array();
 
-				foreach( $request->xpath( 'child::VariableArgument' ) as $variableArgument ) {
-					$newVariableArgument = array();
+				foreach( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) as $dpStatementArgumentList ) {
+					$argumentListID = isset($dpStatementArgumentList['argumentListID']) ? (string) $dpStatementArgumentList['argumentListID'] : NULL;
+					$parameterPreparation = isset($dpStatementArgumentList['parameterPreparation']) ? (string) $dpStatementArgumentList['parameterPreparation'] : NULL;
 
-					$newVariableArgument['id'] = (string) $variableArgument['id'];
-					$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
-					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
-					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
+					$argumentLists[$argumentListID] = array( 'argumentListID' => $argumentListID, 'parameterPreparation' => $parameterPreparation );
 
-					if ( isset($variableArgument['scalarType']) ) {
-						$newVariableArgument['scalarType'] = (string) $variableArgument['scalarType'];
-					}
+					$arguments = array();
 
-					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
-						$defaultVariableValue = (string) $variableArgument['default'];
+					foreach( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') as $dpStatementArgument ) {
+						$argumentID = isset($dpStatementArgument['id']) ? (string) $dpStatementArgument['id'] : NULL;
+						$argumentType = isset($dpStatementArgument['type']) ? (string) $dpStatementArgument['type'] : NULL;
 
-						if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
-							$newVariableArgument['default'] = $defaultVariableValue;
+						$arguments[$argumentID] = array( 'argumentID' => $argumentID, 'argumentType' => $argumentType );
+
+						if ( $argumentType === 'integer' ) {
+							$arguments[$argumentID]['min'] = isset($dpStatementArgument['min']) ? (string) $dpStatementArgument['min'] : NULL;
+							$arguments[$argumentID]['max'] = isset($dpStatementArgument['max']) ? (string) $dpStatementArgument['max'] : NULL;
+						} else if ( $argumentType === 'string' ) {
+							$arguments[$argumentID]['pattern'] = isset($dpStatementArgument['pattern']) ? (string) $dpStatementArgument['pattern'] : NULL;
 						}
 					}
 
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
+					$argumentLists[$argumentListID]['arguments'] = $arguments;
 				}
 
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['formArguments'] = array();
+				$dpStatementClassStatements[$dataProcessingStatementID]['argumentLists'] = $argumentLists;
 
-				foreach( $request->xpath( 'child::FormArgument' ) as $formArgument ) {
-					$newFormArgument = array();
+				$statementReturn = array();
 
-					$newFormArgument['id'] = (string) $formArgument['id'];
-					$newFormArgument['type'] = strtolower( (string) $formArgument['type'] );
-					$newFormArgument['required'] = strtolower( (string) $formArgument['required'] );
-					$newFormArgument['formID'] = (string) $formArgument['formID'];
+				foreach( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) as $dpStatementReturn ) {
+					$dpStatementReturnType = isset($dpStatementReturn['type']) ? (string) $dpStatementReturn['type'] : NULL;
 
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['formArguments'][$newFormArgument['id']] = $newFormArgument;
-				}
+					$statementReturn['type'] = $dpStatementReturnType;
 
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'] = array();
+					$statementReturnColumnSets = array();
 
-				foreach( $request->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
-					$newComplexArgument = array();
-
-					$newComplexArgument['id'] = (string) $complexArgument['id'];
-					$newComplexArgument['type'] = strtolower( (string) $complexArgument['type'] );
-					$newComplexArgument['required'] = strtolower( (string) $complexArgument['required'] );
-					$newComplexArgument['validator'] = (string) $complexArgument['validator'];
-
-					if ( isset($complexArgument['scalarType']) ) {
-						$newComplexArgument['scalarType'] =	 (string) $complexArgument['scalarType'];
-					} else if ( isset($complexArgument['complexType']) ) {
-						$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
+					foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) as $dpStatementReturnColumnSet ) {
+						$dpStatementReturnColumnSetTable = isset($dpStatementReturnColumnSet['table']) ? (string) $dpStatementReturnColumnSet['table'] : NULL;
+						$dpStatementReturnColumnSetPattern = isset($dpStatementReturnColumnSet['pattern']) ? (string) $dpStatementReturnColumnSet['pattern'] : NULL;
+						$dpStatementReturnColumnSetType = isset($dpStatementReturnColumnSet['type']) ? (string) $dpStatementReturnColumnSet['type'] : NULL;
+						
+						$statementReturnColumnSets[$dpStatementReturnColumnSetTable] =
+							array( 'table' => $dpStatementReturnColumnSetTable, 'pattern' => $dpStatementReturnColumnSetPattern, 'type' => $dpStatementReturnColumnSetType );
 					}
 
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$newComplexArgument['id']] = $newComplexArgument;
-				}
+					$statementReturn['statementReturnColumnSets'] = $statementReturnColumnSets;
 
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'] = array();
+					$statementReturnColumns = array();
 
-				foreach( $request->xpath( 'child::Depend' ) as $depend ) {
-					$newDepend = array();
+					foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) as $dpStatementReturnColumn ) {
+						$dpStatementReturnColumnID = isset($dpStatementReturnColumn['id']) ? (string) $dpStatementReturnColumn['id'] : NULL;
+						$dpStatementReturnColumnType = isset($dpStatementReturnColumn['type']) ? (string) $dpStatementReturnColumn['type'] : NULL;
+						
+						$statementReturnColumns[$dpStatementReturnColumnID] = array( 'id' => $dpStatementReturnColumnID, 'type' => $dpStatementReturnColumnType );
 
-					$newDepend['id'] = (string) $depend['id'];
-					$newDepend['type'] = (string) $depend['type'];
-					$newDepend['children'] = array();
-
-					foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
-						$dependChildID = (string) $dependChild['id'];
-						$dependChildType = strtolower( (string) $dependChild['type'] );
-
-						$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
-					}
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$newDepend['id']] = $newDepend;
-				}
-
-				// Decorators
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'] = array();
-
-				foreach( $request->xpath( 'child::Decorator' ) as $decorator ) {
-					$newDecorator = array();
-
-					$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
-					$newDecorator['order'] = (string) $decorator['order'];
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$newDecorator['decoratorID']] = $newDecorator;
-				}
-
-				// InitRoutines
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['initRoutines'] = array();
-
-				foreach( $request->xpath( 'child::InitRoutine' ) as $initRoutine ) {
-					$newInitRoutine = array();
-
-					$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
-					$newInitRoutine['order'] = (string) $initRoutine['order'];
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
-				}
-
-				// Request Attribute Set Includes
-				$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['requestAttributeSetIncludes'] = array();
-
-				foreach( $request->xpath( 'child::DPSequenceInclude' ) as $requestAttributeSetInclude ) {
-					$newDPSequenceInclude = array();
-
-					$newDPSequenceInclude['requestAttributeSetID'] = (string) $requestAttributeSetInclude['requestAttributeSetID'];
-					$newDPSequenceInclude['priority'] = (string) $requestAttributeSetInclude['priority'];
-
-					$newInsertArrayID = $newDPSequenceInclude['requestAttributeSetID'];
-
-					$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['requestAttributeSetIncludes'][$newInsertArrayID] = $newDPSequenceInclude;
-				}
-
-				foreach( $dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['requestAttributeSetIncludes'] as $requestAttributeSetInclude ) {
-					$requestAttributeSetID = $requestAttributeSetInclude['requestAttributeSetID'];
-					$priority = $requestAttributeSetInclude['priority'];
-
-					$requestAttributeSet = $this->dataProcessingSequences[$requestAttributeSetID];
-
-					$boolArguments = $requestAttributeSet['attributes']['boolArguments'];
-					$selectArguments = $requestAttributeSet['attributes']['selectArguments'];
-					$variableArguments = $requestAttributeSet['attributes']['variableArguments'];
-					$complexArguments = $requestAttributeSet['attributes']['complexArguments'];
-					$depends = $requestAttributeSet['attributes']['depends'];
-					$decorators = $requestAttributeSet['attributes']['decorators'];
-
-					foreach( $boolArguments as $boolArgument ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting bool argument ' . $boolArgument['id'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$boolArgument['id']] = $boolArgument;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$boolArgument['id']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence bool argument ' . $boolArgument['id'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['boolArguments'][$boolArgument['id']] = $boolArgument;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence bool argument ' . $boolArgument['id'] .
-								' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
+						if ( $dpStatementReturnColumnType === 'integer' ) {
+							$statementReturnColumns[$dpStatementReturnColumnID]['min'] =
+								isset($dpStatementReturnColumn['min']) ? (string) $dpStatementReturnColumn['min'] : NULL;
+							$statementReturnColumns[$dpStatementReturnColumnID]['max'] =
+								isset($dpStatementReturnColumn['max']) ? (string) $dpStatementReturnColumn['max'] : NULL;
+						} else if ( $dpStatementReturnColumnType === 'string' ) {
+							$statementReturnColumns[$dpStatementReturnColumnID]['pattern'] =
+								isset($dpStatementReturnColumn['pattern']) ? (string) $dpStatementReturnColumn['pattern'] : NULL;
 						}
 					}
 
-					foreach( $selectArguments as $selectArgument ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting select argument ' . $selectArgument['id'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$selectArgument['id']] = $selectArgument;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$selectArgument['id']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence select argument ' . $selectArgument['id'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['selectArguments'][$selectArgument['id']] = $selectArgument;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence select argument ' . $selectArgument['id'] .
-								' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
-						}
-					}
-
-					foreach( $variableArguments as $variableArgument ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting variable argument ' . $variableArgument['id'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$variableArgument['id']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence variable argument ' . $variableArgument['id'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['variableArguments'][$variableArgument['id']] = $variableArgument;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence variable argument ' . $variableArgument['id'] .
-								' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
-						}
-					}
-
-					foreach( $complexArguments as $complexArgument ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting complex argument ' . $complexArgument['id'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$complexArgument['id']] = $complexArgument;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$complexArgument['id']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence complex argument ' . $complexArgument['id'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['complexArguments'][$complexArgument['id']] = $complexArgument;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence complex argument ' . $complexArgument['id'] .
-								' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
-						}
-					}
-
-					foreach( $depends as $depend ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$depend['id']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting depend ' . $depend['id'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$depend['id']] = $depend;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$depend['id']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$depend['id']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence depend ' . $depend['id'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['depends'][$depend['id']] = $depend;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence depend ' . $depend['id'] .
-								' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
-						}
-					}
-
-					$existingDecoratorCount = count($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators']);
-
-					foreach( $decorators as $decorator ) {
-						if ( !isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]) ) {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Inserting decorator ' . $decorator['decoratorID'] .
-								' from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-
-							$decorator['order'] += $existingDecoratorCount;
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
-						} else if ( isset($dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority']) &&
-								$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$decorator['decoratorID']]['priority'] < $priority ) {
-
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Replacing lower precedence decorator ' . $decorator['decoratorID'] .
-								' with higher precedence from attribute set ' . $requestAttributeSetID , 'DataProcessing' );
-							$dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID]['decorators'][$decorator['decoratorID']] = $decorator;
-						} else {
-							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Higher precedence decorator ' . $decorator['decoratorID'] .
-							' exists.  Skipping for ' . $requestAttributeSetID, 'DataProcessing' );
-						}
-					}
+					$statementReturn['statementReturnColumns'] = $statementReturnColumns;
 				}
 
-				$uniqueKey = ( (string) $dataProcessingStatement['id'] ) . ( (string) $request['id'] );
+				$dpStatementClassStatements[$dataProcessingStatementID]['statementReturn'] = $statementReturn;
 
-				$this->dataProcessingStatements[ $uniqueKey ] = $dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID];
+				$statementVariants = array();
 
-				// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
-				// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
-				// and do more granulated inspection and cache clearing
-				$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+				foreach( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) as $dpStatementVariant ) {
+					$dpStatementVariantConnection = isset($dpStatementVariant['connection']) ? (string) $dpStatementVariant['connection'] : NULL;
 
-				$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserNodes::' .
-					$uniqueKey, $dataProcessingStatements[$dataProcessingStatementID]['requests'][$requestID], 'DataProcessing', 0, true );
+					$statementVariant = array( 'connection' => $dpStatementVariantConnection );
+
+					$statementVariantEngineModes = array();
+
+					foreach( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) as $dpStatementVariantEngineMode ) {
+						$dpStatementVariantEngineModeMode = isset($dpStatementVariantEngineMode['mode']) ? (string) $dpStatementVariantEngineMode['mode'] : NULL;
+
+						$statementVariantEngineModes[$dpStatementVariantEngineModeMode] = array( 'mode' => $dpStatementVariantEngineModeMode );
+
+						$includePaths = array();
+
+						foreach( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) as $dpStatementIncludePath ) {
+							$dpStatementIncludePathArgumentList = isset($dpStatementIncludePath['argumentList']) ? (string) $dpStatementIncludePath['argumentList'] : NULL;
+
+							$dpStatementIncludePathValue = (string) $dpStatementIncludePath;
+
+							$includePaths[] = array( 'argumentList' => $dpStatementIncludePathArgumentList, 'includePath' => $dpStatementIncludePathValue );
+						}
+
+						$statementVariantEngineModes[$dpStatementVariantEngineModeMode]['includePaths'] = $includePaths;
+					}
+
+					$statementVariant['engineModes'] = $statementVariantEngineModes;
+
+					$statementVariants[$dpStatementVariantConnection] = $statementVariant;
+				}
+
+				$dpStatementClassStatements[$dataProcessingStatementID]['statementVariants'] = $statementVariants;
+
+				$statementConstraints = array();
+
+				foreach( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) as $dpStatementConstraint ) {
+					$dpStatementConstraintType = isset($dpStatementConstraint['type']) ? (string) $dpStatementConstraint['type'] : NULL;
+					$dpStatementConstraintMin = isset($dpStatementConstraint['min']) ? (string) $dpStatementConstraint['min'] : NULL;
+					$dpStatementConstraintMax = isset($dpStatementConstraint['max']) ? (string) $dpStatementConstraint['max'] : NULL;
+					$dpStatementConstraintGranularity = isset($dpStatementConstraint['granularity']) ? (string) $dpStatementConstraint['granularity'] : NULL;
+					$dpStatementConstraintLevel = isset($dpStatementConstraint['level']) ? (string) $dpStatementConstraint['level'] : NULL;
+
+					$statementConstraints[] = array(	'type' => $dpStatementConstraintType,
+														'min' => $dpStatementConstraintMin,
+														'max' => $dpStatementConstraintMax,
+														'granularity' => $dpStatementConstraintGranularity,
+														'level', $dpStatementConstraintLevel,
+					);
+				}
+
+				$dpStatementClassStatements[$dataProcessingStatementID]['statementConstraints'] = $statementConstraints;
 			}
+
+			// Assign an array to hold this DPStatementClass node definition.  Associative key is the DPStatementClass ID
+			$dataProcessingStatements[$dataProcessingStatementClassID] = array( 'statementClass' => $dataProcessingStatementClassID, 'statements' => $dpStatementClassStatements );
 		}
+
+		$this->dataProcessingStatements = $dataProcessingStatements;
+// die_r($this->dataProcessingStatements);
+		return $this->dataProcessingStatements;
+// echo_r($dataProcessingStatements);
+// die;
 
 		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
 		// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
