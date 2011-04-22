@@ -38,6 +38,30 @@
  */
 class ValidatedForm extends Form {
 
+	/**
+	 * @var bool If the form is valid or not
+	 */
+	protected $_valid = null;
+
+	/**
+	 * Returns protected class member $_valid
+	 *
+	 * @return bool If the form is valid or not
+	 */
+	public function isValid() {
+		return $this->_valid;
+	}
+
+	/**
+	 * Sets protected class member $_valid
+	 *
+	 * @param valid bool If the form is valid or not
+	 */
+	public function setIsValid( $valid ) {
+		$this->_valid = $valid;
+	}
+
+
 	public function validate() {
 		$retVal = false;
 
@@ -81,6 +105,7 @@ class ValidatedForm extends Form {
 			$retVal = true;
 		}
 
+		$this->setIsValid( $retVal );
 		// die_r($this);
 
 		return $retVal;
