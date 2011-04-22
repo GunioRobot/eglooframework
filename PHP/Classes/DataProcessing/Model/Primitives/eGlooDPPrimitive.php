@@ -58,20 +58,22 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 	 */
 	protected $_engine_mode = null;
 
-	public function __construct( $class = null, $id = null, $connection_name = null, $engine_mode ) {
+	/**
+	 * @var array Array of bound parameters
+	 */
+	protected $_bound_parameters = array();
+
+	public function __construct( $class = null, $id = null, $connection_name = 'egPrimary', $engine_mode = null ) {
 		$this->_class = $class;
 		$this->_id = $id;
 
-		if ( $connection_name !== null ) {
-			
-		} else {
-			
-		}
+		$this->_connection_name = $connection_name;
 
 		if ( $engine_mode !== null ) {
-			
+			$this->_engine_mode = eGlooConfiguration::getEngineModeFromString( $engine_mode );
 		} else {
-			
+			$connection_info = eGlooConfiguration::getDatabaseConnectionInfo( $connection_name );
+			$this->_engine_mode = $connection_info['engine'];
 		}
 	}
 
@@ -80,11 +82,11 @@ abstract class eGlooDPPrimitive extends eGlooDPObject {
 	}
 
 	public function bind( $parameter, $value ) {
-		
+		$this->_bound_parameters[$parameter] = $value;
 	}
 
 	public function unbind( $parameter ) {
-		
+		unset($this->_bound_parameters[$parameter]);
 	}
 
 	abstract public function execute( $id = null, $parameters = null );

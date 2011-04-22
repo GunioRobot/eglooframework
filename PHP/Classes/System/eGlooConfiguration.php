@@ -42,6 +42,56 @@ final class eGlooConfiguration {
 	// Runtime Initialization / Configuration
 	private static $_runtimeConfigurationCacheFilename = null;
 
+	public static function loadCLIConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
+		$useRuntimeCache = self::getUseRuntimeCache();
+
+		// TODO move this somewhere cleaner
+		self::$configuration_options['egCDNConnections'] = array();
+		self::$configuration_options['egDatabaseConnections'] = array();
+
+		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
+			$success = self::loadFrameworkSystemCache();
+
+			if (!$success) {
+				self::loadFrameworkSystemXML();
+			}
+
+			$success = self::loadFrameworkConfigurationCache($overwrite, $config_cache);
+
+			if (!$success) {
+				self::loadFrameworkConfigurationXML($overwrite, $config_xml);
+			}
+
+			$application_path = eGlooConfiguration::getApplicationPath();
+
+			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
+		
+			if (!$success) {
+				self::loadApplicationConfigurationXML($application_path, $overwrite);
+			}
+
+			if ($prefer_htaccess) {
+				self::loadWebRootConfig($overwrite);
+			}
+
+			if (eGlooConfiguration::getUseRuntimeCache()) {
+			}
+		}
+
+		// Set the rewrite base
+		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
+			$matches = array();
+			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
+			self::$rewriteBase = $matches[1];
+		}
+
+		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
+		
+		if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
+			self::secureEnvironment();
+		}
+	}
+
 
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
@@ -1529,8 +1579,112 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
+	public static function getEngineModeFromString( $engine_mode ) {
+		$retVal = null;
+
+		switch( $engine_mode ) {
+			case 'Aquinas' :
+				$retVal = self::AQUINAS;
+				break;
+			case 'Cassandra' :
+				$retVal = self::CASSANDRA;
+				break;
+			case 'Doctrine' :
+				$retVal = self::DOCTRINE;
+				break;
+			case 'eGloo' :
+				$retVal = self::EGLOO;
+				break;
+			case 'Mongo' :
+				$retVal = self::MONGO;
+				break;
+			case 'MySQL' :
+				$retVal = self::MYSQL;
+				break;
+			case 'MySQLi' :
+				$retVal = self::MYSQLI;
+				break;
+			case 'MySQLiOOP' :
+				$retVal = self::MYSQLIOOP;
+				break;
+			case 'Oracle' :
+				$retVal = self::ORACLE;
+				break;
+			case 'PDO' :
+				$retVal = self::PDO;
+				break;
+			case 'PostgreSQL' :
+				$retVal = self::POSTGRESQL;
+				break;
+			case 'REST' :
+				$retVal = self::REST;
+				break;
+			case 'SOAP' :
+				$retVal = self::SOAP;
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
+	public static function getStringFromEngineMode( $engine_mode ) {
+		$retVal = null;
+
+		switch( $engine_mode ) {
+			case self::AQUINAS :
+				$retVal = 'Aquinas';
+				break;
+			case self::CASSANDRA :
+				$retVal = 'Cassandra';
+				break;
+			case self::DOCTRINE :
+				$retVal = 'Doctrine';
+				break;
+			case self::EGLOO :
+				$retVal = 'eGloo';
+				break;
+			case self::MONGO :
+				$retVal = 'Mongo';
+				break;
+			case self::MYSQL :
+				$retVal = 'MySQL';
+				break;
+			case self::MYSQLI :
+				$retVal = 'MySQLi';
+				break;
+			case self::MYSQLIOOP :
+				$retVal = 'MySQLiOOP';
+				break;
+			case self::ORACLE :
+				$retVal = 'Oracle';
+				break;
+			case self::PDO :
+				$retVal = 'PDO';
+				break;
+			case self::POSTGRESQL :
+				$retVal = 'PostgreSQL';
+				break;
+			case self::REST :
+				$retVal = 'REST';
+				break;
+			case self::SOAP :
+				$retVal = 'SOAP';
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
 	public static function getExtraClassPath() {
 		return isset(self::$configuration_options['ExtraClassPath']) ? self::$configuration_options['ExtraClassPath'] : '';
+	}
+
+	public static function getExtraDatabasePath() {
+		return isset(self::$configuration_options['ExtraDatabasePath']) ? self::$configuration_options['ExtraDatabasePath'] : '';
 	}
 
 	public static function getExtraConfigurationPath() {

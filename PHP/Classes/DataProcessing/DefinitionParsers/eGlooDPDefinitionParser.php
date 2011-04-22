@@ -111,8 +111,8 @@ abstract class eGlooDPDefinitionParser {
 	abstract public function getDPStatementDefinition( $statement_class, $statement_id );
 
 	/**
-	 * A definition parser must include this method to handle loading  and processing request
-	 * nodes and requests attribute sets from the requests definition XML (Requests.xml)
+	 * A definition parser must include this method to handle loading and processing data processing
+	 * nodes from the data processing definition XML (Requests.xml)
 	 */
 	abstract protected function loadDataProcessingNodes();
 
