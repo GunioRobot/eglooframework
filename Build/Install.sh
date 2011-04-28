@@ -726,6 +726,45 @@ fi
 
 if [ -e "$DOCUMENT_ROOT/.htaccess" ]
 then
+	# echo -n "Use this location? [Y/n]: "
+	# read -e CONFIRM_CONTINUE
+	# 
+	# # Check if the user wants to use the default or specify their own configuration path
+	# case "$CONFIRM_CONTINUE" in
+	# 	# User chose to specify own configuration path
+	# 	"N" | "n" | "No" | "NO" | "no" )
+	# 		NEW_PATH_SET=0
+	# 	
+	# 		# Loop until we have a new path and the user has confirmed the location
+	# 		while [ "$NEW_PATH_SET" -ne 1 ]
+	# 		do
+	# 			echo -n "Enter New Location: "
+	# 			read -e CONFIG_PATH
+	# 			echo
+	# 			echo "Location: \"$CONFIG_PATH\""
+	# 			echo
+	# 	
+	# 			echo -n "Use this location? [y/N]: "
+	# 			read -e CONFIRM_CONTINUE
+	# 	
+	# 			# Make sure user entered right path
+	# 			case "$CONFIRM_CONTINUE" in
+	# 				# New path is good, break the loop
+	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
+	# 					NEW_PATH_SET=1
+	# 				;;
+	# 				# New path is no good, loop back
+	# 				* )
+	# 				;;
+	# 			esac
+	# 		done		
+	# 	;;
+	# 
+	# 	# User chose the default path
+	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
+	# 	;;
+	# esac
+
 	cp "$DOCUMENT_ROOT/.htaccess" "$DOCUMENT_ROOT/.htaccess.$TIMESTAMP.old"
 fi
 
@@ -992,7 +1031,7 @@ echo "***********************"
 echo
 echo "eGloo relies on several supporting software packages to be installed to run."
 echo "For each supporting software package, the installer can offer the option to"
-echo "install the required package from the eGloo distribution or prompt for a path"
+echo "use the required package provided with the eGloo distribution or prompt for a path"
 echo "where the relevant software package can be found.  The installer will attempt"
 echo "to make smart guesses about locations of software already installed."
 echo
@@ -1049,7 +1088,7 @@ then
 else
 	echo "Smarty was not found at the default location."
 	echo 
-	echo -n "Install Smarty? (If no, you will be prompted for an existing Smarty install) [Y/n]: "
+	echo -n "Use Smarty package provided in eGloo Framework library? (If no, you will be prompted for an existing Smarty install) [Y/n]: "
 	read -e CONFIRM_CONTINUE
 	
 	# Check if the user wants to use the default or specify their own Smarty path
@@ -1086,7 +1125,7 @@ else
 		# User chose the default path
 		* )
 			# TODO install Smarty
-			SMARTY_PATH=$DEFAULT_SMARTY
+			SMARTY_PATH="$FRAMEWORK_PATH/Library/Smarty3/libs/Smarty.class.php"
 		;;
 	esac
 
@@ -1094,9 +1133,6 @@ fi
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chown -R $WEB_USER:$WEB_GROUP "$SMARTY_PATH"
-	chmod -R 755 "$SMARTY_PATH"
-
 	checkUserCanRead "$WEB_USER" "$SMARTY_PATH"
 else
 	echo "Ignoring ownership and permissions of Smarty Path for Windows"
@@ -1154,7 +1190,7 @@ then
 else
 	echo "Doctrine was not found at the default location."
 	echo 
-	echo -n "Install Doctrine? (If no, you will be prompted for an existing Doctrine install) [Y/n]: "
+	echo -n "Use Doctrine package provided in eGloo Framework library? (If no, you will be prompted for an existing Doctrine install) [Y/n]: "
 	read -e CONFIRM_CONTINUE
 	
 	# Check if the user wants to use the default or specify their own Doctrine path
@@ -1191,7 +1227,7 @@ else
 		# User chose the default path
 		* )
 			# TODO install Doctrine
-			DOCTRINE_PATH=$DEFAULT_DOCTRINE
+			DOCTRINE_PATH="$FRAMEWORK_PATH/Library/Doctrine/Doctrine.php"
 		;;
 	esac
 
@@ -1199,9 +1235,6 @@ fi
 
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
-	chown -R $WEB_USER:$WEB_GROUP "$DOCTRINE_PATH"
-	chmod -R 755 "$DOCTRINE_PATH"
-
 	checkUserCanRead "$WEB_USER" "$DOCTRINE_PATH"
 else
 	echo "Ignoring ownership and permissions of Doctrine Path for Windows"
@@ -1263,30 +1296,208 @@ printf "done.\n"
 
 printf "Copying generated configuration to appropriate paths... "
 
-cp "System.xml" "Config.xml"
+if [ -e "$CONFIG_PATH/System.xml" ]
+then
+	# echo -n "Use this location? [Y/n]: "
+	# read -e CONFIRM_CONTINUE
+	# 
+	# # Check if the user wants to use the default or specify their own configuration path
+	# case "$CONFIRM_CONTINUE" in
+	# 	# User chose to specify own configuration path
+	# 	"N" | "n" | "No" | "NO" | "no" )
+	# 		NEW_PATH_SET=0
+	# 	
+	# 		# Loop until we have a new path and the user has confirmed the location
+	# 		while [ "$NEW_PATH_SET" -ne 1 ]
+	# 		do
+	# 			echo -n "Enter New Location: "
+	# 			read -e CONFIG_PATH
+	# 			echo
+	# 			echo "Location: \"$CONFIG_PATH\""
+	# 			echo
+	# 	
+	# 			echo -n "Use this location? [y/N]: "
+	# 			read -e CONFIRM_CONTINUE
+	# 	
+	# 			# Make sure user entered right path
+	# 			case "$CONFIRM_CONTINUE" in
+	# 				# New path is good, break the loop
+	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
+	# 					NEW_PATH_SET=1
+	# 				;;
+	# 				# New path is no good, loop back
+	# 				* )
+	# 				;;
+	# 			esac
+	# 		done		
+	# 	;;
+	# 
+	# 	# User chose the default path
+	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
+	# 	;;
+	# esac
+
+	mkdir -p "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP"
+	cp "$CONFIG_PATH/System.xml" "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP/System.xml"
+fi
+
+cp "System.xml" "$CONFIG_PATH/System.xml"
 
 if [ -e "$DOCUMENT_ROOT/System.xml" ]
 then
+	# echo -n "Use this location? [Y/n]: "
+	# read -e CONFIRM_CONTINUE
+	# 
+	# # Check if the user wants to use the default or specify their own configuration path
+	# case "$CONFIRM_CONTINUE" in
+	# 	# User chose to specify own configuration path
+	# 	"N" | "n" | "No" | "NO" | "no" )
+	# 		NEW_PATH_SET=0
+	# 	
+	# 		# Loop until we have a new path and the user has confirmed the location
+	# 		while [ "$NEW_PATH_SET" -ne 1 ]
+	# 		do
+	# 			echo -n "Enter New Location: "
+	# 			read -e CONFIG_PATH
+	# 			echo
+	# 			echo "Location: \"$CONFIG_PATH\""
+	# 			echo
+	# 	
+	# 			echo -n "Use this location? [y/N]: "
+	# 			read -e CONFIRM_CONTINUE
+	# 	
+	# 			# Make sure user entered right path
+	# 			case "$CONFIRM_CONTINUE" in
+	# 				# New path is good, break the loop
+	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
+	# 					NEW_PATH_SET=1
+	# 				;;
+	# 				# New path is no good, loop back
+	# 				* )
+	# 				;;
+	# 			esac
+	# 		done		
+	# 	;;
+	# 
+	# 	# User chose the default path
+	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
+	# 	;;
+	# esac
+
 	cp "$DOCUMENT_ROOT/System.xml" "$DOCUMENT_ROOT/System.xml.$TIMESTAMP.old"
 fi
 
-mv "System.xml" "$DOCUMENT_ROOT/System.xml"
+cp "System.xml" "$DOCUMENT_ROOT/System.xml"
+
+cp "System.xml" "Config.xml"
+
+if [ -e "$CONFIG_PATH/Config.xml" ]
+then
+	# echo -n "Use this location? [Y/n]: "
+	# read -e CONFIRM_CONTINUE
+	# 
+	# # Check if the user wants to use the default or specify their own configuration path
+	# case "$CONFIRM_CONTINUE" in
+	# 	# User chose to specify own configuration path
+	# 	"N" | "n" | "No" | "NO" | "no" )
+	# 		NEW_PATH_SET=0
+	# 	
+	# 		# Loop until we have a new path and the user has confirmed the location
+	# 		while [ "$NEW_PATH_SET" -ne 1 ]
+	# 		do
+	# 			echo -n "Enter New Location: "
+	# 			read -e CONFIG_PATH
+	# 			echo
+	# 			echo "Location: \"$CONFIG_PATH\""
+	# 			echo
+	# 	
+	# 			echo -n "Use this location? [y/N]: "
+	# 			read -e CONFIRM_CONTINUE
+	# 	
+	# 			# Make sure user entered right path
+	# 			case "$CONFIRM_CONTINUE" in
+	# 				# New path is good, break the loop
+	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
+	# 					NEW_PATH_SET=1
+	# 				;;
+	# 				# New path is no good, loop back
+	# 				* )
+	# 				;;
+	# 			esac
+	# 		done		
+	# 	;;
+	# 
+	# 	# User chose the default path
+	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
+	# 	;;
+	# esac
+
+	mkdir -p "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP"
+	cp "$CONFIG_PATH/Config.xml" "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP/Config.xml"
+fi
+
+cp "Config.xml" "$CONFIG_PATH/Config.xml"
 
 if [ -e "$DOCUMENT_ROOT/Config.xml" ]
 then
+	# echo -n "Use this location? [Y/n]: "
+	# read -e CONFIRM_CONTINUE
+	# 
+	# # Check if the user wants to use the default or specify their own configuration path
+	# case "$CONFIRM_CONTINUE" in
+	# 	# User chose to specify own configuration path
+	# 	"N" | "n" | "No" | "NO" | "no" )
+	# 		NEW_PATH_SET=0
+	# 	
+	# 		# Loop until we have a new path and the user has confirmed the location
+	# 		while [ "$NEW_PATH_SET" -ne 1 ]
+	# 		do
+	# 			echo -n "Enter New Location: "
+	# 			read -e CONFIG_PATH
+	# 			echo
+	# 			echo "Location: \"$CONFIG_PATH\""
+	# 			echo
+	# 	
+	# 			echo -n "Use this location? [y/N]: "
+	# 			read -e CONFIRM_CONTINUE
+	# 	
+	# 			# Make sure user entered right path
+	# 			case "$CONFIRM_CONTINUE" in
+	# 				# New path is good, break the loop
+	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
+	# 					NEW_PATH_SET=1
+	# 				;;
+	# 				# New path is no good, loop back
+	# 				* )
+	# 				;;
+	# 			esac
+	# 		done		
+	# 	;;
+	# 
+	# 	# User chose the default path
+	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
+	# 	;;
+	# esac
+
 	cp "$DOCUMENT_ROOT/Config.xml" "$DOCUMENT_ROOT/Config.xml.$TIMESTAMP.old"
 fi
 
-mv "Config.xml" "$DOCUMENT_ROOT/Config.xml"
+cp "Config.xml" "$DOCUMENT_ROOT/Config.xml"
+
+rm "System.xml"
+rm "Config.xml"
 
 printf "done.\n"
 
 # Set ownership on the config dump created
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
+	chmod 664 "$CONFIG_PATH/Config.xml"
+	chmod 640 "$CONFIG_PATH/System.xml"
+
 	chmod -R 755 "$DOCUMENT_ROOT"
 
-	chmod -R 664 "$DOCUMENT_ROOT/Config.xml"
+	chmod 664 "$DOCUMENT_ROOT/Config.xml"
 	chown $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/Config.xml"
 	
 	chmod 640 "$DOCUMENT_ROOT/System.xml"
