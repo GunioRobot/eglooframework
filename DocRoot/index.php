@@ -32,7 +32,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 	exit;
 } else {
 	// Setup the OOP autoloader
-	include( 'PHP/autoload.php' );
+	include( 'PHP/Includes/eGlooAutoload.php' );
 }
 
 // Check for Memcache

@@ -52,29 +52,30 @@ final class eGlooConfiguration {
 		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
-			if (!$success) {
+			if ( !$success ) {
 				self::loadFrameworkSystemXML();
 			}
 
-			$success = self::loadFrameworkConfigurationCache($overwrite, $config_cache);
+			$success = self::loadFrameworkConfigurationCache( $overwrite, $config_cache );
 
-			if (!$success) {
-				self::loadFrameworkConfigurationXML($overwrite, $config_xml);
+			if ( !$success ) {
+				self::loadFrameworkConfigurationXML( $overwrite, $config_xml );
 			}
 
 			$application_path = eGlooConfiguration::getApplicationPath();
 
-			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
+			$success = self::loadApplicationConfigurationCache( $application_path, $overwrite, $config_cache );
 		
-			if (!$success) {
-				self::loadApplicationConfigurationXML($application_path, $overwrite);
+			if ( !$success ) {
+				self::loadApplicationConfigurationXML( $application_path, $overwrite );
 			}
 
-			if ($prefer_htaccess) {
-				self::loadWebRootConfig($overwrite);
+			if ( $prefer_htaccess ) {
+				self::loadWebRootConfig( $overwrite );
 			}
 
-			if (eGlooConfiguration::getUseRuntimeCache()) {
+			if ( eGlooConfiguration::getUseRuntimeCache() ) {
+				self::writeRuntimeCache();
 			}
 		}
 
@@ -86,7 +87,7 @@ final class eGlooConfiguration {
 		}
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
-		
+
 		if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
 			self::secureEnvironment();
 		}
@@ -1783,6 +1784,12 @@ final class eGlooConfiguration {
 		// TODO make this customizable
 		// return self::$configuration_options['S3Path'];
 		return self::$configuration_options['FrameworkRootPath'] . '/Library/S3/S3.php';
+	}
+
+	public static function getSimpleTestIncludePath() {
+		// TODO make this customizable
+		// return self::$configuration_options['S3Path'];
+		return self::$configuration_options['FrameworkRootPath'] . '/Library/SimpleTest/autorun.php';
 	}
 
 	public static function getSmartyIncludePath() {

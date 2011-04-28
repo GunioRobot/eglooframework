@@ -714,9 +714,9 @@ then
 else
 	cp "$PARENT_DIRECTORY/DocRoot/index.php" "$DOCUMENT_ROOT/index.php"
 
-	mkdir -p "$DOCUMENT_ROOT/PHP"
+	mkdir -p "$DOCUMENT_ROOT/PHP/Includes"
 
-	cp "$PARENT_DIRECTORY/PHP/autoload.php" "$DOCUMENT_ROOT/PHP/autoload.php"
+	cp "$PARENT_DIRECTORY/PHP/Includes/eGlooAutoload.php" "$DOCUMENT_ROOT/PHP/Includes/eGlooAutoload.php"
 
 	mkdir -p "$DOCUMENT_ROOT/PHP/Classes/Utilities"
 

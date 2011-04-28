@@ -1,6 +1,6 @@
 <?php
 
-include_once(eGlooConfiguration::getFrameworkRootPath() . '/PHP/SimpleTest/autorun.php');
+include_once( eGlooConfiguration::getSimpleTestIncludePath() );
 
 class eGlooCoreTestSuite extends TestSuite {
 
