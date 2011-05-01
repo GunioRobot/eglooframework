@@ -48,6 +48,16 @@ class eGlooCLI {
 			case 'bundle' :
 				self::executeBundle( $arguments );
 				break;
+			case 'check' :
+				self::executeCheck( $arguments );
+				break;
+			case 'config' :
+			case 'configuration' :
+				self::executeConfiguration( $arguments );
+				break;
+			case 'cube' :
+				self::executeCube( $arguments );
+				break;
 			case 'data' :
 			case 'dp' :
 				self::executeDataProcessing( $arguments );
@@ -55,14 +65,49 @@ class eGlooCLI {
 			case 'form' :
 				self::executeForm( $arguments );
 				break;
+			case 'framework' :
+				self::executeFramework( $arguments );
+				break;
+			case 'global' :
+				self::executeGlobal( $arguments );
+				break;
 			case 'help' :
 				self::printCommandHelp( $arguments );
+				break;
+			case 'info' :
+				self::executeInfo( $arguments );
 				break;
 			case 'install' :
 				self::executeInstall( $arguments );
 				break;
+			case 'list' :
+			case 'ls' :
+				self::executeList( $arguments );
+				break;
 			case 'request' :
 				self::executeRequest( $arguments );
+				break;
+			case 'run' :
+				self::executeRun( $arguments );
+				break;
+			case 'search' :
+				self::executeSearch( $arguments );
+				break;
+			case 'sim' :
+			case 'simulate' :
+				self::executeSimulate( $arguments );
+				break;
+			case 'status' :
+				self::executeStatus( $arguments );
+				break;
+			case 'system' :
+				self::executeSystem( $arguments );
+				break;
+			case 'test' :
+				self::executeTest( $arguments );
+				break;
+			case 'ui' :
+				self::executeUI( $arguments );
 				break;
 			case 'uninstall' :
 				self::executeUninstall( $arguments );
@@ -91,16 +136,72 @@ class eGlooCLI {
 		echo 'Executing data processing functions' . "\n";
 	}
 
+	public static function executeCheck( $arguments ) {
+		echo 'Executing check functions' . "\n";
+	}
+
+	public static function executeConfiguration( $arguments ) {
+		echo 'Executing configuration functions' . "\n";
+	}
+
+	public static function executeCube( $arguments ) {
+		echo 'Executing cube functions' . "\n";
+	}
+
 	public static function executeForm( $arguments ) {
 		echo 'Executing form functions' . "\n";
+	}
+
+	public static function executeFramework( $arguments ) {
+		echo 'Executing framework functions' . "\n";
+	}
+
+	public static function executeGlobal( $arguments ) {
+		echo 'Executing global functions' . "\n";
+	}
+
+	public static function executeInfo( $arguments ) {
+		echo 'Executing info functions' . "\n";
 	}
 
 	public static function executeInstall( $arguments ) {
 		echo 'Executing install functions' . "\n";
 	}
 
+	public static function executeList( $arguments ) {
+		echo 'Executing list functions' . "\n";
+	}
+
 	public static function executeRequest( $arguments ) {
 		echo 'Executing request functions' . "\n";
+	}
+
+	public static function executeRun( $arguments ) {
+		echo 'Executing run functions' . "\n";
+	}
+
+	public static function executeSearch( $arguments ) {
+		echo 'Executing search functions' . "\n";
+	}
+
+	public static function executeSimulate( $arguments ) {
+		echo 'Executing simulate functions' . "\n";
+	}
+
+	public static function executeStatus( $arguments ) {
+		echo 'Executing status functions' . "\n";
+	}
+
+	public static function executeSystem( $arguments ) {
+		echo 'Executing system functions' . "\n";
+	}
+
+	public static function executeTest( $arguments ) {
+		echo 'Executing test functions' . "\n";
+	}
+
+	public static function executeUI( $arguments ) {
+		echo 'Executing UI functions' . "\n";
 	}
 
 	public static function executeUninstall( $arguments ) {
@@ -126,6 +227,16 @@ class eGlooCLI {
 			case 'bundle' :
 				self::printHelpInfoForBundleCommand();
 				break;
+			case 'check' :
+				self::printHelpInfoForCheckCommand();
+				break;
+			case 'config' :
+			case 'configuration' :
+				self::printHelpInfoForConfigurationCommand();
+				break;
+			case 'cube' :
+				self::printHelpInfoForCubeCommand();
+				break;
 			case 'data' :
 			case 'dp' :
 				self::printHelpInfoForDataProcessingCommand();
@@ -133,11 +244,46 @@ class eGlooCLI {
 			case 'form' :
 				self::printHelpInfoForFormCommand();
 				break;
+			case 'framework' :
+				self::printHelpInfoForFrameworkCommand();
+				break;
+			case 'global' :
+				self::printHelpInfoForGlobalCommand();
+				break;
+			case 'info' :
+				self::printHelpInfoForInfoCommand();
+				break;
 			case 'install' :
 				self::printHelpInfoForInstallCommand();
 				break;
+			case 'list' :
+			case 'ls' :
+				self::printHelpInfoForListCommand();
+				break;
 			case 'request' :
 				self::printHelpInfoForRequestCommand();
+				break;
+			case 'run' :
+				self::printHelpInfoForRunCommand();
+				break;
+			case 'search' :
+				self::printHelpInfoForSearchCommand();
+				break;
+			case 'sim' :
+			case 'simulate' :
+				self::printHelpInfoForSimulateCommand();
+				break;
+			case 'status' :
+				self::printHelpInfoForStatusCommand();
+				break;
+			case 'system' :
+				self::printHelpInfoForSystemCommand();
+				break;
+			case 'test' :
+				self::printHelpInfoForTestCommand();
+				break;
+			case 'ui' :
+				self::printHelpInfoForUICommand();
 				break;
 			case 'uninstall' :
 				self::printHelpInfoForUninstallCommand();
@@ -170,6 +316,18 @@ class eGlooCLI {
 		echo 'eGloo Bundle Help' ."\n";
 	}
 
+	public static function printHelpInfoForCheckCommand() {
+		echo 'eGloo Check Help' ."\n";
+	}
+
+	public static function printHelpInfoForConfigurationCommand() {
+		echo 'eGloo Configuration Help' ."\n";
+	}
+
+	public static function printHelpInfoForCubeCommand() {
+		echo 'eGloo Cube Help' ."\n";
+	}
+
 	public static function printHelpInfoForDataProcessingCommand() {
 		echo 'eGloo Data Processing Help' ."\n";
 	}
@@ -178,12 +336,56 @@ class eGlooCLI {
 		echo 'eGloo Form Help' ."\n";
 	}
 
+	public static function printHelpInfoForFrameworkCommand() {
+		echo 'eGloo Framework Help' ."\n";
+	}
+
+	public static function printHelpInfoForGlobalCommand() {
+		echo 'eGloo Global Help' ."\n";
+	}
+
+	public static function printHelpInfoForInfoCommand() {
+		echo 'eGloo Info Help' ."\n";
+	}
+
 	public static function printHelpInfoForInstallCommand() {
 		echo 'eGloo Install Help' ."\n";
 	}
 
+	public static function printHelpInfoForListCommand() {
+		echo 'eGloo List Help' ."\n";
+	}
+
 	public static function printHelpInfoForRequestCommand() {
 		echo 'eGloo Request Help' ."\n";
+	}
+
+	public static function printHelpInfoForRunCommand() {
+		echo 'eGloo Run Help' ."\n";
+	}
+
+	public static function printHelpInfoForSearchCommand() {
+		echo 'eGloo Search Help' ."\n";
+	}
+
+	public static function printHelpInfoForSimulateCommand() {
+		echo 'eGloo Simulate Help' ."\n";
+	}
+
+	public static function printHelpInfoForStatusCommand() {
+		echo 'eGloo Status Help' ."\n";
+	}
+
+	public static function printHelpInfoForSystemCommand() {
+		echo 'eGloo System Help' ."\n";
+	}
+
+	public static function printHelpInfoForTestCommand() {
+		echo 'eGloo Test Help' ."\n";
+	}
+
+	public static function printHelpInfoForUICommand() {
+		echo 'eGloo UI Help' ."\n";
 	}
 
 	public static function printHelpInfoForUninstallCommand() {
