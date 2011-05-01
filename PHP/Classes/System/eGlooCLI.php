@@ -43,10 +43,14 @@ class eGlooCLI {
 	public static function execute( $command, $arguments = null ) {
 		switch( $command ) {
 			case 'app' :
+			case 'application' :
 				self::executeApplication( $arguments );
 				break;
 			case 'bundle' :
 				self::executeBundle( $arguments );
+				break;
+			case 'cache' :
+				self::executeCache( $arguments );
 				break;
 			case 'check' :
 				self::executeCheck( $arguments );
@@ -84,6 +88,9 @@ class eGlooCLI {
 			case 'ls' :
 				self::executeList( $arguments );
 				break;
+			case 'log' :
+				self::executeLog( $arguments );
+				break;
 			case 'request' :
 				self::executeRequest( $arguments );
 				break;
@@ -118,6 +125,13 @@ class eGlooCLI {
 			case 'version' :
 				self::printVersionInfo( $arguments );
 				break;
+			case 'web' :
+			case 'webroot' :
+				self::executeWebRoot( $arguments );
+				break;
+			case 'zalgo' :
+				self::executeZalgo( $arguments );
+				break;
 			default :
 				echo 'Unknown command "' . $command . '" invoked.  Please try "egloo help" for more information.' ."\n";
 				break;
@@ -130,6 +144,10 @@ class eGlooCLI {
 
 	public static function executeBundle( $arguments ) {
 		echo 'Executing bundle functions' . "\n";
+	}
+
+	public static function executeCache( $arguments ) {
+		echo 'Executing cache functions' . "\n";
 	}
 
 	public static function executeDataProcessing( $arguments ) {
@@ -172,6 +190,10 @@ class eGlooCLI {
 		echo 'Executing list functions' . "\n";
 	}
 
+	public static function executeLog( $arguments ) {
+		echo 'Executing log functions' . "\n";
+	}
+
 	public static function executeRequest( $arguments ) {
 		echo 'Executing request functions' . "\n";
 	}
@@ -212,6 +234,15 @@ class eGlooCLI {
 		echo 'Executing upgrade functions' . "\n";
 	}
 
+	public static function executeWebRoot( $arguments ) {
+		echo 'Executing webroot functions' . "\n";
+	}
+
+	public static function executeZalgo( $arguments ) {
+		echo 'H҉̵̞̟̠̖̗̘Ȅ̐̑̒̚̕̚ IS C̒̓̔̿̿̿̕̚̚̕̚̕̚̕̚̕̚̕̚OMI҉̵̞̟̠̖̗̘NG > ͡҉҉ ̵̡̢̛̗̘̙̜̝̞' .
+			'̟̠͇̊̋̌̍̎̏̿̿̿̚ ҉ ҉҉̡̢̡̢̛̛̖̗̘̙̜̝̞̟̠̖̗̘̙̜̝̞̟̠̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑ ͡҉҉ ' . "\n";
+	}
+
 	public static function printCommandHelp( $arguments = null ) {
 		if ( !empty($arguments) && isset($arguments[0]) ) {
 			$command = array_shift($arguments);
@@ -222,10 +253,14 @@ class eGlooCLI {
 		// egloo help app, etc.
 		switch( $command ) {
 			case 'app' :
+			case 'application' :
 				self::printHelpInfoForApplicationCommand();
 				break;
 			case 'bundle' :
 				self::printHelpInfoForBundleCommand();
+				break;
+			case 'cache' :
+				self::printHelpInfoForCacheCommand();
 				break;
 			case 'check' :
 				self::printHelpInfoForCheckCommand();
@@ -260,6 +295,9 @@ class eGlooCLI {
 			case 'ls' :
 				self::printHelpInfoForListCommand();
 				break;
+			case 'log' :
+				self::printHelpInfoForLogCommand();
+				break;
 			case 'request' :
 				self::printHelpInfoForRequestCommand();
 				break;
@@ -291,6 +329,13 @@ class eGlooCLI {
 			case 'upgrade' :
 				self::printHelpInfoForUpgradeCommand();
 				break;
+			case 'web' :
+			case 'webroot' :
+				self::printHelpInfoForWebRootCommand();
+				break;
+			case 'zalgo' :
+				self::printHelpInfoForZalgoCommand();
+				break;
 			case null :
 				self::printHelpInfo();
 				break;
@@ -314,6 +359,10 @@ class eGlooCLI {
 
 	public static function printHelpInfoForBundleCommand() {
 		echo 'eGloo Bundle Help' ."\n";
+	}
+
+	public static function printHelpInfoForCacheCommand() {
+		echo 'eGloo Cache Help' ."\n";
 	}
 
 	public static function printHelpInfoForCheckCommand() {
@@ -356,6 +405,10 @@ class eGlooCLI {
 		echo 'eGloo List Help' ."\n";
 	}
 
+	public static function printHelpInfoForLogCommand() {
+		echo 'eGloo Log Help' ."\n";
+	}
+
 	public static function printHelpInfoForRequestCommand() {
 		echo 'eGloo Request Help' ."\n";
 	}
@@ -394,6 +447,24 @@ class eGlooCLI {
 
 	public static function printHelpInfoForUpgradeCommand() {
 		echo 'eGloo Upgrade Help' ."\n";
+	}
+
+	public static function printHelpInfoForWebRootCommand() {
+		echo 'eGloo WebRoot Help' ."\n";
+	}
+
+	public static function printHelpInfoForZalgoCommand() {
+		echo 'T҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚o invoke the h҉̵̞̟̠̖̗' .
+			'̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ive-mind re҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍' .
+			'̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚presenting chaos. Invoking҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊' .
+			'̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ the feeling of ch҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏' .
+			'̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚aos. With out ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍' .
+			'̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚order.҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚ ̌̍̎̏' .
+			'̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̚̕̕̚̕̚͡ ͡҉҉ ̕̚͡ ̒̓̔̕̚ The Nezperd҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐' .
+			'̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ian hive-mind of chaos. Zalgo. He w҉̵̞̟̠̖̗̘̙̜' .
+			'̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ho Waits Behind ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋' .
+			'̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚The Wall. ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍' .
+			'̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚ ͡ ̒̓̔̕̚, ' ."\n";
 	}
 
 	public static function printUsageInfo() {
