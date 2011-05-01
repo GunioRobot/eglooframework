@@ -27,7 +27,7 @@
  */
 
 // Check for the minimum PHP version to run the framework
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
 	echo 'You are using PHP version ' . PHP_VERSION . '.  ' .
 		'eGloo requires PHP version 5.3.0 or higher.';
 	exit;
@@ -37,11 +37,20 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 }
 
 // Check for Memcache
-if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
+if ( !extension_loaded('memcache') && !extension_loaded('memcached') ) {
 	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP';
 	exit;
 }
 
-echo 'lkj';
-print_r($argv);
-print_r($argc);
+$arguments = $argv;
+
+if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
+	$script_name = array_shift( $arguments );
+	$command = array_shift( $arguments );
+
+	eGlooCLI::execute( $command, $arguments );
+} else {
+	eGlooCLI::printUsageInfo();
+}
+
+exit;

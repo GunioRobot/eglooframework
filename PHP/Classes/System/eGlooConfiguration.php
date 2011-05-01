@@ -45,52 +45,63 @@ final class eGlooConfiguration {
 	public static function loadCLIConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
+		$supported_operating_systems = array( 'Mac OS X' => array('Darwin'), 'Ubuntu' => array('Linux') );
+
+		if ( in_array( PHP_OS, $supported_operating_systems['Mac OS X'] ) ) {
+			$config_xml_path = '/Library/Application Support/eGloo/Framework/Configuration/Config.xml';
+			$system_xml_path = '/Library/Application Support/eGloo/Framework/Configuration/System.xml';
+		} else if ( in_array( PHP_OS, $supported_operating_systems['Ubuntu'] ) ) {
+			$config_xml_path = '/etc/egloo/Config.xml';
+			$system_xml_path = '/etc/egloo/System.xml';
+		} else {
+			echo 'eGloo CLI OS does not support this operating system.  Looking for eGloo configuration in Linux default...' . "\n";
+			$config_xml_path = '/etc/egloo/Config.xml';
+			$system_xml_path = '/etc/egloo/System.xml';
+		}
+
 		// TODO move this somewhere cleaner
 		self::$configuration_options['egCDNConnections'] = array();
 		self::$configuration_options['egDatabaseConnections'] = array();
 
-		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
-			$success = self::loadFrameworkSystemCache();
+		// if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
+			// $success = self::loadFrameworkSystemCache();
+			$success = false;
 
 			if ( !$success ) {
-				self::loadFrameworkSystemXML();
+				self::loadFrameworkSystemXML( $system_xml_path );
 			}
 
-			$success = self::loadFrameworkConfigurationCache( $overwrite, $config_cache );
+			// $success = self::loadFrameworkConfigurationCache( $overwrite, $config_cache );
 
 			if ( !$success ) {
-				self::loadFrameworkConfigurationXML( $overwrite, $config_xml );
+				self::loadFrameworkConfigurationXML( $overwrite, $config_xml_path );
 			}
 
-			$application_path = eGlooConfiguration::getApplicationPath();
+			// $application_path = self::getApplicationPath();
 
-			$success = self::loadApplicationConfigurationCache( $application_path, $overwrite, $config_cache );
+			// $success = self::loadApplicationConfigurationCache( $application_path, $overwrite, $config_cache );
 		
 			if ( !$success ) {
-				self::loadApplicationConfigurationXML( $application_path, $overwrite );
+				// self::loadApplicationConfigurationXML( $application_path, $overwrite );
 			}
 
 			if ( $prefer_htaccess ) {
-				self::loadWebRootConfig( $overwrite );
+				// self::loadWebRootConfig( $overwrite );
 			}
 
-			if ( eGlooConfiguration::getUseRuntimeCache() ) {
+			if ( self::getUseRuntimeCache() ) {
 				self::writeRuntimeCache();
 			}
-		}
+		// }
 
-		// Set the rewrite base
-		if ($_SERVER['SCRIPT_NAME'] !== '/index.php') {
-			$matches = array();
-			preg_match('~^(.*)?(index.php)$~', $_SERVER['SCRIPT_NAME'], $matches);
-			self::$rewriteBase = $matches[1];
-		}
+		// TODO Set the rewrite base the correct way
+		self::$rewriteBase = '/';
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
 
-		if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
-			self::secureEnvironment();
-		}
+		// if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
+		// 	self::secureEnvironment();
+		// }
 	}
 
 
@@ -116,7 +127,7 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache($config_cache);
 			}
 
-			$application_path = eGlooConfiguration::getApplicationPath();
+			$application_path = self::getApplicationPath();
 
 			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
 		
@@ -129,7 +140,7 @@ final class eGlooConfiguration {
 				self::loadWebRootConfig($overwrite);
 			}
 
-			if (eGlooConfiguration::getUseRuntimeCache()) {
+			if (self::getUseRuntimeCache()) {
 				self::writeRuntimeCache();
 			}
 		}
@@ -1706,13 +1717,17 @@ final class eGlooConfiguration {
 		return self::$configuration_options['FrameworkRootPath'] . '/Library/Haanga/lib/Haanga.php';
 	}
 
-	public static function getLogFormat() {
+	public static function getLogFormat( $update_cache_on_set = true ) {
 		if ( !isset(self::$configuration_options['egLogFormat']) ) {
 			self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
-			self::writeFrameworkConfigurationCache();
 
-			if (eGlooConfiguration::getUseRuntimeCache()) {
-				self::writeRuntimeCache();
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
+
+				if (eGlooConfiguration::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
 			}
 		} else if (is_string(self::$configuration_options['egLogFormat'])) {
 			switch( self::$configuration_options['egLogFormat'] ) {
@@ -1729,6 +1744,15 @@ final class eGlooConfiguration {
 					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
 					break;
 			}
+
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
+
+				if (eGlooConfiguration::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
+			}
 		}
 
 		return self::$configuration_options['egLogFormat'];
@@ -1738,10 +1762,18 @@ final class eGlooConfiguration {
 		return self::$configuration_options['LoggingPath'];
 	}
 	
-	public static function getLoggingLevel() {
+	public static function getLoggingLevel( $update_cache_on_set = true ) {
 		if ( !isset(self::$configuration_options['egLogLevel']) ) {
 			self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
-			self::writeFrameworkConfigurationCache();
+
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
+
+				if (eGlooConfiguration::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
+			}
 		} else if (is_string(self::$configuration_options['egLogLevel'])) {
 			switch( self::$configuration_options['egLogLevel'] ) {
 				case 'LOG_OFF' : 
@@ -1761,11 +1793,13 @@ final class eGlooConfiguration {
 					break;
 			}
 
-			// TODO see if we should move this into an "update cache" method
-			self::writeFrameworkConfigurationCache();
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
 
-			if (eGlooConfiguration::getUseRuntimeCache()) {
-				self::writeRuntimeCache();
+				if (eGlooConfiguration::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
 			}
 		}
 
@@ -1773,7 +1807,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getPerformSanityCheckClassLoading() {
-		return self::$configuration_options['egSanityCheckClassLoading'];
+		return isset(self::$configuration_options['egSanityCheckClassLoading']) ? self::$configuration_options['egSanityCheckClassLoading'] : true;
 	}
 
 	public static function getRewriteBase() {
@@ -1814,15 +1848,15 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseAPCCache() {
-		return self::$configuration_options['egAPCCacheEnabled'];
+		return isset(self::$configuration_options['egAPCCacheEnabled']) ? self::$configuration_options['egAPCCacheEnabled'] : false;
 	}
 
 	public static function getUseCache() {
-		return self::$configuration_options['egCacheEnabled'];
+		return isset(self::$configuration_options['egCacheEnabled']) ? self::$configuration_options['egCacheEnabled'] : true;
 	}
 
 	public static function getUseCDN() {
-		return self::$configuration_options['egCDNEnabled'];
+		return isset(self::$configuration_options['egCDNEnabled']) ? self::$configuration_options['egCDNEnabled'] : false;
 	}
 
 	public static function getUseDefaultRequestClassHandler() {
@@ -1838,7 +1872,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseFileCache() {
-		return self::$configuration_options['egFileCacheEnabled'];
+		return isset(self::$configuration_options['egFileCacheEnabled']) ? self::$configuration_options['egFileCacheEnabled'] : false;
 	}
 
 	public static function getUseHaanga() {
@@ -1862,7 +1896,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseMemcache() {
-		return self::$configuration_options['egMemcacheCacheEnabled'];
+		return isset(self::$configuration_options['egMemcacheCacheEnabled']) ? self::$configuration_options['egMemcacheCacheEnabled'] : true;
 	}
 
 	public static function getUseRuntimeCache() {

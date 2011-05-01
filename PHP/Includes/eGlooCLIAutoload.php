@@ -39,7 +39,7 @@ if ( !class_exists( 'eGlooLogger', false ) ) {
 }
 
 // Initialize the eGlooLogger
-eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
+eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel( false ), eGlooConfiguration::getLogFormat( false ) );
 
 // Bring up the caching system (needed for the autoloader)
 if ( !class_exists( 'CacheGateway', false ) ) {
@@ -60,7 +60,7 @@ if ( eGlooConfiguration::getUseHaanga() ) {
 
 // Load Smarty
 if ( eGlooConfiguration::getUseSmarty() ) {
-	include( eGlooConfiguration::getSmartyIncludePath() );
+	include( eGlooConfiguration::getSmartyIncludePath() );	
 }
 
 // Load Swift
