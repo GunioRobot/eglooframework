@@ -37,7 +37,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
 // Check for Memcache
 if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
-	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP';
+	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP.';
 	exit;
 }
 
