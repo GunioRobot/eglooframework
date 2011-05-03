@@ -40,7 +40,8 @@ class eGlooCLI {
 
 	public static $verbose = false;
 
-	public static function execute( $command, $arguments = null ) {
+	// TODO make a default for this so it doesn't freak out
+	public static function execute( $command = null, $arguments = null ) {
 		switch( $command ) {
 			case 'app' :
 			case 'application' :
@@ -60,14 +61,16 @@ class eGlooCLI {
 				self::executeConfiguration( $arguments );
 				break;
 			case 'cube' :
-				self::executeCube( $arguments );
+			case 'cubes' :
+				self::executeCubes( $arguments );
 				break;
 			case 'data' :
 			case 'dp' :
 				self::executeDataProcessing( $arguments );
 				break;
 			case 'form' :
-				self::executeForm( $arguments );
+			case 'forms' :
+				self::executeForms( $arguments );
 				break;
 			case 'framework' :
 				self::executeFramework( $arguments );
@@ -91,10 +94,16 @@ class eGlooCLI {
 			case 'log' :
 				self::executeLog( $arguments );
 				break;
+			case 'net' :
+			case 'network' :
+				self::executeNetwork( $arguments );
+				break;
+			case 'req' :
 			case 'request' :
 				self::executeRequest( $arguments );
 				break;
 			case 'run' :
+			case 'runtime' :
 				self::executeRun( $arguments );
 				break;
 			case 'search' :
@@ -104,9 +113,11 @@ class eGlooCLI {
 			case 'simulate' :
 				self::executeSimulate( $arguments );
 				break;
+			case 'stat' :
 			case 'status' :
 				self::executeStatus( $arguments );
 				break;
+			case 'sys' :
 			case 'system' :
 				self::executeSystem( $arguments );
 				break;
@@ -140,18 +151,29 @@ class eGlooCLI {
 
 	public static function executeApplication( $arguments ) {
 		echo 'Executing application functions' . "\n";
+		$applicationObj = eGlooApplication::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeBundle( $arguments ) {
 		echo 'Executing bundle functions' . "\n";
+		// $application = eGlooApplication::getAppliationFromCLIArgumentArray( $arguments );
+		// $bundle = $application->getBundle( $bundle_name );
+		$bundleObj = eGlooBundle::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeCache( $arguments ) {
 		echo 'Executing cache functions' . "\n";
+		$cacheObj = eGlooCache::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeDataProcessing( $arguments ) {
-		echo 'Executing data processing functions' . "\n";
+		$dataProcessingObj = eGlooDataProcessing::getInstanceFromCLIArgumentArray( $arguments );
+
+		if ( $dataProcessingObj !== null && $dataProcessingObj->isExecutable() ) {
+			$dataProcessingObj->execute();
+		} else {
+			self::printHelpInfoForDataProcessingCommand();
+		}
 	}
 
 	public static function executeCheck( $arguments ) {
@@ -162,16 +184,17 @@ class eGlooCLI {
 		echo 'Executing configuration functions' . "\n";
 	}
 
-	public static function executeCube( $arguments ) {
-		echo 'Executing cube functions' . "\n";
+	public static function executeCubes( $arguments ) {
+		echo 'Executing cubes functions' . "\n";
 	}
 
-	public static function executeForm( $arguments ) {
-		echo 'Executing form functions' . "\n";
+	public static function executeForms( $arguments ) {
+		echo 'Executing forms functions' . "\n";
 	}
 
 	public static function executeFramework( $arguments ) {
 		echo 'Executing framework functions' . "\n";
+		$frameworkObj = eGlooFramework::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeGlobal( $arguments ) {
@@ -184,6 +207,7 @@ class eGlooCLI {
 
 	public static function executeInstall( $arguments ) {
 		echo 'Executing install functions' . "\n";
+		$installObj = eGlooInstall::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeList( $arguments ) {
@@ -192,14 +216,23 @@ class eGlooCLI {
 
 	public static function executeLog( $arguments ) {
 		echo 'Executing log functions' . "\n";
+		$logObj = eGlooLog::getInstanceFromCLIArgumentArray( $arguments );
+	}
+
+	public static function executeNetwork( $arguments ) {
+		echo 'Executing network functions' . "\n";
+		$networkObj = eGlooNetwork::getInstanceFromCLIArgumentArray( $arguments );
+		$networkObj->execute();
 	}
 
 	public static function executeRequest( $arguments ) {
 		echo 'Executing request functions' . "\n";
+		$requestObj = eGlooRequest::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeRun( $arguments ) {
 		echo 'Executing run functions' . "\n";
+		$runtimeObj = eGlooRuntime::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeSearch( $arguments ) {
@@ -208,39 +241,56 @@ class eGlooCLI {
 
 	public static function executeSimulate( $arguments ) {
 		echo 'Executing simulate functions' . "\n";
+		$simulationObj = eGlooSimulation::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeStatus( $arguments ) {
 		echo 'Executing status functions' . "\n";
+		$statusObj = eGlooStatus::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeSystem( $arguments ) {
 		echo 'Executing system functions' . "\n";
+		$systemObj = eGlooSystem::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeTest( $arguments ) {
 		echo 'Executing test functions' . "\n";
+		$testObj = eGlooTest::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeUI( $arguments ) {
 		echo 'Executing UI functions' . "\n";
+		$uiObj = eGlooUI::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeUninstall( $arguments ) {
 		echo 'Executing uninstall functions' . "\n";
+		$installObj = eGlooInstall::getInstanceFromCLIArgumentArray( $arguments );
+
+		$uninstallObj = new eGlooUninstall();
+		$uninstallObj->setInstall( $installObj );
+		$uninstallObj->execute();
 	}
 
 	public static function executeUpgrade( $arguments ) {
 		echo 'Executing upgrade functions' . "\n";
+
+		$installObj = eGlooInstall::getInstanceFromCLIArgumentArray( $arguments );
+
+		$upgradeObj = new eGlooUpgrade();
+		$upgradeObj->setInstall( $installObj );
+		$upgradeObj->execute();
 	}
 
 	public static function executeWebRoot( $arguments ) {
 		echo 'Executing webroot functions' . "\n";
+		$webRootObj = eGlooWebRoot::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
 	public static function executeZalgo( $arguments ) {
-		echo 'H҉̵̞̟̠̖̗̘Ȅ̐̑̒̚̕̚ IS C̒̓̔̿̿̿̕̚̚̕̚̕̚̕̚̕̚̕̚OMI҉̵̞̟̠̖̗̘NG > ͡҉҉ ̵̡̢̛̗̘̙̜̝̞' .
-			'̟̠͇̊̋̌̍̎̏̿̿̿̚ ҉ ҉҉̡̢̡̢̛̛̖̗̘̙̜̝̞̟̠̖̗̘̙̜̝̞̟̠̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑ ͡҉҉ ' . "\n";
+		$zalgoObj = new eGlooZalgo( $arguments );
+		$zalgoObj->execute();
 	}
 
 	public static function printCommandHelp( $arguments = null ) {
@@ -270,14 +320,16 @@ class eGlooCLI {
 				self::printHelpInfoForConfigurationCommand();
 				break;
 			case 'cube' :
-				self::printHelpInfoForCubeCommand();
+			case 'cubes' :
+				self::printHelpInfoForCubesCommand();
 				break;
 			case 'data' :
 			case 'dp' :
 				self::printHelpInfoForDataProcessingCommand();
 				break;
 			case 'form' :
-				self::printHelpInfoForFormCommand();
+			case 'forms' :
+				self::printHelpInfoForFormsCommand();
 				break;
 			case 'framework' :
 				self::printHelpInfoForFrameworkCommand();
@@ -298,10 +350,16 @@ class eGlooCLI {
 			case 'log' :
 				self::printHelpInfoForLogCommand();
 				break;
+			case 'net' :
+			case 'network' :
+				self::printHelpInfoForNetworkCommand();
+				break;
+			case 'req' :
 			case 'request' :
 				self::printHelpInfoForRequestCommand();
 				break;
 			case 'run' :
+			case 'runtime' :
 				self::printHelpInfoForRunCommand();
 				break;
 			case 'search' :
@@ -311,9 +369,11 @@ class eGlooCLI {
 			case 'simulate' :
 				self::printHelpInfoForSimulateCommand();
 				break;
+			case 'stat' :
 			case 'status' :
 				self::printHelpInfoForStatusCommand();
 				break;
+			case 'sys' :
 			case 'system' :
 				self::printHelpInfoForSystemCommand();
 				break;
@@ -354,121 +414,116 @@ class eGlooCLI {
 	}
 
 	public static function printHelpInfoForApplicationCommand() {
-		echo 'eGloo Application Help' ."\n";
+		echo eGlooApplication::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForBundleCommand() {
-		echo 'eGloo Bundle Help' ."\n";
+		echo eGlooBundle::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForCacheCommand() {
-		echo 'eGloo Cache Help' ."\n";
+		echo eGlooCache::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForCheckCommand() {
-		echo 'eGloo Check Help' ."\n";
+		echo eGlooSystemChecks::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForConfigurationCommand() {
-		echo 'eGloo Configuration Help' ."\n";
+		echo eGlooConfiguration::getHelpString() . "\n";
 	}
 
-	public static function printHelpInfoForCubeCommand() {
-		echo 'eGloo Cube Help' ."\n";
+	public static function printHelpInfoForCubesCommand() {
+		echo eGlooCube::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForDataProcessingCommand() {
-		echo 'eGloo Data Processing Help' ."\n";
+		echo eGlooDataProcessing::getHelpString() . "\n";
 	}
 
-	public static function printHelpInfoForFormCommand() {
-		echo 'eGloo Form Help' ."\n";
+	public static function printHelpInfoForFormsCommand() {
+		echo eGlooForm::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForFrameworkCommand() {
-		echo 'eGloo Framework Help' ."\n";
+		echo eGlooFramework::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForGlobalCommand() {
-		echo 'eGloo Global Help' ."\n";
+		echo eGlooGlobal::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForInfoCommand() {
-		echo 'eGloo Info Help' ."\n";
+		echo eGlooInfo::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForInstallCommand() {
-		echo 'eGloo Install Help' ."\n";
+		echo eGlooInstall::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForListCommand() {
-		echo 'eGloo List Help' ."\n";
+		echo eGlooLister::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForLogCommand() {
-		echo 'eGloo Log Help' ."\n";
+		echo eGlooLog::getHelpString() . "\n";
+	}
+
+	public static function printHelpInfoForNetworkCommand() {
+		echo eGlooNetwork::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForRequestCommand() {
-		echo 'eGloo Request Help' ."\n";
+		echo eGlooRequest::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForRunCommand() {
-		echo 'eGloo Run Help' ."\n";
+		echo eGlooRuntime::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForSearchCommand() {
-		echo 'eGloo Search Help' ."\n";
+		echo eGlooSystemSearch::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForSimulateCommand() {
-		echo 'eGloo Simulate Help' ."\n";
+		echo eGlooSimulation::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForStatusCommand() {
-		echo 'eGloo Status Help' ."\n";
+		echo eGlooSystemStatus::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForSystemCommand() {
-		echo 'eGloo System Help' ."\n";
+		echo eGlooSystem::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForTestCommand() {
-		echo 'eGloo Test Help' ."\n";
+		echo eGlooTest::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForUICommand() {
-		echo 'eGloo UI Help' ."\n";
+		echo eGlooUI::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForUninstallCommand() {
-		echo 'eGloo Uninstall Help' ."\n";
+		echo eGlooUninstall::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForUpgradeCommand() {
-		echo 'eGloo Upgrade Help' ."\n";
+		echo eGlooUpgrade::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForWebRootCommand() {
-		echo 'eGloo WebRoot Help' ."\n";
+		echo eGlooWebRoot::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForZalgoCommand() {
-		echo 'T҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚o invoke the h҉̵̞̟̠̖̗' .
-			'̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ive-mind re҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍' .
-			'̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚presenting chaos. Invoking҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊' .
-			'̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ the feeling of ch҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏' .
-			'̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚aos. With out ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍' .
-			'̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚order.҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚ ̌̍̎̏' .
-			'̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̚̕̕̚̕̚͡ ͡҉҉ ̕̚͡ ̒̓̔̕̚ The Nezperd҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐' .
-			'̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ian hive-mind of chaos. Zalgo. He w҉̵̞̟̠̖̗̘̙̜' .
-			'̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ho Waits Behind ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋' .
-			'̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚The Wall. ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍' .
-			'̎̏̐̑̒̓̔̿̿̿̕̚̕̚͡ ̒̓̔̕̚ ҉̵̞̟̠̖̗̘̙̜̝̞̟̠͇̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑̒̓̔̿̿̿̕̚̕̚ ͡ ̒̓̔̕̚, ' . "\n";
+		echo eGlooZalgo::getHelpString() . "\n";
 	}
 
 	public static function printUsageInfo() {
-		echo 'eGloo Usage Info' ."\n";
+		// More later?  Change this later?  For now, this works
+		self::printHelpInfo();
 	}
 
 	public static function printVersionInfo() {

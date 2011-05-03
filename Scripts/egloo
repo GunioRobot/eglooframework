@@ -32,13 +32,88 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') ) {
 		'eGloo requires PHP version 5.3.0 or higher.';
 	exit;
 } else {
+	$path_set = false;
+
 	// Setup the OOP autoloader
-	include( 'PHP/Includes/eGlooCLIAutoload.php' );
+	if ( isset($argv[1]) && $argv[1] === 'local' ) {
+		print_r($argv);
+		$argv = array_merge( array($argv[0]), array_slice($argv, 2) );
+		print_r($argv);
+		$path_set = true;
+	}
+
+	if ( !$path_set ) {
+		foreach( $argv as $argument_key => $argument_value ) {
+			$matches = array();
+			preg_match('/^--egloo-include-path=([a-zA-Z0-9\/_.: -]+)$/', $argument_value, $matches);
+
+			if ( !empty($matches) && isset($matches[1]) ) {
+				$full_path = $matches[1] . '/PHP/Includes/eGlooCLIAutoload.php';
+
+				$array2splice = $argv;
+				$array2slice = $argv;
+
+				array_splice( $array2splice, $argument_key );
+				$array2slice = array_slice($array2slice, $argument_key + 1);
+
+				$argv = array_merge($array2splice, $array2slice);
+
+				if ( file_exists($full_path) && is_file($full_path) && is_readable($full_path) ) {
+					set_include_path( $matches[1] . ':' . get_include_path() );
+					$path_set = true;
+				} else {
+					echo 'Provided path "' . $matches[1] . '" is not a valid eGloo Framework path.  Ignoring...' . "\n";
+				}
+
+				break;
+			}
+		}
+	}
+
+	if ( !$path_set && isset( $_SERVER['EGLOO_INCLUDE_PATH'] ) ) {
+		$full_path = $_SERVER['EGLOO_INCLUDE_PATH'] . '/PHP/Includes/eGlooCLIAutoload.php';
+
+		if ( file_exists($full_path) && is_file($full_path) && is_readable($full_path) ) {
+			set_include_path( $_SERVER['EGLOO_INCLUDE_PATH'] . ':' . get_include_path() );
+			$path_set = true;
+		} else {
+			echo 'EGLOO_INCLUDE_PATH value of "' . $_SERVER['EGLOO_INCLUDE_PATH'] . '" is not a valid eGloo Framework path.  Ignoring...' . "\n";
+		}
+	}
+
+	if ( !$path_set ) {
+		$supported_operating_systems = array( 'Mac OS X' => array('Darwin'), 'Ubuntu' => array('Linux') );
+
+		if ( in_array( PHP_OS, $supported_operating_systems['Mac OS X'] ) ) {
+			set_include_path( '/Library/Frameworks/eGloo.framework' . ':' . get_include_path() );
+			$path_set = true;
+		} else if ( in_array( PHP_OS, $supported_operating_systems['Ubuntu'] ) ) {
+			set_include_path( '/usr/lib/eglooframework' . ':' . get_include_path() );
+			$path_set = true;
+		} else {
+			echo 'eGloo CLI OS does not support this operating system.  Looking for eGloo Framework in Linux default...' . "\n";
+			set_include_path( '/usr/lib/eglooframework' . ':' . get_include_path() );
+			$path_set = true;
+		}
+	}
+
+	if ( $path_set ) {
+		include( 'PHP/Includes/eGlooCLIAutoload.php' );
+	}
+}
+
+// Let's make sure we loaded something here
+if ( !class_exists('eGlooCLI') ) {
+	echo 'eGloo Framework not found in expected location.' . "\n\n";
+	echo 'Please provide a valid include path one of two ways:' . "\n";
+	echo '(1) egloo --egloo-include-path=/path/to/eglooframework OR' . "\n";
+	echo '(2) export EGLOO_INCLUDE_PATH=/path/to/eglooframework' . "\n\n";
+	exit;
 }
 
 // Check for Memcache
 if ( !extension_loaded('memcache') && !extension_loaded('memcached') ) {
-	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP';
+	echo 'Memcache support not detected.  Please install Memcache or Memcached for PHP.';
 	exit;
 }
 
@@ -46,7 +121,7 @@ $arguments = $argv;
 
 if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
 	$script_name = array_shift( $arguments );
-	$command = array_shift( $arguments );
+	$command = strtolower( array_shift( $arguments ) );
 
 	eGlooCLI::execute( $command, $arguments );
 } else {
