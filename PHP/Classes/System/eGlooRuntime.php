@@ -35,7 +35,19 @@
  */
 class eGlooRuntime {
 
-	protected function __construct() {}
+	protected function __construct() {
+		
+	}
+
+	/**
+	 * Return the help information for this class as a string
+	 *
+	 * @return string the help information for this class
+	 * @author George Cooper
+	 **/
+	public static function getHelpString() {
+		return 'eGloo Runtime Help';
+	}
 
 	public static function run() {
 	}
