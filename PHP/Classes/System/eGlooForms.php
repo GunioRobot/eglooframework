@@ -1,8 +1,8 @@
 <?php
 /**
- * eGlooDataProcessing Class File
+ * eGlooForms Class File
  *
- * Contains the class definition for the eGlooDataProcessing
+ * Contains the class definition for the eGlooForms
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -27,7 +27,7 @@
  */
 
 /**
- * eGlooDataProcessing
+ * eGlooForms
  *
  * $short_description
  *
@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooDataProcessing {
+class eGlooForms {
 
 	/**
 	 * @var string Name of the command to execute
@@ -49,7 +49,7 @@ class eGlooDataProcessing {
 	protected $_command_arguments = null;
 
 	/**
-	 * @var bool If this data processing object is ready to be executed
+	 * @var bool If this forms processing object is ready to be executed
 	 */
 	protected $_is_executable = false;
 
@@ -116,33 +116,27 @@ class eGlooDataProcessing {
 			$formAttributeSetNodes = $formDefinitions['formAttributeSetNodes'];
 			die_r($formDefinitions);
 			// TODO actually branch on arguments
-			$this->listDPAll();
+			$this->listFormsAll();
 			$retVal = true;
 		}
 
 		return $retVal;
 	}
 
-	public function listDPAll() {
-		$this->listDPProcedures();
-		$this->listDPSequences();
-		$this->listDPStatements();
+	public function listFormsAll() {
+		// For now, just this Forms.xml, don't include the framework proper or common
+		$this->listFormNodes();
+		$this->listFormAttributeSetNodes();
 	}
 
-	public function listDPProcedures() {
-		echo 'Data Processing Procedures:' . "\n";
+	public function listFormNodes() {
+		echo 'Forms Processing Nodes:' . "\n";
 
 		echo "\n";
 	}
 
-	public function listDPSequences() {
-		echo 'Data Processing Sequences:' . "\n";
-
-		echo "\n";
-	}
-
-	public function listDPStatements() {
-		echo 'Data Processing Statements:' . "\n";
+	public function listFormAttributeSetNodes() {
+		echo 'Forms Processing Attribute Set Nodes:' . "\n";
 
 		echo "\n";
 	}
@@ -299,7 +293,7 @@ class eGlooDataProcessing {
 	/**
 	 * Returns protected class member $_is_executable
 	 *
-	 * @return bool If this data processing object is ready to be executed
+	 * @return bool If this forms processing object is ready to be executed
 	 */
 	public function isExecutable() {
 		return $this->_is_executable;
@@ -308,7 +302,7 @@ class eGlooDataProcessing {
 	/**
 	 * Sets protected class member $_is_executable
 	 *
-	 * @param is_executable bool If this data processing object is ready to be executed
+	 * @param is_executable bool If this forms processing object is ready to be executed
 	 */
 	public function setIsExecutable( $is_executable = true ) {
 		$this->_is_executable = $is_executable;
@@ -375,40 +369,40 @@ class eGlooDataProcessing {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Data Processing Help';
+		return 'eGloo Forms Help';
 	}
 
 	/**
 	 * Return an instance of this class build from the provided CLI arguments
 	 *
-	 * @return eGlooDataProcessing object
+	 * @return eGlooForms object
 	 * @author George Cooper
 	 **/
 	public static function getInstanceFromCLIArgumentArray( $arguments ) {
 		$retVal = null;
 
-		$dataProcessingObject = null;
+		$formsObject = null;
 		$command = null;
 
 		if ( !empty($arguments) ) {
 			$command = array_shift($arguments);
 
 			if ( is_string($command) && trim($command) !== '' && self::supportsCommand($command) ) {
-				$dataProcessingObject = new eGlooDataProcessing();
+				$formsObject = new eGlooForms();
 
-				$dataProcessingObject->setCommand( $command );
-				$dataProcessingObject->setRawArguments( $arguments );
+				$formsObject->setCommand( $command );
+				$formsObject->setRawArguments( $arguments );
 
-				$dataProcessingObject->parseOptions();
-				$dataProcessingObject->parseCommandArguments();
+				$formsObject->parseOptions();
+				$formsObject->parseCommandArguments();
 
-				if ( $dataProcessingObject->commandRequirementsSatisfied() ) {
-					$dataProcessingObject->setIsExecutable();
+				if ( $formsObject->commandRequirementsSatisfied() ) {
+					$formsObject->setIsExecutable();
 				}
 			}
 		}
 
-		$retVal = $dataProcessingObject;
+		$retVal = $formsObject;
 
 		return $retVal;
 	}

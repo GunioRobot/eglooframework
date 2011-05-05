@@ -166,16 +166,6 @@ class eGlooCLI {
 		$cacheObj = eGlooCache::getInstanceFromCLIArgumentArray( $arguments );
 	}
 
-	public static function executeDataProcessing( $arguments ) {
-		$dataProcessingObj = eGlooDataProcessing::getInstanceFromCLIArgumentArray( $arguments );
-
-		if ( $dataProcessingObj !== null && $dataProcessingObj->isExecutable() ) {
-			$dataProcessingObj->execute();
-		} else {
-			self::printHelpInfoForDataProcessingCommand();
-		}
-	}
-
 	public static function executeCheck( $arguments ) {
 		echo 'Executing check functions' . "\n";
 	}
@@ -188,8 +178,24 @@ class eGlooCLI {
 		echo 'Executing cubes functions' . "\n";
 	}
 
+	public static function executeDataProcessing( $arguments ) {
+		$dataProcessingObj = eGlooDataProcessing::getInstanceFromCLIArgumentArray( $arguments );
+
+		if ( $dataProcessingObj !== null && $dataProcessingObj->isExecutable() ) {
+			$dataProcessingObj->execute();
+		} else {
+			self::printHelpInfoForDataProcessingCommand();
+		}
+	}
+
 	public static function executeForms( $arguments ) {
-		echo 'Executing forms functions' . "\n";
+		$formsObj = eGlooForms::getInstanceFromCLIArgumentArray( $arguments );
+
+		if ( $formsObj !== null && $formsObj->isExecutable() ) {
+			$formsObj->execute();
+		} else {
+			self::printHelpInfoForFormsCommand();
+		}
 	}
 
 	public static function executeFramework( $arguments ) {
@@ -442,7 +448,7 @@ class eGlooCLI {
 	}
 
 	public static function printHelpInfoForFormsCommand() {
-		echo eGlooForm::getHelpString() . "\n";
+		echo eGlooForms::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForFrameworkCommand() {

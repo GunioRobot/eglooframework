@@ -1774,23 +1774,7 @@ final class eGlooConfiguration {
 	
 	public static function getLoggingLevel( $update_cache_on_set = true ) {
 		if ( !isset(self::$configuration_options['egLogLevel']) || trim(self::$configuration_options['egLogLevel']) === '' ) {
-			global $argv; echo_r($argv);
-			if ( !defined('STDIN') ) {
-				echo_r('here');
-				self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
-			} else if ( isset($argv) && in_array('-v', $argv) ) {
-				echo_r('here2');
-				self::$configuration_options['egLogLevel'] = eGlooLogger::STAGING;
-			} else if ( isset($argv) && in_array('-vv', $argv) ) {
-				echo_r('here3');
-				self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
-			} else if ( isset($argv) && in_array('-q', $argv) ) {
-				echo_r('here4');
-				self::$configuration_options['egLogLevel'] = eGlooLogger::LOG_OFF;
-			} else {
-				echo_r('here5');
-				self::$configuration_options['egLogLevel'] = eGlooLogger::PRODUCTION;
-			}
+			self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 
 			if ( $update_cache_on_set ) {
 				// TODO see if we should move this into an "update cache" method
