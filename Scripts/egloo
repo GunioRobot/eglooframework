@@ -39,23 +39,22 @@ if ( !extension_loaded('memcache') && !extension_loaded('memcached') ) {
 	exit;
 }
 
-$path_set = false;
+// Let's grab the arguments that are directed at the script execution (not command/subcommand)
+// This would be anything starting with a dash (-) or double dash (--) before the first argument
+// which does not contain one (which should be either local, or some command such as data or forms)
+$egloo_script_arguments = array();
+$command_found = false;
 
-// Setup the OOP autoloader
-if ( isset($argv[1]) && $argv[1] === 'local' ) {
-	print_r($argv);
-	$argv = array_merge( array($argv[0]), array_slice($argv, 2) );
-	print_r($argv);
-	$path_set = true;
-}
-
-if ( !$path_set ) {
+while ( !$command_found ) {
+	// Why is this in a for loop?  Because slicing and splicing arrays resets array pointers.
 	foreach( $argv as $argument_key => $argument_value ) {
-		$matches = array();
-		preg_match('/^--egloo-include-path=([a-zA-Z0-9\/_.: -]+)$/', $argument_value, $matches);
+		if ( $argument_key === 0 ) continue;
 
-		if ( !empty($matches) && isset($matches[1]) ) {
-			$full_path = $matches[1] . '/PHP/Includes/eGlooCLIAutoload.php';
+		$matches = array();
+		preg_match('/^-{1,2}[^ -]+.*$/', $argument_value, $matches);
+
+		if ( !empty($matches) && isset($matches[0]) ) {
+			$egloo_script_arguments[] = $argument_value;
 
 			$array2splice = $argv;
 			$array2slice = $argv;
@@ -64,6 +63,49 @@ if ( !$path_set ) {
 			$array2slice = array_slice($array2slice, $argument_key + 1);
 
 			$argv = array_merge($array2splice, $array2slice);
+			break;
+		}
+
+		$matches = array();
+		preg_match('/^[^-]+.*$/', $argument_value, $matches);
+
+		if ( !empty($matches) && isset($matches[0]) ) {
+			$command_found = true;
+			break;
+		}
+	}
+}
+
+$path_set = false;
+
+// Setup the OOP autoloader
+if ( isset($argv[1]) && $argv[1] === 'local' ) {
+	$argv = array_merge( array($argv[0]), array_slice($argv, 2) );
+
+	$local_path = './PHP/Includes/eGlooCLIAutoload.php';
+
+	if ( file_exists($local_path) && is_file($local_path) && is_readable($local_path) ) {
+		$path_set = true;
+	} else {
+		echo 'Provided path "' . $local_path . '" is not a valid eGloo Framework path.  Ignoring...' . "\n";
+	}
+}
+
+if ( !$path_set ) {
+	foreach( $egloo_script_arguments as $argument_key => $argument_value ) {
+		$matches = array();
+		preg_match('/^--egloo-include-path=([a-zA-Z0-9\/_.: -]+)$/', $argument_value, $matches);
+
+		if ( !empty($matches) && isset($matches[1]) ) {
+			$full_path = $matches[1] . '/PHP/Includes/eGlooCLIAutoload.php';
+			// 
+			// $array2splice = $argv;
+			// $array2slice = $argv;
+			// 
+			// array_splice( $array2splice, $argument_key );
+			// $array2slice = array_slice($array2slice, $argument_key + 1);
+			// 
+			// $argv = array_merge($array2splice, $array2slice);
 
 			if ( file_exists($full_path) && is_file($full_path) && is_readable($full_path) ) {
 				set_include_path( $matches[1] . ':' . get_include_path() );

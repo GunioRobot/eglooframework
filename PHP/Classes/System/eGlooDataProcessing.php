@@ -92,9 +92,30 @@ class eGlooDataProcessing {
 	protected function _list() {
 		$retVal = false;
 
-		// TODO actually branch on arguments
-		$this->listDPAll();
-		$retVal = true;
+		$formDirector = FormDirector::getInstance();
+
+		$formDefinitions = null;
+
+		try {
+			$formDefinitions = $formDirector->getParsedFormDefinitionsArrayFromXML();
+		} catch ( FormDirectorException $e ) {
+			// TODO better error handling.  For now this probably means the Forms.xml
+			// file was not found locally.  Just print message and move on, since this is
+			// just a listing command.
+			echo $e->getMessage() . "\n";
+		}
+
+		// die_r($formDefinitions);
+
+		// $referral = $formDirector->buildForm('referral');
+		// $this->formatReferralForm($referral);
+		// echo $referral->render();
+
+		if ( $formDefinitions !== null ) {
+			// TODO actually branch on arguments
+			$this->listDPAll();
+			$retVal = true;
+		}
 
 		return $retVal;
 	}
