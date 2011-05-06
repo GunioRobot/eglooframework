@@ -616,8 +616,8 @@ final class eGlooConfiguration {
 			}
 
 			if (isset(self::$configuration_options['AppBuild'])) {
-				$build_file_path = eGlooConfiguration::getApplicationsPath() . '/' .
-					eGlooConfiguration::getApplicationPath() . '/' . self::$configuration_options['AppBuild'];
+				$build_file_path = self::getApplicationsPath() . '/' .
+					self::getApplicationPath() . '/' . self::$configuration_options['AppBuild'];
 
 				if ( file_exists($build_file_path) && is_file($build_file_path) && is_readable($build_file_path) ) {
 					self::$configuration_options['AppBuild'] = file_get_contents($build_file_path);
@@ -1735,7 +1735,7 @@ final class eGlooConfiguration {
 				// TODO see if we should move this into an "update cache" method
 				self::writeFrameworkConfigurationCache();
 
-				if (eGlooConfiguration::getUseRuntimeCache()) {
+				if (self::getUseRuntimeCache()) {
 					self::writeRuntimeCache();
 				}
 			}
@@ -1755,14 +1755,14 @@ final class eGlooConfiguration {
 					break;
 			}
 
-			if ( $update_cache_on_set ) {
-				// TODO see if we should move this into an "update cache" method
-				self::writeFrameworkConfigurationCache();
-
-				if (eGlooConfiguration::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
-				}
-			}
+			// if ( $update_cache_on_set ) {
+			// 	// TODO see if we should move this into an "update cache" method
+			// 	self::writeFrameworkConfigurationCache();
+			// 
+			// 	if (self::getUseRuntimeCache()) {
+			// 		self::writeRuntimeCache();
+			// 	}
+			// }
 		}
 
 		return self::$configuration_options['egLogFormat'];
@@ -1773,17 +1773,17 @@ final class eGlooConfiguration {
 	}
 	
 	public static function getLoggingLevel( $update_cache_on_set = true ) {
-		if ( !isset(self::$configuration_options['egLogLevel']) || trim(self::$configuration_options['egLogLevel']) === '' ) {
+		if ( !isset(self::$configuration_options['egLogLevel']) ) {
 			self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 
-			if ( $update_cache_on_set ) {
+			// if ( $update_cache_on_set ) {
 				// TODO see if we should move this into an "update cache" method
 				self::writeFrameworkConfigurationCache();
 
-				if (eGlooConfiguration::getUseRuntimeCache()) {
+				if (self::getUseRuntimeCache()) {
 					self::writeRuntimeCache();
 				}
-			}
+			// }
 		} else if (is_string(self::$configuration_options['egLogLevel'])) {
 			switch( self::$configuration_options['egLogLevel'] ) {
 				case 'LOG_OFF' : 
@@ -1803,14 +1803,14 @@ final class eGlooConfiguration {
 					break;
 			}
 
-			if ( $update_cache_on_set ) {
-				// TODO see if we should move this into an "update cache" method
-				self::writeFrameworkConfigurationCache();
-
-				if (eGlooConfiguration::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
-				}
-			}
+			// if ( $update_cache_on_set ) {
+			// 	// TODO see if we should move this into an "update cache" method
+			// 	self::writeFrameworkConfigurationCache();
+			// 
+			// 	if (self::getUseRuntimeCache()) {
+			// 		self::writeRuntimeCache();
+			// 	}
+			// }
 		}
 
 		return self::$configuration_options['egLogLevel'];

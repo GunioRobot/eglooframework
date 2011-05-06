@@ -39,7 +39,7 @@ class GenericCacheAllDecorator extends RequestProcessorDecorator {
     * do any pre processing here
     */
 	protected function requestPreProcessing(){
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "GenericCacheAllDecorator: setting cache all headers for one day", 'Decorators' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "GenericCacheAllDecorator: setting cache all headers for one day", 'Decorators' );
 
 		Header("Cache-Control: must-revalidate");
 		Header("Pragma: cache");
@@ -49,6 +49,7 @@ class GenericCacheAllDecorator extends RequestProcessorDecorator {
 		$offset = 604800;
 		Header( "Expires: " . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT" );
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "GenericCacheAllDecorator: Leaving requestPreProcessing()", 'Decorators' );
 		return true;
     }
 
