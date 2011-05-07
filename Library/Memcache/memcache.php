@@ -28,9 +28,14 @@ define('MAX_ITEM_DUMP',50);
 global $MEMCACHE_SERVERS;
 $MEMCACHE_SERVERS = array();
 
+// TODO grab these from CacheGateway
 $MEMCACHE_SERVERS[] = '127.0.0.1:11211'; // add more as an array
 // $MEMCACHE_SERVERS[] = ':11211'; // add more as an array
 
+$requestInfoBean = RequestInfoBean::getInstance();
+
+$getArray = $requestInfoBean->getGETArray();
+$postArray = $requestInfoBean->getPOSTArray();
 
 ////////// END OF DEFAULT CONFIG AREA /////////////////////////////////////////////////////////////
 
@@ -280,11 +285,13 @@ function bsize($s) {
 
 // create menu entry
 function menu_entry($ob,$title) {
+	global $getArray;
 	global $PHP_SELF;
-	if ($ob==$_GET['op']){
-	    return "<li><a class=\"child_active\" href=\"$PHP_SELF&op=$ob\">$title</a></li>";
+
+	if ($ob==$getArray['op']){
+	    return "<li><a class=\"child_active\" href=\"" . eGlooConfiguration::getRewriteBase() . "memcache/info?op=$ob\">$title</a></li>";
 	}
-	return "<li><a class=\"active\" href=\"$PHP_SELF&op=$ob\">$title</a></li>";
+	return "<li><a class=\"active\" href=\"" . eGlooConfiguration::getRewriteBase() . "memcache/info?op=$ob\">$title</a></li>";
 }
 
 function getHeader(){
@@ -496,15 +503,14 @@ function getFooter(){
 function getMenu(){
     global $PHP_SELF;
 echo "<ol class=menu>";
-if ($_GET['op']!=4){
-echo <<<EOB
-    <li><a href="$PHP_SELF&op={$_GET['op']}">Refresh Data</a></li>
-EOB;
+
+global $getArray;
+
+if ($getArray['op']!=4){
+echo '<li><a href="' . eGlooConfiguration::getRewriteBase() . 'memcache/info?op=' . $getArray['op'] . '">Refresh Data</a></li>';
 }
 else {
-echo <<<EOB
-    <li><a href="$PHP_SELF&op=2}">Back</a></li>
-EOB;
+echo '<li><a href="' . eGlooConfiguration::getRewriteBase() . 'memcache/info?op=2">Back</a></li>';
 }
 echo
 	menu_entry(1,'View Host Stats'),
@@ -518,26 +524,26 @@ EOB;
 
 // TODO, AUTH
 
-$_GET['op'] = !isset($_GET['op'])? '1':$_GET['op'];
+$getArray['op'] = !isset($getArray['op'])? '1':$getArray['op'];
 $PHP_SELF= isset($_SERVER['PHP_SELF']) ? htmlentities(strip_tags($_SERVER['PHP_SELF'],'')) : '';
 
 $PHP_SELF=$PHP_SELF.'?';
 $time = time();
 // sanitize _GET
 
-foreach($_GET as $key=>$g){
-    $_GET[$key]=htmlentities($g);
+foreach($getArray as $key=>$g){
+    $getArray[$key]=htmlentities($g);
 }
 
 
 // singleout
 // when singleout is set, it only gives details for that server.
-if (isset($_GET['singleout']) && $_GET['singleout']>=0 && $_GET['singleout'] <count($MEMCACHE_SERVERS)){
-    $MEMCACHE_SERVERS = array($MEMCACHE_SERVERS[$_GET['singleout']]);
+if (isset($getArray['singleout']) && $getArray['singleout']>=0 && $getArray['singleout'] <count($MEMCACHE_SERVERS)){
+    $MEMCACHE_SERVERS = array($MEMCACHE_SERVERS[$getArray['singleout']]);
 }
 
 // display images
-if (isset($_GET['IMG'])){
+if (isset($getArray['IMG'])){
     $memcacheStats = getMemcacheStats();
     $memcacheStatsSingle = getMemcacheStats(false);
 
@@ -622,7 +628,7 @@ if (isset($_GET['IMG'])){
 
 	imagecolortransparent($image,$col_white);
 
-    switch ($_GET['IMG']){
+    switch ($getArray['IMG']){
         case 1: // pie chart
             $tsize=$memcacheStats['limit_maxbytes'];
     		$avail=$tsize-$memcacheStats['bytes'];
@@ -673,7 +679,7 @@ if (isset($_GET['IMG'])){
 echo getHeader();
 echo getMenu();
 
-switch ($_GET['op']) {
+switch ($getArray['op']) {
 
     case 1: // host stats
     	$phpversion = phpversion();
@@ -703,7 +709,7 @@ switch ($_GET['op']) {
 EOB;
 		echo "<tr class=tr-0><td class=td-0>Memcached Host". ((count($MEMCACHE_SERVERS)>1) ? 's':'')."</td><td>";
 		$i=0;
-		if (!isset($_GET['singleout']) && count($MEMCACHE_SERVERS)>1){
+		if (!isset($getArray['singleout']) && count($MEMCACHE_SERVERS)>1){
     		foreach($MEMCACHE_SERVERS as $server){
     		      echo ($i+1).'. <a href="'.$PHP_SELF.'&singleout='.$i++.'">'.$server.'</a><br/>';
     		}
@@ -711,7 +717,7 @@ EOB;
 		else{
 		    echo '1.'.$MEMCACHE_SERVERS[0];
 		}
-		if (isset($_GET['singleout'])){
+		if (isset($getArray['singleout'])){
 		      echo '<a href="'.$PHP_SELF.'">(all servers)</a><br/>';
 		}
 		echo "</td></tr>\n";
@@ -725,7 +731,7 @@ EOB;
 EOB;
         foreach($MEMCACHE_SERVERS as $server){
             echo '<table cellspacing=0><tbody>';
-            echo '<tr class=tr-1><td class=td-1>'.$server.'</td><td><a href="'.$PHP_SELF.'&server='.array_search($server,$MEMCACHE_SERVERS).'&op=6">[<b>Flush this server</b>]</a></td></tr>';
+            echo '<tr class=tr-1><td class=td-1>'.$server.'</td><td><a href="' . eGlooConfiguration::getRewriteBase() . "memcache/info?server='".array_search($server,$MEMCACHE_SERVERS).'&op=6">[<b>Flush this server</b>]</a></td></tr>';
     		echo '<tr class=tr-0><td class=td-0>Start Time</td><td>',date(DATE_FORMAT,$memcacheStatsSingle[$server]['STAT']['time']-$memcacheStatsSingle[$server]['STAT']['uptime']),'</td></tr>';
     		echo '<tr class=tr-1><td class=td-0>Uptime</td><td>',duration($memcacheStatsSingle[$server]['STAT']['time']-$memcacheStatsSingle[$server]['STAT']['uptime']),'</td></tr>';
     		echo '<tr class=tr-0><td class=td-0>Memcached Server Version</td><td>'.$memcacheStatsSingle[$server]['STAT']['version'].'</td></tr>';
@@ -751,8 +757,8 @@ EOB;
 	echo
 		graphics_avail() ?
 			  '<tr>'.
-			  "<td class=td-0><img alt=\"\" $size src=\"$PHP_SELF&IMG=1&".(isset($_GET['singleout'])? 'singleout='.$_GET['singleout'].'&':'')."$time\"></td>".
-			  "<td class=td-1><img alt=\"\" $size src=\"$PHP_SELF&IMG=2&".(isset($_GET['singleout'])? 'singleout='.$_GET['singleout'].'&':'')."$time\"></td></tr>\n"
+			  "<td class=td-0><img alt=\"\" $size src=\"" . eGlooConfiguration::getRewriteBase() . "memcache/info?IMG=1&".(isset($getArray['singleout'])? 'singleout='.$getArray['singleout'].'&':'')."$time\"></td>".
+			  "<td class=td-1><img alt=\"\" $size src=\"" . eGlooConfiguration::getRewriteBase() . "memcache/info?IMG=2&".(isset($getArray['singleout'])? 'singleout='.$getArray['singleout'].'&':'')."$time\"></td></tr>\n"
 			: "",
 		'<tr>',
 		'<td class=td-0><span class="green box">&nbsp;</span>Free: ',bsize($mem_avail).sprintf(" (%.1f%%)",$mem_avail*100/$mem_size),"</td>\n",
@@ -798,12 +804,12 @@ EOB;
 EOB;
 
 			foreach($entries as $slabId => $slab) {
-			    $dumpUrl = $PHP_SELF.'&op=2&server='.(array_search($server,$MEMCACHE_SERVERS)).'&dumpslab='.$slabId;
+			    $dumpUrl = eGlooConfiguration::getRewriteBase() . 'memcache/info?op=2&server='.(array_search($server,$MEMCACHE_SERVERS)).'&dumpslab='.$slabId;
 				echo
 					"<tr class=tr-$m>",
 					"<td class=td-0><center>",'<a href="',$dumpUrl,'">',$slabId,'</a>',"</center></td>",
 					"<td class=td-last><b>Item count:</b> ",$slab['number'],'<br/><b>Age:</b>',duration($time-$slab['age']),'<br/> <b>Evicted:</b>',((isset($slab['evicted']) && $slab['evicted']==1)? 'Yes':'No');
-					if ((isset($_GET['dumpslab']) && $_GET['dumpslab']==$slabId) &&  (isset($_GET['server']) && $_GET['server']==array_search($server,$MEMCACHE_SERVERS))){
+					if ((isset($getArray['dumpslab']) && $getArray['dumpslab']==$slabId) &&  (isset($getArray['server']) && $getArray['server']==array_search($server,$MEMCACHE_SERVERS))){
 					    echo "<br/><b>Items: item</b><br/>";
 					    $items = dumpCacheSlab($server,$slabId,$slab['number']);
                         // maybe someone likes to do a pagination here :)
@@ -812,7 +818,8 @@ EOB;
                             $itemInfo = trim($itemInfo,'[ ]');
 
 
-                            echo '<a href="',$PHP_SELF,'&op=4&server=',(array_search($server,$MEMCACHE_SERVERS)),'&key=',base64_encode($itemKey).'">',$itemKey,'</a>';
+                            echo '<a href="' . eGlooConfiguration::getRewriteBase() . 'memcache/info?op=4&server=' .
+								(array_search($server,$MEMCACHE_SERVERS)),'&key=',base64_encode($itemKey).'">',$itemKey,'</a>';
                             if ($i++ % 10 == 0) {
                                 echo '<br/>';
                             }
@@ -835,16 +842,16 @@ EOB;
     break;
 
     case 4: //item dump
-        if (!isset($_GET['key']) || !isset($_GET['server'])){
+        if (!isset($getArray['key']) || !isset($getArray['server'])){
             echo "No key set!";
             break;
         }
         // I'm not doing anything to check the validity of the key string.
         // probably an exploit can be written to delete all the files in key=base64_encode("\n\r delete all").
         // somebody has to do a fix to this.
-        $theKey = htmlentities(base64_decode($_GET['key']));
+        $theKey = htmlentities(base64_decode($getArray['key']));
 
-        $theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
+        $theserver = $MEMCACHE_SERVERS[(int)$getArray['server']];
         list($h,$p) = explode(':',$theserver);
         $r = sendMemcacheCommand($h,$p,'get '.$theKey);
         echo <<<EOB
@@ -855,26 +862,26 @@ EOB;
              " <br/>flag:",$r['VALUE'][$theKey]['stat']['flag'],
              " <br/>Size:",bsize($r['VALUE'][$theKey]['stat']['size']),
              "</td><td>",chunk_split($r['VALUE'][$theKey]['value'],40),"</td>",
-             '<td><a href="',$PHP_SELF,'&op=5&server=',(int)$_GET['server'],'&key=',base64_encode($theKey),"\">Delete</a></td>","</tr>";
+             '<td><a href="',eGlooConfiguration::getRewriteBase() . 'memcache/info?op=5&server=',(int)$getArray['server'],'&key=',base64_encode($theKey),"\">Delete</a></td>","</tr>";
         echo <<<EOB
 			</tbody></table>
 			</div><hr/>
 EOB;
     break;
     case 5: // item delete
-    	if (!isset($_GET['key']) || !isset($_GET['server'])){
+    	if (!isset($getArray['key']) || !isset($getArray['server'])){
 			echo "No key set!";
 			break;
         }
-        $theKey = htmlentities(base64_decode($_GET['key']));
-		$theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
+        $theKey = htmlentities(base64_decode($getArray['key']));
+		$theserver = $MEMCACHE_SERVERS[(int)$getArray['server']];
 		list($h,$p) = explode(':',$theserver);
         $r = sendMemcacheCommand($h,$p,'delete '.$theKey);
         echo 'Deleting '.$theKey.':'.$r;
 	break;
     
    case 6: // flush server
-        $theserver = $MEMCACHE_SERVERS[(int)$_GET['server']];
+        $theserver = $MEMCACHE_SERVERS[(int)$getArray['server']];
         $r = flushServer($theserver);
         echo 'Flush  '.$theserver.":".$r;
    break;
