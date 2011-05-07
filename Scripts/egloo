@@ -98,14 +98,6 @@ if ( !$path_set ) {
 
 		if ( !empty($matches) && isset($matches[1]) ) {
 			$full_path = $matches[1] . '/PHP/Includes/eGlooCLIAutoload.php';
-			// 
-			// $array2splice = $argv;
-			// $array2slice = $argv;
-			// 
-			// array_splice( $array2splice, $argument_key );
-			// $array2slice = array_slice($array2slice, $argument_key + 1);
-			// 
-			// $argv = array_merge($array2splice, $array2slice);
 
 			if ( file_exists($full_path) && is_file($full_path) && is_readable($full_path) ) {
 				set_include_path( $matches[1] . ':' . get_include_path() );
