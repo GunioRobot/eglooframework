@@ -25,28 +25,28 @@
  * @version 1.0
  */
 
-// Bring up the eGlooConfiguration
+// Bring up the eGlooConfiguration: 12% Hit
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
 	include( 'PHP/Classes/System/eGlooConfiguration.php' );
 }
 
-// Load the install configuration
+// Load the install configuration: 15% Hit
 eGlooConfiguration::loadConfigurationOptions();
 
-// Bring up the eGlooLogger
+// Bring up the eGlooLogger: 6% Hit
 if ( !class_exists( 'eGlooLogger', false ) ) {
 	include( 'PHP/Classes/System/eGlooLogger.php' );
 }
 
-// Initialize the eGlooLogger
+// Initialize the eGlooLogger: 1% Hit
 eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
 
-// Bring up the caching system (needed for the autoloader)
+// Bring up the caching system (needed for the autoloader): 2.5% Hit
 if ( !class_exists( 'CacheGateway', false ) ) {
 	include( 'PHP/Classes/Performance/Caching/CacheGateway.php' );
 }
 
-// Register eGloo Autoloader
+// Register eGloo Autoloader: 0%
 spl_autoload_register('eglooAutoload');
 
 /**
@@ -58,28 +58,28 @@ if ( eGlooConfiguration::getUseHaanga() ) {
 	include( eGlooConfiguration::getHaangaIncludePath() );
 }
 
-// Load Smarty
+// Load Smarty: 19.2% Hit
 if ( eGlooConfiguration::getUseSmarty() ) {
 	include( eGlooConfiguration::getSmartyIncludePath() );
 }
 
-// Load Swift
+// Load Swift: 14% Hit
 if ( eGlooConfiguration::getUseSwift() ) {
 	include( eGlooConfiguration::getSwiftIncludePath() );
 }
 
-// Load Twig
+// Load Twig: 0% Hit
 if ( eGlooConfiguration::getUseTwig() ) {
 	include( eGlooConfiguration::getTwigIncludePath() );
 	spl_autoload_register(array('Twig_Autoloader', 'autoload'));
 }
 
-// Load S3/CloudFront
+// Load S3/CloudFront: 0% Hit
 if ( eGlooConfiguration::getUseS3() ) {
 	include( eGlooConfiguration::getS3IncludePath() );
 }
 
-// Load Doctrine
+// Load Doctrine: 4% Hit
 if ( eGlooConfiguration::getUseDoctrine() ) {
 	include( eGlooConfiguration::getDoctrineIncludePath() );
 	spl_autoload_register(array('Doctrine', 'autoload'));

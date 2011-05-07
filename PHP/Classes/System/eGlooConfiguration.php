@@ -1739,8 +1739,8 @@ final class eGlooConfiguration {
 					self::writeRuntimeCache();
 				}
 			}
-		} else if (is_string(self::$configuration_options['egLogFormat'])) {
-			switch( self::$configuration_options['egLogFormat'] ) {
+		} else if ( is_string(self::$configuration_options['egLogFormat']) ) {
+			switch( strtoupper(self::$configuration_options['egLogFormat']) ) {
 				case 'LOG' :
 					self::$configuration_options['egLogFormat'] = eGlooLogger::LOG_LOG;
 					break;
@@ -1755,14 +1755,14 @@ final class eGlooConfiguration {
 					break;
 			}
 
-			// if ( $update_cache_on_set ) {
-			// 	// TODO see if we should move this into an "update cache" method
-			// 	self::writeFrameworkConfigurationCache();
-			// 
-			// 	if (self::getUseRuntimeCache()) {
-			// 		self::writeRuntimeCache();
-			// 	}
-			// }
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
+			
+				if (self::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
+			}
 		}
 
 		return self::$configuration_options['egLogFormat'];
@@ -1776,16 +1776,16 @@ final class eGlooConfiguration {
 		if ( !isset(self::$configuration_options['egLogLevel']) ) {
 			self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 
-			// if ( $update_cache_on_set ) {
+			if ( $update_cache_on_set ) {
 				// TODO see if we should move this into an "update cache" method
 				self::writeFrameworkConfigurationCache();
 
 				if (self::getUseRuntimeCache()) {
 					self::writeRuntimeCache();
 				}
-			// }
-		} else if (is_string(self::$configuration_options['egLogLevel'])) {
-			switch( self::$configuration_options['egLogLevel'] ) {
+			}
+		} else if ( is_string(self::$configuration_options['egLogLevel']) ) {
+			switch( strtoupper(self::$configuration_options['egLogLevel']) ) {
 				case 'LOG_OFF' : 
 					self::$configuration_options['egLogLevel'] = eGlooLogger::LOG_OFF;
 					break;
@@ -1803,14 +1803,14 @@ final class eGlooConfiguration {
 					break;
 			}
 
-			// if ( $update_cache_on_set ) {
-			// 	// TODO see if we should move this into an "update cache" method
-			// 	self::writeFrameworkConfigurationCache();
-			// 
-			// 	if (self::getUseRuntimeCache()) {
-			// 		self::writeRuntimeCache();
-			// 	}
-			// }
+			if ( $update_cache_on_set ) {
+				// TODO see if we should move this into an "update cache" method
+				self::writeFrameworkConfigurationCache();
+			
+				if (self::getUseRuntimeCache()) {
+					self::writeRuntimeCache();
+				}
+			}
 		}
 
 		return self::$configuration_options['egLogLevel'];

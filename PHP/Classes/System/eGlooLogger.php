@@ -64,14 +64,14 @@ final class eGlooLogger {
 	const JAVASCRIPT	= 'Javascript';
 	const CSS			= 'CSS';
 
-	const LOG_LOG		= "log";	// write to error.log
-	const LOG_HTML		= "html";	// write to error.html
-	const LOG_XML		= "xml";	// write to error.xml
+	const LOG_LOG		= 0x0;	// write to error.log
+	const LOG_HTML		= 0x2;	// write to error.html
+	const LOG_XML		= 0x4;	// write to error.xml
 
 	// Attributes
 	private static $aggregateApplicationLogs = true;
 	private static $loggingLevel;
-	private static $loggingType = "log";	//set to log by default
+	private static $loggingType = self::LOG_LOG;	//set to log by default
 	private static $requestID = '';
 	private static $requestDate = null;
 	private static $showErrors = false;
