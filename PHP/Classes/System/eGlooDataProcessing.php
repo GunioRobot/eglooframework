@@ -258,40 +258,5 @@ class eGlooDataProcessing extends eGlooCombine {
 		return 'eGloo Data Processing Help';
 	}
 
-	/**
-	 * Return an instance of this class build from the provided CLI arguments
-	 *
-	 * @return eGlooDataProcessing object
-	 * @author George Cooper
-	 **/
-	public static function getInstanceFromCLIArgumentArray( $arguments ) {
-		$retVal = null;
-
-		$dataProcessingObject = null;
-		$command = null;
-
-		if ( !empty($arguments) ) {
-			$command = array_shift($arguments);
-
-			if ( is_string($command) && trim($command) !== '' && self::supportsCommand($command) ) {
-				$dataProcessingObject = new eGlooDataProcessing();
-
-				$dataProcessingObject->setCommand( $command );
-				$dataProcessingObject->setRawArguments( $arguments );
-
-				$dataProcessingObject->parseOptions();
-				$dataProcessingObject->parseCommandArguments();
-
-				if ( $dataProcessingObject->commandRequirementsSatisfied() ) {
-					$dataProcessingObject->setIsExecutable();
-				}
-			}
-		}
-
-		$retVal = $dataProcessingObject;
-
-		return $retVal;
-	}
-
 }
 

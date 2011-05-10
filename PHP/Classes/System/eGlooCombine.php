@@ -68,6 +68,41 @@ abstract class eGlooCombine {
 		
 	}
 
+	/**
+	 * Return an instance of this class built from the provided CLI arguments
+	 *
+	 * @return eGlooCombine subclass object
+	 * @author George Cooper
+	 **/
+	public static function getInstanceFromCLIArgumentArray( $arguments ) {
+		$retVal = null;
+
+		$combineObject = null;
+		$command = null;
+
+		if ( !empty($arguments) ) {
+			$command = array_shift($arguments);
+
+			if ( is_string($command) && trim($command) !== '' && self::supportsCommand($command) ) {
+				$combineObject = new static();
+
+				$combineObject->setCommand( $command );
+				$combineObject->setRawArguments( $arguments );
+
+				$combineObject->parseOptions();
+				$combineObject->parseCommandArguments();
+
+				if ( $combineObject->commandRequirementsSatisfied() ) {
+					$combineObject->setIsExecutable();
+				}
+			}
+		}
+
+		$retVal = $combineObject;
+
+		return $retVal;
+	}
+
 	public function parseCommandArguments( $arguments = null ) {
 		$retVal = false;
 

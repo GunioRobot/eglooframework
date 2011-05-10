@@ -141,41 +141,5 @@ class eGlooForms extends eGlooCombine {
 		return $retVal;
 	}
 
-
-	/**
-	 * Return an instance of this class build from the provided CLI arguments
-	 *
-	 * @return eGlooForms object
-	 * @author George Cooper
-	 **/
-	public static function getInstanceFromCLIArgumentArray( $arguments ) {
-		$retVal = null;
-
-		$formsObject = null;
-		$command = null;
-
-		if ( !empty($arguments) ) {
-			$command = array_shift($arguments);
-
-			if ( is_string($command) && trim($command) !== '' && self::supportsCommand($command) ) {
-				$formsObject = new eGlooForms();
-
-				$formsObject->setCommand( $command );
-				$formsObject->setRawArguments( $arguments );
-
-				$formsObject->parseOptions();
-				$formsObject->parseCommandArguments();
-
-				if ( $formsObject->commandRequirementsSatisfied() ) {
-					$formsObject->setIsExecutable();
-				}
-			}
-		}
-
-		$retVal = $formsObject;
-
-		return $retVal;
-	}
-
 }
 
