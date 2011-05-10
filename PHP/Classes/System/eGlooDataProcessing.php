@@ -67,6 +67,7 @@ class eGlooDataProcessing {
 	 * @var array List of supported commands and their options/required arguments
 	 */
 	protected static $_supported_commands = array(
+		'info' => array(),
 		'list' => array(),
 	);
 
@@ -78,6 +79,9 @@ class eGlooDataProcessing {
 		$retVal = null;
 
 		switch( $this->_command ) {
+			case 'info' :
+				$retVal = $this->info();
+				break;
 			case 'list' :
 				$retVal = $this->_list();
 				break;
@@ -88,75 +92,179 @@ class eGlooDataProcessing {
 		return $retVal;
 	}
 
+	protected function info() {
+		$retVal = false;
+
+		if ( isset( $this->_command_arguments[0]) ) {
+			$info_subject = $this->_command_arguments[0];
+
+			$dpDirector = eGlooDPDirector::getInstance( null, null );
+
+			$dpDefinitions = null;
+
+			try {
+				$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
+			} catch ( eGlooDPDirectorException $e ) {
+				// TODO better error handling.  For now this probably means the Forms.xml
+				// file was not found locally.  Just print message and move on, since this is
+				// just a listing command.
+				echo $e->getMessage() . "\n";
+			}
+
+			if ( $dpDefinitions !== null ) {
+				$results = 0;
+
+				if ( isset($dpDefinitions['dataProcessingProcedures'][$info_subject]) ) {
+					$procedure_info = $dpDefinitions['dataProcessingProcedures'][$info_subject];
+					$results++;
+				}
+
+				if ( isset($dpDefinitions['dataProcessingSequences'][$info_subject]) ) {
+					$sequence_info = $dpDefinitions['dataProcessingSequences'][$info_subject];
+					$results++;
+				}
+
+				if ( isset($dpDefinitions['dataProcessingStatements'][$info_subject]) ) {
+					$statement_info = $dpDefinitions['dataProcessingStatements'][$info_subject];
+					$results++;
+				}
+
+				$result_summary = 'Search for "' . $info_subject . '" has ' . $results;
+				$result_summary .= $results === 1 ? ' result.' : ' results.';
+				$result_summary .= "\n\n";
+
+				echo $result_summary;
+
+				if ( !empty($procedure_info ) ) {
+					
+				}
+
+				if ( !empty($sequence_info ) ) {
+					
+				}
+
+				if ( !empty($statement_info ) ) {
+					echo 'Statement Class: ' . $statement_info['statementClass'] . "\n";
+					// echo 'Statements Provided:' . "\n";
+					echo 'Statements Provided: ';
+
+					$count = 1;
+
+					foreach($statement_info['statements'] as $statement_name => $statement) {
+						echo $statement_name;
+						if ( $count < count($statement_info['statements']) ) {
+							echo ', ';
+							$count++;
+						}
+					}
+
+					echo "\n";
+					// print_r($statement_info);
+				}
+
+				$retVal = true;
+			}
+		}
+
+
+		return $retVal;
+	}
+
 	// PHP is dumb - 'list' should be a valid method name
 	protected function _list() {
 		$retVal = false;
 
-		$formDirector = FormDirector::getInstance();
+		$dpDirector = eGlooDPDirector::getInstance( null, null );
 
-		$formDefinitions = null;
+		$dpDefinitions = null;
 
 		try {
-			$formDefinitions = $formDirector->getParsedFormDefinitionsArrayFromXML();
-		} catch ( FormDirectorException $e ) {
+			$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
+		} catch ( eGlooDPDirectorException $e ) {
 			// TODO better error handling.  For now this probably means the Forms.xml
 			// file was not found locally.  Just print message and move on, since this is
 			// just a listing command.
 			echo $e->getMessage() . "\n";
 		}
 
-		// die_r($formDefinitions);
-
-		// $referral = $formDirector->buildForm('referral');
-		// $this->formatReferralForm($referral);
-		// echo $referral->render();
-
-		if ( $formDefinitions !== null ) {
-			$formNodes = $formDefinitions['formNodes'];
-			$formAttributeSetNodes = $formDefinitions['formAttributeSetNodes'];
-			die_r($formDefinitions);
-			// TODO actually branch on arguments
-			$this->listDPAll();
+		if ( $dpDefinitions !== null ) {
+			$dataProcessingProcedures = $dpDefinitions['dataProcessingProcedures'];
+			$dataProcessingSequences = $dpDefinitions['dataProcessingSequences'];
+			$dataProcessingStatements = $dpDefinitions['dataProcessingStatements'];
+			$this->listDPAll( $dpDefinitions );
 			$retVal = true;
 		}
 
 		return $retVal;
 	}
 
-	public function listDPAll() {
-		$this->listDPProcedures();
-		$this->listDPSequences();
-		$this->listDPStatements();
+	public function listDPAll( $dpDefinitions ) {
+		$dataProcessingProcedures = $dpDefinitions['dataProcessingProcedures'];
+		$dataProcessingSequences = $dpDefinitions['dataProcessingSequences'];
+		$dataProcessingStatements = $dpDefinitions['dataProcessingStatements'];
+
+		$this->listDPProcedures( $dataProcessingProcedures );
+		$this->listDPSequences( $dataProcessingSequences );
+		$this->listDPStatements( $dataProcessingStatements );
 	}
 
-	public function listDPProcedures() {
-		echo 'Data Processing Procedures:' . "\n";
+	public function listDPProcedures( $dataProcessingProcedures ) {
+		if ( !empty($dataProcessingProcedures) ) {
+			echo 'Data Processing Procedures:' . "\n";
 
-		echo "\n";
+			foreach( $dataProcessingProcedures as $dp_procedure_id => $dp_procedure_node ) {
+				echo "\t" . $dp_procedure_id . "\n";
+			}
+
+			echo "\n";
+		}
 	}
 
-	public function listDPSequences() {
-		echo 'Data Processing Sequences:' . "\n";
+	public function listDPSequences( $dataProcessingSequences ) {
+		if ( !empty($dataProcessingSequences) ) {
+			echo 'Data Processing Sequences:' . "\n";
 
-		echo "\n";
+			foreach( $dataProcessingSequences as $dp_sequence_id => $dp_sequence_node ) {
+				echo "\t" . $dp_sequence_id . "\n";
+			}
+
+			echo "\n";
+		}
 	}
 
-	public function listDPStatements() {
-		echo 'Data Processing Statements:' . "\n";
+	public function listDPStatements( $dataProcessingStatements ) {
+		if ( !empty($dataProcessingStatements) ) {
+			echo 'Data Processing Statements:' . "\n";
 
-		echo "\n";
+			foreach( $dataProcessingStatements as $dp_statement_id => $dp_statement_node ) {
+				echo "\t" . $dp_statement_id . "\n";
+			}
+
+			echo "\n";
+		}
 	}
 
 	public function commandRequirementsSatisfied() {
 		$retVal = false;
 
 		switch( $this->_command ) {
+			case 'info' :
+				$retVal = $this->infoCommandRequirementsSatisfied();
+				break;
 			case 'list' :
 				$retVal = $this->listCommandRequirementsSatisfied();
 				break;
 			default :
 				break;
 		}
+
+		return $retVal;
+	}
+
+	protected function infoCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
 
 		return $retVal;
 	}

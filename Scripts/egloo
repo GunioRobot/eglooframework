@@ -45,8 +45,8 @@ if ( !extension_loaded('memcache') && !extension_loaded('memcached') ) {
 $egloo_script_arguments = array();
 $command_found = false;
 
-while ( !$command_found ) {
-	// Why is this in a for loop?  Because slicing and splicing arrays resets array pointers.
+while ( !$command_found && count($argv) > 1 ) {
+	// Why is this in a while loop?  Because slicing and splicing arrays resets array pointers.
 	foreach( $argv as $argument_key => $argument_value ) {
 		if ( $argument_key === 0 ) continue;
 

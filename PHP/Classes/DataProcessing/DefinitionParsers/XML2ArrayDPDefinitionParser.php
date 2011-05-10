@@ -47,12 +47,12 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	public function getDPProcedureDefinition( $procedure_class, $procedure_id ) {
 		$retVal = null;
 
-		if ( !isset( $this->dataProcessingProcedures ) ) {
+		if ( !isset( $this->_dataProcessingProcedures ) ) {
 			$this->loadDataProcessingNodes();
 		}
 
-		if ( isset( $this->dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id] ) ) {
-			$retVal = $this->dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id];
+		if ( isset( $this->_dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id] ) ) {
+			$retVal = $this->_dataProcessingProcedures[$procedure_class]['procedures'][$procedure_id];
 		}
 
 		return $retVal;
@@ -61,12 +61,12 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	public function getDPSequenceDefinition( $sequence_class, $sequence_id ) {
 		$retVal = null;
 
-		if ( !isset( $this->dataProcessingSequences ) ) {
+		if ( !isset( $this->_dataProcessingSequences ) ) {
 			$this->loadDataProcessingNodes();
 		}
 
-		if ( isset( $this->dataProcessingSequences[$sequence_class]['sequences'][$sequence_id] ) ) {
-			$retVal = $this->dataProcessingSequences[$sequence_class]['sequences'][$sequence_id];
+		if ( isset( $this->_dataProcessingSequences[$sequence_class]['sequences'][$sequence_id] ) ) {
+			$retVal = $this->_dataProcessingSequences[$sequence_class]['sequences'][$sequence_id];
 		}
 
 		return $retVal;
@@ -75,7 +75,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	public function getDPStatementDefinition( $statement_class, $statement_id ) {
 		$retVal = null;
 
-		if ( !isset( $this->dataProcessingStatements ) ) {
+		if ( !isset( $this->_dataProcessingStatements ) ) {
 			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
 			// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
 			// and do more granulated inspection and cache clearing
@@ -87,13 +87,13 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			if ( !$allNodesCached ) {
 				$this->loadDataProcessingNodes();
 			} else {
-				$this->dataProcessingStatements = $dataProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+				$this->_dataProcessingStatements = $dataProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
 					'XML2ArrayDPDefinitionParserStatementNodes', 'DataProcessing', true );
 			}
 		}
 
-		if ( isset( $this->dataProcessingStatements[$statement_class]['statements'][$statement_id] ) ) {
-			$retVal = $this->dataProcessingStatements[$statement_class]['statements'][$statement_id];
+		if ( isset( $this->_dataProcessingStatements[$statement_class]['statements'][$statement_id] ) ) {
+			$retVal = $this->_dataProcessingStatements[$statement_class]['statements'][$statement_id];
 		} else {
 			throw new Exception( 'DPStatement class "' . $statement_class . '" and ID "' . $statement_id . '" pair does not exist. Please review your DataProcessing.xml' );
 		}
@@ -107,39 +107,54 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	 * @throws ErrorException	if definition file cannot be read, has syntax errors, is missing
 	 *							required values or provides invalid values
 	 */
-	protected function loadDataProcessingNodes() {
+	public function loadDataProcessingNodes( $overwrite = true, $dp_xml_location = null ) {
 		// Mark entrance into this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Entered loadRequestNodes()", 'DataProcessing' );
 
-		// Grab the absolute file system path to the DataProcessing.xml we're concerned with.  $this->webapp is set
-		// during construction of this XML2ArrayDPDefinitionParser singleton.  See eGlooDPDefinitionParser
-		// for details.
-		$dp_xml_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . "/XML/DataProcessing.xml";
+		$retVal = null;
+
+		if ( !$dp_xml_location ) {
+			// Grab the absolute file system path to the DataProcessing.xml we're concerned with.  $this->webapp is set
+			// during construction of this XML2ArrayDPDefinitionParser singleton.  See eGlooDPDefinitionParser
+			// for details.
+			$dp_xml_location = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . "/XML/DataProcessing.xml";
+		}
 
 		// Mark that we are now attempting to load the specified DataProcessing.xml
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Loading " . $dp_xml_path, 'DataProcessing' );
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Loading " . $dp_xml_location, 'DataProcessing' );
 
 		// Attempt to load the specified DataProcessing.xml file
-		$dataProcessingXMLObject = simplexml_load_file( $dp_xml_path );
+		$dataProcessingXMLObject = simplexml_load_file( $dp_xml_location );
 
 		// If reading the DataProcessing.xml file failed, log the error
 		// TODO determine if we should throw an exception here...
 		if ( !$dataProcessingXMLObject ) {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
-				'XML2ArrayDPDefinitionParser: simplexml_load_file( "' . $dp_xml_path . '" ): ' . libxml_get_errors() );
+				'XML2ArrayDPDefinitionParser: simplexml_load_file( "' . $dp_xml_location . '" ): ' . libxml_get_errors() );
 		}
 
+		// Setup an array to hold all of our processed DPProcedure definitions
+		$dataProcessingProcedures = array();
+
 		// Setup an array to hold all of our processed DPSequence definitions
-		$dataProcessingSequences = $this->loadDataProcessingSequences( $dataProcessingXMLObject );
+		$dataProcessingSequences = $this->loadDataProcessingSequences( $dataProcessingXMLObject, $overwrite );
 
 		// Setup an array to hold all of our processed DPStatement definitions
-		$dataProcessingStatements = $this->loadDataProcessingStatements( $dataProcessingXMLObject );
+		$dataProcessingStatements = $this->loadDataProcessingStatements( $dataProcessingXMLObject, $overwrite );
+
+		$retVal = array(
+			'dataProcessingProcedures' => $dataProcessingProcedures,
+			'dataProcessingSequences' => $dataProcessingSequences,
+			'dataProcessingStatements' => $dataProcessingStatements
+		);
 
 		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: DataProcessing.xml successfully processed", 'DataProcessing' );
+
+		return $retVal;
 	}
 
-	protected function loadDataProcessingSequences( $dataProcessingXMLObject ) {
+	protected function loadDataProcessingSequences( $dataProcessingXMLObject, $overwrite = true ) {
 		$retVal = null;
 
 		$dataProcessingSequences = array();
@@ -195,34 +210,38 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				$dataProcessingSequences[$dpSequenceID]['attributes']['formArguments'][$newFormArgument['id']] = $newFormArgument;
 			}
 
-			$uniqueKey = ((string) $dpSequence['id']);
-			$this->dataProcessingSequences[ $uniqueKey ] = $dataProcessingSequences[$dpSequenceID];
+			if ( $overwrite ) {
+				$uniqueKey = ((string) $dpSequence['id']);
+				$this->_dataProcessingSequences[ $uniqueKey ] = $dataProcessingSequences[$dpSequenceID];
 
+				// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
+				// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
+				// and do more granulated inspection and cache clearing
+				$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+				$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserAttributeNodes::' .
+					$uniqueKey, $dataProcessingSequences[$dpSequenceID], 'DataProcessing', 0, true );
+			}
+		}
+
+		if ( $overwrite ) {
 			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
 			// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
 			// and do more granulated inspection and cache clearing
 			$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
 
-			$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserAttributeNodes::' .
-				$uniqueKey, $dataProcessingSequences[$dpSequenceID], 'DataProcessing', 0, true );
+			// We're done processing our DPSequences, so let's store the structured array in cache for faster lookup
+			// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
+			$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserAttributeSets',
+				$this->_dataProcessingSequences, 'DataProcessing', 0, true );
 		}
-
-		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
-		// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
-		// and do more granulated inspection and cache clearing
-		$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
-
-		// We're done processing our DPSequences, so let's store the structured array in cache for faster lookup
-		// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
-		$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserAttributeSets',
-			$this->dataProcessingSequences, 'DataProcessing', 0, true );
 
 		$retVal = $dataProcessingSequences;
 
 		return $retVal;
 	}
 
-	protected function loadDataProcessingStatements( $dataProcessingXMLObject ) {
+	protected function loadDataProcessingStatements( $dataProcessingXMLObject, $overwrite = true ) {
 		$retVal = null;
 
 		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
@@ -397,19 +416,23 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			// Assign an array to hold this DPStatementClass node definition.  Associative key is the DPStatementClass ID
 			$dataProcessingStatements[$dataProcessingStatementClassID] = array( 'statementClass' => $dataProcessingStatementClassID, 'statements' => $dpStatementClassStatements );
 
-			$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserStatementNodes::' .
-				$dataProcessingStatementClassID, $dataProcessingStatements[$dataProcessingStatementClassID], 'DataProcessing', 0, true );
+			if ( $overwrite ) {
+				$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserStatementNodes::' .
+					$dataProcessingStatementClassID, $dataProcessingStatements[$dataProcessingStatementClassID], 'DataProcessing', 0, true );
+			}
 		}
 
-		$this->dataProcessingStatements = $dataProcessingStatements;
+		if ( $overwrite ) {
+			$this->_dataProcessingStatements = $dataProcessingStatements;
 
-		$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserStatementNodes',
-			$this->dataProcessingStatements, 'DataProcessing', 0, true );
+			$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserStatementNodes',
+				$this->_dataProcessingStatements, 'DataProcessing', 0, true );
 
-		$dataProcessingCacheRegionHandler->storeObject( 
-			eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::StatementNodesCached', true, 'DataProcessing', 0, true );
+			$dataProcessingCacheRegionHandler->storeObject( 
+				eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::StatementNodesCached', true, 'DataProcessing', 0, true );
+		}
 
-		$retVal = $this->dataProcessingStatements;
+		$retVal = $dataProcessingStatements;
 
 		return $retVal;
 	}

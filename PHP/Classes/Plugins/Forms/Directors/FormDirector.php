@@ -58,7 +58,7 @@ final class FormDirector {
 		return self::$_singleton;
 	}
 
-	public function getParsedFormDefinitionsArrayFromXML( $forms_xml_location = './XML/Forms.xml' ) {
+	public function getParsedDefinitionsArrayFromXML( $forms_xml_location = './XML/Forms.xml' ) {
 		$retVal = null;
 
 		if ( file_exists($forms_xml_location) && is_file($forms_xml_location) && is_readable($forms_xml_location) ) {
@@ -70,7 +70,7 @@ final class FormDirector {
 		return $retVal;
 	}
 
-	public function writeFormDefinitionsXMLFromArray( $form_definitions ) {
+	public function writeDefinitionsXMLFromArray( $form_definitions ) {
 		$retVal = false;
 
 		
@@ -81,7 +81,7 @@ final class FormDirector {
 	/**
 	 * This method reads the forms xml file from disk into a document object model.
 	 */
-	protected function loadFormDefinitions( $overwrite = true, $forms_xml_location = null ) {
+	public function loadFormDefinitions( $overwrite = true, $forms_xml_location = null ) {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: Processing XML", 'Forms' );
 
 		$retVal = null;

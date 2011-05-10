@@ -97,7 +97,7 @@ class eGlooForms {
 		$formDefinitions = null;
 
 		try {
-			$formDefinitions = $formDirector->getParsedFormDefinitionsArrayFromXML();
+			$formDefinitions = $formDirector->getParsedDefinitionsArrayFromXML();
 		} catch ( FormDirectorException $e ) {
 			// TODO better error handling.  For now this probably means the Forms.xml
 			// file was not found locally.  Just print message and move on, since this is
@@ -105,40 +105,46 @@ class eGlooForms {
 			echo $e->getMessage() . "\n";
 		}
 
-		// die_r($formDefinitions);
-
-		// $referral = $formDirector->buildForm('referral');
-		// $this->formatReferralForm($referral);
-		// echo $referral->render();
-
 		if ( $formDefinitions !== null ) {
-			$formNodes = $formDefinitions['formNodes'];
-			$formAttributeSetNodes = $formDefinitions['formAttributeSetNodes'];
-			die_r($formDefinitions);
 			// TODO actually branch on arguments
-			$this->listFormsAll();
+			$this->listFormsAll( $formDefinitions );
 			$retVal = true;
 		}
 
 		return $retVal;
 	}
 
-	public function listFormsAll() {
+	public function listFormsAll( $formDefinitions ) {
 		// For now, just this Forms.xml, don't include the framework proper or common
-		$this->listFormNodes();
-		$this->listFormAttributeSetNodes();
+		$formNodes = $formDefinitions['formNodes'];
+		$formAttributeSetNodes = $formDefinitions['formAttributeSetNodes'];
+
+		$this->listFormNodes( $formNodes );
+		$this->listFormAttributeSetNodes( $formAttributeSetNodes );
 	}
 
-	public function listFormNodes() {
-		echo 'Forms Processing Nodes:' . "\n";
+	public function listFormNodes( $form_nodes ) {
+		if ( !empty($form_nodes) ) {
+			echo 'Forms Processing Nodes:' . "\n";
 
-		echo "\n";
+			foreach( $form_nodes as $form_node_id => $form_node ) {
+				echo "\t" . $form_node_id . "\n";
+			}
+
+			echo "\n";
+		}
 	}
 
-	public function listFormAttributeSetNodes() {
-		echo 'Forms Processing Attribute Set Nodes:' . "\n";
+	public function listFormAttributeSetNodes( $form_attribute_set_nodes ) {
+		if ( !empty($form_attribute_set_nodes) ) {
+			echo 'Forms Processing Attribute Set Nodes:' . "\n";
 
-		echo "\n";
+			foreach( $form_attribute_set_nodes as $form_attribute_set_node_id => $form_attribute_set_node ) {
+				echo "\t" . $form_attribute_set_node_id . "\n";
+			}
+
+			echo "\n";
+		}
 	}
 
 	public function commandRequirementsSatisfied() {

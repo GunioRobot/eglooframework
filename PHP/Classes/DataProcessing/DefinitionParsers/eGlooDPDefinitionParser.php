@@ -46,13 +46,13 @@ abstract class eGlooDPDefinitionParser {
 	protected $REQUESTS_XML_LOCATION = '';
 
 	// An array representing the DPSequence node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingSequences = null;
+	protected $_dataProcessingSequences = null;
 
 	// An array representing the DPProcedure node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingProcedures = null;
+	protected $_dataProcessingProcedures = null;
 
 	// An array representing the DPStatement node definitions parsed out of the DataProcessing.xml
-	protected $dataProcessingStatements = null;
+	protected $_dataProcessingStatements = null;
 
 	// Protected variables for children to inherit
 	protected $_connection_name = null;
@@ -114,7 +114,7 @@ abstract class eGlooDPDefinitionParser {
 	 * A definition parser must include this method to handle loading and processing data processing
 	 * nodes from the data processing definition XML (Requests.xml)
 	 */
-	abstract protected function loadDataProcessingNodes();
+	abstract public function loadDataProcessingNodes( $overwrite = true, $dp_xml_location = null );
 
 	/**
 	 * This method gets called when a definition parser is instantiated.  It allows

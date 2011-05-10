@@ -53,7 +53,7 @@ final class eGlooDPDirector {
 		if ( isset(static::$singleton) ) {
 			throw new Exception('Attempted __construct(): An instance of eGlooDPDirector already exists');
 		} else {
-			if ( $engine_mode === null ) {
+			if ( $connection_name !== null && $engine_mode === null ) {
 				$connection_info = eGlooConfiguration::getDatabaseConnectionInfo( $connection_name );
 				$engine_mode = $connection_info['engine'];
 			}
@@ -64,6 +64,26 @@ final class eGlooDPDirector {
 			// We'll do a conditional check, but for now let's just build an XML parser
 			self::$dataProcessingDefinitionParser = XML2ArrayDPDefinitionParser::getInstance( $this->_connection_name, $this->_engine_mode );
 		}
+	}
+
+	public function getParsedDefinitionsArrayFromXML( $dp_xml_location = './XML/DataProcessing.xml' ) {
+		$retVal = null;
+
+		if ( file_exists($dp_xml_location) && is_file($dp_xml_location) && is_readable($dp_xml_location) ) {
+			$retVal = self::$dataProcessingDefinitionParser->loadDataProcessingNodes( false, $dp_xml_location );
+		} else {
+			throw new eGlooDPDirectorException( 'eGlooDPDirector: No Data Processing Definitions file found at "' . $dp_xml_location . '"' );
+		}
+
+		return $retVal;
+	}
+
+	public function writeDefinitionsXMLFromArray( $data_processing_definitions ) {
+		$retVal = false;
+
+		
+
+		return $retVal;
 	}
 
 	public function getDPProcedureDefinition( $statement_class, $statement_id ) {
@@ -90,7 +110,7 @@ final class eGlooDPDirector {
     }
 
 	final private function __clone() {
-		throw new Exception('Attempted __clone(): An instance of eGlooDPDirector already exists');
+		throw new eGlooDPDirectorException('Attempted __clone(): An instance of eGlooDPDirector already exists');
 	}
 
 }
