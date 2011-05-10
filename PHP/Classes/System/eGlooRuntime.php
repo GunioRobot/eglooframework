@@ -33,7 +33,7 @@
  * 
  * @package Core
  */
-class eGlooRuntime {
+class eGlooRuntime extends eGlooCombine {
 
 	protected function __construct() {
 		

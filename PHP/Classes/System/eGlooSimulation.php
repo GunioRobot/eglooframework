@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooSimulation {
+class eGlooSimulation extends eGlooCombine {
 
 	/**
 	 * Return the help information for this class as a string

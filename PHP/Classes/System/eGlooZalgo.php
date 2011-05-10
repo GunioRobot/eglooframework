@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooZalgo {
+class eGlooZalgo extends eGlooCombine {
 
 	public function execute() {
 		echo 'H҉̵̞̟̠̖̗̘Ȅ̐̑̒̚̕̚ IS C̒̓̔̿̿̿̕̚̚̕̚̕̚̕̚̕̚̕̚OMI҉̵̞̟̠̖̗̘NG > ͡҉҉ ̵̡̢̛̗̘̙̜̝̞' .

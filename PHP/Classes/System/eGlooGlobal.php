@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooGlobal {
+class eGlooGlobal extends eGlooCombine {
 
 	/**
 	 * Return the help information for this class as a string

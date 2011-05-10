@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooSystemSearch {
+class eGlooSystemSearch extends eGlooCombine {
 
 	/**
 	 * Return the help information for this class as a string
