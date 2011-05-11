@@ -116,21 +116,113 @@ class eGlooDataProcessing extends eGlooCombine {
 
 				if ( !empty($statement_info ) ) {
 					echo 'Statement Class: ' . $statement_info['statementClass'] . "\n";
-					// echo 'Statements Provided:' . "\n";
-					echo 'Statements Provided: ';
+					echo 'Statements: ' . count($statement_info['statements']) . "\n";
 
-					$count = 1;
+					$longest = 0;
 
 					foreach($statement_info['statements'] as $statement_name => $statement) {
-						echo $statement_name;
-						if ( $count < count($statement_info['statements']) ) {
-							echo ', ';
-							$count++;
+						if (strlen($statement_name) > $longest) {
+							$longest = strlen($statement_name);
 						}
 					}
 
-					echo "\n";
-					// print_r($statement_info);
+					foreach($statement_info['statements'] as $statement_name => $statement) {
+						$output_string = "\t"; // . ($statement['required'] === true ? '(R) ' : '');
+						$output_string .= $statement_name;
+
+						$name_length = $longest - strlen($statement_name);
+
+						if ( ($name_length / 8) < 1 ) {
+							$tab_count = 0;
+						} else if ( ($name_length / 8) === 1 ) {
+							$tab_count = 1;
+						} else {
+							$tab_count = ceil($name_length / 8);
+						}
+
+						for( $i = 0; $i <= $tab_count; $i++ ) {
+							$output_string .= "\t";
+						}
+
+						$output_string .= 'T=' . $statement['type'];
+						$output_string .= "\n";
+
+						echo $output_string;
+
+						echo "\t  " . 'Argument Lists: ' . count($statement['argumentLists']) . "\n";
+						foreach( $statement['argumentLists'] as $argument_list_name => $argument_list ) {
+							$argument_list_output = "\t    " . $argument_list_name;
+							$argument_list_output .= ' (' . $argument_list['parameterPreparation'] . ')';
+							$argument_list_output .= "\n";
+
+							echo $argument_list_output;
+
+							foreach( $argument_list['arguments'] as $argument_name => $argument ) {
+								$argument_output = "\t      " . $argument_name;
+								$argument_output .= "\t" . ' T=' . $argument['argumentType'];
+
+								if ( $argument['argumentType'] === 'string' ) {
+									$argument_output .= "\t" . 'Pattern="' . $argument['pattern'] . '"';
+								} else if ( $argument['argumentType'] === 'integer' ) {
+									$argument_output .= "\t" . 'Min=' . $argument['min'] . "\t" . 'Max=' . $argument['max'];
+								}
+
+								$argument_output .= "\n";
+
+								echo $argument_output;
+							}
+						}
+
+						echo "\t  " . 'Statement Return: ' . $statement['statementReturn']['type'] . "\n";
+
+						echo "\t    " . 'Statement Return Column Sets: ' . count($statement['statementReturn']['statementReturnColumnSets']) . "\n";
+						if ( !empty($statement['statementReturn']['statementReturnColumnSets']) ) {
+							foreach( $statement['statementReturn']['statementReturnColumnSets'] as $return_column_set_name => $return_column_set ) {
+								$return_column_set_output = "\t      " . $return_column_set_name;
+								$return_column_set_output .= "\t" . 'T=' . $return_column_set['type'] . ' Pattern="' . $return_column_set['pattern'] . '"';
+								$return_column_set_output .= "\n";
+
+								echo $return_column_set_output;
+							}
+						}
+
+						echo "\t    " . 'Statement Return Columns: ' . count($statement['statementReturn']['statementReturnColumns']) . "\n";
+						if ( !empty($statement['statementReturn']['statementReturnColumns']) ) {
+							foreach( $statement['statementReturn']['statementReturnColumns'] as $return_column_name => $return_column ) {
+								$return_column_output = "\t      " . $return_column_name;
+
+								$return_column_output .= "\t" . 'T=' . $return_column['type'];
+
+								$return_column_output .= "\n";
+
+								echo $return_column_output;
+							}
+						}
+
+						$engine_modes_used = array();
+						foreach( $statement['statementVariants'] as $statement_variant ) {
+							foreach( $statement_variant['engineModes'] as $engineMode ) {
+								$engine_modes_used[$engineMode['mode']] = $engineMode['modeName'];
+							}
+						}
+
+						echo "\t    " . 'Statement Variants: ' . count($statement['statementVariants']) . ' Connections, ' .
+							count($engine_modes_used) . ' Engine Modes' ."\n";
+
+						if ( !empty($statement['statementReturn']['statementVariants']) ) {
+							foreach( $statement['statementReturn']['statementVariants'] as $statement_variant_name => $statement_variant ) {
+								$statement_variant_output = "\t      " . $statement_variant_name;
+
+								// $return_column_output .= "\t" . 'T=' . $return_column['type'];
+
+								$statement_variant_output .= "\n";
+
+								echo $statement_variant_output;
+							}
+						}
+
+						echo "\n";
+					}
 				}
 
 				$retVal = true;
@@ -180,7 +272,7 @@ class eGlooDataProcessing extends eGlooCombine {
 
 	public function listDPProcedures( $dataProcessingProcedures ) {
 		if ( !empty($dataProcessingProcedures) ) {
-			echo 'Data Processing Procedures:' . "\n";
+			echo 'Data Processing Procedures: ' . count($dataProcessingProcedures) . "\n";
 
 			foreach( $dataProcessingProcedures as $dp_procedure_id => $dp_procedure_node ) {
 				echo "\t" . $dp_procedure_id . "\n";
@@ -192,7 +284,7 @@ class eGlooDataProcessing extends eGlooCombine {
 
 	public function listDPSequences( $dataProcessingSequences ) {
 		if ( !empty($dataProcessingSequences) ) {
-			echo 'Data Processing Sequences:' . "\n";
+			echo 'Data Processing Sequences: ' . count($dataProcessingSequences) . "\n";
 
 			foreach( $dataProcessingSequences as $dp_sequence_id => $dp_sequence_node ) {
 				echo "\t" . $dp_sequence_id . "\n";
@@ -204,7 +296,7 @@ class eGlooDataProcessing extends eGlooCombine {
 
 	public function listDPStatements( $dataProcessingStatements ) {
 		if ( !empty($dataProcessingStatements) ) {
-			echo 'Data Processing Statements:' . "\n";
+			echo 'Data Processing Statements: ' . count($dataProcessingStatements) . "\n";
 
 			foreach( $dataProcessingStatements as $dp_statement_id => $dp_statement_node ) {
 				echo "\t" . $dp_statement_id . "\n";

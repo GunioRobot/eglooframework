@@ -149,9 +149,6 @@ class eGlooForms extends eGlooCombine {
 
 						echo $output_string;
 					}
-
-					$count = 1;
-
 				}
 
 				if ( !empty($form_attribute_set_info) ) {
