@@ -137,7 +137,6 @@ class eGlooDataProcessing extends eGlooCombine {
 			}
 		}
 
-
 		return $retVal;
 	}
 
