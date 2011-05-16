@@ -209,15 +209,24 @@ class eGlooDataProcessing extends eGlooCombine {
 						echo "\t    " . 'Statement Variants: ' . count($statement['statementVariants']) . ' Connections, ' .
 							count($engine_modes_used) . ' Engine Modes' ."\n";
 
-						if ( !empty($statement['statementReturn']['statementVariants']) ) {
-							foreach( $statement['statementReturn']['statementVariants'] as $statement_variant_name => $statement_variant ) {
-								$statement_variant_output = "\t      " . $statement_variant_name;
-
-								// $return_column_output .= "\t" . 'T=' . $return_column['type'];
-
-								$statement_variant_output .= "\n";
+						if ( !empty($statement['statementVariants']) ) {
+							foreach( $statement['statementVariants'] as $statement_variant_name => $statement_variant ) {
+								$statement_variant_output = "\t      " . $statement_variant_name . ': ' . count($statement_variant['engineModes']) .
+									' Engine Modes' . "\n";
 
 								echo $statement_variant_output;
+
+								foreach( $statement_variant['engineModes'] as $engineMode ) {
+									$engine_mode_output = "\t        " . $engineMode['modeName'];
+									$engine_mode_output .= "\n";
+
+									echo $engine_mode_output;
+
+									foreach( $engineMode['includePaths'] as $includePath ) {
+										$include_path_output = "\t          " . $includePath['argumentList'];
+									}
+								}
+
 							}
 						}
 
