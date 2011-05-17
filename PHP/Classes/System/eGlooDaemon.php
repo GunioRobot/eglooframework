@@ -39,11 +39,18 @@
 abstract class eGlooDaemon {
 
 	public function __construct() {
-		
+		$this->prepareDaemonizer();
 	}
 
 	public function __destruct() {
 		
+	}
+
+	protected function prepareDaemonizer() {
+		$system_daemon_include_path = eGlooConfiguration::getFrameworkRootPath() . '/Library/';
+		$system_daemon_include_path .= 'PEAR/System/System_Daemon/System/Daemon.php';
+
+		require_once( $system_daemon_include_path );
 	}
 
 	abstract public function start();

@@ -97,18 +97,25 @@ class eGlooDaemonMaster extends eGlooCombine {
 	protected function start() {
 		$retVal = false;
 
-		if ( isset( $this->_command_arguments[0]) ) {
-			$start_subject = $this->_command_arguments[0];
+		if ( !function_exists('pcntl_fork') ) {
+			throw new ErrorException('PCNTL extension not found');
+		} else if ( isset( $this->_command_arguments[0]) ) {			
+			$daemon_name = $this->_command_arguments[0];
+			$testDaemon = null;
 
-			if ( !function_exists('pcntl_fork') ) {
-				throw new ErrorException('PCNTL extension not found');
+			if ( class_exists($daemon_name) ) {
+				$testDaemon = new $daemon_name();
 			}
 
-			$testDaemon = new TestDaemon();
-
-			$testDaemon->start();
-			$testDaemon->run();
-			$testDaemon->stop();
+			if ( is_object($testDaemon) && $testDaemon instanceof eGlooDaemon ) {
+				$testDaemon->start();
+				$testDaemon->run();
+				$testDaemon->stop();
+			} else if ( is_object($testDaemon) && !($testDaemon instanceof eGlooDaemon) ) {
+				echo '"' . $daemon_name . '" is not a valid eGlooDaemon class.' . "\n";
+			} else if ( !is_object($testDaemon) ) {
+				echo '"' . $daemon_name . '" is not a known eGlooDaemon class or ID.' . "\n";
+			}
 		}
 
 		return $retVal;

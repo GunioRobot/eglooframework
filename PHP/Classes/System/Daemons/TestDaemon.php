@@ -39,10 +39,6 @@
 class TestDaemon extends eGlooDaemon {
 
 	public function start() {
-		$system_daemon_include_path = eGlooConfiguration::getFrameworkRootPath() . '/Library/PEAR/System/System_Daemon/';
-		$system_daemon_include_path .= 'System/Daemon.php';
-		require_once $system_daemon_include_path;
-
 		// Setup
 		$options = array(
 			'appName' => 'test',
