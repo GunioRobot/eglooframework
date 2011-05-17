@@ -101,19 +101,19 @@ class eGlooDaemonMaster extends eGlooCombine {
 			throw new ErrorException('PCNTL extension not found');
 		} else if ( isset( $this->_command_arguments[0]) ) {			
 			$daemon_name = $this->_command_arguments[0];
-			$testDaemon = null;
+			$daemonObj = null;
 
 			if ( class_exists($daemon_name) ) {
-				$testDaemon = new $daemon_name();
+				$daemonObj = new $daemon_name();
 			}
 
-			if ( is_object($testDaemon) && $testDaemon instanceof eGlooDaemon ) {
-				$testDaemon->start();
-				$testDaemon->run();
-				$testDaemon->stop();
-			} else if ( is_object($testDaemon) && !($testDaemon instanceof eGlooDaemon) ) {
+			if ( is_object($daemonObj) && $daemonObj instanceof eGlooDaemon ) {
+				$daemonObj->start();
+				$daemonObj->run();
+				$daemonObj->stop();
+			} else if ( is_object($daemonObj) && !($daemonObj instanceof eGlooDaemon) ) {
 				echo '"' . $daemon_name . '" is not a valid eGlooDaemon class.' . "\n";
-			} else if ( !is_object($testDaemon) ) {
+			} else if ( !is_object($daemonObj) ) {
 				echo '"' . $daemon_name . '" is not a known eGlooDaemon class or ID.' . "\n";
 			}
 		}
