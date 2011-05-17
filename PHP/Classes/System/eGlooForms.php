@@ -268,5 +268,15 @@ class eGlooForms extends eGlooCombine {
 		return $retVal;
 	}
 
+	/**
+	 * Return the help information for this class as a string
+	 *
+	 * @return string the help information for this class
+	 * @author George Cooper
+	 **/
+	public static function getHelpString() {
+		return 'eGloo Forms Help';
+	}
+
 }
 

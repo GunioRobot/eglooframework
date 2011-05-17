@@ -64,6 +64,12 @@ class eGlooCLI {
 			case 'cubes' :
 				self::executeCubes( $arguments );
 				break;
+			case 'daemon' :
+			case 'daemons' :
+			case 'daemonmaster' :
+			case 'dm' :
+				self::executeDaemonMaster( $arguments );
+				break;
 			case 'data' :
 			case 'dp' :
 				self::executeDataProcessing( $arguments );
@@ -176,6 +182,16 @@ class eGlooCLI {
 
 	public static function executeCubes( $arguments ) {
 		echo 'Executing cubes functions' . "\n";
+	}
+
+	public static function executeDaemonMaster( $arguments ) {
+		$daemonMasterObj = eGlooDaemonMaster::getInstanceFromCLIArgumentArray( $arguments );
+
+		if ( $daemonMasterObj !== null && $daemonMasterObj->isExecutable() ) {
+			$daemonMasterObj->execute();
+		} else {
+			self::printHelpInfoForDaemonMasterCommand();
+		}
 	}
 
 	public static function executeDataProcessing( $arguments ) {
@@ -329,6 +345,12 @@ class eGlooCLI {
 			case 'cubes' :
 				self::printHelpInfoForCubesCommand();
 				break;
+			case 'daemon' :
+			case 'daemons' :
+			case 'daemonmaster' :
+			case 'dm' :
+				self::printHelpInfoForDaemonMasterCommand();
+				break;
 			case 'data' :
 			case 'dp' :
 				self::printHelpInfoForDataProcessingCommand();
@@ -441,6 +463,10 @@ class eGlooCLI {
 
 	public static function printHelpInfoForCubesCommand() {
 		echo eGlooCube::getHelpString() . "\n";
+	}
+
+	public static function printHelpInfoForDaemonMasterCommand() {
+		echo eGlooDaemonMaster::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForDataProcessingCommand() {
