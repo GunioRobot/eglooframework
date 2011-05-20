@@ -38,7 +38,7 @@
  */
 abstract class ComplexArgumentValidator {
 
-	abstract public function validate( $argument, $complexType = null );
+	abstract public function validate( $argument, $complexType = null, $argumentID = null );
 
 }
 

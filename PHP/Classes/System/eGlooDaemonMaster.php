@@ -108,6 +108,7 @@ class eGlooDaemonMaster extends eGlooCombine {
 			}
 
 			if ( is_object($daemonObj) && $daemonObj instanceof eGlooDaemon ) {
+				// TODO better checking between each call and setting $retVal to something useful
 				$daemonObj->start();
 				$daemonObj->run();
 				$daemonObj->stop();

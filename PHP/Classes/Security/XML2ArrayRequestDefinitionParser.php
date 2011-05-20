@@ -1424,45 +1424,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $formArg['id'] . '\' is type \'' .
 							gettype($formArray) . '\', not type \'' . gettype(array()) . '\'');
 					}
-
-					// $validator = $formArg['validator'];
-					// $validatorObj = new $validator();
-					// 
-					// if (isset($formArg['complexType'])) {
-					// 	$complexType = $formArg['complexType'];
-					// } else if ( isset($formArg['scalarType']) ) {
-					// 	$scalarType = $formArg['scalarType'];
-					// 
-					// 	// TODO enforce scalar type
-					// 
-					// 	// We don't use a complexType here
-					// 	$complexType = null;
-					// } else {
-					// 	$complexType = null;
-					// }
-					// 
-					// $validatedInput = $validatorObj->validate( $complexValues, $complexType );
-					// 
-					// if ( isset($validatedInput) && $validatedInput ) {
-					// 	$requestInfoBean->setGET( $formArg['id'],  $validatedInput );
-					// } else {
-					// 	$errorMessage = "Complex parameter: " . $formArg['id'] . 
-					// 		" with value '" . $complexValues . "' is not valid" .
-					// 		" in GET request with request ID: " . $requestID;
-					// 	eGlooLogger::writeLog( eGlooLogger::DEBUG, $errorMessage, 'Security' );
-					// 
-					// 	if ( !isset($requestNode['errorProcessorID']) ) {
-					// 		if (eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
-					// 			throw new ErrorException($errorMessage);
-					// 		}
-					// 
-					// 		return false;
-					// 	} else {
-					// 		//set invalid argument in the request info bean
-					// 		$requestInfoBean->setInvalidGET( $formArg['id'], $complexValues );
-					// 		$retVal = false;
-					// 	}
-					// }
 				}
 			} else if ( $formArg['type'] === 'postarray') {
 				if( !isset( $_POST[ $formArg['id'] ] ) ){
@@ -1625,7 +1586,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$complexType = null;
 					}
 
-					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
+					$validatedInput = $validatorObj->validate( $complexValue, $complexType, $complexArg['id'] );
 
 					if ( isset($validatedInput) && $validatedInput !== false && $validatedInput !== null ) { 
 						$requestInfoBean->setGET( $complexArg['id'],  $validatedInput );
@@ -1694,7 +1655,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$complexType = null;
 					}
 
-					$validatedInput = $validatorObj->validate( $complexValues, $complexType );
+					$validatedInput = $validatorObj->validate( $complexValues, $complexType, $complexArg['id'] );
 
 					if ( isset($validatedInput) && $validatedInput ) {
 						$requestInfoBean->setGET( $complexArg['id'],  $validatedInput );
@@ -1766,7 +1727,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$complexType = null;
 					}
 
-					$validatedInput = $validatorObj->validate( $complexValue, $complexType );
+					$validatedInput = $validatorObj->validate( $complexValue, $complexType, $complexArg['id'] );
 
 					if ( isset($validatedInput) && $validatedInput ) {
 						$requestInfoBean->setPOST( $complexArg['id'],  $validatedInput );
@@ -1834,7 +1795,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 						$complexType = null;
 					}
 
-					$validatedInput = $validatorObj->validate( $complexValues, $complexType );
+					$validatedInput = $validatorObj->validate( $complexValues, $complexType, $complexArg['id'] );
 
 					if ( isset($validatedInput) && $validatedInput ) {
 						$requestInfoBean->setPOST( $complexArg['id'],  $validatedInput );
