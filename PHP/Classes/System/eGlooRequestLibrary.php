@@ -42,15 +42,27 @@ class eGlooRequestLibrary extends eGlooCombine {
 	 * @var array List of supported commands and their options/required arguments
 	 */
 	protected static $_supported_commands = array(
+		'add' => array(),
+		'del' => array(),
+		'delete' => array(),
 		'info' => array(),
 		'list' => array(),
 		'rebuild' => array(),
+		'remove' => array(),
 	);
 
 	public function execute() {
 		$retVal = null;
 
 		switch( $this->_command ) {
+			case 'add' :
+				$retVal = $this->add();
+				break;
+			case 'del' :
+			case 'delete' :
+			case 'remove' :
+				$retVal = $this->remove();
+				break;
 			case 'info' :
 				$retVal = $this->info();
 				break;
@@ -62,6 +74,112 @@ class eGlooRequestLibrary extends eGlooCombine {
 				break;
 			default :
 				break;
+		}
+
+		return $retVal;
+	}
+
+	protected function add() {
+		$retVal = false;
+
+		// Get a request validator based on the current application and UI bundle
+		$requestValidator =
+			ExtendedRequestValidator::getInstance( eGlooConfiguration::getApplicationPath(), eGlooConfiguration::getUIBundleName() );
+
+		$requestDefinitions = null;
+
+		try {
+			$requestDefinitions = $requestValidator->getParsedDefinitionsArrayFromXML();
+		} catch ( Exception $e ) {
+			// TODO better error handling.  For now this probably means the Forms.xml
+			// file was not found locally.  Just print message and move on, since this is
+			// just a listing command.
+			echo $e->getMessage() . "\n";
+		}
+
+		if ( $requestDefinitions !== null ) {
+			// Do stuff
+			eGlooLogger::writeLog( eGlooLogger::INFO, 'Existing Requests.xml processed...' . "\n" );
+
+			ksort($requestDefinitions['requestClasses']);
+			ksort($requestDefinitions['requestAttributeSets']);
+
+			$requestClasses = $requestDefinitions['requestClasses'];
+			$requestAttributeSets = $requestDefinitions['requestAttributeSets'];
+
+			$addition_id = '';
+			$addition_type = '';
+
+			foreach( $this->_command_arguments as $command_argument_key => $command_argument ) {
+				switch( strtolower($command_argument) ) {
+					case 'rc' :
+					case 'reqc' :
+					case 'reqclass' :
+					case 'requestclass' :
+						if ( isset($this->_command_arguments[$command_argument_key + 1]) ) {
+							$addition_id = $this->_command_arguments[$command_argument_key + 1];
+							$addition_type = 'Request Class';
+
+							$requestDefinitions = $this->addRequestClass( $requestDefinitions, $this->_command_arguments[$command_argument_key + 1] );
+						} else {
+							echo 'No Request Class ID provided' . "\n";
+						}
+						break;
+					default :
+						break;
+				}
+			}
+
+			if ( !empty($requestDefinitions) && $requestDefinitions !== null ) {
+				// Figure out where to write to
+				if ( isset($this->_parsed_options['w']) ) {
+					$output_location = './XML/Requests.xml';
+				} else {
+					$output_location = './XML/Requests.generated.xml';
+				}
+
+				// Write out
+				$requestValidator->writeDefinitionsXMLFromArray( $requestDefinitions, true, $output_location );
+				$rebuilt = $requestValidator->getParsedDefinitionsArrayFromXML( $output_location );
+
+				$diff = eGlooDiff::diff( $requestDefinitions, $rebuilt );
+
+				if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
+					echo $addition_type . ' "' . $addition_id . '" added successfully.' . "\n";
+				} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
+					$diff_output_original = $diff[2]['d'];
+					$diff_output_generated = $diff[2]['i'];
+
+					echo "\n" . 'Discrepancies found in rebuild: ' . "\n\n";
+
+					echo 'Items found in original but not found in rebuild: ' . "\n\n";
+					print_r($diff_output_original);
+					echo "\n\n";
+
+					echo 'Items found in rebuild but not found in original: ' . "\n\n";
+					print_r($diff_output_generated);
+					echo "\n\n";
+				}
+
+				$retVal = true;
+			} else {
+				$retVal = false;
+			}
+		}
+
+		return $retVal;
+	}
+
+	protected function addRequestClass( $request_definitions, $request_class_name ) {
+		$retVal = null;
+
+		if ( !isset($request_definitions['requestClasses'][$request_class_name]) ) {
+			$new_request_class = array( 'requestClass' => $request_class_name, 'requests' => array() );
+			$request_definitions['requestClasses'][$request_class_name] = $new_request_class;
+			ksort($request_definitions['requestClasses']);
+			$retVal = $request_definitions;
+		} else {
+			echo 'Request Class "' . $request_class_name . '" already exists.' . "\n";
 		}
 
 		return $retVal;
@@ -368,10 +486,123 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return $retVal;
 	}
 
+	protected function remove() {
+		$retVal = false;
+
+		// Get a request validator based on the current application and UI bundle
+		$requestValidator =
+			ExtendedRequestValidator::getInstance( eGlooConfiguration::getApplicationPath(), eGlooConfiguration::getUIBundleName() );
+
+		$requestDefinitions = null;
+
+		try {
+			$requestDefinitions = $requestValidator->getParsedDefinitionsArrayFromXML();
+		} catch ( Exception $e ) {
+			// TODO better error handling.  For now this probably means the Forms.xml
+			// file was not found locally.  Just print message and move on, since this is
+			// just a listing command.
+			echo $e->getMessage() . "\n";
+		}
+
+		if ( $requestDefinitions !== null ) {
+			// Do stuff
+			eGlooLogger::writeLog( eGlooLogger::INFO, 'Existing Requests.xml processed...' . "\n" );
+
+			ksort($requestDefinitions['requestClasses']);
+			ksort($requestDefinitions['requestAttributeSets']);
+
+			$requestClasses = $requestDefinitions['requestClasses'];
+			$requestAttributeSets = $requestDefinitions['requestAttributeSets'];
+
+			$removal_id = '';
+			$removal_type = '';
+
+			foreach( $this->_command_arguments as $command_argument_key => $command_argument ) {
+				switch( strtolower($command_argument) ) {
+					case 'rc' :
+					case 'reqc' :
+					case 'reqclass' :
+					case 'requestclass' :
+						if ( isset($this->_command_arguments[$command_argument_key + 1]) ) {
+							$removal_id = $this->_command_arguments[$command_argument_key + 1];
+							$removal_type = 'Request Class';
+
+							$requestDefinitions = $this->removeRequestClass( $requestDefinitions, $this->_command_arguments[$command_argument_key + 1] );
+						} else {
+							echo 'No Request Class ID provided' . "\n";
+						}
+						break;
+					default :
+						break;
+				}
+			}
+
+			if ( !empty($requestDefinitions) && $requestDefinitions !== null ) {
+				// Figure out where to write to
+				if ( isset($this->_parsed_options['w']) ) {
+					$output_location = './XML/Requests.xml';
+				} else {
+					$output_location = './XML/Requests.generated.xml';
+				}
+
+				// Write out
+				$requestValidator->writeDefinitionsXMLFromArray( $requestDefinitions, true, $output_location );
+				$rebuilt = $requestValidator->getParsedDefinitionsArrayFromXML( $output_location );
+
+				$diff = eGlooDiff::diff( $requestDefinitions, $rebuilt );
+
+				if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
+					echo $removal_type . ' "' . $removal_id . '" removed successfully.' . "\n";
+				} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
+					$diff_output_original = $diff[2]['d'];
+					$diff_output_generated = $diff[2]['i'];
+
+					echo "\n" . 'Discrepancies found in rebuild: ' . "\n\n";
+
+					echo 'Items found in original but not found in rebuild: ' . "\n\n";
+					print_r($diff_output_original);
+					echo "\n\n";
+
+					echo 'Items found in rebuild but not found in original: ' . "\n\n";
+					print_r($diff_output_generated);
+					echo "\n\n";
+				}
+
+				$retVal = true;
+			} else {
+				$retVal = false;
+			}
+		}
+
+		return $retVal;
+	}
+
+	protected function removeRequestClass( $request_definitions, $request_class_name ) {
+		$retVal = null;
+
+		if ( isset($request_definitions['requestClasses'][$request_class_name]) ) {
+			unset($request_definitions['requestClasses'][$request_class_name]);
+			ksort($request_definitions['requestClasses']);
+			$retVal = $request_definitions;
+		} else {
+			echo 'Request Class "' . $request_class_name . '" not found.' . "\n";
+		}
+
+		return $retVal;
+	}
+
 	public function commandRequirementsSatisfied() {
 		$retVal = false;
 
 		switch( $this->_command ) {
+			case 'add' :
+				$retVal = $this->addCommandRequirementsSatisfied();
+				break;
+			case 'del' :
+			case 'delete' :
+			case 'remove' :
+				$retVal = $this->removeCommandRequirementsSatisfied();
+				break;
 			case 'info' :
 				$retVal = $this->infoCommandRequirementsSatisfied();
 				break;
@@ -384,6 +615,14 @@ class eGlooRequestLibrary extends eGlooCombine {
 			default :
 				break;
 		}
+
+		return $retVal;
+	}
+
+	protected function addCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
 
 		return $retVal;
 	}
@@ -405,6 +644,14 @@ class eGlooRequestLibrary extends eGlooCombine {
 	}
 
 	protected function rebuildCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	protected function removeCommandRequirementsSatisfied() {
 		$retVal = false;
 
 		$retVal = true;

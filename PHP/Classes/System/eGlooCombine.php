@@ -156,7 +156,13 @@ abstract class eGlooCombine {
 					}
 				}
 
-				$parsed_options[$matches[1]] = $matches[2];
+				if ( isset($parsed_options[$matches[1]]) && !is_array($parsed_options[$matches[1]]) ) {
+					$parsed_options[$matches[1]] = array($parsed_options[$matches[1]]);
+					$parsed_options[$matches[1]][] = $matches[2];
+				} else {
+					$parsed_options[$matches[1]] = $matches[2];
+				}
+
 				continue;
 			}
 
@@ -176,6 +182,8 @@ abstract class eGlooCombine {
 				continue;
 			}
 		}
+
+		$this->_parsed_options = $parsed_options;
 
 		$retVal = true;
 

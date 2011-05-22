@@ -95,10 +95,10 @@ class ExtendedRequestValidator extends RequestValidator {
 
 			ksort($request_definitions['requestClasses']);
 
-			echo 'Beginning rebuild process...' . "\n\n";
+			eGlooLogger::writeLog( eGlooLogger::INFO, 'Beginning rebuild process...' );
 
 			foreach( $request_definitions['requestClasses'] as $request_class_id => $request_class ) {
-				echo 'Rebuilding RequestClass "' . $request_class_id . '"...' . "\n"; 
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Rebuilding RequestClass "' . $request_class_id . '"...' );
 
 				$requestClassObj = $xmlObject->addChild( 'RequestClass', null, '' );
 				$requestClassObj->addAttribute( 'id', $request_class_id );
@@ -229,12 +229,10 @@ class ExtendedRequestValidator extends RequestValidator {
 				}
 			}
 
-			echo "\n";
-
 			ksort($request_definitions['requestAttributeSets']);
 
 			foreach ( $request_definitions['requestAttributeSets'] as $request_attribute_set_id => $request_attribute_set ) {
-				echo 'Rebuilding RequestAttributeSet "' . $request_attribute_set_id . '"...' . "\n"; 
+				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Rebuilding RequestAttributeSet "' . $request_attribute_set_id . '"...' );
 
 				$requestObj = $xmlObject->addChild( 'RequestAttributeSet', null, '' );
 				$requestObj->addAttribute( 'id', $request_attribute_set_id );
