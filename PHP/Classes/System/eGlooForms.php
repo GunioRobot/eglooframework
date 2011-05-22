@@ -213,7 +213,7 @@ class eGlooForms extends eGlooCombine {
 
 	public function listFormNodes( $form_nodes ) {
 		if ( !empty($form_nodes) ) {
-			echo 'Forms Processing Nodes:' . "\n";
+			echo 'Forms Processing Nodes: ' . count($form_nodes) . "\n";
 
 			foreach( $form_nodes as $form_node_id => $form_node ) {
 				echo "\t" . $form_node_id . "\n";
@@ -225,7 +225,7 @@ class eGlooForms extends eGlooCombine {
 
 	public function listFormAttributeSetNodes( $form_attribute_set_nodes ) {
 		if ( !empty($form_attribute_set_nodes) ) {
-			echo 'Forms Processing Attribute Set Nodes:' . "\n";
+			echo 'Forms Processing Attribute Set Nodes: ' . count($form_attribute_set_nodes) . "\n";
 
 			foreach( $form_attribute_set_nodes as $form_attribute_set_node_id => $form_attribute_set_node ) {
 				echo "\t" . $form_attribute_set_node_id . "\n";

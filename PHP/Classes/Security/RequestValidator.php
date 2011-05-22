@@ -38,15 +38,15 @@
  * @package RequestProcessing
  * @subpackage Security
  */
-final class RequestValidator {
+class RequestValidator {
 
 	/**
 	 * Static Constants
 	 */
 
 	// Parsers (this needs to be refactored)
-	private static $requestDefinitionParser;
-	private static $singleton;
+	protected static $requestDefinitionParser;
+	protected static $singleton;
 
 	/**
 	 * XML Variables
@@ -57,7 +57,7 @@ final class RequestValidator {
 	/**
 	 * Private constructor because this class is a singleton
 	 */
-	private function __construct( $webapp, $uibundle ) {
+	protected function __construct( $webapp, $uibundle ) {
 		if ( isset(static::$singleton) ) {
 			throw new Exception('Attempted __construct(): An instance of RequestValidator already exists');
 		} else {

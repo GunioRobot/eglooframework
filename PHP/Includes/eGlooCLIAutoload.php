@@ -141,12 +141,9 @@ function eglooAutoload($class_name) {
 	// Set the first time autoload is called
 	if ( NULL === $possible_path ) {
 		// These are the default paths for this application
-		$framework_classes = eGlooConfiguration::getFrameworkRootPath() . '/PHP';
-		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/PHP';
-
-		$extra_class_path = eGlooConfiguration::getApplicationsPath() . '/' . 
-			eGlooConfiguration::getApplicationPath() . '/' . eGlooConfiguration::getExtraClassPath();
+		$framework_classes = eGlooConfiguration::getFrameworkPHPPath( true );
+		$application_classes = eGlooConfiguration::getApplicationPHPPath( true );
+		$extra_class_path = eGlooConfiguration::getExtraClassPath( true );
 
 		// Customize this yourself, but leave the array_flip alone. We will use this to
 		// get rid of duplicate entries from the include_path .ini list.  By default,

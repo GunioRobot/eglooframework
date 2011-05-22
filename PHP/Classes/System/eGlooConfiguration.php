@@ -112,7 +112,8 @@ final class eGlooConfiguration {
 		self::$configuration_options['egCDNConnections'] = array();
 		self::$configuration_options['egDatabaseConnections'] = array();
 
-		if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
+		if ( ($useRuntimeCache && !self::loadRuntimeCacheClass()) || !$useRuntimeCache ) {
+		// if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
 			if (!$success) {
@@ -130,7 +131,7 @@ final class eGlooConfiguration {
 			$application_path = self::getApplicationPath();
 
 			$success = self::loadApplicationConfigurationCache($application_path, $overwrite, $config_cache);
-		
+
 			if (!$success) {
 				self::loadApplicationConfigurationXML($application_path, $overwrite);
 				self::writeApplicationConfigurationCache($application_path);
@@ -141,7 +142,8 @@ final class eGlooConfiguration {
 			}
 
 			if (self::getUseRuntimeCache()) {
-				self::writeRuntimeCache();
+				// self::writeRuntimeCache();
+				self::writeRuntimeCacheClass();
 			}
 		}
 
@@ -508,6 +510,75 @@ final class eGlooConfiguration {
 		file_put_contents($runtime_cache_path, $config_dump);
 	}
 
+	public static function loadRuntimeCacheClass() {
+		$retVal = false;
+
+		$runtime_cache_path = self::getRuntimeConfigurationCachePath() . self::getRuntimeConfigurationCacheFilename();
+
+		if ( file_exists($runtime_cache_path . '.class.php') && is_file($runtime_cache_path . '.class.php') && is_readable($runtime_cache_path . '.class.php') ) {
+			include( $runtime_cache_path . '.class.php' );
+			self::$configuration_options = &eGlooRuntimeCacheClass::$configuration_options;
+
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public static function getArrayDefinitionString( $array_to_define ) {
+		$retVal = 'array(';
+
+		foreach( $array_to_define as $key => $value ) {
+			if ( is_string($value) ) {
+				$retVal .= '\'' . $key . '\' => \'' . $value . '\',';
+			} else if ( is_numeric($value) ) {
+				$retVal .= '\'' . $key . '\' => ' . $value . ',';
+			} else if ( is_bool($value) ) {
+				$retVal .= '\'' . $key . '\' => ';
+
+				switch( strtolower($value) ) {
+					case true :
+						$value = 'true';
+						break;
+					case false :
+						$value = 'false';
+						break;
+					default :
+						break;
+				}
+
+				$retVal .= $value . ',';
+			} else if ( is_array($value) ) {
+				$retVal .= '\'' . $key . '\' => ' . self::getArrayDefinitionString( $value ) . ',';
+			}
+		}
+
+		$retVal .= ')';
+
+		return $retVal;
+	}
+
+	public static function writeRuntimeCacheClass( $runtime_cache_path = null ) {
+		if (!$runtime_cache_path) {
+			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
+				$old_umask = umask(0);
+				mkdir( self::getRuntimeConfigurationCachePath(), 0775 );
+				umask($old_umask);
+			}
+
+			$runtime_cache_path = self::getRuntimeConfigurationCachePath() . self::getRuntimeConfigurationCacheFilename();
+		}
+
+		$class_definition = '<?php final class eGlooRuntimeCacheClass {' .
+			'public static $configuration_options = ' . self::getArrayDefinitionString( self::$configuration_options ) . ';}';
+
+		file_put_contents( $runtime_cache_path . '.class.php' , $class_definition );
+
+		// Dump our configuration set
+		$config_dump = var_export(self::$configuration_options, TRUE);
+		file_put_contents($runtime_cache_path, $config_dump);
+	}
+
 	public static function clearRuntimeCache( $runtime_cache_path = null ) {
 		$retVal = false;
 
@@ -851,7 +922,7 @@ final class eGlooConfiguration {
 			$xmlData .= '<!--* Custom Generated eGloo Framework Configuration File *-->';
 			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
 			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
-			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">';
+			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/Schemas/eGlooConfiguration.xsd">';
 			
 			$xmlData .= '</tns:Configuration>';
 
@@ -1242,7 +1313,7 @@ final class eGlooConfiguration {
 			$xmlData .= '<!--* Custom Generated eGloo Framework Configuration File *-->';
 			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
 			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
-			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">';
+			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/Schemas/eGlooConfiguration.xsd">';
 			
 			$xmlData .= '</tns:Configuration>';
 
@@ -1438,8 +1509,52 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egApplicationName'];
 	}
 
-	public static function getApplicationPath() {
-		return self::$configuration_options['egApplication'];
+	public static function getApplicationPath( $absolute_path = false ) {
+		$retVal = null;
+		
+		if ( $absolute_path ) {
+			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'];
+		} else {
+			$retVal = self::$configuration_options['egApplication'];
+		}
+
+		return $retVal;
+	}
+
+	public static function getApplicationPHPPath( $absolute_path = false ) {
+		$retVal = null;
+		
+		if ( $absolute_path ) {
+			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/PHP';
+		} else {
+			$retVal = self::$configuration_options['egApplication'] . '/PHP';
+		}
+
+		return $retVal;
+	}
+
+	public static function getApplicationTemplatesPath( $absolute_path = false ) {
+		$retVal = null;
+		
+		if ( $absolute_path ) {
+			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/Templates';
+		} else {
+			$retVal = self::$configuration_options['egApplication'] . '/Templates';
+		}
+
+		return $retVal;
+	}
+
+	public static function getApplicationXMLPath( $absolute_path = false ) {
+		$retVal = null;
+		
+		if ( $absolute_path ) {
+			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/XML';
+		} else {
+			$retVal = self::$configuration_options['egApplication'] . '/XML';
+		}
+
+		return $retVal;
 	}
 
 	public static function getUIBundleName() {
@@ -1701,24 +1816,76 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
-	public static function getExtraClassPath() {
-		return isset(self::$configuration_options['ExtraClassPath']) ? self::$configuration_options['ExtraClassPath'] : '';
+	public static function getExtraClassPath( $absolute_path = false ) {
+		$retVal = '';
+
+		if ( isset(self::$configuration_options['ExtraClassPath']) ) {
+			if ( $absolute_path ) {
+				$retVal = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/' . self::$configuration_options['ExtraClassPath'];
+			} else {
+				$retVal = self::$configuration_options['ExtraClassPath'];
+			}
+		}
+
+		return $retVal;
 	}
 
-	public static function getExtraDatabasePath() {
-		return isset(self::$configuration_options['ExtraDatabasePath']) ? self::$configuration_options['ExtraDatabasePath'] : '';
+	public static function getExtraDatabasePath( $absolute_path = false ) {
+		$retVal = '';
+
+		if ( isset(self::$configuration_options['ExtraDatabasePath']) ) {
+			if ( $absolute_path ) {
+				$retVal = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/' . self::$configuration_options['ExtraDatabasePath'];
+			} else {
+				$retVal = self::$configuration_options['ExtraDatabasePath'];
+			}
+		}
+
+		return $retVal;
 	}
 
-	public static function getExtraConfigurationPath() {
-		return isset(self::$configuration_options['ExtraConfigurationPath']) ? self::$configuration_options['ExtraConfigurationPath'] : '';
+	public static function getExtraConfigurationPath( $absolute_path = false ) {
+		$retVal = '';
+
+		if ( isset(self::$configuration_options['ExtraConfigurationPath']) ) {
+			if ( $absolute_path ) {
+				$retVal = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/' . self::$configuration_options['ExtraConfigurationPath'];
+			} else {
+				$retVal = self::$configuration_options['ExtraConfigurationPath'];
+			}
+		}
+
+		return $retVal;
 	}
 
-	public static function getExtraTemplatePath() {
-		return isset(self::$configuration_options['ExtraTemplatePath']) ? self::$configuration_options['ExtraTemplatePath'] : '';
+	public static function getExtraTemplatePath( $absolute_path = false ) {
+		$retVal = '';
+
+		if ( isset(self::$configuration_options['ExtraTemplatePath']) ) {
+			if ( $absolute_path ) {
+				$retVal = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/' . self::$configuration_options['ExtraTemplatePath'];
+			} else {
+				$retVal = self::$configuration_options['ExtraTemplatePath'];
+			}
+		}
+
+		return $retVal;
 	}
 
-	public static function getFrameworkRootPath() {
+	public static function getFrameworkRootPath( $absolute_path = false ) {
 		return self::$configuration_options['FrameworkRootPath'];
+	}
+
+	public static function getFrameworkPHPPath( $absolute_path = false ) {
+		return self::$configuration_options['FrameworkRootPath'] . '/PHP';
+	}
+
+	public static function getFrameworkTemplatesPath( $absolute_path = false ) {
+		return self::$configuration_options['FrameworkRootPath'] . '/Templates';
+	}
+
+	public static function getFrameworkXMLPath( $absolute_path = false ) {
+		return self::$configuration_options['FrameworkRootPath'] . '/XML';
 	}
 
 	public static function getHaangaIncludePath() {
@@ -1736,7 +1903,8 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache();
 
 				if (self::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
+					// self::writeRuntimeCache();
+					self::writeRuntimeCacheClass();
 				}
 			}
 		} else if ( is_string(self::$configuration_options['egLogFormat']) ) {
@@ -1760,7 +1928,8 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache();
 			
 				if (self::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
+					// self::writeRuntimeCache();
+					self::writeRuntimeCacheClass();
 				}
 			}
 		}
@@ -1781,7 +1950,8 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache();
 
 				if (self::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
+					// self::writeRuntimeCache();
+					self::writeRuntimeCacheClass();
 				}
 			}
 		} else if ( is_string(self::$configuration_options['egLogLevel']) ) {
@@ -1808,7 +1978,8 @@ final class eGlooConfiguration {
 				self::writeFrameworkConfigurationCache();
 			
 				if (self::getUseRuntimeCache()) {
-					self::writeRuntimeCache();
+					// self::writeRuntimeCache();
+					self::writeRuntimeCacheClass();
 				}
 			}
 		}

@@ -106,6 +106,7 @@ class eGlooCLI {
 				break;
 			case 'req' :
 			case 'request' :
+			case 'requests' :
 				self::executeRequest( $arguments );
 				break;
 			case 'run' :
@@ -248,8 +249,8 @@ class eGlooCLI {
 	}
 
 	public static function executeRequest( $arguments ) {
-		echo 'Executing request functions' . "\n";
-		$requestObj = eGlooRequest::getInstanceFromCLIArgumentArray( $arguments );
+		$requestObj = eGlooRequestLibrary::getInstanceFromCLIArgumentArray( $arguments );
+		$requestObj->execute();
 	}
 
 	public static function executeRun( $arguments ) {
@@ -506,7 +507,7 @@ class eGlooCLI {
 	}
 
 	public static function printHelpInfoForRequestCommand() {
-		echo eGlooRequest::getHelpString() . "\n";
+		echo eGlooRequestLibrary::getHelpString() . "\n";
 	}
 
 	public static function printHelpInfoForRunCommand() {

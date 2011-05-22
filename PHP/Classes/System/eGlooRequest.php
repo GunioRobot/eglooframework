@@ -54,16 +54,6 @@ class eGlooRequest {
 
 // eGlooRequest::getRemoteAddress()
 
-	/**
-	 * Return the help information for this class as a string
-	 *
-	 * @return string the help information for this class
-	 * @author George Cooper
-	 **/
-	public static function getHelpString() {
-		return 'eGloo Request Help';
-	}
-
 	public static function getHTTPHost() {
 		if ( self::$http_host === null ) {
 			self::$http_host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';

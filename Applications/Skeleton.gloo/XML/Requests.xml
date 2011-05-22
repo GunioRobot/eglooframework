@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * Skeleton eGloo Application Request Dispatch File
+ * Custom Generated eGloo Requests XML File
  *
- * Dispatches HTTP requests to the skeleton eGloo application
+ * Dispatches HTTP requests to this eGloo application
  *
  * HTTP requests are mapped via request class and request ID to an
  * appropriate RequestProcessor subclass.  Arguments allowed and
@@ -28,194 +28,150 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package XMLHTTPResponse
+ * @package RequestProcessing
  * @version 1.0
  -->
-<tns:Requests xmlns:tns="com.egloo.www/eGlooRequests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="com.egloo.www/eGlooRequests schemas/eGlooRequests.xsd">
-	<!-- Root Domain (www.example.com/) -->
-	<RequestClass id="externalMainPage">
-		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor"></Request>
-	</RequestClass>
-
-	<!-- Static file loading -->
-	<RequestClass id="css">
-		<Request id="rawfile" processorID="StyleSheetRawFileRequestProcessor">
-			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_]+?$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="file">
-		<Request id="rawfile" processorID="RawFileRequestProcessor">
-			<VariableArgument type="get" id="file_name" regex="~^[a-zA-Z0-9/._]+?$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="image">
-		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
-			<VariableArgument type="get" id="image_name" regex="~^[a-zA-Z0-9/_]+?(.gif|.png|.jpg|.jpeg)$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="javascript">
-		<Request id="rawfile" processorID="JavascriptRawFileRequestProcessor">
-			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_]+?$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="media">
-		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
-			<VariableArgument type="get" id="media_name" regex="~^[a-zA-Z0-9/_]+?(.swf|.SWF)$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="xcss">
-		<Request id="rawfile" processorID="StyleSheetExtendedRawFileRequestProcessor">
-			<VariableArgument type="get" id="css_name" regex="~^[a-zA-Z0-9/_:]+?$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-	<RequestClass id="xjavascript">
-		<Request id="rawfile" processorID="JavascriptExtendedRawFileRequestProcessor">
-			<VariableArgument type="get" id="javascript_name" regex="~^[a-zA-Z0-9/_: -]+?$~i" required="true" />
-			<Decorator order="0" decoratorID="GenericCacheAllDecorator" />
-		</Request>
-	</RequestClass>
-
-	<!-- eGloo Default Request Processor for invalid/unset request classes or request IDs -->
-	<RequestClass id="egDefault">
-		<Request id="egDefault" processorID="eGlooDefaultRequestProcessor">
-		</Request>
-	</RequestClass>
-
-	<!-- Configuration of eGloo Cache -->
-	<RequestClass id="coreeGlooCacheAdministration">
-		<Request id="clearCacheAll" processorID="ClearCacheAllCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="clearCacheGatewayCache" processorID="ClearCacheGatewayCacheCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="clearCacheRuntime" processorID="ClearCacheRuntimeCoreeGlooRequestProcessor">
-		</Request>
-	</RequestClass>
-	<!-- Configuration of eGloo Applications -->
-	<RequestClass id="coreeGlooApplicationAdministration">
-		<Request id="clearCache" processorID="ClearCacheApplicationCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor">
-		</Request>
+<tns:Requests xmlns:tns="com.egloo.www/eGlooRequests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="com.egloo.www/eGlooRequests ../XML/Schemas/eGlooRequests.xsd">
+	<RequestClass xmlns="" id="coreeGlooApplicationAdministration">
+		<Request id="clearCache" processorID="ClearCacheApplicationCoreeGlooRequestProcessor"/>
+		<Request id="configure" processorID="ConfigureApplicationCoreeGlooRequestProcessor"/>
 		<Request id="configureCache" processorID="ConfigureApplicationCacheCoreeGlooRequestProcessor">
-			<VariableArgument type="post" id="applications_selected_serialized" regex="/^.*$/" required="false" />
-			<VariableArgument type="post" id="application_group_selected" regex="/^.*$/" required="false" />
-			<VariableArgument type="post" id="application_bundle_selected" regex="/^.*$/" required="false" />
-			<VariableArgument type="postArray" id="applications_selected" regex="/^.*$/" required="false" />
-			<VariableArgument type="postArray" id="countries_selected" regex="/^.*$/" required="false" />
-			<VariableArgument type="postArray" id="languages_selected" regex="/^.*$/" required="false" />
 			<SelectArgument id="submit" type="post" required="false">
-				<value>Submit</value>
+					<value>Submit</value>
 			</SelectArgument>
+			<VariableArgument id="applications_selected_serialized" type="post" regex="/^.*$/" required="false"/>
+			<VariableArgument id="application_group_selected" type="post" regex="/^.*$/" required="false"/>
+			<VariableArgument id="application_bundle_selected" type="post" regex="/^.*$/" required="false"/>
+			<VariableArgument id="applications_selected" type="postarray" regex="/^.*$/" required="false"/>
+			<VariableArgument id="countries_selected" type="postarray" regex="/^.*$/" required="false"/>
+			<VariableArgument id="languages_selected" type="postarray" regex="/^.*$/" required="false"/>
 		</Request>
-		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="loadConfig" processorID="LoadApplicationConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="saveConfig" processorID="SaveApplicationConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="uninstall" processorID="UninstallApplicationCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="upgrade" processorID="UpgradeApplicationCoreeGlooRequestProcessor">
+		<Request id="install" processorID="InstallApplicationCoreeGlooRequestProcessor"/>
+		<Request id="loadConfig" processorID="LoadApplicationConfigCoreeGlooRequestProcessor"/>
+		<Request id="saveConfig" processorID="SaveApplicationConfigCoreeGlooRequestProcessor"/>
+		<Request id="uninstall" processorID="UninstallApplicationCoreeGlooRequestProcessor"/>
+		<Request id="upgrade" processorID="UpgradeApplicationCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="coreeGlooCacheAdministration">
+		<Request id="clearCacheAll" processorID="ClearCacheAllCoreeGlooRequestProcessor"/>
+		<Request id="clearCacheGatewayCache" processorID="ClearCacheGatewayCacheCoreeGlooRequestProcessor"/>
+		<Request id="clearCacheRuntime" processorID="ClearCacheRuntimeCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="coreeGlooDistributionPackaging">
+		<Request id="clearCache" processorID="ClearCacheSystemCoreeGlooRequestProcessor"/>
+		<Request id="configure" processorID="ConfigureSystemPackageCoreeGlooRequestProcessor"/>
+		<Request id="install" processorID="InstallSystemPackageCoreeGlooRequestProcessor"/>
+		<Request id="loadConfig" processorID="LoadSystemConfigCoreeGlooRequestProcessor"/>
+		<Request id="saveConfig" processorID="SaveSystemConfigCoreeGlooRequestProcessor"/>
+		<Request id="uninstall" processorID="UninstallSystemPackageCoreeGlooRequestProcessor"/>
+		<Request id="upgrade" processorID="UpgradeSystemPackageCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="coreeGlooFrameworkAdministration">
+		<Request id="clearCache" processorID="ClearCacheFrameworkCoreeGlooRequestProcessor"/>
+		<Request id="configure" processorID="ConfigureFrameworkCoreeGlooRequestProcessor"/>
+		<Request id="install" processorID="InstallFrameworkCoreeGlooRequestProcessor"/>
+		<Request id="loadConfig" processorID="LoadFrameworkConfigCoreeGlooRequestProcessor"/>
+		<Request id="saveConfig" processorID="SaveFrameworkConfigCoreeGlooRequestProcessor"/>
+		<Request id="uninstall" processorID="UninstallFrameworkCoreeGlooRequestProcessor"/>
+		<Request id="upgrade" processorID="UpgradeFrameworkCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="coreeGlooSimpleTestAdministration">
+		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="coreeGlooSimpleTestHarness">
+		<Request id="index" processorID="SimpleTestHarnessIndexCoreeGlooRequestProcessor"/>
+		<Request id="runAll" processorID="SimpleTestHarnessRunAllCoreeGlooRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="css">
+		<Request id="rawfile" processorID="StyleSheetRawFileRequestProcessor">
+			<VariableArgument id="css_name" type="get" regex="~^[a-zA-Z0-9/_]+?$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
 		</Request>
 	</RequestClass>
-	<!-- Configuration of eGloo Framework -->
-	<RequestClass id="coreeGlooFrameworkAdministration">
-		<Request id="clearCache" processorID="ClearCacheFrameworkCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="configure" processorID="ConfigureFrameworkCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="install" processorID="InstallFrameworkCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="loadConfig" processorID="LoadFrameworkConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="saveConfig" processorID="SaveFrameworkConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="uninstall" processorID="UninstallFrameworkCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="upgrade" processorID="UpgradeFrameworkCoreeGlooRequestProcessor">
+	<RequestClass xmlns="" id="egDefault">
+		<Request id="egDefault" processorID="eGlooDefaultRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="externalMainPage">
+		<Request id="extMainViewBase" processorID="ExternalMainPageBaseRequestProcessor"/>
+	</RequestClass>
+	<RequestClass xmlns="" id="file">
+		<Request id="rawfile" processorID="RawFileRequestProcessor">
+			<VariableArgument id="file_name" type="get" regex="~^[a-zA-Z0-9/._]+?$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
 		</Request>
 	</RequestClass>
-	<!-- Convenience Request Processors for Building eGloo Distribution Packages -->
-	<RequestClass id="coreeGlooDistributionPackaging">
-		<Request id="clearCache" processorID="ClearCacheSystemCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="configure" processorID="ConfigureSystemPackageCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="install" processorID="InstallSystemPackageCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="loadConfig" processorID="LoadSystemConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="saveConfig" processorID="SaveSystemConfigCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="uninstall" processorID="UninstallSystemPackageCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="upgrade" processorID="UpgradeSystemPackageCoreeGlooRequestProcessor">
+	<RequestClass xmlns="" id="image">
+		<Request id="rawfile" processorID="ImageRawFileRequestProcessor">
+			<VariableArgument id="image_name" type="get" regex="~^[a-zA-Z0-9/_]+?(.gif|.png|.jpg|.jpeg)$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
 		</Request>
 	</RequestClass>
-
-	<!-- eGloo SimpleTest Administration -->
-	<RequestClass id="coreeGlooSimpleTestAdministration">
-		<Request id="index" processorID="SimpleTestAdministrationCoreeGlooRequestProcessor">
+	<RequestClass xmlns="" id="javascript">
+		<Request id="rawfile" processorID="JavascriptRawFileRequestProcessor">
+			<VariableArgument id="javascript_name" type="get" regex="~^[a-zA-Z0-9/_]+?$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
 		</Request>
 	</RequestClass>
-	<!-- eGloo SimpleTest Harnesses -->
-	<RequestClass id="coreeGlooSimpleTestHarness">
-		<Request id="index" processorID="SimpleTestHarnessIndexCoreeGlooRequestProcessor">
-		</Request>
-		<Request id="runAll" processorID="SimpleTestHarnessRunAllCoreeGlooRequestProcessor">
+	<RequestClass xmlns="" id="media">
+		<Request id="rawfile" processorID="MediaRawFileRequestProcessor">
+			<VariableArgument id="media_name" type="get" regex="~^[a-zA-Z0-9/_]+?(.swf|.SWF)$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
 		</Request>
 	</RequestClass>
-
-	<!-- Common eGloo Request Attribute Sets -->
-	<RequestAttributeSet id="egBreadcrumbs">
-		<VariableArgument id="breadcrumbs_path" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
+	<RequestClass xmlns="" id="xcss">
+		<Request id="rawfile" processorID="StyleSheetExtendedRawFileRequestProcessor">
+			<VariableArgument id="css_name" type="get" regex="~^[a-zA-Z0-9/_:]+?$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
+		</Request>
+	</RequestClass>
+	<RequestClass xmlns="" id="xjavascript">
+		<Request id="rawfile" processorID="JavascriptExtendedRawFileRequestProcessor">
+			<VariableArgument id="javascript_name" type="get" regex="~^[a-zA-Z0-9/_: -]+?$~i" required="true"/>
+			<Decorator order="0" decoratorID="GenericCacheAllDecorator"/>
+		</Request>
+	</RequestClass>
+	<RequestAttributeSet xmlns="" id="egBreadcrumbs">
+		<VariableArgument id="breadcrumbs_path" type="getarray" regex="/^[0-9a-zA-Z]+$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egDataExport">
-		<SelectArgument id="data_export_format" required="true" type="get">
-			<value>csv</value>
-			<value>json</value>
-			<value>xhtml</value>
-			<value>xml</value>
+	<RequestAttributeSet xmlns="" id="egDataExport">
+		<SelectArgument id="data_export_format" type="get" required="true">
+				<value>csv</value>
+				<value>json</value>
+				<value>xhtml</value>
+				<value>xml</value>
 		</SelectArgument>
-		<VariableArgument id="data_export_format_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
+		<VariableArgument id="data_export_format_options" type="getarray" regex="/^[0-9a-zA-Z]+$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egDateRange">
-		<VariableArgument id="start_date" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false" type="get" />
-		<VariableArgument id="end_date" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false" type="get" />
+	<RequestAttributeSet xmlns="" id="egDateRange">
+		<VariableArgument id="start_date" type="get" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false"/>
+		<VariableArgument id="end_date" type="get" regex="/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egFiltering">
-		<VariableArgument id="filtering_key_value_sets" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
-		<VariableArgument id="filtering_options" regex="/^[0-9a-zA-Z]+$/" required="false" type="getArray" />
+	<RequestAttributeSet xmlns="" id="egFiltering">
+		<VariableArgument id="filtering_key_value_sets" type="getarray" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="filtering_options" type="getarray" regex="/^[0-9a-zA-Z]+$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egPagination">
-		<VariableArgument id="pagination_page" regex="/^[0-9]+$/" required="false" default="1" scalarType="integer" type="get" />
-		<VariableArgument id="pagination_limit" regex="/^[0-9]+$/" required="false" default="25" scalarType="integer" type="get" />
+	<RequestAttributeSet xmlns="" id="egPagination">
+		<VariableArgument id="pagination_page" type="get" regex="/^[0-9]+$/" scalarType="integer" required="false" default="1"/>
+		<VariableArgument id="pagination_limit" type="get" regex="/^[0-9]+$/" scalarType="integer" required="false" default="25"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egReport">
-		<VariableArgument id="report_format" regex="/^[0-9a-zA-Z]+$/" required="false" default="csv" type="get" />
-		<VariableArgument id="report_limit" regex="/^[0-9a-zA-Z]+$/" required="false" default="100" scalarType="integer" type="get" />
-		<VariableArgument id="report_name" regex="/^[0-9a-zA-Z]+$/" required="false" default="Default" type="get" />
-		<VariableArgument id="report_primary_key" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="report_primary_value" regex="/^[0-9a-zA-Z]+$/" required="false" scalarType="integer" type="get" />
+	<RequestAttributeSet xmlns="" id="egReport">
+		<VariableArgument id="report_format" type="get" regex="/^[0-9a-zA-Z]+$/" required="false" default="csv"/>
+		<VariableArgument id="report_limit" type="get" regex="/^[0-9a-zA-Z]+$/" scalarType="integer" required="false" default="100"/>
+		<VariableArgument id="report_name" type="get" regex="/^[0-9a-zA-Z]+$/" required="false" default="Default"/>
+		<VariableArgument id="report_primary_key" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="report_primary_value" type="get" regex="/^[0-9a-zA-Z]+$/" scalarType="integer" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egSearch">
-		<VariableArgument id="search_scope" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="search_term" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="search_type" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+	<RequestAttributeSet xmlns="" id="egSearch">
+		<VariableArgument id="search_scope" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="search_term" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="search_type" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egSluggable">
-		<VariableArgument id="eg_slug" regex="/^[0-9a-zA-Z_-]+$/" required="false" type="get" />
+	<RequestAttributeSet xmlns="" id="egSluggable">
+		<VariableArgument id="eg_slug" type="get" regex="/^[0-9a-zA-Z_-]+$/" required="false"/>
 	</RequestAttributeSet>
-	<RequestAttributeSet id="egSort">
-		<VariableArgument id="sort_group" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="sort_method" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
-		<VariableArgument id="sort_order" regex="/^[0-9a-zA-Z]+$/" required="false" type="get" />
+	<RequestAttributeSet xmlns="" id="egSort">
+		<VariableArgument id="sort_group" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="sort_method" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
+		<VariableArgument id="sort_order" type="get" regex="/^[0-9a-zA-Z]+$/" required="false"/>
 	</RequestAttributeSet>
 </tns:Requests>

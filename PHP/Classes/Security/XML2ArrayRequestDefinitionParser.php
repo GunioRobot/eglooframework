@@ -84,14 +84,18 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	 * @throws ErrorException	if definition file cannot be read, has syntax errors, is missing
 	 *							required values or provides invalid values
 	 */
-	protected function loadRequestNodes() {
+	public function loadRequestNodes( $overwrite = true, $requests_xml_path = null ) {
 		// Mark entrance into this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Entered loadRequestNodes()", 'Security' );
 
-		// Grab the absolute file system path to the Requests.xml we're concerned with.  $this->webapp is set
-		// during construction of this XML2ArrayRequestDefinitionParser singleton.  See eGlooRequestDefinitionParser
-		// for details.
-		$requests_xml_path = eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
+		$retVal = null;
+
+		if ( !$requests_xml_path ) {
+			// Grab the absolute file system path to the Requests.xml we're concerned with.  $this->webapp is set
+			// during construction of this XML2ArrayRequestDefinitionParser singleton.  See eGlooRequestDefinitionParser
+			// for details.
+			$requests_xml_path = eGlooConfiguration::getApplicationsPath() . '/' . $this->webapp . "/XML/Requests.xml";
+		}
 
 		// Mark that we are now attempting to load the specified Requests.xml
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Loading " . $requests_xml_path, 'Security' );
@@ -99,10 +103,12 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		// Attempt to load the specified Requests.xml file
 		$requestXMLObject = simplexml_load_file( $requests_xml_path );
 
-		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
-		// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
-		// and do more granulated inspection and cache clearing
-		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+		if ( $overwrite ) {
+			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+			// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+			// and do more granulated inspection and cache clearing
+			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+		}
 
 		// If reading the Requests.xml file failed, log the error
 		// TODO determine if we should throw an exception here...
@@ -113,6 +119,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 		// Setup an array to hold all of our processed request attribute set definitions
 		$requestClasses = array();
+		$requestAttributeSets = array();
 
 		// Iterate over the RequestAttributeSet nodes so that we can parse each request attribute set definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestAttributeSet' ) as $attributeSet ) {
@@ -278,22 +285,28 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
 			}
 
-			$uniqueKey = ((string) $attributeSet['id']);
-			$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
+			if ( $overwrite ) {
+				$uniqueKey = ((string) $attributeSet['id']);
+				$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];
 
-			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
-			// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
-			// and do more granulated inspection and cache clearing
-			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+				// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+				// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+				// and do more granulated inspection and cache clearing
+				$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
-			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
-				$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation', 0, true );
+				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeNodes::' .
+					$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation', 0, true );
+			}
 		}
 
-		// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
-		// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
-		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
-			$this->attributeSets, 'RequestValidation', 0, true );
+		if ( $overwrite ) {
+			// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
+			// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
+			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserAttributeSets',
+				$this->attributeSets, 'RequestValidation', 0, true );
+		}
+
+		$requestXMLObject->registerXPathNamespace( '', 'com.egloo.www/eGlooRequests' );
 
 		// Iterate over the RequestClass nodes so that we can parse each request definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
@@ -510,7 +523,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$requestAttributeSetID = $requestAttributeSetInclude['requestAttributeSetID'];
 					$priority = $requestAttributeSetInclude['priority'];
 
-					$requestAttributeSet = $this->attributeSets[$requestAttributeSetID];
+					$requestAttributeSet = $requestAttributeSets[$requestAttributeSetID];
 
 					$boolArguments = $requestAttributeSet['attributes']['boolArguments'];
 					$selectArguments = $requestAttributeSet['attributes']['selectArguments'];
@@ -626,33 +639,43 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					}
 				}
 
-				$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id'] );
+				if ( $overwrite ) {
+					$uniqueKey = ( (string) $requestClass['id'] ) . ( (string) $request['id'] );
+					$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
 
-				$this->requestNodes[ $uniqueKey ] = $requestClasses[$requestClassID]['requests'][$requestID];
+					// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+					// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+					// and do more granulated inspection and cache clearing
+					$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
-				// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
-				// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
-				// and do more granulated inspection and cache clearing
-				$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
-
-				$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
-					$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation', 0, true );
+					$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes::' .
+						$uniqueKey, $requestClasses[$requestClassID]['requests'][$requestID], 'RequestValidation', 0, true );
+				}
 			}
 		}
 
-		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
-		// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
-		// and do more granulated inspection and cache clearing
-		$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
+		if ( $overwrite ) {
+			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for RequestProcessing
+			// we can also write some information to the caching system to better keep track of what is cached for the RequestProcessing system
+			// and do more granulated inspection and cache clearing
+			$requestProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('RequestProcessing');
 
-		$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
-			$this->requestNodes, 'RequestValidation', 0, true );
+			$requestProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes',
+				$this->requestNodes, 'RequestValidation', 0, true );
 
-		$requestProcessingCacheRegionHandler->storeObject( 
-			eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
+			$requestProcessingCacheRegionHandler->storeObject( 
+				eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParser::NodesCached', true, 'RequestValidation', 0, true );
+		}
+
+		$retVal = array(
+			'requestClasses' => $requestClasses,
+			'requestAttributeSets' => $requestAttributeSets,
+		);
 
 		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Requests.xml successfully processed", 'Security' );
+
+		return $retVal;
 	}
 
 	/**
