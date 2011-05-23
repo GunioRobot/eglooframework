@@ -342,36 +342,32 @@ final class eGlooLogger {
 				$request_url = 'Could not be reliably constructed from HTTP headers';
 			}
 
-			self::writeLog( self::EMERGENCY,
-					'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
-					"\n\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
-					"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
-					"\n\n\t" . 'Request URI: ' . $request_uri .
-					"\n\t" . 'Redirect Query String: ' . $redirect_query_string .
-					"\n\t" . 'Request URL: ' . $request_url .
-					"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
-					"\n\t" . 'Exception Message: ' . $exception->getMessage() .
-					"\n\n\t" . 'See dump files under "' . $dump_file_path . '" for details' .
-					"\n\n\t" . 'HTTP Host: ' . $http_host .
-					"\n\t" . 'HTTP User-Agent: ' . $http_user_agent .
-					"\n\t" . 'HTTP Referrer: ' . $http_referer .
-					"\n\n\t" . 'HTTP Accept: ' . $http_accept .
-					"\n\t" . 'HTTP Accept-Charset: ' . $http_accept_charset .
-					"\n\t" . 'HTTP Accept-Encoding: ' . $http_accept_encoding .
-					"\n\t" . 'HTTP Accept-Language: ' . $http_accept_language .
-					"\n\n\t" . 'HTTP Cookie: ' . $http_cookie .
-					"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control .
-					"\n\n\t" . 'Remote IP: ' . $remote_address .
-					"\n\t" . 'Remote Port: ' . $remote_port .
-					"\n\n\t" . 'Server Name: ' . $server_name .
-					"\n\t" . 'Server IP: ' . $server_address .
-					"\n\t" . 'Server Port: ' . $server_port .
-					"\n\t" . 'Using SSL: ' . $using_ssl,
-				'Default',
-				null,
-				self::$timezone,
-				self::$aggregateApplicationLogs
-			);
+			$log_output = 'Programmer Error: Uncaught exception of type "' . $exceptionType . '"' .
+				"\n\n\t" . 'Application: ' . eGlooConfiguration::getApplicationName() .
+				"\n\t" . 'InterfaceBundle: ' . eGlooConfiguration::getUIBundleName() .
+				"\n\n\t" . 'Request URI: ' . $request_uri .
+				"\n\t" . 'Redirect Query String: ' . $redirect_query_string .
+				"\n\t" . 'Request URL: ' . $request_url .
+				"\n\n\t" . 'Exception caught by global exception handler on line ' . __LINE__ . ' in file: ' . $_SERVER['SCRIPT_NAME'] .
+				"\n\t" . 'Exception Message: ' . $exception->getMessage() .
+				"\n\n\t" . 'See dump files under "' . $dump_file_path . '" for details' .
+				"\n\n\t" . 'HTTP Host: ' . $http_host .
+				"\n\t" . 'HTTP User-Agent: ' . $http_user_agent .
+				"\n\t" . 'HTTP Referrer: ' . $http_referer .
+				"\n\n\t" . 'HTTP Accept: ' . $http_accept .
+				"\n\t" . 'HTTP Accept-Charset: ' . $http_accept_charset .
+				"\n\t" . 'HTTP Accept-Encoding: ' . $http_accept_encoding .
+				"\n\t" . 'HTTP Accept-Language: ' . $http_accept_language .
+				"\n\n\t" . 'HTTP Cookie: ' . $http_cookie .
+				"\n\t" . 'HTTP Cache-Control: ' . $http_cache_control .
+				"\n\n\t" . 'Remote IP: ' . $remote_address .
+				"\n\t" . 'Remote Port: ' . $remote_port .
+				"\n\n\t" . 'Server Name: ' . $server_name .
+				"\n\t" . 'Server IP: ' . $server_address .
+				"\n\t" . 'Server Port: ' . $server_port .
+				"\n\t" . 'Using SSL: ' . $using_ssl;
+
+			self::writeLog( self::EMERGENCY, $log_output, 'Default', null, self::$timezone, self::$aggregateApplicationLogs );
 
 			$output_header = "<font size='1'>" .
 				"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
@@ -384,7 +380,7 @@ final class eGlooLogger {
 				echo_r( $output_header );
 			}
 
-			$formatted_output = '<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
+			$html_output = '<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
 				"<br /><br />" . '<b>Application:</b> ' . eGlooConfiguration::getApplicationName() .
 				"<br />" . '<b>InterfaceBundle:</b> ' . eGlooConfiguration::getUIBundleName() .
 				'<br /><br />' . '<b>Request URI:</b> ' . $request_uri .
@@ -411,7 +407,7 @@ final class eGlooLogger {
 				$exception->getTraceAsString();
 
 			if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces() ) {
-				echo_r( $formatted_output );
+				echo_r( $html_output );
 			}
 
 			foreach( eGlooConfiguration::getAlerts() as $alert_id => $alert ) {
@@ -422,7 +418,7 @@ final class eGlooLogger {
 						case 'email' :
 							$mail_to = $alert['value'];
 							$subject = 'System Alert: Uncaught ErrorException';
-							$message = $output_header . $formatted_output;
+							$message = $log_output;
 
 							if ( mail( $mail_to, $subject, $message ) ) {
 								echo_r( 'Successfully sent email notification' );
