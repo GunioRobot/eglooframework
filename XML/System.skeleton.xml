@@ -24,6 +24,9 @@
 -->
 <tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/schemas/eGlooConfiguration.xsd">
+	<Alerts>
+		<Alert id="root_error_email" type="Email" trigger="ErrorException" active="true" value="root@localhost" override="true" />
+	</Alerts>
 	<Applications>
 		<!-- Extra Include Paths : These are application root relative -->
 		<Component id="ExtraClassPath" displayName="Extra Class Path" override="true" type="path" value=""/>
