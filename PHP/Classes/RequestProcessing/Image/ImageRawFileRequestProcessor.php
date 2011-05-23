@@ -123,15 +123,19 @@ class ImageRawFileRequestProcessor extends RequestProcessor {
 				// Just ignore this for now
 			}
 
-			$output = file_get_contents( $data_store_path );
-			$length = strlen($output);
+			if ( file_exists($data_store_path) && is_file($data_store_path) ) {
+				$output = file_get_contents( $data_store_path );
+				$length = strlen($output);
 
-			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-			header( 'Content-type: ' . $imageMIMEType );
-			header( 'Content-Length: ' . $length);
+				header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+				header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+				header( 'Content-type: ' . $imageMIMEType );
+				header( 'Content-Length: ' . $length);
 
-			echo $output;
+				echo $output;
+			} else {
+				eGlooHTTPResponse::issueRaw404Response();
+			}
 
 			if (eGlooConfiguration::getDeployment() == eGlooConfiguration::PRODUCTION || eGlooConfiguration::getUseHotFileImageClustering() ) {
 				$matches = array();
