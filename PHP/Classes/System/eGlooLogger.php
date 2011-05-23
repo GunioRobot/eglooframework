@@ -424,7 +424,11 @@ final class eGlooLogger {
 							$subject = 'System Alert: Uncaught ErrorException';
 							$message = $output_header . $formatted_output;
 
-							mail( $mail_to, $subject, $message );
+							if ( mail( $mail_to, $subject, $message ) ) {
+								echo_r( 'Successfully sent email notification' );
+							} else {
+								echo_r( 'Did not successfully send email notification' );
+							}
 							break;
 						default :
 							break;
