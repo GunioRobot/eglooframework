@@ -417,7 +417,7 @@ final class eGlooLogger {
 					switch( strtolower($alert['type']) ) {
 						case 'email' :
 							$mail_to = $alert['value'];
-							$subject = 'System Alert: Uncaught ErrorException';
+							$subject = 'System Alert: Uncaught ' . $exceptionType;
 							$message = $log_output . "\n\n\t" . 'Backtrace:' . "\n\n" . $exception->getTraceAsString();
 
 							if ( mail( $mail_to, $subject, $message ) ) {
