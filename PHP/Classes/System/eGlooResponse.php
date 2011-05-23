@@ -38,6 +38,50 @@
  */
 class eGlooResponse {
 
+	public static function getXHTML( $templateVariables = null, $dispatchClass = null, $dispatchID = null ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooResponse: Entered getXHTML()" );
+
+		$retVal = null;
+
+		$requestInfoBean = RequestInfoBean::getInstance();
+		$templateDirector = TemplateDirectorFactory::getTemplateDirector( $requestInfoBean );
+
+		if ( !$dispatchClass ) {
+			$dispatchClass = $requestInfoBean->getRequestClass();
+		}
+
+		if ( !$dispatchID ) {
+			$dispatchID = $requestInfoBean->getRequestID();
+		}
+
+		$templateDirector->setTemplateBuilder( new XHTMLBuilder(), $dispatchID, $dispatchClass );
+
+		try {
+			$templateDirector->preProcessTemplate();
+		} catch (ErrorException $e) {
+			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
+				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+				throw $e;
+			} else {
+				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooResponse: Template requested for RequestClass/RequestID "' .
+					$dispatchClass . '/' . $dispatchID . '" but not found.' );
+			}
+		}
+
+		if ( !$templateVariables || !is_array($templateVariables) ) {
+			$templateVariables = array();
+		}
+
+		$templateDirector->setTemplateVariables( $templateVariables, true );            
+		$output = $templateDirector->processTemplate();
+
+		$retVal = $output;
+
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooResponse: Exiting getXHTML()" );
+
+		return $retVal;
+	}
+
 	public static function outputCSS() {
 		
 	}
