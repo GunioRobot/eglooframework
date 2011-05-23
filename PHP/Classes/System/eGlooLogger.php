@@ -373,45 +373,63 @@ final class eGlooLogger {
 				self::$aggregateApplicationLogs
 			);
 
+			$output_header = "<font size='1'>" .
+				"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
+				"<tr><th align='left' bgcolor='#f57900' colspan='5'>" .
+				"<span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span>&nbsp;" .
+				'A fatal error has occurred.  Please see the Default.log file for ' .
+				self::$requestDate . '.	 Request ID: ' . self::$requestID . "&nbsp;</th></tr></table></font>";
+
 			if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayErrors() ) {
-				echo_r(
-					"<font size='1'>" .
-					"<table dir='ltr' border='1' cellspacing='0' cellpadding='1'>" .
-					"<tr><th align='left' bgcolor='#f57900' colspan='5'>" .
-					"<span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span>&nbsp;" .
-					'A fatal error has occurred.  Please see the Default.log file for ' .
-					self::$requestDate . '.	 Request ID: ' . self::$requestID . "&nbsp;</th></tr></table></font>"
-				);
+				echo_r( $output_header );
 			}
 
+			$formatted_output = '<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
+				"<br /><br />" . '<b>Application:</b> ' . eGlooConfiguration::getApplicationName() .
+				"<br />" . '<b>InterfaceBundle:</b> ' . eGlooConfiguration::getUIBundleName() .
+				'<br /><br />' . '<b>Request URI:</b> ' . $request_uri .
+				'<br />' . '<b>Redirect Query String:</b> ' . $redirect_query_string .
+				'<br />' . '<b>Request URL:</b> ' . $request_url .
+				"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
+				'<br /><br />' . 'See dump files under <b>"' . $dump_file_path . '"</b> for details' .
+				'<br /><br />' . '<b>HTTP Host:</b> ' . $http_host .
+				'<br />' . '<b>HTTP User-Agent:</b> ' . $http_user_agent .
+				'<br />' . '<b>HTTP Referrer:</b> ' . $http_referer .
+				'<br /><br />' . '<b>HTTP Accept:</b> ' . $http_accept .
+				'<br />' . '<b>HTTP Accept-Charset:</b> ' . $http_accept_charset .
+				'<br />' . '<b>HTTP Accept-Encoding:</b> ' . $http_accept_encoding .
+				'<br />' . '<b>HTTP Accept-Language:</b> ' . $http_accept_language .
+				'<br /><br />' . '<b>HTTP Cookie:</b> ' . $http_cookie .
+				'<br />' . '<b>HTTP Cache-Control:</b> ' . $http_cache_control .
+				'<br /><br />' . '<b>Remote IP:</b> ' . $remote_address .
+				'<br />' . '<b>Remote Port:</b> ' . $remote_port .
+				'<br /><br />' . '<b>Server Name:</b> ' . $server_name .
+				'<br />' . '<b>Server IP:</b> ' . $server_address .
+				'<br />' . '<b>Server Port:</b> ' . $server_port .
+				'<br />' . '<b>Using SSL:</b> ' . $using_ssl .
+				'<br /><br /><b>Backtrace:</b><br />' .
+				$exception->getTraceAsString();
+
 			if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces() ) {
-				echo_r(
-					'<br />' . '<b>Programmer Error:</b> Uncaught exception of type "' . $exceptionType . '"' .
-					"<br /><br />" . '<b>Application:</b> ' . eGlooConfiguration::getApplicationName() .
-					"<br />" . '<b>InterfaceBundle:</b> ' . eGlooConfiguration::getUIBundleName() .
-					'<br /><br />' . '<b>Request URI:</b> ' . $request_uri .
-					'<br />' . '<b>Redirect Query String:</b> ' . $redirect_query_string .
-					'<br />' . '<b>Request URL:</b> ' . $request_url .
-					"<br /><br />" . '<b>Exception Message:</b> ' . $exception->getMessage() .
-					'<br /><br />' . 'See dump files under <b>"' . $dump_file_path . '"</b> for details' .
-					'<br /><br />' . '<b>HTTP Host:</b> ' . $http_host .
-					'<br />' . '<b>HTTP User-Agent:</b> ' . $http_user_agent .
-					'<br />' . '<b>HTTP Referrer:</b> ' . $http_referer .
-					'<br /><br />' . '<b>HTTP Accept:</b> ' . $http_accept .
-					'<br />' . '<b>HTTP Accept-Charset:</b> ' . $http_accept_charset .
-					'<br />' . '<b>HTTP Accept-Encoding:</b> ' . $http_accept_encoding .
-					'<br />' . '<b>HTTP Accept-Language:</b> ' . $http_accept_language .
-					'<br /><br />' . '<b>HTTP Cookie:</b> ' . $http_cookie .
-					'<br />' . '<b>HTTP Cache-Control:</b> ' . $http_cache_control .
-					'<br /><br />' . '<b>Remote IP:</b> ' . $remote_address .
-					'<br />' . '<b>Remote Port:</b> ' . $remote_port .
-					'<br /><br />' . '<b>Server Name:</b> ' . $server_name .
-					'<br />' . '<b>Server IP:</b> ' . $server_address .
-					'<br />' . '<b>Server Port:</b> ' . $server_port .
-					'<br />' . '<b>Using SSL:</b> ' . $using_ssl .
-					'<br /><br /><b>Backtrace:</b><br />' .
-					$exception->getTraceAsString()
-				);
+				echo_r( $formatted_output );
+			}
+
+			foreach( eGlooConfiguration::getAlerts() as $alert_id => $alert ) {
+				if ( isset($alert['trigger']) && $alert['trigger'] === 'ErrorException' &&
+					eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT ) {
+
+					switch( strtolower($alert['type']) ) {
+						case 'email' :
+							$mail_to = $alert['value'];
+							$subject = 'System Alert: Uncaught ErrorException';
+							$message = $output_header . $formatted_output;
+
+							mail( $mail_to, $subject, $message );
+							break;
+						default :
+							break;
+					}
+				}
 			}
 
 			// If we get an error, we should terminate this request immediately

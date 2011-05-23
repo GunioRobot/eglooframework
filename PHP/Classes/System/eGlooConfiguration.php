@@ -871,6 +871,26 @@ final class eGlooConfiguration {
 				}
 			}
 
+			if ( !isset(self::$configuration_options['Alerts']) ) {
+				self::$configuration_options['Alerts'] = array( 'Alerts' => array() );
+			} else if ( !isset(self::$configuration_options['Alerts']['Alerts']) ) {
+				self::$configuration_options['Alerts']['Alerts'] = array();
+			}
+
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Alerts/tns:Alert' ) as $alert ) {
+				$alert_id = (string) $alert['id'];
+				$alert_active = (string) $alert['active'];
+				$alert_type = (string) $alert['type'];
+				$alert_override = (string) $alert['override'];
+				$alert_trigger = (string) $alert['trigger'];
+				$alert_value = (string) $alert['value'];
+
+				if ( isset(self::$configuration_possible_options['Alerts']['Alerts'][$alert_id]) ) {
+					self::$configuration_options['Alerts']['Alerts'][$alert_id] = array( 'id' => $alert_id, 'type' => $alert_type, 'trigger' => $alert_trigger,
+						'value' => $alert_value, 'active' => $alert_active );
+				}
+			}
+
 			if (!isset(self::$configuration_options['CustomVariables'])) {
 				self::$configuration_options['CustomVariables'] = array();
 			}
@@ -1009,27 +1029,6 @@ final class eGlooConfiguration {
 			// 
 			die;
 		}
-
-		if ( is_writable( $config_xml_path ) ) {
-
-		} else {
-	
-		}
-
-		if ( file_exists($config_xml_path) && is_file($config_xml_path) && is_readable($config_xml_path) ) {
-			$configXML = simplexml_load_file( $config_xml_path );
-
-			$character = $configXML->movie[0]->characters->addChild('character');
-			$character->addChild('name', 'Mr. Parser');
-			$character->addChild('actor', 'John Doe');
-
-			$rating = $configXML->movie[0]->addChild('rating', 'PG');
-			$rating->addAttribute('type', 'mpaa');
-
-			echo $configXML->asXML();
-		} else {
-			trigger_error("Configuration XML for eGloo Framework not found");
-		}
 	}
 
 	public static function clearFrameworkCache( $config_cache_path = null ) {
@@ -1135,12 +1134,43 @@ final class eGlooConfiguration {
 
 						$system_configuration[$sectionID]['Options'][] = $nextOption;
 					}
-
 				}
 
+				if ( !isset($system_configuration['Alerts']) ) {
+					$system_configuration['Alerts'] = array( 'Alerts' => array());
+				}
+
+				foreach( $configuration->xpath( '/tns:Configuration/tns:Alerts/tns:Alert' ) as $alert ) {
+					$alert_id = (string) $alert['id'];
+					$alert_active = (string) $alert['active'];
+					$alert_type = (string) $alert['type'];
+					$alert_override = (string) $alert['override'];
+					$alert_trigger = (string) $alert['trigger'];
+					$alert_value = (string) $alert['value'];
+
+					$system_configuration['Alerts']['Alerts'][$alert_id] = array( 'id' => $alert_id, 'type' => $alert_type, 'trigger' => $alert_trigger,
+						'value' => $alert_value, 'active' => $alert_active, 'override' => $alert_override );
+				}
 			}
 
+
 			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?	Should be application array set
+			foreach($system_configuration['Alerts']['Alerts'] as $alert) {
+				if ($alert['override'] === 'true') {
+					if ( !isset(self::$configuration_possible_options['Alerts']) ) {
+						self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
+					} else if ( !isset(self::$configuration_possible_options['Alerts']['Alerts']) ) {
+						self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
+					}
+
+					self::$configuration_possible_options['Alerts']['Alerts'][$alert['id']] = $alert;
+				}
+
+				self::$system_configuration['Alerts']['Alerts'][$alert['id']] = $alert;
+				self::$configuration_options['Alerts']['Alerts'][$alert['id']] = array( 'id' => $alert['id'], 'type' => $alert['type'],
+					'trigger' => $alert['trigger'], 'value' => $alert['value'], 'active' => $alert['active'] );
+			}
+
 			foreach($system_configuration['Applications']['Components'] as $component) {
 				if ($component['override'] === 'true') {
 					self::$configuration_possible_options[$component['id']] = $component;
@@ -1464,6 +1494,15 @@ final class eGlooConfiguration {
 	}
 
 	// Accessors
+	public static function getAlerts() {
+		$retVal = array();
+
+		if (isset(self::$configuration_options['Alerts']['Alerts'])) {
+			$retVal = self::$configuration_options['Alerts']['Alerts'];
+		}
+
+		return $retVal;
+	}
 
 	public static function getApplicationBuild() {
 		$retVal = '';
