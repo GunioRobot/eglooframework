@@ -416,7 +416,7 @@ final class eGlooLogger {
 
 			foreach( eGlooConfiguration::getAlerts() as $alert_id => $alert ) {
 				if ( isset($alert['trigger']) && $alert['trigger'] === 'ErrorException' &&
-					eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT ) {
+					eGlooConfiguration::getDeployment() !== eGlooConfiguration::DEVELOPMENT ) {
 
 					switch( strtolower($alert['type']) ) {
 						case 'email' :
