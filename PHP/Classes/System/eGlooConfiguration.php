@@ -888,6 +888,9 @@ final class eGlooConfiguration {
 				if ( isset(self::$configuration_possible_options['Alerts']['Alerts'][$alert_id]) ) {
 					self::$configuration_options['Alerts']['Alerts'][$alert_id] = array( 'id' => $alert_id, 'type' => $alert_type, 'trigger' => $alert_trigger,
 						'value' => $alert_value, 'active' => $alert_active );
+				} else if ( !isset(self::$configuration_options['Alerts']['Alerts'][$alert_id]) ) {
+					self::$configuration_options['Alerts']['Alerts'][$alert_id] = array( 'id' => $alert_id, 'type' => $alert_type, 'trigger' => $alert_trigger,
+						'value' => $alert_value, 'active' => $alert_active );
 				}
 			}
 
