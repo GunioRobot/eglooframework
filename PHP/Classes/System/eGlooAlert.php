@@ -61,21 +61,21 @@ class eGlooAlert {
 						break;
 				}
 			} else if ( isset($alert['trigger']) && $alert['trigger'] === $tigger_type ) {
-					switch( strtolower($alert['type']) ) {
-						case 'email' :
-							$mail_to = $alert['value'];
-							$subject = 'eGlooAlert: ' . $subject;
+				switch( strtolower($alert['type']) ) {
+					case 'email' :
+						$mail_to = $alert['value'];
+						$subject = 'eGlooAlert: ' . $subject;
 
-							if ( mail( $mail_to, $subject, $message ) ) {
-								eGlooLogger::writeLog( eGlooLogger::DEBUG, 'eGlooAlert: Successfully sent email notification', 'Mail' );
-							} else {
-								eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooAlert: Did not successfully send email notification', 'Mail' );
-							}
+						if ( mail( $mail_to, $subject, $message ) ) {
+							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'eGlooAlert: Successfully sent email notification', 'Mail' );
+						} else {
+							eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooAlert: Did not successfully send email notification', 'Mail' );
+						}
 
-							break;
-						default :
-							break;
-					}
+						break;
+					default :
+						break;
+				}
 			}
 		}
 
