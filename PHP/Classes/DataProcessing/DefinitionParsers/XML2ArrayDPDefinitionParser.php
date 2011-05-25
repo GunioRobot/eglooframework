@@ -285,29 +285,33 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				$argumentLists = array();
 
-				foreach( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) as $dpStatementArgumentList ) {
-					$argumentListID = isset($dpStatementArgumentList['argumentListID']) ? (string) $dpStatementArgumentList['argumentListID'] : NULL;
-					$parameterPreparation = isset($dpStatementArgumentList['parameterPreparation']) ? (string) $dpStatementArgumentList['parameterPreparation'] : NULL;
+				if ( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) ) {
+					foreach( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) as $dpStatementArgumentList ) {
+						$argumentListID = isset($dpStatementArgumentList['argumentListID']) ? (string) $dpStatementArgumentList['argumentListID'] : NULL;
+						$parameterPreparation = isset($dpStatementArgumentList['parameterPreparation']) ? (string) $dpStatementArgumentList['parameterPreparation'] : NULL;
 
-					$argumentLists[$argumentListID] = array( 'argumentListID' => $argumentListID, 'parameterPreparation' => $parameterPreparation );
+						$argumentLists[$argumentListID] = array( 'argumentListID' => $argumentListID, 'parameterPreparation' => $parameterPreparation );
 
-					$arguments = array();
+						$arguments = array();
 
-					foreach( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') as $dpStatementArgument ) {
-						$argumentID = isset($dpStatementArgument['id']) ? (string) $dpStatementArgument['id'] : NULL;
-						$argumentType = isset($dpStatementArgument['type']) ? (string) $dpStatementArgument['type'] : NULL;
+						if ( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') ) {
+							foreach( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') as $dpStatementArgument ) {
+								$argumentID = isset($dpStatementArgument['id']) ? (string) $dpStatementArgument['id'] : NULL;
+								$argumentType = isset($dpStatementArgument['type']) ? (string) $dpStatementArgument['type'] : NULL;
 
-						$arguments[$argumentID] = array( 'argumentID' => $argumentID, 'argumentType' => $argumentType );
+								$arguments[$argumentID] = array( 'argumentID' => $argumentID, 'argumentType' => $argumentType );
 
-						if ( $argumentType === 'integer' ) {
-							$arguments[$argumentID]['min'] = isset($dpStatementArgument['min']) ? (string) $dpStatementArgument['min'] : NULL;
-							$arguments[$argumentID]['max'] = isset($dpStatementArgument['max']) ? (string) $dpStatementArgument['max'] : NULL;
-						} else if ( $argumentType === 'string' ) {
-							$arguments[$argumentID]['pattern'] = isset($dpStatementArgument['pattern']) ? (string) $dpStatementArgument['pattern'] : NULL;
+								if ( $argumentType === 'integer' ) {
+									$arguments[$argumentID]['min'] = isset($dpStatementArgument['min']) ? (string) $dpStatementArgument['min'] : NULL;
+									$arguments[$argumentID]['max'] = isset($dpStatementArgument['max']) ? (string) $dpStatementArgument['max'] : NULL;
+								} else if ( $argumentType === 'string' ) {
+									$arguments[$argumentID]['pattern'] = isset($dpStatementArgument['pattern']) ? (string) $dpStatementArgument['pattern'] : NULL;
+								}
+							}
 						}
-					}
 
-					$argumentLists[$argumentListID]['arguments'] = $arguments;
+						$argumentLists[$argumentListID]['arguments'] = $arguments;
+					}
 				}
 
 				$dpStatementClassStatements[$dataProcessingStatementID]['argumentLists'] = $argumentLists;
