@@ -318,100 +318,114 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				$statementReturn = array();
 
-				foreach( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) as $dpStatementReturn ) {
-					$dpStatementReturnType = isset($dpStatementReturn['type']) ? (string) $dpStatementReturn['type'] : NULL;
+				if ( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) ) {
+					foreach( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) as $dpStatementReturn ) {
+						$dpStatementReturnType = isset($dpStatementReturn['type']) ? (string) $dpStatementReturn['type'] : NULL;
 
-					$statementReturn['type'] = $dpStatementReturnType;
+						$statementReturn['type'] = $dpStatementReturnType;
 
-					$statementReturnColumnSets = array();
+						$statementReturnColumnSets = array();
 
-					foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) as $dpStatementReturnColumnSet ) {
-						$dpStatementReturnColumnSetTable = isset($dpStatementReturnColumnSet['table']) ? (string) $dpStatementReturnColumnSet['table'] : NULL;
-						$dpStatementReturnColumnSetPattern = isset($dpStatementReturnColumnSet['pattern']) ? (string) $dpStatementReturnColumnSet['pattern'] : NULL;
-						$dpStatementReturnColumnSetType = isset($dpStatementReturnColumnSet['type']) ? (string) $dpStatementReturnColumnSet['type'] : NULL;
-						
-						$statementReturnColumnSets[$dpStatementReturnColumnSetTable] =
-							array( 'table' => $dpStatementReturnColumnSetTable, 'pattern' => $dpStatementReturnColumnSetPattern, 'type' => $dpStatementReturnColumnSetType );
-					}
+						if ( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) ) {
+							foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) as $dpStatementReturnColumnSet ) {
+								$dpStatementReturnColumnSetTable = isset($dpStatementReturnColumnSet['table']) ? (string) $dpStatementReturnColumnSet['table'] : NULL;
+								$dpStatementReturnColumnSetPattern = isset($dpStatementReturnColumnSet['pattern']) ? (string) $dpStatementReturnColumnSet['pattern'] : NULL;
+								$dpStatementReturnColumnSetType = isset($dpStatementReturnColumnSet['type']) ? (string) $dpStatementReturnColumnSet['type'] : NULL;
 
-					$statementReturn['statementReturnColumnSets'] = $statementReturnColumnSets;
-
-					$statementReturnColumns = array();
-
-					foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) as $dpStatementReturnColumn ) {
-						$dpStatementReturnColumnID = isset($dpStatementReturnColumn['id']) ? (string) $dpStatementReturnColumn['id'] : NULL;
-						$dpStatementReturnColumnType = isset($dpStatementReturnColumn['type']) ? (string) $dpStatementReturnColumn['type'] : NULL;
-						
-						$statementReturnColumns[$dpStatementReturnColumnID] = array( 'id' => $dpStatementReturnColumnID, 'type' => $dpStatementReturnColumnType );
-
-						if ( $dpStatementReturnColumnType === 'integer' ) {
-							$statementReturnColumns[$dpStatementReturnColumnID]['min'] =
-								isset($dpStatementReturnColumn['min']) ? (string) $dpStatementReturnColumn['min'] : NULL;
-							$statementReturnColumns[$dpStatementReturnColumnID]['max'] =
-								isset($dpStatementReturnColumn['max']) ? (string) $dpStatementReturnColumn['max'] : NULL;
-						} else if ( $dpStatementReturnColumnType === 'string' ) {
-							$statementReturnColumns[$dpStatementReturnColumnID]['pattern'] =
-								isset($dpStatementReturnColumn['pattern']) ? (string) $dpStatementReturnColumn['pattern'] : NULL;
+								$statementReturnColumnSets[$dpStatementReturnColumnSetTable] =
+									array( 'table' => $dpStatementReturnColumnSetTable, 'pattern' => $dpStatementReturnColumnSetPattern, 'type' => $dpStatementReturnColumnSetType );
+							}
 						}
-					}
 
-					$statementReturn['statementReturnColumns'] = $statementReturnColumns;
+						$statementReturn['statementReturnColumnSets'] = $statementReturnColumnSets;
+
+						$statementReturnColumns = array();
+
+						if ( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) ) {
+							foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) as $dpStatementReturnColumn ) {
+								$dpStatementReturnColumnID = isset($dpStatementReturnColumn['id']) ? (string) $dpStatementReturnColumn['id'] : NULL;
+								$dpStatementReturnColumnType = isset($dpStatementReturnColumn['type']) ? (string) $dpStatementReturnColumn['type'] : NULL;
+
+								$statementReturnColumns[$dpStatementReturnColumnID] = array( 'id' => $dpStatementReturnColumnID, 'type' => $dpStatementReturnColumnType );
+
+								if ( $dpStatementReturnColumnType === 'integer' ) {
+									$statementReturnColumns[$dpStatementReturnColumnID]['min'] =
+										isset($dpStatementReturnColumn['min']) ? (string) $dpStatementReturnColumn['min'] : NULL;
+									$statementReturnColumns[$dpStatementReturnColumnID]['max'] =
+										isset($dpStatementReturnColumn['max']) ? (string) $dpStatementReturnColumn['max'] : NULL;
+								} else if ( $dpStatementReturnColumnType === 'string' ) {
+									$statementReturnColumns[$dpStatementReturnColumnID]['pattern'] =
+										isset($dpStatementReturnColumn['pattern']) ? (string) $dpStatementReturnColumn['pattern'] : NULL;
+								}
+							}
+						}
+
+						$statementReturn['statementReturnColumns'] = $statementReturnColumns;
+					}
 				}
 
 				$dpStatementClassStatements[$dataProcessingStatementID]['statementReturn'] = $statementReturn;
 
 				$statementVariants = array();
 
-				foreach( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) as $dpStatementVariant ) {
-					$dpStatementVariantConnection = isset($dpStatementVariant['connection']) ? (string) $dpStatementVariant['connection'] : NULL;
+				if ( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) ) {
+					foreach( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) as $dpStatementVariant ) {
+						$dpStatementVariantConnection = isset($dpStatementVariant['connection']) ? (string) $dpStatementVariant['connection'] : NULL;
 
-					$statementVariant = array( 'connection' => $dpStatementVariantConnection );
+						$statementVariant = array( 'connection' => $dpStatementVariantConnection );
 
-					$statementVariantEngineModes = array();
+						$statementVariantEngineModes = array();
 
-					foreach( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) as $dpStatementVariantEngineMode ) {
-						$dpStatementVariantEngineModeMode = isset($dpStatementVariantEngineMode['mode']) ?
-							eGlooConfiguration::getEngineModeFromString( (string) $dpStatementVariantEngineMode['mode'] ) : NULL;
-						$dpStatementVariantEngineModeName = isset($dpStatementVariantEngineMode['mode']) ? (string) $dpStatementVariantEngineMode['mode'] : NULL;
+						if ( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) ) {
+							foreach( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) as $dpStatementVariantEngineMode ) {
+								$dpStatementVariantEngineModeMode = isset($dpStatementVariantEngineMode['mode']) ?
+									eGlooConfiguration::getEngineModeFromString( (string) $dpStatementVariantEngineMode['mode'] ) : NULL;
+								$dpStatementVariantEngineModeName = isset($dpStatementVariantEngineMode['mode']) ? (string) $dpStatementVariantEngineMode['mode'] : NULL;
 
-						$statementVariantEngineModes[$dpStatementVariantEngineModeMode] =
-							array( 'mode' => $dpStatementVariantEngineModeMode, 'modeName' => $dpStatementVariantEngineModeName );
+								$statementVariantEngineModes[$dpStatementVariantEngineModeMode] =
+									array( 'mode' => $dpStatementVariantEngineModeMode, 'modeName' => $dpStatementVariantEngineModeName );
 
-						$includePaths = array();
+								$includePaths = array();
 
-						foreach( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) as $dpStatementIncludePath ) {
-							$dpStatementIncludePathArgumentList = isset($dpStatementIncludePath['argumentList']) ? (string) $dpStatementIncludePath['argumentList'] : NULL;
+								if ( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) ) {
+									foreach( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) as $dpStatementIncludePath ) {
+										$dpStatementIncludePathArgumentList = isset($dpStatementIncludePath['argumentList']) ? (string) $dpStatementIncludePath['argumentList'] : NULL;
 
-							$dpStatementIncludePathValue = trim( (string) $dpStatementIncludePath );
+										$dpStatementIncludePathValue = trim( (string) $dpStatementIncludePath );
 
-							$includePaths[] = array( 'argumentList' => $dpStatementIncludePathArgumentList, 'includePath' => $dpStatementIncludePathValue );
+										$includePaths[] = array( 'argumentList' => $dpStatementIncludePathArgumentList, 'includePath' => $dpStatementIncludePathValue );
+									}
+								}
+
+								$statementVariantEngineModes[$dpStatementVariantEngineModeMode]['includePaths'] = $includePaths;
+							}
 						}
 
-						$statementVariantEngineModes[$dpStatementVariantEngineModeMode]['includePaths'] = $includePaths;
+						$statementVariant['engineModes'] = $statementVariantEngineModes;
+
+						$statementVariants[$dpStatementVariantConnection] = $statementVariant;
 					}
-
-					$statementVariant['engineModes'] = $statementVariantEngineModes;
-
-					$statementVariants[$dpStatementVariantConnection] = $statementVariant;
 				}
 
 				$dpStatementClassStatements[$dataProcessingStatementID]['statementVariants'] = $statementVariants;
 
 				$statementConstraints = array();
 
-				foreach( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) as $dpStatementConstraint ) {
-					$dpStatementConstraintType = isset($dpStatementConstraint['type']) ? (string) $dpStatementConstraint['type'] : NULL;
-					$dpStatementConstraintMin = isset($dpStatementConstraint['min']) ? (string) $dpStatementConstraint['min'] : NULL;
-					$dpStatementConstraintMax = isset($dpStatementConstraint['max']) ? (string) $dpStatementConstraint['max'] : NULL;
-					$dpStatementConstraintGranularity = isset($dpStatementConstraint['granularity']) ? (string) $dpStatementConstraint['granularity'] : NULL;
-					$dpStatementConstraintLevel = isset($dpStatementConstraint['level']) ? (string) $dpStatementConstraint['level'] : NULL;
+				if ( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) ) {
+					foreach( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) as $dpStatementConstraint ) {
+						$dpStatementConstraintType = isset($dpStatementConstraint['type']) ? (string) $dpStatementConstraint['type'] : NULL;
+						$dpStatementConstraintMin = isset($dpStatementConstraint['min']) ? (string) $dpStatementConstraint['min'] : NULL;
+						$dpStatementConstraintMax = isset($dpStatementConstraint['max']) ? (string) $dpStatementConstraint['max'] : NULL;
+						$dpStatementConstraintGranularity = isset($dpStatementConstraint['granularity']) ? (string) $dpStatementConstraint['granularity'] : NULL;
+						$dpStatementConstraintLevel = isset($dpStatementConstraint['level']) ? (string) $dpStatementConstraint['level'] : NULL;
 
-					$statementConstraints[] = array(	'type' => $dpStatementConstraintType,
-														'min' => $dpStatementConstraintMin,
-														'max' => $dpStatementConstraintMax,
-														'granularity' => $dpStatementConstraintGranularity,
-														'level', $dpStatementConstraintLevel,
-					);
+						$statementConstraints[] = array(	'type' => $dpStatementConstraintType,
+															'min' => $dpStatementConstraintMin,
+															'max' => $dpStatementConstraintMax,
+															'granularity' => $dpStatementConstraintGranularity,
+															'level', $dpStatementConstraintLevel,
+						);
+					}
 				}
 
 				$dpStatementClassStatements[$dataProcessingStatementID]['statementConstraints'] = $statementConstraints;
