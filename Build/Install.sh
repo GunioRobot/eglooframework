@@ -116,7 +116,7 @@ then
 
 	# Default Configuration Parameters (OS X)
 	DEFAULT_APPLICATIONS="/Library/Application Support/eGloo/Applications"
-	DEFAULT_CACHE_DIR="/Library/Caches/eGloo"
+	DEFAULT_CACHE_DIR="/Library/Caches/com.egloo.templates"
 	DEFAULT_CONFIG="/Library/Application Support/eGloo/Framework/Configuration"
 	DEFAULT_CUBES="/Library/Application Support/eGloo/Cubes"
 	DEFAULT_DATA_STORE="/Library/Application Support/eGloo/Data"
@@ -1227,7 +1227,7 @@ else
 		# User chose the default path
 		* )
 			# TODO install Doctrine
-			DOCTRINE_PATH="$FRAMEWORK_PATH/Library/Doctrine/Doctrine.php"
+			DOCTRINE_PATH="$FRAMEWORK_PATH/Library/Doctrine/lib/Doctrine.php"
 		;;
 	esac
 
