@@ -420,11 +420,23 @@ final class eGlooLogger {
 							$subject = 'System Alert: Uncaught ' . $exceptionType;
 							$message = str_replace( "\t", '', $log_output) . "\n\n" . 'Backtrace:' . "\n\n" . $exception->getTraceAsString();
 
-							if ( mail( $mail_to, $subject, $message ) ) {
-								echo_r( 'Successfully sent email notification' );
+							$mail_success = mail( $mail_to, $subject, $message );
+
+							if ( $mail_success ) {
+								$notice = 'Successfully sent uncaught exception email notification';
+
+								self::writeLog( self::EMERGENCY, $notice, 'Default', null, self::$timezone, self::$aggregateApplicationLogs );
+								if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces() ) {
+									echo_r( $notice );
+								}
 							} else {
-								echo_r( 'Did not successfully send email notification' );
+								$notice = 'Did not successfully send email notification';
+
+								if ( (self::DEVELOPMENT & self::$loggingLevel) && eGlooConfiguration::getDisplayTraces() ) {
+									echo_r( $notice );
+								}
 							}
+
 							break;
 						default :
 							break;
