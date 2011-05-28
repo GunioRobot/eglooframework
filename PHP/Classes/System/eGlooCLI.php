@@ -250,7 +250,14 @@ class eGlooCLI {
 
 	public static function executeRequest( $arguments ) {
 		$requestObj = eGlooRequestLibrary::getInstanceFromCLIArgumentArray( $arguments );
-		$requestObj->execute();
+
+		if ( $requestObj !== null && $requestObj->isExecutable() ) {
+			$requestObj->execute();
+		} else {
+			self::printHelpInfoForRequestCommand();
+		}
+
+		
 	}
 
 	public static function executeRun( $arguments ) {

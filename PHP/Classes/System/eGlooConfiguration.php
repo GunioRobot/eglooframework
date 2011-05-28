@@ -1158,20 +1158,22 @@ final class eGlooConfiguration {
 
 
 			//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?	Should be application array set
-			foreach($system_configuration['Alerts']['Alerts'] as $alert) {
-				if ($alert['override'] === 'true') {
-					if ( !isset(self::$configuration_possible_options['Alerts']) ) {
-						self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
-					} else if ( !isset(self::$configuration_possible_options['Alerts']['Alerts']) ) {
-						self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
+			if ( isset($system_configuration['Alerts']) && isset($system_configuration['Alerts']['Alerts']) ) {
+				foreach($system_configuration['Alerts']['Alerts'] as $alert) {
+					if ($alert['override'] === 'true') {
+						if ( !isset(self::$configuration_possible_options['Alerts']) ) {
+							self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
+						} else if ( !isset(self::$configuration_possible_options['Alerts']['Alerts']) ) {
+							self::$configuration_possible_options['Alerts'] = array( 'Alerts' => array() );
+						}
+
+						self::$configuration_possible_options['Alerts']['Alerts'][$alert['id']] = $alert;
 					}
 
-					self::$configuration_possible_options['Alerts']['Alerts'][$alert['id']] = $alert;
+					self::$system_configuration['Alerts']['Alerts'][$alert['id']] = $alert;
+					self::$configuration_options['Alerts']['Alerts'][$alert['id']] = array( 'id' => $alert['id'], 'type' => $alert['type'],
+						'trigger' => $alert['trigger'], 'value' => $alert['value'], 'active' => $alert['active'] );
 				}
-
-				self::$system_configuration['Alerts']['Alerts'][$alert['id']] = $alert;
-				self::$configuration_options['Alerts']['Alerts'][$alert['id']] = array( 'id' => $alert['id'], 'type' => $alert['type'],
-					'trigger' => $alert['trigger'], 'value' => $alert['value'], 'active' => $alert['active'] );
 			}
 
 			foreach($system_configuration['Applications']['Components'] as $component) {
