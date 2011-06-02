@@ -43,6 +43,7 @@ class eGlooAlert {
 	}
 
 	public static function sendEmailAlert( $subject = '', $message = '', $trigger_type = null ) {
+		// $subject needs to be reset for each email
 		foreach( eGlooConfiguration::getAlerts() as $alert_id => $alert ) {
 			if ( !$trigger_type ) {
 				switch( strtolower($alert['type']) ) {

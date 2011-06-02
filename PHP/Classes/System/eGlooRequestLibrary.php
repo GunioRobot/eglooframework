@@ -47,6 +47,8 @@ class eGlooRequestLibrary extends eGlooCombine {
 		'delete' => array(),
 		'info' => array(),
 		'list' => array(),
+		'mod' => array(),
+		'modify' => array(),
 		'rebuild' => array(),
 		'remove' => array(),
 	);
@@ -69,6 +71,10 @@ class eGlooRequestLibrary extends eGlooCombine {
 			case 'list' :
 				$retVal = $this->_list();
 				break;
+			case 'mod' :
+			case 'modify' :
+				$retVal = $this->modify();
+				break;
 			case 'rebuild' :
 				$retVal = $this->rebuild();
 				break;
@@ -80,6 +86,126 @@ class eGlooRequestLibrary extends eGlooCombine {
 	}
 
 	protected function add() {
+		$retVal = false;
+
+		// Get a request validator based on the current application and UI bundle
+		$requestValidator =
+			ExtendedRequestValidator::getInstance( eGlooConfiguration::getApplicationPath(), eGlooConfiguration::getUIBundleName() );
+
+		$requestDefinitions = null;
+
+		try {
+			$requestDefinitions = $requestValidator->getParsedDefinitionsArrayFromXML();
+		} catch ( Exception $e ) {
+			// TODO better error handling.  For now this probably means the Forms.xml
+			// file was not found locally.  Just print message and move on, since this is
+			// just a listing command.
+			echo $e->getMessage() . "\n";
+		}
+
+		if ( $requestDefinitions !== null ) {
+			// Do stuff
+			eGlooLogger::writeLog( eGlooLogger::INFO, 'Existing Requests.xml processed...' . "\n" );
+
+			ksort($requestDefinitions['requestClasses']);
+			ksort($requestDefinitions['requestAttributeSets']);
+
+			$requestClasses = $requestDefinitions['requestClasses'];
+			$requestAttributeSets = $requestDefinitions['requestAttributeSets'];
+
+			$addition_id = '';
+			$addition_type = '';
+
+			$write_definitions = false;
+
+			foreach( $this->_command_arguments as $command_argument_key => $command_argument ) {
+				switch( strtolower($command_argument) ) {
+					case 'rc' :
+					case 'reqc' :
+					case 'reqclass' :
+					case 'requestclass' :
+						$write_definitions = true;
+
+						if ( isset($this->_command_arguments[$command_argument_key + 1]) ) {
+							$addition_id = $this->_command_arguments[$command_argument_key + 1];
+							$addition_type = 'Request Class';
+
+							$requestDefinitions = $this->addRequestClass( $this->_command_arguments[$command_argument_key + 1], $requestDefinitions );
+						} else {
+							echo 'No Request Class ID provided' . "\n";
+						}
+						break;
+					case 'ras' :
+					case 'reqas' :
+					case 'reqattrset' :
+					case 'requestattributeset' :
+						$write_definitions = true;
+
+						if ( isset($this->_command_arguments[$command_argument_key + 1]) ) {
+							$addition_id = $this->_command_arguments[$command_argument_key + 1];
+							$addition_type = 'Request Attribute Set';
+
+							$requestDefinitions = $this->addRequestAttributeSet( $this->_command_arguments[$command_argument_key + 1], $requestDefinitions );
+						} else {
+							echo 'No Request Attribute Set ID provided' . "\n";
+						}
+						break;
+					default :
+						break;
+				}
+			}
+
+			if ( $write_definitions ) {
+				if ( !empty($requestDefinitions) && $requestDefinitions !== null ) {
+					// Figure out where to write to
+					if ( isset($this->_parsed_options['w']) ) {
+						$output_location = './XML/Requests.xml';
+					} else {
+						$output_location = './XML/Requests.generated.xml';
+					}
+
+					// Write out
+					$requestValidator->writeDefinitionsXMLFromArray( $requestDefinitions, true, $output_location );
+					$rebuilt = $requestValidator->getParsedDefinitionsArrayFromXML( $output_location );
+
+					$diff = eGlooDiff::diff( $requestDefinitions, $rebuilt );
+
+					// echo_r($rebuilt['requestAttributeSets']);
+					echo_r(array_keys($diff));
+					
+					// SO....... the diff method stops when the diff hits... a diff.  I need to rethink this below
+die;
+					if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
+						echo $addition_type . ' "' . $addition_id . '" added successfully.' . "\n";
+					} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
+						$diff_output_original = $diff[2]['d'];
+						$diff_output_generated = $diff[2]['i'];
+
+						echo "\n" . 'Discrepancies found in rebuild: ' . "\n\n";
+
+						echo 'Items found in original but not found in rebuild: ' . "\n\n";
+						print_r($diff_output_original);
+						echo "\n\n";
+
+						echo 'Items found in rebuild but not found in original: ' . "\n\n";
+						print_r($diff_output_generated);
+						echo "\n\n";
+					}
+
+					$retVal = true;
+				} else {
+					$retVal = false;
+				}
+			} else {
+				echo 'No valid addition type specified.  Try "egloo requests help"' . "\n";
+			}
+
+		}
+
+		return $retVal;
+	}
+
+	protected function info() {
 		$retVal = false;
 
 		// Get a request validator based on the current application and UI bundle
@@ -170,199 +296,6 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return $retVal;
 	}
 
-	protected function addRequestClass( $request_definitions, $request_class_name ) {
-		$retVal = null;
-
-		if ( !isset($request_definitions['requestClasses'][$request_class_name]) ) {
-			$new_request_class = array( 'requestClass' => $request_class_name, 'requests' => array() );
-			$request_definitions['requestClasses'][$request_class_name] = $new_request_class;
-			ksort($request_definitions['requestClasses']);
-			$retVal = $request_definitions;
-		} else {
-			echo 'Request Class "' . $request_class_name . '" already exists.' . "\n";
-		}
-
-		return $retVal;
-	}
-
-	protected function info() {
-		$retVal = false;
-
-		if ( isset( $this->_command_arguments[0]) ) {
-			$info_subject = $this->_command_arguments[0];
-
-			$dpDirector = eGlooDPDirector::getInstance( null, null );
-
-			$dpDefinitions = null;
-
-			try {
-				$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
-			} catch ( eGlooDPDirectorException $e ) {
-				// TODO better error handling.  For now this probably means the Forms.xml
-				// file was not found locally.  Just print message and move on, since this is
-				// just a listing command.
-				echo $e->getMessage() . "\n";
-			}
-
-			if ( $dpDefinitions !== null ) {
-				$results = 0;
-
-				if ( isset($dpDefinitions['dataProcessingProcedures'][$info_subject]) ) {
-					$procedure_info = $dpDefinitions['dataProcessingProcedures'][$info_subject];
-					$results++;
-				}
-
-				if ( isset($dpDefinitions['dataProcessingSequences'][$info_subject]) ) {
-					$sequence_info = $dpDefinitions['dataProcessingSequences'][$info_subject];
-					$results++;
-				}
-
-				if ( isset($dpDefinitions['dataProcessingStatements'][$info_subject]) ) {
-					$statement_info = $dpDefinitions['dataProcessingStatements'][$info_subject];
-					$results++;
-				}
-
-				$result_summary = 'Search for "' . $info_subject . '" has ' . $results;
-				$result_summary .= $results === 1 ? ' result.' : ' results.';
-				$result_summary .= "\n\n";
-
-				echo $result_summary;
-
-				if ( !empty($procedure_info ) ) {
-					
-				}
-
-				if ( !empty($sequence_info ) ) {
-					
-				}
-
-				if ( !empty($statement_info ) ) {
-					echo 'Statement Class: ' . $statement_info['statementClass'] . "\n";
-					echo 'Statements: ' . count($statement_info['statements']) . "\n";
-
-					$longest = 0;
-
-					foreach($statement_info['statements'] as $statement_name => $statement) {
-						if (strlen($statement_name) > $longest) {
-							$longest = strlen($statement_name);
-						}
-					}
-
-					foreach($statement_info['statements'] as $statement_name => $statement) {
-						$output_string = "\t"; // . ($statement['required'] === true ? '(R) ' : '');
-						$output_string .= $statement_name;
-
-						$name_length = $longest - strlen($statement_name);
-
-						if ( ($name_length / 8) < 1 ) {
-							$tab_count = 0;
-						} else if ( ($name_length / 8) === 1 ) {
-							$tab_count = 1;
-						} else {
-							$tab_count = ceil($name_length / 8);
-						}
-
-						for( $i = 0; $i <= $tab_count; $i++ ) {
-							$output_string .= "\t";
-						}
-
-						$output_string .= 'T=' . $statement['type'];
-						$output_string .= "\n";
-
-						echo $output_string;
-
-						echo "\t  " . 'Argument Lists: ' . count($statement['argumentLists']) . "\n";
-						foreach( $statement['argumentLists'] as $argument_list_name => $argument_list ) {
-							$argument_list_output = "\t    " . $argument_list_name;
-							$argument_list_output .= ' (' . $argument_list['parameterPreparation'] . ')';
-							$argument_list_output .= "\n";
-
-							echo $argument_list_output;
-
-							foreach( $argument_list['arguments'] as $argument_name => $argument ) {
-								$argument_output = "\t      " . $argument_name;
-								$argument_output .= "\t" . ' T=' . $argument['argumentType'];
-
-								if ( $argument['argumentType'] === 'string' ) {
-									$argument_output .= "\t" . 'Pattern="' . $argument['pattern'] . '"';
-								} else if ( $argument['argumentType'] === 'integer' ) {
-									$argument_output .= "\t" . 'Min=' . $argument['min'] . "\t" . 'Max=' . $argument['max'];
-								}
-
-								$argument_output .= "\n";
-
-								echo $argument_output;
-							}
-						}
-
-						echo "\t  " . 'Statement Return: ' . $statement['statementReturn']['type'] . "\n";
-
-						echo "\t    " . 'Statement Return Column Sets: ' . count($statement['statementReturn']['statementReturnColumnSets']) . "\n";
-						if ( !empty($statement['statementReturn']['statementReturnColumnSets']) ) {
-							foreach( $statement['statementReturn']['statementReturnColumnSets'] as $return_column_set_name => $return_column_set ) {
-								$return_column_set_output = "\t      " . $return_column_set_name;
-								$return_column_set_output .= "\t" . 'T=' . $return_column_set['type'] . ' Pattern="' . $return_column_set['pattern'] . '"';
-								$return_column_set_output .= "\n";
-
-								echo $return_column_set_output;
-							}
-						}
-
-						echo "\t    " . 'Statement Return Columns: ' . count($statement['statementReturn']['statementReturnColumns']) . "\n";
-						if ( !empty($statement['statementReturn']['statementReturnColumns']) ) {
-							foreach( $statement['statementReturn']['statementReturnColumns'] as $return_column_name => $return_column ) {
-								$return_column_output = "\t      " . $return_column_name;
-
-								$return_column_output .= "\t" . 'T=' . $return_column['type'];
-
-								$return_column_output .= "\n";
-
-								echo $return_column_output;
-							}
-						}
-
-						$engine_modes_used = array();
-						foreach( $statement['statementVariants'] as $statement_variant ) {
-							foreach( $statement_variant['engineModes'] as $engineMode ) {
-								$engine_modes_used[$engineMode['mode']] = $engineMode['modeName'];
-							}
-						}
-
-						echo "\t    " . 'Statement Variants: ' . count($statement['statementVariants']) . ' Connections, ' .
-							count($engine_modes_used) . ' Engine Modes' ."\n";
-
-						if ( !empty($statement['statementVariants']) ) {
-							foreach( $statement['statementVariants'] as $statement_variant_name => $statement_variant ) {
-								$statement_variant_output = "\t      " . $statement_variant_name . ': ' . count($statement_variant['engineModes']) .
-									' Engine Modes' . "\n";
-
-								echo $statement_variant_output;
-
-								foreach( $statement_variant['engineModes'] as $engineMode ) {
-									$engine_mode_output = "\t        " . $engineMode['modeName'];
-									$engine_mode_output .= "\n";
-
-									echo $engine_mode_output;
-
-									foreach( $engineMode['includePaths'] as $includePath ) {
-										$include_path_output = "\t          " . $includePath['argumentList'];
-									}
-								}
-
-							}
-						}
-
-						echo "\n";
-					}
-				}
-
-				$retVal = true;
-			}
-		}
-
-		return $retVal;
-	}
-
 	// PHP is dumb - 'list' should be a valid method name
 	protected function _list() {
 		$retVal = false;
@@ -425,6 +358,97 @@ class eGlooRequestLibrary extends eGlooCombine {
 
 			echo "\n";
 		}
+	}
+
+	protected function modify() {
+		$retVal = false;
+
+		// Get a request validator based on the current application and UI bundle
+		$requestValidator =
+			ExtendedRequestValidator::getInstance( eGlooConfiguration::getApplicationPath(), eGlooConfiguration::getUIBundleName() );
+
+		$requestDefinitions = null;
+
+		try {
+			$requestDefinitions = $requestValidator->getParsedDefinitionsArrayFromXML();
+		} catch ( Exception $e ) {
+			// TODO better error handling.  For now this probably means the Forms.xml
+			// file was not found locally.  Just print message and move on, since this is
+			// just a listing command.
+			echo $e->getMessage() . "\n";
+		}
+
+		if ( $requestDefinitions !== null ) {
+			// Do stuff
+			eGlooLogger::writeLog( eGlooLogger::INFO, 'Existing Requests.xml processed...' . "\n" );
+
+			ksort($requestDefinitions['requestClasses']);
+			ksort($requestDefinitions['requestAttributeSets']);
+
+			$requestClasses = $requestDefinitions['requestClasses'];
+			$requestAttributeSets = $requestDefinitions['requestAttributeSets'];
+
+			$addition_id = '';
+			$addition_type = '';
+
+			foreach( $this->_command_arguments as $command_argument_key => $command_argument ) {
+				switch( strtolower($command_argument) ) {
+					case 'rc' :
+					case 'reqc' :
+					case 'reqclass' :
+					case 'requestclass' :
+						if ( isset($this->_command_arguments[$command_argument_key + 1]) ) {
+							$addition_id = $this->_command_arguments[$command_argument_key + 1];
+							$addition_type = 'Request Class';
+
+							$requestDefinitions = $this->addRequestClass( $requestDefinitions, $this->_command_arguments[$command_argument_key + 1] );
+						} else {
+							echo 'No Request Class ID provided' . "\n";
+						}
+						break;
+					default :
+						break;
+				}
+			}
+
+			if ( !empty($requestDefinitions) && $requestDefinitions !== null ) {
+				// Figure out where to write to
+				if ( isset($this->_parsed_options['w']) ) {
+					$output_location = './XML/Requests.xml';
+				} else {
+					$output_location = './XML/Requests.generated.xml';
+				}
+
+				// Write out
+				$requestValidator->writeDefinitionsXMLFromArray( $requestDefinitions, true, $output_location );
+				$rebuilt = $requestValidator->getParsedDefinitionsArrayFromXML( $output_location );
+
+				$diff = eGlooDiff::diff( $requestDefinitions, $rebuilt );
+
+				if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
+					echo $addition_type . ' "' . $addition_id . '" added successfully.' . "\n";
+				} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
+					$diff_output_original = $diff[2]['d'];
+					$diff_output_generated = $diff[2]['i'];
+
+					echo "\n" . 'Discrepancies found in rebuild: ' . "\n\n";
+
+					echo 'Items found in original but not found in rebuild: ' . "\n\n";
+					print_r($diff_output_original);
+					echo "\n\n";
+
+					echo 'Items found in rebuild but not found in original: ' . "\n\n";
+					print_r($diff_output_generated);
+					echo "\n\n";
+				}
+
+				$retVal = true;
+			} else {
+				$retVal = false;
+			}
+		}
+
+		return $retVal;
 	}
 
 	protected function rebuild() {
@@ -527,7 +551,7 @@ class eGlooRequestLibrary extends eGlooCombine {
 							$removal_id = $this->_command_arguments[$command_argument_key + 1];
 							$removal_type = 'Request Class';
 
-							$requestDefinitions = $this->removeRequestClass( $requestDefinitions, $this->_command_arguments[$command_argument_key + 1] );
+							$requestDefinitions = $this->removeRequestClass( $this->_command_arguments[$command_argument_key + 1], $requestDefinitions );
 						} else {
 							echo 'No Request Class ID provided' . "\n";
 						}
@@ -577,20 +601,6 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return $retVal;
 	}
 
-	protected function removeRequestClass( $request_definitions, $request_class_name ) {
-		$retVal = null;
-
-		if ( isset($request_definitions['requestClasses'][$request_class_name]) ) {
-			unset($request_definitions['requestClasses'][$request_class_name]);
-			ksort($request_definitions['requestClasses']);
-			$retVal = $request_definitions;
-		} else {
-			echo 'Request Class "' . $request_class_name . '" not found.' . "\n";
-		}
-
-		return $retVal;
-	}
-
 	public function commandRequirementsSatisfied() {
 		$retVal = false;
 
@@ -608,6 +618,10 @@ class eGlooRequestLibrary extends eGlooCombine {
 				break;
 			case 'list' :
 				$retVal = $this->listCommandRequirementsSatisfied();
+				break;
+			case 'mod' :
+			case 'modify' :
+				$retVal = $this->modifyCommandRequirementsSatisfied();
 				break;
 			case 'rebuild' :
 				$retVal = $this->rebuildCommandRequirementsSatisfied();
@@ -643,6 +657,15 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return $retVal;
 	}
 
+
+	protected function modifyCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
+
+		return $retVal;
+	}
+
 	protected function rebuildCommandRequirementsSatisfied() {
 		$retVal = false;
 
@@ -659,6 +682,143 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return $retVal;
 	}
 
+	protected function addRequestClass( $request_class, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( !$this->issetRequestClass( $request_class, $request_definitions ) ) {
+			if ( is_string($request_class) ) {
+				$new_request_class = array( 'requestClass' => $request_class, 'requests' => array() );
+				echo_r($request_definitions);
+				$request_definitions['requestClasses'][$request_class] = $new_request_class;
+				ksort($request_definitions['requestClasses']);
+				$retVal = $request_definitions;
+			} else if ( is_array($request_class) ) {
+				
+			}
+		} else {
+			// TODO this isn't right
+			if ( is_string($request_class) ) {
+				echo 'Request Class "' . $request_class . '" already exists.' . "\n";
+			} else if ( is_array($request_class) ) {
+				echo 'Request Class "' . $request_class['requestClass'] . '" already exists.' . "\n";
+			}
+		}
+
+		return $retVal;
+	}
+
+	protected function getRequestClass( $request_class_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
+			
+		} else {
+			echo 'Request Class "' . $request_class_id . '" not found.' . "\n";
+		}
+
+		return $retVal;
+	}
+
+	protected function issetRequestClass( $request_class, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( is_string($request_class) ) {
+			$retVal = isset($request_definitions['requestClasses'][$request_class]);
+		} else if ( is_array($request_class) ) {
+			
+		}
+
+		return $retVal;
+	}
+
+	protected function removeRequestClass( $request_class_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
+			unset($request_definitions['requestClasses'][$request_class_id]);
+			ksort($request_definitions['requestClasses']);
+			$retVal = $request_definitions;
+		} else {
+			echo 'Request Class "' . $request_class_id . '" not found.' . "\n";
+		}
+
+		return $retVal;
+	}
+
+	protected function updateRequestClass( $request_class_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
+			
+		} else {
+			echo 'Request Class "' . $request_class_id . '" not found.' . "\n";
+		}
+
+		return $retVal;
+	}
+
+	protected function addRequestAttributeSet( $request_attribute_set, $request_definitions = null ) { 
+		$retVal = null;
+
+		if ( !$this->issetRequestClass( $request_attribute_set, $request_definitions ) ) {
+			if ( is_string($request_attribute_set) ) {
+				$new_request_attribute_set =
+					array(
+						'attributeSet' => $request_attribute_set,
+						'attributes' =>
+							array(
+								'boolArguments' => array(),
+								'complexArguments' => array(),
+								'decorators' => array(),
+								'depends' => array(),
+								'formArguments' => array(),
+								'initRoutines' => array(),
+								'selectArguments' => array(),
+								'variableArguments' => array(),
+							),
+					);
+
+				// Because we need to guarantee order for the diff later.  
+				ksort($new_request_attribute_set['attributes']);
+
+				$request_definitions['requestAttributeSets'][$request_attribute_set] = $new_request_attribute_set;
+				ksort($request_definitions['requestAttributeSets']);
+				$retVal = $request_definitions;
+			} else if ( is_array($request_attribute_set) ) {
+				
+			}
+		} else {
+			// TODO this isn't right
+			echo 'Request Attribute Set "' . $request_attribute_set['requestAttributeSet'] . '" already exists.' . "\n";
+		}
+
+		return $retVal;
+	}
+
+	protected function getRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		return $retVal;
+	}
+
+	protected function issetRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		return $retVal;
+	}
+
+	protected function removeRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		return $retVal;
+	}
+
+	protected function updateRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+		$retVal = null;
+
+		return $retVal;
+	}
+
 	/**
 	 * Return the help information for this class as a string
 	 *
@@ -669,9 +829,9 @@ class eGlooRequestLibrary extends eGlooCombine {
 		return 'eGloo Request Help';
 	}
 
-	public static function getRequestClass( $requestClass ) {
-		
-	}
+	// public static function getRequestClass( $requestClass ) {
+	// 	
+	// }
 
 	public static function getRequestID( $requestID ) {
 		

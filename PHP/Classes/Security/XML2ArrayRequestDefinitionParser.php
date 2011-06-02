@@ -285,6 +285,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
 			}
 
+			ksort($requestAttributeSets[$attributeSetID]['attributes']);
+
 			if ( $overwrite ) {
 				$uniqueKey = ((string) $attributeSet['id']);
 				$this->attributeSets[ $uniqueKey ] = $requestAttributeSets[$attributeSetID];

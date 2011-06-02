@@ -180,7 +180,10 @@ class ExtendedRequestValidator extends RequestValidator {
 						}
 
 						$complexArgumentXMLObject->addAttribute('required', $complexArgument['required']);
-						$complexArgumentXMLObject->addAttribute('default', $complexArgument['default']);
+
+						if ( isset($complexArgument['default']) ) {
+							$complexArgumentXMLObject->addAttribute('default', $complexArgument['default']);
+						}
 					}
 
 					foreach( $request['formArguments'] as $formArgument ) {
@@ -304,7 +307,10 @@ class ExtendedRequestValidator extends RequestValidator {
 					}
 
 					$complexArgumentXMLObject->addAttribute('required', $complexArgument['required']);
-					$complexArgumentXMLObject->addAttribute('default', $complexArgument['default']);
+
+					if ( isset($complexArgument['default']) ) {
+						$complexArgumentXMLObject->addAttribute('default', $complexArgument['default']);
+					}
 				}
 
 				foreach( $request_attribute_set['attributes']['formArguments'] as $formArgument ) {
