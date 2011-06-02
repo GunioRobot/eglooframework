@@ -2109,7 +2109,15 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseHaanga() {
-		return isset(self::$configuration_options['egUseHaanga']) ? self::$configuration_options['egUseHaanga'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseHaanga']) ) {
+			if ( self::$configuration_options['egUseHaanga'] === 'true' || self::$configuration_options['egUseHaanga'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getUseHotFileCSSClustering() {
@@ -2151,19 +2159,51 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseS3() {
-		return isset(self::$configuration_options['egUseS3']) ? self::$configuration_options['egUseS3'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseS3']) ) {
+			if ( self::$configuration_options['egUseS3'] === 'true' || self::$configuration_options['egUseS3'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getUseSmarty() {
-		return isset(self::$configuration_options['egUseSmarty']) ? self::$configuration_options['egUseSmarty'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseSmarty']) ) {
+			if ( self::$configuration_options['egUseSmarty'] === 'true' || self::$configuration_options['egUseSmarty'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getUseSwift() {
-		return isset(self::$configuration_options['egUseSwift']) ? self::$configuration_options['egUseSwift'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseSwift']) ) {
+			if ( self::$configuration_options['egUseSwift'] === 'true' || self::$configuration_options['egUseSwift'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getUseTwig() {
-		return isset(self::$configuration_options['egUseTwig']) ? self::$configuration_options['egUseTwig'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseTwig']) ) {
+			if ( self::$configuration_options['egUseTwig'] === 'true' || self::$configuration_options['egUseTwig'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getWebRoot() {
