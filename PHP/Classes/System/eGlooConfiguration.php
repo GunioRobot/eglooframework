@@ -2093,7 +2093,15 @@ final class eGlooConfiguration {
 	}
 
 	public static function getUseDoctrine() {
-		return isset(self::$configuration_options['egUseDoctrine']) ? self::$configuration_options['egUseDoctrine'] : false;
+		$retVal = false;
+
+		if ( isset(self::$configuration_options['egUseDoctrine']) ) {
+			if ( self::$configuration_options['egUseDoctrine'] === 'true' || self::$configuration_options['egUseDoctrine'] === true ) {
+				$retVal = true;
+			}
+		}
+
+		return $retVal;
 	}
 
 	public static function getUseFileCache() {
