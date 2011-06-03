@@ -115,21 +115,24 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
  */
 function eglooAutoload($class_name) {
 	$cacheGateway = CacheGateway::getCacheGateway();
-
+	
 	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime', true ) ) != null ) {
 		if ( isset( $autoload_hash[$class_name] ) ) {
 			// Make sure we didn't just mark this as "not found"
 			if ( $autoload_hash[$class_name] !== false ) {
 				include( $autoload_hash[$class_name] );
 			}
-
+	
 			return;
 		}
 	} else {
 		$autoload_hash = array();
 	}
 
-	static $possible_path = NULL;
+	// static $possible_path = NULL;
+	$possible_path = null;
+
+	static $cli_paths = null;
 
 	// List here whatever formats you use for your file names. Note that, if you autoload
 	// a class that implements a non-loaded interface, you will also need to autoload that 
@@ -139,23 +142,37 @@ function eglooAutoload($class_name) {
 	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
 
 	// Set the first time autoload is called
-	if ( NULL === $possible_path ) {
+	if ( NULL === $cli_paths ) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkPHPPath( true );
 		$application_classes = eGlooConfiguration::getApplicationPHPPath( true );
 		$extra_class_path = eGlooConfiguration::getExtraClassPath( true );
 
+		$base_class_paths = array( $application_classes, $extra_class_path, $framework_classes );
+
+		if ( class_exists('eGlooCLI', false) ) {
+			$class_paths = array_merge( eGlooCLI::getClassPaths(), $base_class_paths );
+		} else {
+			$class_paths = $base_class_paths;
+		}
+
 		// Customize this yourself, but leave the array_flip alone. We will use this to
 		// get rid of duplicate entries from the include_path .ini list.  By default,
 		// this is ordered to prefer application classes over framework classes of the same
 		// name.
-		$possible_path = array_flip( array( $application_classes, $extra_class_path, $framework_classes ) );
+		$possible_path = array_flip( $class_paths );
 
 		// Merge the flipped arrays to get rid of duplicate "keys" (which are really the
 		// valid include paths) then strip out the keys leaving only uniques. This is 
 		// marginally faster than using array_combine and array_unique and much more elegant.
 		$possible_path = array_keys( array_merge( $possible_path,
 			array_flip( explode( ini_get( "include_path" ), ";" ) ) ) );
+
+		if ( class_exists('eGlooCLI', false) ) {
+			$cli_paths = $possible_path;
+		}
+	} else {
+		$possible_path = $cli_paths;
 	}
 
 	$possibility = str_replace( "&CLASS", $class_name, $permitted_formats );
