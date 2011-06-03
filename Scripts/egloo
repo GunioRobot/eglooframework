@@ -154,6 +154,8 @@ if ( !class_exists('eGlooCLI') ) {
 
 $arguments = $argv;
 
+eGlooCLI::setScriptArguments( $egloo_script_arguments );
+
 if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
 	$script_name = array_shift( $arguments );
 	$command = strtolower( array_shift( $arguments ) );
