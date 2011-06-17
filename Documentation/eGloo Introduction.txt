@@ -155,13 +155,5 @@ About
 			Matthew M. Brennan - Lead Database Architect
 		Contributors
 			Keith Buel
-			Mark Doten
-			Tilek Eshenalieve
-			Jeff Knoch
 			Nate Maurer
-			Lwin Moe
-			Miklos Pataky
 			Tom Read
-			Evan Turner
-			
-
