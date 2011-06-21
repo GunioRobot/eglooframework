@@ -146,7 +146,7 @@ final class DBConnectionManager extends ConnectionManager {
 		
 	}
 
-	private static function getCustomConnectionWithOptions( $connection_name, $engine_mode, $connection_options = null ) {
+	public static function getCustomConnectionWithOptions( $connection_name, $engine_mode, $connection_options = null ) {
 		$retVal = null;
 
 		if ($engine_mode !== null) {
