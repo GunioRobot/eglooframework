@@ -38,6 +38,11 @@
  */
 abstract class eGlooDaemon {
 
+	/**
+	 * @var array Parsed options (key/value)
+	 */
+	protected $_parsed_options = null;
+
 	public function __construct() {
 		$this->prepareDaemonizer();
 	}
@@ -62,6 +67,24 @@ abstract class eGlooDaemon {
 	abstract public function stop();
 
 	abstract public function kill();
+
+	/**
+	 * Returns protected class member $_parsed_options
+	 *
+	 * @return array Parsed options (key/value)
+	 */
+	public function getParsedOptions() {
+		return $this->_parsed_options;
+	}
+
+	/**
+	 * Sets protected class member $_parsed_options
+	 *
+	 * @param parsed_options array Parsed options
+	 */
+	public function setParsedOptions( $parsed_options ) {
+		$this->_parsed_options = $parsed_options;
+	}
 
 }
 
