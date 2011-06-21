@@ -155,31 +155,31 @@ final class DBConnectionManager extends ConnectionManager {
 					self::$connections['egCustomConnections']['Doctrine'] = array();
 				}
 
-				$retVal = self::getCustomDoctrineConnection( $connection_name, $connection_options );
+				$retVal = self::getCustomDoctrineConnectionWithOptions( $connection_name, $connection_options );
 			} else if ( $engine_mode === eGlooConfiguration::MYSQL ) {
 				if (!isset(self::$connections['egCustomConnections']['MySQL'])){
 					self::$connections['egCustomConnections']['MySQL'] = array();
 				}
 
-				$retVal = self::getCustomMySQLConnection( $connection_name, $connection_options );
+				$retVal = self::getCustomMySQLConnectionWithOptions( $connection_name, $connection_options );
 			} else if ( $engine_mode === eGlooConfiguration::MYSQLI ) {
 				if (!isset(self::$connections['egCustomConnections']['MySQLi'])){
 					self::$connections['egCustomConnections']['MySQLi'] = array();
 				}
 
-				$retVal = self::getCustomMySQLiConnection( $connection_name, $connection_options );
+				$retVal = self::getCustomMySQLiConnectionWithOptions( $connection_name, $connection_options );
 			} else if ( $engine_mode === eGlooConfiguration::MYSQLIOOP ) {
 				if (!isset(self::$connections['egCustomConnections']['MySQLiOOP'])){
 					self::$connections['egCustomConnections']['MySQLiOOP'] = array();
 				}
 
-				$retVal = self::getCustomMySQLiOOPConnection( $connection_name, $connection_options );
+				$retVal = self::getCustomMySQLiOOPConnectionWithOptions( $connection_name, $connection_options );
 			} else if ( $engine_mode === eGlooConfiguration::POSTGRESQL ) {
 				if (!isset(self::$connections['egCustomConnections']['PostgreSQL'])){
 					self::$connections['egCustomConnections']['PostgreSQL'] = array();
 				}
 
-				$retVal = self::getCustomPostgreSQLConnection( $connection_name, $connection_options );
+				$retVal = self::getCustomPostgreSQLConnectionWithOptions( $connection_name, $connection_options );
 			} else {
 				// No DB engine specified in config or no engine available
 			}
@@ -211,6 +211,40 @@ final class DBConnectionManager extends ConnectionManager {
 
 			self::$connections['egCustomConnections']['MySQLi'][$connection_name] = new MySQLiDBConnection( $mysqli_conn );
 			$retVal = self::$connections['egCustomConnections']['MySQLi'][$connection_name];
+		}
+
+		return $retVal;
+	}
+
+	private static function getCustomMySQLiOOPConnectionWithOptions( $connection_name, $connection_options = null ) {
+		$retVal = null;
+
+		if (isset(self::$connections['egCustomConnections']['MySQLiOOP'][$connection_name])) {
+			$retVal = self::$connections['egCustomConnections']['MySQLiOOP'][$connection_name];
+		} else {
+			$host 			= $connection_options['host'];
+			$port 			= $connection_options['port'];
+			$dbname 		= $connection_options['database'];
+			$user 			= $connection_options['user'];
+			$password	 	= $connection_options['password'];
+
+			$mysqli = new mysqli($host, $user, $password, $dbname, $port);
+
+			if (mysqli_connect_errno()) {
+				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiOOPConnection.  Error: '
+					. mysqli_connect_error();
+
+				throw new Exception($exception_message);
+			}
+
+			// This might not be what you want, but if it isn't, that's your problem.  Welcome to 2011.  Learn to UTF-8, kids
+			if ( !$mysqli->set_charset('utf8') ) {
+				$exception_message = 'DBConnectionManager: Error loading character set UTF-8.  MySQLiOOP Error: ' . $mysqli->error;
+				throw new Exception($exception_message);
+			}
+
+			self::$connections['MySQLiOOP'][$connection_name] = new MySQLiOOPDBConnection( $mysqli );
+			$retVal = self::$connections['MySQLiOOP'][$connection_name];
 		}
 
 		return $retVal;
@@ -386,6 +420,10 @@ final class DBConnectionManager extends ConnectionManager {
 
 	private static function getRedBeanConnection( $connection_name = 'egPrimary' ) {
 		
+	}
+
+    public static function resetConnections() {
+		self::$connections = array( 'egCustomConnections' => array() );
 	}
 
 }
