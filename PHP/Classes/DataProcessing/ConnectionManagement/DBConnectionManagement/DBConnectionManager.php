@@ -45,7 +45,7 @@ final class DBConnectionManager extends ConnectionManager {
 	private static $mysqlConnection		= null;
 	private static $pgConnection		= null;
 
-	private static $connections = array();
+	private static $connections = array('egCustomConnections' => array());
 
 	public static function getConnection( $connection_name = 'egPrimary', $engine_mode = null ) {
 		$retVal = null;
@@ -144,6 +144,76 @@ final class DBConnectionManager extends ConnectionManager {
 
 	private static function getCassandraConnection( $connection_name = 'egPrimary' ) {
 		
+	}
+
+	private static function getCustomConnectionWithOptions( $connection_name, $engine_mode, $connection_options = null ) {
+		$retVal = null;
+
+		if ($engine_mode !== null) {
+			if ( $engine_mode === eGlooConfiguration::DOCTRINE ) {
+				if (!isset(self::$connections['egCustomConnections']['Doctrine'])){
+					self::$connections['egCustomConnections']['Doctrine'] = array();
+				}
+
+				$retVal = self::getCustomDoctrineConnection( $connection_name, $connection_options );
+			} else if ( $engine_mode === eGlooConfiguration::MYSQL ) {
+				if (!isset(self::$connections['egCustomConnections']['MySQL'])){
+					self::$connections['egCustomConnections']['MySQL'] = array();
+				}
+
+				$retVal = self::getCustomMySQLConnection( $connection_name, $connection_options );
+			} else if ( $engine_mode === eGlooConfiguration::MYSQLI ) {
+				if (!isset(self::$connections['egCustomConnections']['MySQLi'])){
+					self::$connections['egCustomConnections']['MySQLi'] = array();
+				}
+
+				$retVal = self::getCustomMySQLiConnection( $connection_name, $connection_options );
+			} else if ( $engine_mode === eGlooConfiguration::MYSQLIOOP ) {
+				if (!isset(self::$connections['egCustomConnections']['MySQLiOOP'])){
+					self::$connections['egCustomConnections']['MySQLiOOP'] = array();
+				}
+
+				$retVal = self::getCustomMySQLiOOPConnection( $connection_name, $connection_options );
+			} else if ( $engine_mode === eGlooConfiguration::POSTGRESQL ) {
+				if (!isset(self::$connections['egCustomConnections']['PostgreSQL'])){
+					self::$connections['egCustomConnections']['PostgreSQL'] = array();
+				}
+
+				$retVal = self::getCustomPostgreSQLConnection( $connection_name, $connection_options );
+			} else {
+				// No DB engine specified in config or no engine available
+			}
+		}
+
+		return $retVal;
+	}
+
+	private static function getCustomMySQLiConnectionWithOptions( $connection_name, $connection_options = null ) {
+		$retVal = null;
+
+		if (isset(self::$connections['egCustomConnections']['MySQLi'][$connection_name])) {
+			$retVal = self::$connections['egCustomConnections']['MySQLi'][$connection_name];
+		} else {
+			$host 			= $connection_options['host'];
+			$port 			= $connection_options['port'];
+			$dbname 		= $connection_options['database'];
+			$user 			= $connection_options['user'];
+			$password	 	= $connection_options['password'];
+
+			$mysqli_conn = mysqli_connect($host, $user, $password, $dbname, $port);
+
+			if (!$mysqli_conn) {
+				$exception_message = 'DBConnectionManager: Cannot connect to MySQL server via getMySQLiConnection.  Error: '
+					. mysqli_connect_error();
+
+				throw new Exception($exception_message);
+			}
+
+			self::$connections['egCustomConnections']['MySQLi'][$connection_name] = new MySQLiDBConnection( $mysqli_conn );
+			$retVal = self::$connections['egCustomConnections']['MySQLi'][$connection_name];
+		}
+
+		return $retVal;
 	}
 
 	private static function getDoctrineConnection( $connection_name = 'egPrimary' ) {
