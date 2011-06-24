@@ -43,15 +43,14 @@ class eGlooAlert {
 	}
 
 	public static function sendEmailAlert( $subject = '', $message = '', $trigger_type = null ) {
-		// $subject needs to be reset for each email
 		foreach( eGlooConfiguration::getAlerts() as $alert_id => $alert ) {
 			if ( !$trigger_type ) {
 				switch( strtolower($alert['type']) ) {
 					case 'email' :
 						$mail_to = $alert['value'];
-						$subject = 'eGlooAlert: ' . $subject;
+						$mail_subject = 'eGlooAlert: ' . $subject;
 
-						if ( mail( $mail_to, $subject, $message ) ) {
+						if ( mail( $mail_to, $mail_subject, $message ) ) {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'eGlooAlert: Successfully sent email notification', 'Mail' );
 						} else {
 							eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooAlert: Did not successfully send email notification', 'Mail' );
@@ -65,9 +64,9 @@ class eGlooAlert {
 				switch( strtolower($alert['type']) ) {
 					case 'email' :
 						$mail_to = $alert['value'];
-						$subject = 'eGlooAlert: ' . $subject;
+						$mail_subject = 'eGlooAlert: ' . $subject;
 
-						if ( mail( $mail_to, $subject, $message ) ) {
+						if ( mail( $mail_to, $mail_subject, $message ) ) {
 							eGlooLogger::writeLog( eGlooLogger::DEBUG, 'eGlooAlert: Successfully sent email notification', 'Mail' );
 						} else {
 							eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'eGlooAlert: Did not successfully send email notification', 'Mail' );
