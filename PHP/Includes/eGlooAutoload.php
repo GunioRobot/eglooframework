@@ -257,10 +257,9 @@ function eglooAutoload($class_name) {
 			// Do nothing, for now
 		}
 
-		include($realPath);
-
-		// $autoload_hash[$class_name] = false;
-		// $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+		include( $realPath );
+		$autoload_hash[$class_name] = realpath( $realPath );
+		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 	}
 
 	// No class file was found, so let's do ourselves a favor and not bother looking again
@@ -284,15 +283,12 @@ function getRealPathForDEGNSClass( $class_name ) {
 		$subpackage_and_class_name_tokens = array_slice( $matches[1], 1 );
 
 		switch( $package ) {
-			case 'DataProcessing' :
 			case 'DP' :
 				$retVal = getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_and_class_name_tokens );
 				break;
 			default :
 				break;
 		}
-
-		echo_r($matches);
 	}
 
 	return $retVal;
@@ -319,7 +315,7 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 			umask($old_umask);
 		}
 
-		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DataProcessing;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n" .
+		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DP;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n" .
 			'}' . "\n\n";
 
 		file_put_contents( $dpClassFilePath, $class_definition );
