@@ -121,7 +121,7 @@ function eglooAutoload($class_name) {
 	// List here whatever formats you use for your file names. Note that, if you autoload
 	// a class that implements a non-loaded interface, you will also need to autoload that 
 	// interface. Put the &CLASS wherever the $class_name might appear
-	static $permitted_formats = array("&CLASS.php");
+	static $permitted_formats = array( '&CLASS.php' );
 
 	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
 
@@ -145,10 +145,20 @@ function eglooAutoload($class_name) {
 		// valid include paths) then strip out the keys leaving only uniques. This is 
 		// marginally faster than using array_combine and array_unique and much more elegant.
 		$possible_path = array_keys( array_merge( $possible_path,
-			array_flip( explode( ini_get( "include_path" ), ";" ) ) ) );
+			array_flip( explode( ini_get( 'include_path' ), ';' ) ) ) );
 	}
 
-	$possibility = str_replace( "&CLASS", $class_name, $permitted_formats );
+	$possibility = str_replace( '&CLASS', $class_name, $permitted_formats );
+
+	// Supporting Namespaces
+	$ns_class_name = '';
+
+	if ( strpos($class_name, '\\') !== false ) {
+		$ns_class_name = str_replace( '\\', '.', $class_name );
+		$ns_possibility = str_replace( '&CLASS', $ns_class_name, $permitted_formats );
+		$possibility = array_merge( $possibility, $ns_possibility );
+	}
+
 	$realPath = null;
 
 	if ($sanityCheckClassLoading) {
@@ -167,6 +177,20 @@ function eglooAutoload($class_name) {
 			foreach ( new RecursiveIteratorIterator( $it ) as $currentNode ) {
 
 				if ( strpos( $currentNode->getFileName(), $class_name ) !== false ) {
+					// class_name was included, now compare against all permitted file name patterns
+					foreach ( $possibility as $compare ) {
+						// by using $compare, you will get a qualified file name
+
+						if ( $compare === $currentNode->getFileName() ) {
+							$realPath = $currentNode->getPathName();
+							if ($sanityCheckClassLoading && !in_array($realPath, $instances[$directory])) {
+								$instances[$directory][] = $realPath;
+							} else {
+								break;
+							}
+						}
+					}
+				} else if ( $ns_class_name !== '' && strpos( $currentNode->getFileName(), $ns_class_name ) !== false ) {
 					// class_name was included, now compare against all permitted file name patterns
 					foreach ( $possibility as $compare ) {
 						// by using $compare, you will get a qualified file name
@@ -224,6 +248,21 @@ function eglooAutoload($class_name) {
 		}
 	}
 
+	// No class file was found - let's check for dynamic includes based on namespace
+	if ( $realPath === null && strpos($class_name, '\\') !== false ) {
+
+		if ( strpos($class_name, 'eGloo\\') !== false && strpos($class_name, 'eGloo\\') === 0 ) {
+			$realPath = getRealPathForDEGNSClass( $class_name );
+		} else {
+			// Do nothing, for now
+		}
+
+		include($realPath);
+
+		// $autoload_hash[$class_name] = false;
+		// $cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+	}
+
 	// No class file was found, so let's do ourselves a favor and not bother looking again
 	// TODO In the future, we should branch on this depending on deployment type
 	if ( $realPath === null ) {
@@ -231,6 +270,65 @@ function eglooAutoload($class_name) {
 		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 	}
 
+}
+
+function getRealPathForDEGNSClass( $class_name ) {
+	$retVal = null;
+	$matches = array();
+
+	$egloo_class_name = preg_replace( '~eGloo~', '', $class_name );
+
+	if ( preg_match_all( '~ *([^\\\]+)[\\\]?~', $egloo_class_name, $matches ) !== 0 ) {
+		$package = $matches[1][0];
+
+		$subpackage_and_class_name_tokens = array_slice( $matches[1], 1 );
+
+		switch( $package ) {
+			case 'DataProcessing' :
+			case 'DP' :
+				$retVal = getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_and_class_name_tokens );
+				break;
+			default :
+				break;
+		}
+
+		echo_r($matches);
+	}
+
+	return $retVal;
+}
+
+function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_and_class_name_tokens ) {
+	$retVal = null;
+
+	$base_class_name = end($subpackage_and_class_name_tokens);
+	reset($subpackage_and_class_name_tokens);
+
+	$ns_class_name = implode( $subpackage_and_class_name_tokens, '.' ) . '.php';
+
+	$dpClassIncludePath = eGlooConfiguration::getRuntimeConfigurationCachePath() . 'ddpns/';
+	$dpClassFilePath = $dpClassIncludePath . $ns_class_name;
+
+	if ( file_exists($dpClassFilePath) && is_file($dpClassFilePath) && is_readable($dpClassFilePath) ) {
+		// Do stuff
+		$retVal = $dpClassFilePath;
+	} else {
+		if ( !is_writable( $dpClassIncludePath ) ) {
+			$old_umask = umask(0);
+			mkdir( $dpClassIncludePath, 0775 );
+			umask($old_umask);
+		}
+
+		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DataProcessing;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n" .
+			'}' . "\n\n";
+
+		file_put_contents( $dpClassFilePath, $class_definition );
+
+		// Do stuff
+		$retVal = $dpClassFilePath;
+	}
+
+	return $retVal;
 }
 
 /**
