@@ -1,0 +1,11 @@
+Scenarios
+ - authentication by email address
+ - authentication by username
+ - more than one email address per user
+ - authentication by email or username
+ - always only one user per email.
+
+
+
+
+ 
