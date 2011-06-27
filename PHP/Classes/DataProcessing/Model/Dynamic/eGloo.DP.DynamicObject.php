@@ -40,6 +40,14 @@ namespace eGloo\DP;
  */
 class DynamicObject {
 
+	public function __construct() {
+		
+	}
+
+	// public function __clone() {
+	// 	
+	// }
+
 	public function __call( $name, $arguments ) {
 		$log_message = 'Mock Method Call: Attempted invocation of concrete method "' .
 			$name . '" on object of type "' . get_class($this) . '"' . "\n\t" .
@@ -62,6 +70,71 @@ class DynamicObject {
 		}
 
 		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+	}
+
+	// public function __invoke() {
+	// 	
+	// }
+
+	public function __get( $key ) {
+		$log_message = 'Mock Member Read: Attempted read of concrete member "' .
+			$key . '" on object of type "' . get_class($this) . '"';
+
+		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+	}
+
+	public function __isset( $key ) {
+		$log_message = 'Mock Member isset() or empty(): Attempted isset() or empty() check of concrete member "' .
+			$key . '" on object of type "' . get_class($this) . '"';
+
+		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+	}
+
+	public function __set( $key, $value ) {
+		$log_message = 'Mock Member Write: Attempted write of concrete member "' .
+			$key . '" on object of type "' . get_class($this) . '"' . "\n\t" . 'Write Value: ';
+
+		if ( !is_object($value) && !is_array($value) ) {
+			$log_message .= $value;
+		} else {
+			$log_message .= var_export( $value, true );
+		}
+
+		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+	}
+
+	public function __unset( $key ) {
+		$log_message = 'Mock Member unset(): Attempted unset() of concrete member "' .
+			$key . '" on object of type "' . get_class($this) . '"';
+
+		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+	}
+
+	// public function __set_state() {
+	// 	
+	// }
+	// 
+	// public function __sleep() {
+	// 	
+	// }
+	// 
+	// public function __wakeup() {
+	// 	
+	// }
+
+	public function __toString() {
+		$retVal = '';
+
+		$log_message = 'Mock Method toString(): Attempted invocation of concrete method "__toString' .
+			'" on object of type "' . get_class($this) . '"';
+
+		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+
+		return $retVal;
+	}
+
+	public function __destruct() {
+		
 	}
 
 }
