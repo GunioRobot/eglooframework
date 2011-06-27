@@ -257,9 +257,11 @@ function eglooAutoload($class_name) {
 			// Do nothing, for now
 		}
 
-		include( $realPath );
-		$autoload_hash[$class_name] = realpath( $realPath );
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+		if ( $realPath !== null ) {
+			include( $realPath );
+			$autoload_hash[$class_name] = realpath( $realPath );
+			$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+		}
 	}
 
 	// No class file was found, so let's do ourselves a favor and not bother looking again
