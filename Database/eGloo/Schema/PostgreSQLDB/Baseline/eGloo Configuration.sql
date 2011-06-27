@@ -5,7 +5,17 @@
  * 
  */
 
---
+-- The eGloo Administrator Role which will be used for config by the software.
+CREATE ROLE egloo_admins WITH
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	NOLOGIN;
+
+CREATE USER egloo_config IN GROUP egloo_admins;
+
+-- eGloo Schema
+CREATE SCHEMA egloo_config AUTHORIZATION egloo_config;
 
 -- eGloo Modules
 CREATE SEQUENCE egloo_config.egloo_modules_ident_seq
@@ -48,7 +58,7 @@ CONSTRAINT pk_features PRIMARY KEY (feature_id),
 -- eGloo Feature Configurations
 
 
-
+-- These are tables, views, sequences and so forth not sure about fields yet.
 CREATE SEQUENCE feature_object_type_ident_seq
 	MINVALUE 0
 	START WITH 0;
