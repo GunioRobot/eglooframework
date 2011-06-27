@@ -1,0 +1,41 @@
+#! /usr/bin/env bash
+#
+# Exit the script if any variables specified are unset when accessed
+set -o nounset
+
+# Exit the script if any statement returns a non-true value
+# This prevents errors from cascading
+set -o errexit
+
+# Exit Error Codes
+E_XCD=01       # Script can't change directories
+E_NOTROOT=02   # Script not run as root
+
+# Script Constants
+ROOT_UID=0     # Only users with $UID 0 have root privileges.
+
+# Check for root
+if [[ "$UID" -ne "$ROOT_UID" ]]
+then
+	echo "***********************************"
+	echo "* Must be root to run this script *"
+	echo "***********************************"
+	echo
+	exit $E_NOTROOT
+fi
+
+echo "Calculating space used..."
+
+SPACE_START=$(sudo du -sh /opt)
+
+echo "MacPorts is using $SPACE_START"
+
+echo "Cleaning MacPorts..."
+
+port clean --all installed
+port -f uninstall inactive
+
+SPACE_END=$(sudo du -sh /opt)
+
+echo "MacPorts was reduced from $SPACE_START to $SPACE_END"
+
