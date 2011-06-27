@@ -51,3 +51,22 @@ CREATE TABLE user_types (
 CONSTRAINT pk_user_types PRIMARY KEY (user_type_id)
 );
 
+CREATE SEQUENCE users_ident_seq
+	MINVALUE 0
+	START WITH 0;
+
+CREATE DOMAIN users_ident_dom AS BIGINT
+	DEFAULT NEXTVAL('users_ident_seq');
+
+CREATE TABLE users (
+	user_id	users_ident_dom,
+	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	created_by	BIGINT DEFAULT 0 NOT NULL,
+	modified_by	BIGINT DEFAULT 0 NOT NULL,
+CONSTRAINT pk_users PRIMARY KEY (user_id),
+);
+
+
+-- email for login.
+-- username for login
