@@ -32,33 +32,29 @@ CREATE TABLE email_addresses (
 	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	created_by	BIGINT DEFAULT 0 NOT NULL,
 	modified_by	BIGINT DEFAULT 0 NOT NULL,
-CONSTRAINT pk_email_addresses PRIMARY KEY (email_address_id)
+CONSTRAINT pk_email_addresses PRIMARY KEY (email_address_id),
 CONSTRAINT u_email_addresses_email_address UNIQUE (email_address)
 );
 
--- refactor user types . . . make users into groups/roles similar to what 
--- Postgres and Unix do.
--- Usertypes sequence, domain, table
--- Decide late how to deal with "people" and "groups" outside of users
-CREATE SEQUENCE user_types_ident_seq
+/*
+CREATE SEQUENCE role_types_ident_seq
 	MINVALUE 0
 	START WITH 0;
 
-CREATE DOMAIN user_types_ident_dom AS BIGINT
-	DEFAULT NEXTVAL('user_types_ident_seq');
+CREATE DOMAIN role_types_ident_dom AS BIGINT
+	DEFAULT NEXTVAL('role_types_ident_seq');
 
-CREATE TABLE user_types (
-	user_type_id	user_types_ident_dom,
-	user_type_label	VARCHAR(32) NOT NULL,
-	user_type_description	TEXT NOT NULL,
+CREATE TABLE role_types (
+	role_type_id	role_types_ident_dom,
+	role_type_label	VARCHAR(32) NOT NULL,
+	role_type_description	TEXT NOT NULL,
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	created_by	BIGINT DEFAULT 0 NOT NULL,
 	modified_by	BIGINT DEFAULT 0 NOT NULL,
-CONSTRAINT pk_user_types PRIMARY KEY (user_type_id)
+CONSTRAINT pk_role_types PRIMARY KEY (role_type_id)
 );
-
-
+*/
 
 CREATE DOMAIN md5_hash_dom AS VARCHAR(32)
 	NOT NULL
@@ -69,31 +65,100 @@ CREATE DOMAIN md5_hash_dom AS VARCHAR(32)
 		);
 
 -- email for login.
-CREATE SEQUENCE users_ident_seq
+CREATE SEQUENCE roles_ident_seq
 	MINVALUE 0
 	START WITH 0;
 
-CREATE DOMAIN users_ident_dom AS BIGINT
-	DEFAULT NEXTVAL('users_ident_seq');
+CREATE DOMAIN roles_ident_dom AS BIGINT
+	DEFAULT NEXTVAL('roles_ident_seq');
+
+
+-- refactor role types . . . make roles into groups/roles similar to what 
+-- Postgres and Unix do.
+-- Usertypes sequence, domain, table
+-- Decide late how to deal with "people" and "groups" outside of roles
 
 -- Decide what encryption is being used as a feature.
+CREATE TABLE roles (
+	role_id	roles_ident_dom,
+	role_password_salt	VARCHAR(64) NOT NULL,
+	role_password_hash	md5_hash_dom NOT NULL,
+	is_user BOOLEAN NOT NULL,
+	is_group BOOLEAN NOT NULL,
+	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	created_by	BIGINT DEFAULT 0 NOT NULL,
+	modified_by	BIGINT DEFAULT 0 NOT NULL,
+CONSTRAINT pk_roles PRIMARY KEY (role_id)
+);
 
 CREATE TABLE users (
-	user_id	users_ident_dom,
+	user_id	BIGINT NOT NULL,
 	email_address_id	BIGINT NOT NULL,
-	user_password_salt	VARCHAR(64) NOT NULL,
-	user_password_hash	md5_hash_dom NOT NULL,
-	user_security_question_hash	md5_hash_dom NOT NULL,
+	user_security_question	VARCHAR(256) NOT NULL,
 	user_security_answer_hash	md5_hash_dom NOT NULL,
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	created_by	BIGINT DEFAULT 0 NOT NULL,
 	modified_by	BIGINT DEFAULT 0 NOT NULL,
 CONSTRAINT pk_users PRIMARY KEY (user_id),
+CONSTRAINT fk_users_user_id FOREIGN KEY (user_id)
+	REFERENCES roles(role_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE,
+CONSTRAINT u_users_email_address_id UNIQUE (email_address_id)
 );
 
--- Create the "Initialation User" as user 0
--- Make sure the user sequence skips 0. . . 
--- Foreign key references for all of the tables that came before users
+CREATE TABLE groups (
+	group_id	BIGINT NOT NULL,
+	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	created_by	BIGINT DEFAULT 0 NOT NULL,
+	modified_by	BIGINT DEFAULT 0 NOT NULL,
+CONSTRAINT pk_groups PRIMARY KEY (group_id),
+CONSTRAINT fk_groups_group_id FOREIGN KEY (group_id)
+	REFERENCES roles(role_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE
+);
 
--- username for login
+CREATE SEQUENCE group_members_ident_seq
+	MINVALUE 0
+	START WITH 0;
+
+CREATE DOMAIN group_members_ident_dom AS BIGINT
+	DEFAULT NEXTVAL('group_members_ident_seq');
+
+CREATE TABLE group_members (
+	group_member_id	group_members_ident_dom,
+	group_id	BIGINT NOT NULL,
+	member_user_id	BIGINT NOT NULL,
+	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+	created_by	BIGINT DEFAULT 0 NOT NULL,
+	modified_by	BIGINT DEFAULT 0 NOT NULL,
+CONSTRAINT pk_group_members PRIMARY KEY (group_member_id),
+CONSTRAINT fk_group_members_group_id FOREIGN KEY (group_id)
+	REFERENCES group_id(group_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE,
+CONSTRAINT fk_group_members_member_user_id FOREIGN KEY (member_user_id)
+	REFERENCES users(user_id)
+	MATCH FULL
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE
+);
+
+
+
+
+
+
+-- Create the "Initialation User" as role 0
+-- Make sure the role sequence skips 0. . . 
+-- Foreign key references for all of the tables that came before roles
+
+-- rolename for login

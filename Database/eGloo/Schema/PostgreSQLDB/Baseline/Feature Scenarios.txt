@@ -24,3 +24,6 @@ Users always rules
 Users Questions?
  - Do we want to hash answers?
 
+Should roles have passwords?
+Should groups have passwords?
+Should they have emails and other such nonsense?
