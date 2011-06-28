@@ -8,7 +8,19 @@ Scenarios
 
 Feature List
  - Users
+ - User email addresses
  - User Addresses
 
+Users
+ - Login via email
+ - Login via username
+ - Multiple email addresses
+ - Multiple usernames
+ - Password saved as MD5 Hash
+ - Other password hashes for different levels of security
+Users always rules
+ - Email belongs to one user
+ - Password is always a salted hash
+Users Questions?
+ - Do we want to hash answers?
 
- 
