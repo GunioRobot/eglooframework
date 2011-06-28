@@ -15,8 +15,11 @@ CREATE DOMAIN email_addresses_ident_dom AS BIGINT
 
 CREATE DOMAIN email_address_dom AS VARCHAR(256)
 	NOT NULL;
--- Check to ensure the email field is not too long
--- Make sure the emial field is has the proper characters.
+-- Make sure first portion of email is the right size and
+-- posses the right characters
+-- Make sure the domain portion of the email address
+-- is made up of the proper characters and has a period
+-- seperatiing the portions of the address.
 /*	CONSTRAINT ck_email_address CHECK
 		(
 			VALUE ~ '^[a-f0-9.]'
@@ -30,6 +33,7 @@ CREATE TABLE email_addresses (
 	created_by	BIGINT DEFAULT 0 NOT NULL,
 	modified_by	BIGINT DEFAULT 0 NOT NULL,
 CONSTRAINT pk_email_addresses PRIMARY KEY (email_address_id)
+CONSTRAINT u_email_addresses_email_address UNIQUE (email_address)
 );
 
 -- refactor user types . . . make users into groups/roles similar to what 
@@ -54,35 +58,7 @@ CREATE TABLE user_types (
 CONSTRAINT pk_user_types PRIMARY KEY (user_type_id)
 );
 
-CREATE SEQUENCE email_addresses_ident_seq
-	MINVALUE 0
-	START WITH 0;
 
-CREATE DOMAIN email_addresses_ident_dom AS BIGINT
-	DEFAULT NEXTVAL('email_addresses_ident_seq');
-
-CREATE DOMAIN email_address_dom AS VARCHAR(256)
-	NOT NULL;
--- Make sure first portion of email is the right size and
--- posses the right characters
--- Make sure the domain portion of the email address
--- is made up of the proper characters and has a period
--- seperatiing the portions of the address.
-/*	CONSTRAINT ck_email_address CHECK
-		(
-			VALUE ~ '^[a-f0-9.]'
-		);*/
-
-CREATE TABLE email_addresses (
-	email_address_id	email_addresses_ident_dom,
-	email_address	email_address_dom,
-	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	created_by	BIGINT DEFAULT 0 NOT NULL,
-	modified_by	BIGINT DEFAULT 0 NOT NULL,
-CONSTRAINT pk_email_addresses PRIMARY KEY (email_address_id)
-CONSTRAINT u_email_addresses_email_address UNIQUE (email_address)
-);
 
 CREATE DOMAIN md5_hash_dom AS VARCHAR(32)
 	NOT NULL
