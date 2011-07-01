@@ -86,6 +86,10 @@ final class eGlooDPDirector {
 		return $retVal;
 	}
 
+	public function getDPDynamicObjectDefinition( $object_id ) {
+		return self::$dataProcessingDefinitionParser->getDPDynamicObjectDefinition( $object_id );
+	}
+
 	public function getDPProcedureDefinition( $statement_class, $statement_id ) {
 		return self::$dataProcessingDefinitionParser->getDPProcedureDefinition( $statement_class, $statement_id );
 	}

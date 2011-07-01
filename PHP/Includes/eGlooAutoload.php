@@ -317,8 +317,32 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 			umask($old_umask);
 		}
 
-		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DP;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n" .
-			'}' . "\n\n";
+		$eglooDPDirector = eGlooDPDirector::getInstance();
+		$dynamic_object_definition = $eglooDPDirector->getDPDynamicObjectDefinition( $base_class_name );
+
+		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DP;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n";
+
+		foreach( $dynamic_object_definition['staticMethods'] as $staticMethodID => $staticMethod ) {
+			$class_definition .= "\t" . 'public static function ' . $staticMethodID . '( ';
+
+			$i = 1;
+
+			foreach( $staticMethod['arguments'] as $argumentID => $argument ) {
+				$class_definition .= '$' . $argumentID;
+
+				if ( $i < count($staticMethod['arguments']) ) {
+					$class_definition .= ', ';
+				} else {
+					$class_definition .= ' ';
+				}
+
+				$i++;
+			}
+
+			$class_definition .= ') {' . "\n\t\t\n\t" . '}' . "\n\n";
+		}
+
+		$class_definition .= '}' . "\n\n";
 
 		file_put_contents( $dpClassFilePath, $class_definition );
 

@@ -44,6 +44,35 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	// Singleton data member to enforce the singleton pattern for eGlooDPDefinitionParser subclasses
 	protected static $singleton;
 
+	public function getDPDynamicObjectDefinition( $object_id ) {
+		$retVal = null;
+
+		if ( !isset( $this->_dataProcessingDynamicObjects ) ) {
+			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
+			// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
+			// and do more granulated inspection and cache clearing
+			$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+			$allNodesCached = $dataProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+				'XML2ArrayDPDefinitionParser::DynamicObjectNodesCached', 'DataProcessing', true );
+
+			if ( !$allNodesCached ) {
+				$this->loadDataProcessingNodes();
+			} else {
+				$this->_dataProcessingStatements = $dataProcessingCacheRegionHandler->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' .
+					'XML2ArrayDPDefinitionParserDynamicObjectNodes', 'DataProcessing', true );
+			}
+		}
+
+		if ( isset( $this->_dataProcessingDynamicObjects['objects'][$object_id] ) ) {
+			$retVal = $this->_dataProcessingDynamicObjects['objects'][$object_id];
+		} else {
+			throw new Exception( 'DynamicObject "' . $object_id . '" does not exist. Please review your DataProcessing.xml' );
+		}
+
+		return $retVal;
+	}
+
 	public function getDPProcedureDefinition( $procedure_class, $procedure_id ) {
 		$retVal = null;
 
@@ -133,6 +162,9 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				'XML2ArrayDPDefinitionParser: simplexml_load_file( "' . $dp_xml_location . '" ): ' . libxml_get_errors() );
 		}
 
+		// Setup an array to hold all of our processed DPStatement definitions
+		$dataProcessingDynamicObjects = $this->loadDataProcessingDynamicObjects( $dataProcessingXMLObject, $overwrite );
+
 		// Setup an array to hold all of our processed DPProcedure definitions
 		$dataProcessingProcedures = array();
 
@@ -143,6 +175,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		$dataProcessingStatements = $this->loadDataProcessingStatements( $dataProcessingXMLObject, $overwrite );
 
 		$retVal = array(
+			'dataProcessingDynamicObjects' => $dataProcessingDynamicObjects,
 			'dataProcessingProcedures' => $dataProcessingProcedures,
 			'dataProcessingSequences' => $dataProcessingSequences,
 			'dataProcessingStatements' => $dataProcessingStatements
@@ -150,6 +183,90 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: DataProcessing.xml successfully processed", 'DataProcessing' );
+
+		return $retVal;
+	}
+
+	protected function loadDataProcessingDynamicObjects( $dataProcessingXMLObject, $overwrite = true ) {
+		$retVal = null;
+
+		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
+		// we can also write some information to the caching system to better keep track of what is cached for the DataProcessing system
+		// and do more granulated inspection and cache clearing
+		$dataProcessingCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('DataProcessing');
+
+		$dataProcessingDynamicObjects = array();
+
+		// Iterate over each DPStatementClass
+		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dataProcessingDynamicObject ) {
+			// Grab the ID for this particular DPDynamicObject
+			$dataProcessingDynamicObjectID = isset($dataProcessingDynamicObject['id']) ? (string) $dataProcessingDynamicObject['id'] : NULL;
+
+			// If no ID is set for this DPDynamicObject, this is not a valid DataProcessing.xml and we should get out of here
+			if ( !$dataProcessingDynamicObjectID || trim($dataProcessingDynamicObjectID) === '' ) {
+				throw new ErrorException("No ID specified in DPDynamicObject. Please review your DataProcessing.xml");
+			}
+
+			$dpDynamicObjectStaticMethods = array();
+
+			// Iterate over each DPStatement in this DPStatementClass
+			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectStaticMethod' ) as $dataProcessingDynamicObjectStaticMethod ) {
+				// Grab the ID for this particular DPDynamicObjectStaticMethod
+				$dataProcessingDynamicObjectStaticMethodID = isset($dataProcessingDynamicObjectStaticMethod['id']) ? (string) $dataProcessingDynamicObjectStaticMethod['id'] : NULL;
+
+				// If no ID is set for this DPDynamicObjectStaticMethod, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingDynamicObjectStaticMethodID || trim($dataProcessingDynamicObjectStaticMethodID) === '' ) {
+					throw new ErrorException("No ID specified in DPDynamicObjectStaticMethod. Please review your DataProcessing.xml");
+				}
+
+
+				$dpDynamicObjectStaticMethodArguments = array();
+
+				foreach( $dataProcessingDynamicObjectStaticMethod->xpath('child::DPDynamicObjectStaticMethodArguments/DPDynamicObjectStaticMethodArgument')
+					as $dataProcessingDynamicObjectStaticMethodArgument) {
+
+					// Grab the ID for this particular DPDynamicObjectStaticMethodArgument
+					$dataProcessingDynamicObjectStaticMethodArgumentID =
+						isset($dataProcessingDynamicObjectStaticMethodArgument['id']) ? (string) $dataProcessingDynamicObjectStaticMethodArgument['id'] : NULL;
+
+					// If no ID is set for this DPDynamicObjectStaticMethodArgument, this is not a valid DataProcessing.xml and we should get out of here
+					if ( !$dataProcessingDynamicObjectStaticMethodArgumentID || trim($dataProcessingDynamicObjectStaticMethodArgumentID) === '' ) {
+						throw new ErrorException("No ID specified in DPDynamicObjectStaticMethodArgument. Please review your DataProcessing.xml");
+					}
+
+					$dpDynamicObjectStaticMethodArguments[$dataProcessingDynamicObjectStaticMethodArgumentID] =
+						array( 'id' => $dataProcessingDynamicObjectStaticMethodArgumentID );
+				}
+
+				$dpDynamicObjectStaticMethods[$dataProcessingDynamicObjectStaticMethodID] =
+					array(
+						'id' => $dataProcessingDynamicObjectStaticMethodID,
+						'arguments' => $dpDynamicObjectStaticMethodArguments
+					);
+			}
+
+			// Assign an array to hold this DPStatementClass node definition.  Associative key is the DPStatementClass ID
+			$dataProcessingDynamicObjects[$dataProcessingDynamicObjectID] =
+				array(	'dynamicObjectID' => $dataProcessingDynamicObjectID,
+						'staticMethods' => $dpDynamicObjectStaticMethods );
+
+			if ( $overwrite ) {
+				$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserDynamicObjectNodes::' .
+					$dataProcessingDynamicObjectID, $dataProcessingDynamicObjects[$dataProcessingDynamicObjectID], 'DataProcessing', 0, true );
+			}
+		}
+
+		if ( $overwrite ) {
+			$this->_dataProcessingDynamicObjects = array( 'objects' => $dataProcessingDynamicObjects );
+
+			$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserDynamicObjectNodes',
+				$this->_dataProcessingDynamicObjects, 'DataProcessing', 0, true );
+
+			$dataProcessingCacheRegionHandler->storeObject( 
+				eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::DynamicObjectNodesCached', true, 'DataProcessing', 0, true );
+		}
+
+		$retVal = $dataProcessingDynamicObjects;
 
 		return $retVal;
 	}

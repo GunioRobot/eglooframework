@@ -45,6 +45,9 @@ abstract class eGlooDPDefinitionParser {
 	// The location of the DataProcessing.xml we're concerned with parsing
 	protected $REQUESTS_XML_LOCATION = '';
 
+	// An array representing the DPDynamicObject node definitions parsed out of the DataProcessing.xml
+	protected $_dataProcessingDynamicObjects = null;
+
 	// An array representing the DPSequence node definitions parsed out of the DataProcessing.xml
 	protected $_dataProcessingSequences = null;
 
@@ -103,6 +106,8 @@ abstract class eGlooDPDefinitionParser {
 
         return static::$singleton;
 	}
+
+	abstract public function getDPDynamicObjectDefinition( $object_id );
 
 	abstract public function getDPProcedureDefinition( $statement_class, $statement_id );
 
