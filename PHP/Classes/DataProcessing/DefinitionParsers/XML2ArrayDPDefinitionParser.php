@@ -209,7 +209,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 			$dpDynamicObjectStaticMethods = array();
 
-			// Iterate over each DPStatement in this DPStatementClass
+			// Iterate over each DPDynamicObjectStaticMethod in this DPDynamicObject
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectStaticMethod' ) as $dataProcessingDynamicObjectStaticMethod ) {
 				// Grab the ID for this particular DPDynamicObjectStaticMethod
 				$dataProcessingDynamicObjectStaticMethodID = isset($dataProcessingDynamicObjectStaticMethod['id']) ? (string) $dataProcessingDynamicObjectStaticMethod['id'] : NULL;
@@ -223,7 +223,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				$dpDynamicObjectStaticMethodArguments = array();
 
 				foreach( $dataProcessingDynamicObjectStaticMethod->xpath('child::DPDynamicObjectStaticMethodArguments/DPDynamicObjectStaticMethodArgument')
-					as $dataProcessingDynamicObjectStaticMethodArgument) {
+					as $dataProcessingDynamicObjectStaticMethodArgument ) {
 
 					// Grab the ID for this particular DPDynamicObjectStaticMethodArgument
 					$dataProcessingDynamicObjectStaticMethodArgumentID =
@@ -245,10 +245,174 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 					);
 			}
 
+			$dpDynamicObjectMethods = array();
+
+			// Iterate over each DPDynamicObjectMethod in this DPDynamicObject
+			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectMethod' ) as $dataProcessingDynamicObjectMethod ) {
+				// Grab the ID for this particular DPDynamicObjectMethod
+				$dataProcessingDynamicObjectMethodID = isset($dataProcessingDynamicObjectMethod['id']) ? (string) $dataProcessingDynamicObjectMethod['id'] : NULL;
+
+				// If no ID is set for this DPDynamicObjectMethod, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingDynamicObjectMethodID || trim($dataProcessingDynamicObjectMethodID) === '' ) {
+					throw new ErrorException("No ID specified in DPDynamicObjectMethod. Please review your DataProcessing.xml");
+				}
+
+				$dpDynamicObjectMethodArguments = array();
+
+				foreach( $dataProcessingDynamicObjectMethod->xpath('child::DPDynamicObjectMethodArguments/DPDynamicObjectMethodArgument')
+					as $dataProcessingDynamicObjectMethodArgument ) {
+
+					// Grab the ID for this particular DPDynamicObjectMethodArgument
+					$dataProcessingDynamicObjectMethodArgumentID =
+						isset($dataProcessingDynamicObjectMethodArgument['id']) ? (string) $dataProcessingDynamicObjectMethodArgument['id'] : NULL;
+
+					// If no ID is set for this DPDynamicObjectMethodArgument, this is not a valid DataProcessing.xml and we should get out of here
+					if ( !$dataProcessingDynamicObjectMethodArgumentID || trim($dataProcessingDynamicObjectMethodArgumentID) === '' ) {
+						throw new ErrorException("No ID specified in DPDynamicObjectMethodArgument. Please review your DataProcessing.xml");
+					}
+
+					$dpDynamicObjectMethodArguments[$dataProcessingDynamicObjectMethodArgumentID] =
+						array( 'id' => $dataProcessingDynamicObjectMethodArgumentID );
+				}
+
+				$dpDynamicObjectMethods[$dataProcessingDynamicObjectMethodID] =
+					array(
+						'id' => $dataProcessingDynamicObjectMethodID,
+						'arguments' => $dpDynamicObjectMethodArguments
+					);
+			}
+
+			$dpDynamicObjectConstants = array();
+
+			// Iterate over each DPDynamicObjectConstant in this DPDynamicObject
+			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectConstant' ) as $dataProcessingDynamicObjectConstant ) {
+				// Grab the ID for this particular DPDynamicObjectConstant
+				$dataProcessingDynamicObjectConstantID = isset($dataProcessingDynamicObjectConstant['id']) ? (string) $dataProcessingDynamicObjectConstant['id'] : NULL;
+
+				// If no ID is set for this DPDynamicObjectConstant, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingDynamicObjectConstantID || trim($dataProcessingDynamicObjectConstantID) === '' ) {
+					throw new ErrorException("No ID specified in DPDynamicObjectConstant. Please review your DataProcessing.xml");
+				}
+
+				// Grab the type for this particular DPDynamicObjectConstant
+				$dataProcessingDynamicObjectConstantType =
+					isset($dataProcessingDynamicObjectConstant['type']) ? (string) $dataProcessingDynamicObjectConstant['type'] : NULL;
+
+				// Grab the default value for this particular DPDynamicObjectConstant
+				$dataProcessingDynamicObjectConstantDefaultValue =
+					isset($dataProcessingDynamicObjectConstant['defaultValue']) ? (string) $dataProcessingDynamicObjectConstant['defaultValue'] : NULL;
+
+				// Grab the default value type for this particular DPDynamicObjectConstant
+				$dataProcessingDynamicObjectConstantDefaultValueType =
+					isset($dataProcessingDynamicObjectConstant['defaultValueType']) ? (string) $dataProcessingDynamicObjectConstant['defaultValueType'] : NULL;
+
+				$dpDynamicObjectConstants[$dataProcessingDynamicObjectConstantID] =
+					array(
+						'id' => $dataProcessingDynamicObjectMethodID,
+						'type' => $dataProcessingDynamicObjectConstantType,
+						'defaultValue' => $dataProcessingDynamicObjectConstantDefaultValue,
+						'defaultValueType' => $dataProcessingDynamicObjectConstantDefaultValueType,
+					);
+			}
+
+			$dpDynamicObjectStaticMembers = array();
+
+			// Iterate over each DPDynamicObjectStaticMember in this DPDynamicObject
+			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectStaticMember' ) as $dataProcessingDynamicObjectStaticMember ) {
+				// Grab the ID for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectStaticMemberID =
+					isset($dataProcessingDynamicObjectStaticMember['id']) ? (string) $dataProcessingDynamicObjectStaticMember['id'] : NULL;
+
+				// If no ID is set for this DPDynamicObjectStaticMember, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingDynamicObjectStaticMemberID || trim($dataProcessingDynamicObjectStaticMemberID) === '' ) {
+					throw new ErrorException("No ID specified in DPDynamicObjectStaticMember. Please review your DataProcessing.xml");
+				}
+
+				// Grab the type for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectStaticMemberType =
+					isset($dataProcessingDynamicObjectStaticMember['type']) ? (string) $dataProcessingDynamicObjectStaticMember['type'] : NULL;
+
+				// Grab the default value for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectStaticMemberDefaultValue =
+					isset($dataProcessingDynamicObjectStaticMember['defaultValue']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValue'] : NULL;
+
+				// Grab the default value type for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectStaticMemberDefaultValueType =
+					isset($dataProcessingDynamicObjectStaticMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValueType'] : NULL;
+
+				// Grab the scope for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectStaticMemberScope =
+					isset($dataProcessingDynamicObjectStaticMember['scope']) ? (string) $dataProcessingDynamicObjectStaticMember['scope'] : NULL;
+
+				$dpDynamicObjectStaticMembers[$dataProcessingDynamicObjectStaticMemberID] =
+					array(
+						'id' => $dataProcessingDynamicObjectStaticMemberID,
+						'type' => $dataProcessingDynamicObjectStaticMemberType,
+						'defaultValue' => $dataProcessingDynamicObjectStaticMemberDefaultValue,
+						'defaultValueType' => $dataProcessingDynamicObjectStaticMemberDefaultValueType,
+						'scope' => $dataProcessingDynamicObjectStaticMemberScope,
+					);
+			}
+
+			$dpDynamicObjectMembers = array();
+
+			// Iterate over each DPDynamicObjectMember in this DPDynamicObject
+			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectMember' ) as $dataProcessingDynamicObjectMember ) {
+				// Grab the ID for this particular DPDynamicObjectStaticMember
+				$dataProcessingDynamicObjectMemberID =
+					isset($dataProcessingDynamicObjectMember['id']) ? (string) $dataProcessingDynamicObjectMember['id'] : NULL;
+
+				// If no ID is set for this DPDynamicObjectMember, this is not a valid DataProcessing.xml and we should get out of here
+				if ( !$dataProcessingDynamicObjectMemberID || trim($dataProcessingDynamicObjectMemberID) === '' ) {
+					throw new ErrorException("No ID specified in DPDynamicObjectMember. Please review your DataProcessing.xml");
+				}
+
+				// Grab the type for this particular DPDynamicObjectMember
+				$dataProcessingDynamicObjectMemberType =
+					isset($dataProcessingDynamicObjectMember['type']) ? (string) $dataProcessingDynamicObjectMember['type'] : NULL;
+
+				// Grab the default value for this particular DPDynamicObjectMember
+				$dataProcessingDynamicObjectMemberDefaultValue =
+					isset($dataProcessingDynamicObjectMember['defaultValue']) ? (string) $dataProcessingDynamicObjectMember['defaultValue'] : NULL;
+
+				// Grab the default value type for this particular DPDynamicObjectMember
+				$dataProcessingDynamicObjectMemberDefaultValueType =
+					isset($dataProcessingDynamicObjectMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectMember['defaultValueType'] : NULL;
+
+				// Grab the scope for this particular DPDynamicObjectMember
+				$dataProcessingDynamicObjectMemberScope =
+					isset($dataProcessingDynamicObjectMember['scope']) ? (string) $dataProcessingDynamicObjectMember['scope'] : NULL;
+
+				// Grab the scope for this particular DPDynamicObjectMember
+				$dataProcessingDynamicObjectMemberManaged =
+					isset($dataProcessingDynamicObjectMember['managed']) ? (string) $dataProcessingDynamicObjectMember['managed'] : NULL;
+
+				if ( strtolower($dataProcessingDynamicObjectMemberManaged) === 'true' ) {
+					$dataProcessingDynamicObjectMemberManaged = true;
+				} else {
+					$dataProcessingDynamicObjectMemberManaged = false;
+				}
+
+				$dpDynamicObjectMembers[$dataProcessingDynamicObjectMemberID] =
+					array(
+						'id' => $dataProcessingDynamicObjectMemberID,
+						'type' => $dataProcessingDynamicObjectMemberType,
+						'defaultValue' => $dataProcessingDynamicObjectMemberDefaultValue,
+						'defaultValueType' => $dataProcessingDynamicObjectMemberDefaultValueType,
+						'scope' => $dataProcessingDynamicObjectMemberScope,
+						'managed' => $dataProcessingDynamicObjectMemberManaged,
+					);
+			}
+
 			// Assign an array to hold this DPStatementClass node definition.  Associative key is the DPStatementClass ID
 			$dataProcessingDynamicObjects[$dataProcessingDynamicObjectID] =
 				array(	'dynamicObjectID' => $dataProcessingDynamicObjectID,
-						'staticMethods' => $dpDynamicObjectStaticMethods );
+						'staticMethods' => $dpDynamicObjectStaticMethods,
+						'methods' => $dpDynamicObjectMethods,
+						'constants' => $dpDynamicObjectConstants,
+						'staticMembers' => $dpDynamicObjectStaticMembers,
+						'members' => $dpDynamicObjectMembers,
+				);
 
 			if ( $overwrite ) {
 				$dataProcessingCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserDynamicObjectNodes::' .

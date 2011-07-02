@@ -322,6 +322,52 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 
 		$class_definition = '<?php' . "\n\n" . 'namespace eGloo\DP;' . "\n\n" . 'class ' . $base_class_name . ' extends DynamicObject {' . "\n\n";
 
+		foreach( $dynamic_object_definition['constants'] as $constantID => $constant ) {
+			// TODO handle more cases than this, obviously
+			$defaultValue = $constant['defaultValue'];
+
+			$class_definition .= "\t" . 'const ' . strtoupper($constantID) . ' = ' . $defaultValue . ';' . "\n\n";
+		}
+
+		foreach( $dynamic_object_definition['staticMembers'] as $staticMemberID => $staticMember ) {
+			// TODO handle more cases than this, obviously
+			$defaultValue = $staticMember['defaultValue'];
+			$scope = $staticMember['scope'];
+
+			$class_definition .= "\t" . $scope . ' static $' . $staticMemberID . ' = ' . $defaultValue . ';' . "\n\n";
+		}
+
+		$managed_members = array();
+
+		foreach( $dynamic_object_definition['members'] as $memberID => $member ) {
+			// TODO handle more cases than this, obviously
+			$defaultValue = $member['defaultValue'];
+			$scope = $member['scope'];
+			$managed = $member['managed'];
+
+			if ( $managed ) {
+				$managed_members[$memberID] = $member;
+				continue;
+			} else {
+				$class_definition .= "\t" . $scope . ' $' . $memberID . ' = ' . $defaultValue . ';' . "\n\n";
+			}
+		}
+
+		if ( !empty($managed_members) ) {
+			$class_definition .= "\t" . 'protected $_managed_members = array(' . "\n";
+
+			foreach( $managed_members as $memberID => $member ) {
+				// TODO handle more cases than this, obviously
+				$member['value'] = $member['defaultValue'];
+				unset( $member['managed'] );
+
+				$class_definition .= "\t\t" . '"' . $memberID . '"' . ' => ' .
+					getArrayDefinitionString($member) . ',' . "\n";
+			}
+
+			$class_definition .= "\t" . ');' . "\n\n";
+		}
+
 		foreach( $dynamic_object_definition['staticMethods'] as $staticMethodID => $staticMethod ) {
 			$class_definition .= "\t" . 'public static function ' . $staticMethodID . '( ';
 
@@ -342,6 +388,26 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 			$class_definition .= ') {' . "\n\t\t\n\t" . '}' . "\n\n";
 		}
 
+		foreach( $dynamic_object_definition['methods'] as $methodID => $method ) {
+			$class_definition .= "\t" . 'public function ' . $methodID . '( ';
+
+			$i = 1;
+
+			foreach( $method['arguments'] as $argumentID => $argument ) {
+				$class_definition .= '$' . $argumentID;
+
+				if ( $i < count($method['arguments']) ) {
+					$class_definition .= ', ';
+				} else {
+					$class_definition .= ' ';
+				}
+
+				$i++;
+			}
+
+			$class_definition .= ') {' . "\n\t\t\n\t" . '}' . "\n\n";
+		}
+
 		$class_definition .= '}' . "\n\n";
 
 		file_put_contents( $dpClassFilePath, $class_definition );
@@ -349,6 +415,39 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 		// Do stuff
 		$retVal = $dpClassFilePath;
 	}
+
+	return $retVal;
+}
+
+function getArrayDefinitionString( $array_to_define ) {
+	$retVal = 'array(';
+
+	foreach( $array_to_define as $key => $value ) {
+		if ( is_string($value) ) {
+			$retVal .= '\'' . $key . '\' => \'' . $value . '\', ';
+		} else if ( is_numeric($value) ) {
+			$retVal .= '\'' . $key . '\' => ' . $value . ', ';
+		} else if ( is_bool($value) ) {
+			$retVal .= '\'' . $key . '\' => ';
+
+			switch( strtolower($value) ) {
+				case true :
+					$value = 'true';
+					break;
+				case false :
+					$value = 'false';
+					break;
+				default :
+					break;
+			}
+
+			$retVal .= $value . ', ';
+		} else if ( is_array($value) ) {
+			$retVal .= '\'' . $key . '\' => ' . getArrayDefinitionString( $value ) . ', ';
+		}
+	}
+
+	$retVal .= ')';
 
 	return $retVal;
 }

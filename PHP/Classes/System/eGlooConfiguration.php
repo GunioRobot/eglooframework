@@ -525,39 +525,6 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
-	public static function getArrayDefinitionString( $array_to_define ) {
-		$retVal = 'array(';
-
-		foreach( $array_to_define as $key => $value ) {
-			if ( is_string($value) ) {
-				$retVal .= '\'' . $key . '\' => \'' . $value . '\',';
-			} else if ( is_numeric($value) ) {
-				$retVal .= '\'' . $key . '\' => ' . $value . ',';
-			} else if ( is_bool($value) ) {
-				$retVal .= '\'' . $key . '\' => ';
-
-				switch( strtolower($value) ) {
-					case true :
-						$value = 'true';
-						break;
-					case false :
-						$value = 'false';
-						break;
-					default :
-						break;
-				}
-
-				$retVal .= $value . ',';
-			} else if ( is_array($value) ) {
-				$retVal .= '\'' . $key . '\' => ' . self::getArrayDefinitionString( $value ) . ',';
-			}
-		}
-
-		$retVal .= ')';
-
-		return $retVal;
-	}
-
 	public static function writeRuntimeCacheClass( $runtime_cache_path = null ) {
 		if (!$runtime_cache_path) {
 			if ( !is_writable( self::getRuntimeConfigurationCachePath() ) ) {
@@ -570,7 +537,7 @@ final class eGlooConfiguration {
 		}
 
 		$class_definition = '<?php final class eGlooRuntimeCacheClass {' .
-			'public static $configuration_options = ' . self::getArrayDefinitionString( self::$configuration_options ) . ';}';
+			'public static $configuration_options = ' . getArrayDefinitionString( self::$configuration_options ) . ';}';
 
 		file_put_contents( $runtime_cache_path . '.class.php' , $class_definition );
 
