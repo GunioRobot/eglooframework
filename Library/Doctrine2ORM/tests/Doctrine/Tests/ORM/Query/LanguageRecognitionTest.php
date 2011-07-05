@@ -554,6 +554,32 @@ class LanguageRecognitionTest extends \Doctrine\Tests\OrmTestCase
     {
         $this->assertInvalidDQL('SELECT g, count(u.id) FROM Doctrine\Tests\Models\CMS\CmsGroup g JOIN g.users u GROUP BY m');
     }
+
+    /**
+     * @group DDC-117
+     */
+    public function testSizeOfForeignKeyOneToManyPrimaryKeyEntity()
+    {
+        $this->assertValidDQL("SELECT a, t FROM Doctrine\Tests\Models\DDC117\DDC117Article a JOIN a.translations t WHERE SIZE(a.translations) > 0");
+    }
+
+    /**
+     * @group DDC-117
+     */
+    public function testSizeOfForeignKeyManyToManyPrimaryKeyEntity()
+    {
+        $this->assertValidDQL("SELECT e, t FROM Doctrine\Tests\Models\DDC117\DDC117Editor e JOIN e.reviewingTranslations t WHERE SIZE(e.reviewingTranslations) > 0");
+    }
+    
+    public function testCaseSupportContainingNullIfExpression()
+    {
+        $this->assertValidDQL("SELECT u.id, NULLIF(u.name, u.name) AS shouldBeNull FROM Doctrine\Tests\Models\CMS\CmsUser u");
+    }
+    
+    public function testCaseSupportContainingCoalesceExpression()
+    {
+        $this->assertValidDQL("select COALESCE(NULLIF(u.name, ''), u.username) as Display FROM Doctrine\Tests\Models\CMS\CmsUser u");
+    }
 }
 
 /** @Entity */

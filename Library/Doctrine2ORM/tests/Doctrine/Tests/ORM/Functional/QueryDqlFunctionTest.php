@@ -268,7 +268,54 @@ class QueryDqlFunctionTest extends \Doctrine\Tests\OrmFunctionalTestCase
         $this->assertEquals('Guilherme B.Complaint Department', $arg[2]['namedep']);
         $this->assertEquals('Benjamin E.HR', $arg[3]['namedep']);
     }
-    
+
+    /**
+     * @group DDC-1014
+     */
+    public function testDateDiff()
+    {
+        $query = $this->_em->createQuery("SELECT DATE_DIFF(CURRENT_TIMESTAMP(), DATE_ADD(CURRENT_TIMESTAMP(), 10, 'day')) AS diff FROM Doctrine\Tests\Models\Company\CompanyManager m");
+        $arg = $query->getArrayResult();
+        
+        $this->assertEquals(-10, $arg[0]['diff'], "Should be roughly -10 (or -9)", 1);
+        
+        $query = $this->_em->createQuery("SELECT DATE_DIFF(DATE_ADD(CURRENT_TIMESTAMP(), 10, 'day'), CURRENT_TIMESTAMP()) AS diff FROM Doctrine\Tests\Models\Company\CompanyManager m");
+        $arg = $query->getArrayResult();
+        
+        $this->assertEquals(10, $arg[0]['diff'], "Should be roughly 10 (or 9)", 1);
+    }
+
+    /**
+     * @group DDC-1014
+     */
+    public function testDateAdd()
+    {
+        $arg = $this->_em->createQuery("SELECT DATE_ADD(CURRENT_TIMESTAMP(), 10, 'day') AS add FROM Doctrine\Tests\Models\Company\CompanyManager m")
+                ->getArrayResult();
+
+        $this->assertTrue(strtotime($arg[0]['add']) > 0);
+
+        $arg = $this->_em->createQuery("SELECT DATE_ADD(CURRENT_TIMESTAMP(), 10, 'month') AS add FROM Doctrine\Tests\Models\Company\CompanyManager m")
+                ->getArrayResult();
+
+        $this->assertTrue(strtotime($arg[0]['add']) > 0);
+    }
+
+    /**
+     * @group DDC-1014
+     */
+    public function testDateSub()
+    {
+        $arg = $this->_em->createQuery("SELECT DATE_SUB(CURRENT_TIMESTAMP(), 10, 'day') AS add FROM Doctrine\Tests\Models\Company\CompanyManager m")
+                ->getArrayResult();
+
+        $this->assertTrue(strtotime($arg[0]['add']) > 0);
+
+        $arg = $this->_em->createQuery("SELECT DATE_SUB(CURRENT_TIMESTAMP(), 10, 'month') AS add FROM Doctrine\Tests\Models\Company\CompanyManager m")
+                ->getArrayResult();
+
+        $this->assertTrue(strtotime($arg[0]['add']) > 0);
+    }
 
     protected function generateFixture()
     {

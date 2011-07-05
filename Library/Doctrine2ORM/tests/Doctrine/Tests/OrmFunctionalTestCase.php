@@ -91,6 +91,19 @@ abstract class OrmFunctionalTestCase extends OrmTestCase
             'Doctrine\Tests\Models\DirectoryTree\File',
             'Doctrine\Tests\Models\DirectoryTree\Directory',
         ),
+        'ddc117' => array(
+            'Doctrine\Tests\Models\DDC117\DDC117Article',
+            'Doctrine\Tests\Models\DDC117\DDC117Reference',
+            'Doctrine\Tests\Models\DDC117\DDC117Translation',
+            'Doctrine\Tests\Models\DDC117\DDC117ArticleDetails',
+            'Doctrine\Tests\Models\DDC117\DDC117ApproveChanges',
+            'Doctrine\Tests\Models\DDC117\DDC117Editor',
+        ),
+        'stockexchange' => array(
+            'Doctrine\Tests\Models\StockExchange\Bond',
+            'Doctrine\Tests\Models\StockExchange\Stock',
+            'Doctrine\Tests\Models\StockExchange\Market',
+        ),
     );
 
     protected function useModelSet($setName)
@@ -172,6 +185,22 @@ abstract class OrmFunctionalTestCase extends OrmTestCase
             // MySQL doesnt know deferred deletions therefore only executing the second query gives errors.
             $conn->executeUpdate('DELETE FROM Directory WHERE parentDirectory_id IS NOT NULL');
             $conn->executeUpdate('DELETE FROM Directory');
+        }
+        if (isset($this->_usedModelSets['ddc117'])) {
+            return;
+            $conn->executeUpdate('DELETE FROM ddc117editor_ddc117translation');
+            $conn->executeUpdate('DELETE FROM DDC117Editor');
+            $conn->executeUpdate('DELETE FROM DDC117ApproveChanges');
+            $conn->executeUpdate('DELETE FROM DDC117Reference');
+            $conn->executeUpdate('DELETE FROM DDC117ArticleDetails');
+            $conn->executeUpdate('DELETE FROM DDC117Translation');
+            $conn->executeUpdate('DELETE FROM DDC117Article');
+        }
+        if (isset($this->_usedModelSets['stockexchange'])) {
+            $conn->executeUpdate('DELETE FROM exchange_bonds_stocks');
+            $conn->executeUpdate('DELETE FROM exchange_bonds');
+            $conn->executeUpdate('DELETE FROM exchange_stocks');
+            $conn->executeUpdate('DELETE FROM exchange_markets');
         }
 
         $this->_em->clear();
@@ -259,6 +288,21 @@ abstract class OrmFunctionalTestCase extends OrmTestCase
         
         $conn = static::$_sharedConn;
         $conn->getConfiguration()->setSQLLogger($this->_sqlLoggerStack);
+
+        // get rid of more global state
+        $evm = $conn->getEventManager();
+        foreach ($evm->getListeners() AS $event => $listeners) {
+            foreach ($listeners AS $listener) {
+                $evm->removeEventListener(array($event), $listener);
+            }
+        }
+        
+        if (isset($GLOBALS['db_event_subscribers'])) {
+            foreach (explode(",", $GLOBALS['db_event_subscribers']) AS $subscriberClass) {
+                $subscriberInstance = new $subscriberClass();
+                $evm->addEventSubscriber($subscriberInstance);
+            }
+        }
         
         return \Doctrine\ORM\EntityManager::create($conn, $config);
     }
@@ -295,5 +339,15 @@ abstract class OrmFunctionalTestCase extends OrmTestCase
             throw new \Exception($message, (int)$e->getCode(), $e);
         }
         throw $e;
+    }
+
+    /**
+     * Using the SQL Logger Stack this method retrieves the current query count executed in this test.
+     * 
+     * @return int
+     */
+    protected function getCurrentQueryCount()
+    {
+        return count($this->_sqlLoggerStack->queries);
     }
 }

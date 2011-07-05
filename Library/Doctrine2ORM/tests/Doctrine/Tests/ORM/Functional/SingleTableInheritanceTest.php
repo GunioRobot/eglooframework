@@ -2,6 +2,8 @@
 
 namespace Doctrine\Tests\ORM\Functional;
 
+use Doctrine\ORM\Mapping\ClassMetadata;
+
 require_once __DIR__ . '/../../TestInit.php';
 
 class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
@@ -105,7 +107,7 @@ class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
 
         $contract = $this->_em->find('Doctrine\Tests\Models\Company\CompanyFixContract', $fixContract->getId());
 
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
         $this->assertEquals(1000, $contract->getFixPrice());
         $this->assertEquals($this->salesPerson->getId(), $contract->getSalesPerson()->getId());
     }
@@ -126,7 +128,7 @@ class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
 
         $contract = $this->_em->find('Doctrine\Tests\Models\Company\CompanyFlexUltraContract', $ultraContract->getId());
 
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyFlexUltraContract', $contract);
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyFlexUltraContract', $contract);
         $this->assertEquals(7000, $contract->getMaxPrice());
         $this->assertEquals(100, $contract->getHoursWorked());
         $this->assertEquals(50, $contract->getPricePerHour());
@@ -181,7 +183,7 @@ class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
 
         $contract = $this->_em->find('Doctrine\Tests\Models\Company\CompanyContract', $this->fix->getId());
 
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
         $this->assertEquals(1000, $contract->getFixPrice());
     }
 
@@ -235,7 +237,7 @@ class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
         $dql = 'SELECT c FROM Doctrine\Tests\Models\Company\CompanyFixContract c WHERE c.fixPrice = ?1';
         $contract = $this->_em->createQuery($dql)->setParameter(1, 1000)->getSingleResult();
 
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyFixContract', $contract);
         $this->assertEquals(1000, $contract->getFixPrice());
     }
 
@@ -341,12 +343,28 @@ class SingleTableInheritanceTest extends \Doctrine\Tests\OrmFunctionalTestCase
         $this->loadFullFixture();
 
         $ref = $this->_em->getReference('Doctrine\Tests\Models\Company\CompanyContract', $this->fix->getId());
-        $this->assertNotType('Doctrine\ORM\Proxy\Proxy', $ref, "Cannot Request a proxy from a class that has subclasses.");
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyContract', $ref);
-        $this->assertType('Doctrine\Tests\Models\Company\CompanyFixContract', $ref, "Direct fetch of the reference has to load the child class Emplyoee directly.");
+        $this->assertNotInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref, "Cannot Request a proxy from a class that has subclasses.");
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyContract', $ref);
+        $this->assertInstanceOf('Doctrine\Tests\Models\Company\CompanyFixContract', $ref, "Direct fetch of the reference has to load the child class Emplyoee directly.");
         $this->_em->clear();
 
         $ref = $this->_em->getReference('Doctrine\Tests\Models\Company\CompanyFixContract', $this->fix->getId());
-        $this->assertType('Doctrine\ORM\Proxy\Proxy', $ref, "A proxy can be generated only if no subclasses exists for the requested reference.");
+        $this->assertInstanceOf('Doctrine\ORM\Proxy\Proxy', $ref, "A proxy can be generated only if no subclasses exists for the requested reference.");
+    }
+
+    /**
+     * @group DDC-952
+     */
+    public function testEagerLoadInheritanceHierachy()
+    {
+        $this->loadFullFixture();
+
+        $dql = 'SELECT f FROM Doctrine\Tests\Models\Company\CompanyFixContract f WHERE f.id = ?1';
+        $contract = $this->_em->createQuery($dql)
+                              ->setFetchMode('Doctrine\Tests\Models\Company\CompanyFixContract', 'salesPerson', ClassMetadata::FETCH_EAGER)
+                              ->setParameter(1, $this->fix->getId())
+                              ->getSingleResult();
+
+        $this->assertNotInstanceOf('Doctrine\ORM\Proxy\Proxy', $contract->getSalesPerson());
     }
 }

@@ -383,6 +383,28 @@ class SelectSqlGenerationTest extends \Doctrine\Tests\OrmTestCase
             "SELECT c0_.id AS id0, c0_.name AS name1, c0_.discr AS discr2 FROM company_persons c0_ WHERE c0_.discr = 'employee'"
         );
     }
+    
+    /**
+     * @group DDC-1194
+     */
+    public function testSupportsInstanceOfExpressionsInWherePartPrefixedSlash()
+    {
+        $this->assertSqlGeneration(
+            "SELECT u FROM Doctrine\Tests\Models\Company\CompanyPerson u WHERE u INSTANCE OF \Doctrine\Tests\Models\Company\CompanyEmployee",
+            "SELECT c0_.id AS id0, c0_.name AS name1, c0_.discr AS discr2 FROM company_persons c0_ WHERE c0_.discr = 'employee'"
+        );
+    }
+    
+    /**
+     * @group DDC-1194
+     */
+    public function testSupportsInstanceOfExpressionsInWherePartWithUnrelatedClass()
+    {
+        $this->assertInvalidSqlGeneration(
+            "SELECT u FROM Doctrine\Tests\Models\Company\CompanyPerson u WHERE u INSTANCE OF \Doctrine\Tests\Models\CMS\CmsUser",
+            "Doctrine\ORM\Query\QueryException"
+        );
+    }
 
     public function testSupportsInstanceOfExpressionsInWherePartInDeeperLevel()
     {
@@ -882,6 +904,22 @@ class SelectSqlGenerationTest extends \Doctrine\Tests\OrmTestCase
         $this->assertSqlGeneration(
             'SELECT g, count(u.id) FROM Doctrine\Tests\Models\CMS\CmsGroup g JOIN g.users u GROUP BY g',
             'SELECT c0_.id AS id0, c0_.name AS name1, count(c1_.id) AS sclr2 FROM cms_groups c0_ INNER JOIN cms_users_groups c2_ ON c0_.id = c2_.group_id INNER JOIN cms_users c1_ ON c1_.id = c2_.user_id GROUP BY c0_.id'
+        );
+    }
+    
+    public function testCaseContainingNullIf()
+    {
+        $this->assertSqlGeneration(
+            "SELECT NULLIF(g.id, g.name) AS NullIfEqual FROM Doctrine\Tests\Models\CMS\CmsGroup g",
+            'SELECT NULLIF(c0_.id, c0_.name) AS sclr0 FROM cms_groups c0_'
+        );
+    }
+    
+    public function testCaseContainingCoalesce()
+    {
+        $this->assertSqlGeneration(
+            "SELECT COALESCE(NULLIF(u.name, ''), u.username) as Display FROM Doctrine\Tests\Models\CMS\CmsUser u",
+            "SELECT COALESCE(NULLIF(c0_.name, ''), c0_.username) AS sclr0 FROM cms_users c0_"
         );
     }
 }
