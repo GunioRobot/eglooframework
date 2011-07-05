@@ -238,10 +238,86 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 						array( 'id' => $dataProcessingDynamicObjectStaticMethodArgumentID );
 				}
 
+				$dpDynamicObjectStaticMethodExecutionStatements = array();
+
+				foreach( $dataProcessingDynamicObjectStaticMethod->xpath('child::DPDynamicObjectStaticMethodExecution/DPDynamicObjectStaticMethodExecutionStatement')
+					as $dataProcessingDynamicObjectStaticMethodExecutionStatement ) {
+
+					// Grab the order for this particular DPDynamicObjectStaticMethodExecutionStatement
+					$dataProcessingDynamicObjectStaticMethodExecutionStatementOrder =
+						isset($dataProcessingDynamicObjectStaticMethodExecutionStatement['order']) ?
+							(string) $dataProcessingDynamicObjectStaticMethodExecutionStatement['order'] : NULL;
+
+					// If no order is set for this DPDynamicObjectStaticMethodExecutionStatement, this is not a valid DataProcessing.xml and we should get out of here
+					if ( !$dataProcessingDynamicObjectStaticMethodExecutionStatementOrder ||
+							trim($dataProcessingDynamicObjectStaticMethodExecutionStatementOrder) === '' ) {
+						throw new ErrorException("No order specified in DPDynamicObjectStaticMethodExecutionStatement. Please review your DataProcessing.xml");
+					}
+
+					$executionStatementDPStatements = array();
+
+					foreach( $dataProcessingDynamicObjectStaticMethodExecutionStatement->xpath('child::DPStatement')
+						as $dpStatement ) {
+
+						$dpStatementClass = isset($dpStatement['class']) ? (string) $dpStatement['class'] : null;
+
+						if ( !$dpStatementClass || trim($dpStatementClass) === '' ) {
+							throw new ErrorException('No class specified in DPStatement component of ' .
+								'DPDynamicObjectStaticMethodExecutionStatement. Please review your DataProcessing.xml');
+						}
+
+						$dpStatementID = isset($dpStatement['statementID']) ? (string) $dpStatement['statementID'] : null;
+
+						if ( !$dpStatementID || trim($dpStatementID) === '' ) {
+							throw new ErrorException('No statement ID specified in DPStatement component of ' .
+								'DPDynamicObjectStaticMethodExecutionStatement. Please review your DataProcessing.xml');
+						}
+
+						$dpStatementType = isset($dpStatement['type']) ? (string) $dpStatement['type'] : null;
+
+						if ( !$dpStatementType || trim($dpStatementType) === '' ) {
+							throw new ErrorException('No type specified in DPStatement component of ' .
+								'DPDynamicObjectStaticMethodExecutionStatement. Please review your DataProcessing.xml');
+						}
+
+						$argumentMaps = array();
+
+						foreach( $dpStatement->xpath('child::DPDynamicObjectMethodArgumentMap') as $argumentMap ) {
+							$mapFrom = isset($argumentMap['from']) ? (string) $argumentMap['from'] : null;
+
+							if ( !$mapFrom || trim($mapFrom) === '' ) {
+								throw new ErrorException('No "map from" specified in DPDynamicObjectMethodArgumentMap. Please review your DataProcessing.xml');
+							}
+
+							$mapTo = isset($argumentMap['to']) ? (string) $argumentMap['to'] : null;
+
+							if ( !$mapTo || trim($mapTo) === '' ) {
+								throw new ErrorException('No "map to" specified in DPDynamicObjectMethodArgumentMap. Please review your DataProcessing.xml');
+							}
+
+							$argumentMaps[$mapTo] = array( 'from' => $mapFrom, 'to' => $mapTo );
+						}
+
+						$executionStatementDPStatements[] = array(
+							'class' => $dpStatementClass,
+							'statementID' => $dpStatementID,
+							'type' => $dpStatementType,
+							'argumentMaps' => $argumentMaps,
+						);
+
+					}
+
+					$dpDynamicObjectStaticMethodExecutionStatements[$dataProcessingDynamicObjectStaticMethodExecutionStatementOrder] = array(
+						'order' => $dataProcessingDynamicObjectStaticMethodExecutionStatementOrder,
+						'dpStatements' => $executionStatementDPStatements,
+					);
+				}
+
 				$dpDynamicObjectStaticMethods[$dataProcessingDynamicObjectStaticMethodID] =
 					array(
 						'id' => $dataProcessingDynamicObjectStaticMethodID,
-						'arguments' => $dpDynamicObjectStaticMethodArguments
+						'arguments' => $dpDynamicObjectStaticMethodArguments,
+						'executionStatements' => $dpDynamicObjectStaticMethodExecutionStatements,
 					);
 			}
 

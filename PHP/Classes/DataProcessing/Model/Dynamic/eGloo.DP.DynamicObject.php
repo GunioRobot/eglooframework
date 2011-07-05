@@ -40,6 +40,8 @@ namespace eGloo\DP;
  */
 class DynamicObject {
 
+	protected $_managed_members = array();
+
 	public function __construct() {
 		
 	}
@@ -77,37 +79,61 @@ class DynamicObject {
 	// }
 
 	public function __get( $key ) {
-		$log_message = 'Mock Member Read: Attempted read of concrete member "' .
-			$key . '" on object of type "' . get_class($this) . '"';
+		$retVal = null;
 
-		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		if ( isset($this->_managed_members[$key]) ) {
+			$retVal = $this->_managed_members[$key];
+		} else {
+			$log_message = 'Mock Member Read: Attempted read of concrete member "' .
+				$key . '" on object of type "' . get_class($this) . '"';
+
+			\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		}
+
+		return $retVal;
 	}
 
 	public function __isset( $key ) {
-		$log_message = 'Mock Member isset() or empty(): Attempted isset() or empty() check of concrete member "' .
-			$key . '" on object of type "' . get_class($this) . '"';
+		$retVal = false;
 
-		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		if ( isset($this->_managed_members[$key]) && $this->_managed_members[$key]['value'] !== null ) {
+			$retVal = true;
+		} else {
+			$log_message = 'Mock Member isset() or empty(): Attempted isset() or empty() check of concrete member "' .
+				$key . '" on object of type "' . get_class($this) . '"';
+
+			\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		}
+
+		return $retVal;
 	}
 
 	public function __set( $key, $value ) {
-		$log_message = 'Mock Member Write: Attempted write of concrete member "' .
-			$key . '" on object of type "' . get_class($this) . '"' . "\n\t" . 'Write Value: ';
-
-		if ( !is_object($value) && !is_array($value) ) {
-			$log_message .= $value;
+		if ( isset($this->_managed_members[$key]) ) {
+			$this->_managed_members[$key]['value'] = $value;
 		} else {
-			$log_message .= var_export( $value, true );
-		}
+			$log_message = 'Mock Member Write: Attempted write of concrete member "' .
+				$key . '" on object of type "' . get_class($this) . '"' . "\n\t" . 'Write Value: ';
 
-		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+			if ( !is_object($value) && !is_array($value) ) {
+				$log_message .= $value;
+			} else {
+				$log_message .= var_export( $value, true );
+			}
+
+			\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		}
 	}
 
 	public function __unset( $key ) {
-		$log_message = 'Mock Member unset(): Attempted unset() of concrete member "' .
-			$key . '" on object of type "' . get_class($this) . '"';
+		if ( isset($this->_managed_members[$key]) ) {
+			$this->_managed_members[$key]['value'] = null;
+		} else {
+			$log_message = 'Mock Member unset(): Attempted unset() of concrete member "' .
+				$key . '" on object of type "' . get_class($this) . '"';
 
-		\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+			\eGlooLogger::writeLog( \eGlooLogger::EMERGENCY, $log_message, 'DDPNS' );
+		}
 	}
 
 	// public function __set_state() {

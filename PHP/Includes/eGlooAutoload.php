@@ -385,7 +385,39 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 				$i++;
 			}
 
-			$class_definition .= ') {' . "\n\t\t\n\t" . '}' . "\n\n";
+			$class_definition .= ') {' . "\n\t\t";
+
+
+			foreach( $staticMethod['executionStatements'] as $statementOrder => $statement ) {
+
+				if ( isset($statement['dpStatements']) ) {
+					foreach( $statement['dpStatements'] as $dpStatement ) {
+						$statement_definition = $eglooDPDirector->getDPStatementDefinition( $dpStatement['class'], $dpStatement['statementID'] );
+
+						$class_definition .= '$statement = new \eGlooDPStatement( \'' . $dpStatement['class'] . '\' );' . "\n\t\t";
+
+						foreach( $dpStatement['argumentMaps'] as $argumentMap ) {
+							$class_definition .= '$statement->bind( \'' . $argumentMap['to'] . '\', $' . $argumentMap['from'] . ' );' . "\n\t\t";
+						}
+
+						// Caching?  In the future
+						// if ( $result = $statement->execute( 'getByProductID', $id ) ) {
+						// 	self::$cachedProducts[$id] = new self($result[0]);
+						// 	// store.
+						// 	$cacheGateway->storeObject($cacheID, self::$cachedProducts[$id], 'Petflow', 3600);
+						// } else {
+						// 	return null; // DO NOT CHANGE THIS RETURN VALUE!
+						// }
+
+						$class_definition .= 'var_dump($statement->execute( \'' . $dpStatement['statementID'] . '\' ));' . "\n\t\t";
+
+						// echo_r($dynamic_object_definition);
+						// die_r($statement_definition);
+					}
+				}
+			}
+
+			$class_definition .= "\n\t" . '}' . "\n\n";
 		}
 
 		foreach( $dynamic_object_definition['methods'] as $methodID => $method ) {
