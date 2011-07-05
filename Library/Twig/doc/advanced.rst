@@ -103,7 +103,7 @@ available in all templates and macros::
     $twig = new Twig_Environment($loader);
     $twig->addGlobal('text', new Text());
 
-You can then use the ``user`` variable anywhere in a template:
+You can then use the ``text`` variable anywhere in a template:
 
 .. code-block:: jinja
 
@@ -264,6 +264,11 @@ Adding a function is similar to adding a filter. This can be done by calling the
 
     $twig = new Twig_Environment($loader);
     $twig->addFunction('functionName', new Twig_Function_Function('someFunction'));
+
+You can also expose extension methods as functions in your templates::
+
+    // $this is an object that implements Twig_ExtensionInterface.
+    $twig = new Twig_Environment($loader);
     $twig->addFunction('otherFunction', new Twig_Function_Method($this, 'someMethod'));
 
 Functions also support ``needs_environment`` and ``is_safe`` parameters.
