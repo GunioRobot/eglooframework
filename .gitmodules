@@ -1,0 +1,9 @@
+[submodule "Library/Monolog"]
+	path = Library/Monolog
+	url = https://github.com/Seldaek/monolog.git
+[submodule "Library/Imagine"]
+	path = Library/Imagine
+	url = https://github.com/avalanche123/Imagine.git
+[submodule "Library/Assetic"]
+	path = Library/Assetic
+	url = https://github.com/kriswallsmith/assetic.git
