@@ -387,6 +387,7 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 
 			$class_definition .= ') {' . "\n\t\t";
 
+			$class_definition .= '$retVal = null;' . "\n\n\t\t";
 
 			foreach( $staticMethod['executionStatements'] as $statementOrder => $statement ) {
 
@@ -404,18 +405,37 @@ function getRealPathForDDPNSClassFromTokens( $class_name, $package, $subpackage_
 						// if ( $result = $statement->execute( 'getByProductID', $id ) ) {
 						// 	self::$cachedProducts[$id] = new self($result[0]);
 						// 	// store.
-						// 	$cacheGateway->storeObject($cacheID, self::$cachedProducts[$id], 'Petflow', 3600);
+						// 	$cacheGateway->storeObject($cacheID, self::$cachedProducts[$id], 'foo', 3600);
 						// } else {
-						// 	return null; // DO NOT CHANGE THIS RETURN VALUE!
+						// 	return null;
 						// }
 
-						$class_definition .= 'var_dump($statement->execute( \'' . $dpStatement['statementID'] . '\' ));' . "\n\t\t";
+						if ( !empty($dpStatement['returnMaps']) ) {
+							foreach( $dpStatement['returnMaps'] as $returnMaps ) {
+								// This should always be @return... for now
+								$returnFrom = $returnMaps['from'];
+
+								// Any local variable or @return
+								$returnTo = $returnMaps['to'];
+
+								if ( $returnTo === '@return' ) {
+									$returnTo = 'retVal';
+								}
+
+								$class_definition .= '$' . $returnTo . ' = $statement->execute( \'' . $dpStatement['statementID'] . '\' );' . "\n\t\t";
+							}
+						} else {
+							$class_definition .= '$statement->execute( \'' . $dpStatement['statementID'] . '\' );' . "\n\t\t";
+						}
+
 
 						// echo_r($dynamic_object_definition);
 						// die_r($statement_definition);
 					}
 				}
 			}
+
+			$class_definition .= "\n\t\t" . 'return $retVal;';
 
 			$class_definition .= "\n\t" . '}' . "\n\n";
 		}
