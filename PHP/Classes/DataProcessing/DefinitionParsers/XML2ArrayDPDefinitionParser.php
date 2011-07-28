@@ -298,11 +298,30 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 							$argumentMaps[$mapTo] = array( 'from' => $mapFrom, 'to' => $mapTo );
 						}
 
+						$returnMaps = array();
+
+						foreach( $dpStatement->xpath('child::DPDynamicObjectMethodReturnMap') as $returnMap ) {
+							$mapFrom = isset($returnMap['from']) ? (string) $returnMap['from'] : null;
+
+							if ( !$mapFrom || trim($mapFrom) === '' ) {
+								throw new ErrorException('No "map from" specified in DPDynamicObjectMethodReturnMap. Please review your DataProcessing.xml');
+							}
+
+							$mapTo = isset($returnMap['to']) ? (string) $returnMap['to'] : null;
+
+							if ( !$mapTo || trim($mapTo) === '' ) {
+								throw new ErrorException('No "map to" specified in DPDynamicObjectMethodReturnMap. Please review your DataProcessing.xml');
+							}
+
+							$returnMaps[$mapTo] = array( 'from' => $mapFrom, 'to' => $mapTo );
+						}
+
 						$executionStatementDPStatements[] = array(
 							'class' => $dpStatementClass,
 							'statementID' => $dpStatementID,
 							'type' => $dpStatementType,
 							'argumentMaps' => $argumentMaps,
+							'returnMaps' => $returnMaps,
 						);
 
 					}
