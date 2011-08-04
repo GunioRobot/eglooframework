@@ -64,7 +64,7 @@ checkUserCanRead() {
 	if [ ! $USER_CAN_READ -eq 1 ]
 	then
 		echo
-		echo "WARNING: User '$1' cannot read $CONFIG_PATH"
+		echo "WARNING: User '$1' cannot read $2"
 		echo "Please fix permissions for this path after this install has completed."
 		echo
 	fi
