@@ -1,3 +1,34 @@
+README
+======
+
+What is eGloo?
+-----------------
+
+eGloo is a modern, extensible, scalable and stable PHP 5.3+ framework proven
+in multiple production environments. It is geared towards rapid development,
+maximum code reuse and minimal developer overhead.
+
+It serves as the foundation for rapid scaling ecommerce solutions that deliver
+lightning-fast performance, and even an entire line of touchscreen solutions
+in multiple nations around the world.
+
+eGloo can be used to develop websites, SaaS solutions, IaaS solutions and 
+provides built-in support for data source and format agnostic ETL solutions.
+
+Requirements
+------------
+
+eGloo 1.0 is only supported on PHP 5.3+.  eGloo 2.0 will be PHP 5.4+ only.
+
+Installation
+------------
+
+eGloo makes use of continuous integration to maintain stability and consistent
+performance in its master branch.  For that reason, cloning from GitHub is
+the best way to install eGloo.
+
+### Ubuntu 10.04 LTS
+
 sudo apt-get install php-apc php5-imagick php5-mcrypt php5-memcache php5-memcached php5-suhosin php5-cli php5 php5-common php5-dev php5-mysql php5-pgsql php5-sqlite php-soap php-openid php5-odbc php5-gd php5-xmlrpc
 
 sudo apt-get install apache2
@@ -20,13 +51,12 @@ MySQL Query Browser
 MySQL Administrator
 pgAdmin3
 
-After downloading eglooframework:
+After cloning eglooframework:
 
-tar -zxvf eglooframework-1dp1.tar.gz
-cd eglooframework-1dp1/Build
+cd eglooframework/Build
 sudo ./Install.sh
 
-*** Follow all instructions in installer ***
+**Follow all instructions in installer**
 
 To see how to make an eGloo application, please refer to Skeleton.app in the eGloo application directory (set during install)
 
@@ -58,3 +88,7 @@ In exchange for rapid development and proper SE design, eGloo sacrifices speed i
 
 NOTE: eGloo is NOT meant to be run without the use of APC or memcached.  There are no plans to support running without a caching engine available for production.
 
+Documentation
+-------------
+
+Coming soon.  No, seriously.
