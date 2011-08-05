@@ -38,21 +38,8 @@ if ( !class_exists( 'eGlooLogger', false ) ) {
 	include( 'PHP/Classes/System/eGlooLogger.php' );
 }
 
-global $egloo_script_arguments;
-
-if ( in_array('-v', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::STAGING;
-} else if ( in_array('-vv', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::DEVELOPMENT;
-} else if ( in_array('-q', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::LOG_OFF;
-} else {
-	$logging_level = eGlooLogger::PRODUCTION;
-}
-
 // Initialize the eGlooLogger
-eGlooLogger::initialize( $logging_level, eGlooConfiguration::getLogFormat( false ) );
-
+eGlooLogger::initialize( eGlooLogger::PRODUCTION, eGlooConfiguration::getLogFormat( false ) );
 
 // Bring up the caching system (needed for the autoloader)
 if ( !class_exists( 'CacheGateway', false ) ) {

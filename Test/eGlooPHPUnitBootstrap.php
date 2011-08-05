@@ -1,4 +1,3 @@
-#! /usr/bin/env php -q
 <?php
 /**
  * eGloo Framework PHPUnit Control Script
@@ -47,7 +46,7 @@ $egloo_script_arguments = array();
 $path_set = false;
 
 if ( !$path_set && isset( $_SERVER['EGLOO_INCLUDE_PATH'] ) ) {
-	$full_path = $_SERVER['EGLOO_INCLUDE_PATH'] . '/PHP/Includes/eGlooCLIAutoload.php';
+	$full_path = $_SERVER['EGLOO_INCLUDE_PATH'] . '/PHP/Includes/eGlooPHPUnitAutoload.php';
 
 	if ( file_exists($full_path) && is_file($full_path) && is_readable($full_path) ) {
 		set_include_path( $_SERVER['EGLOO_INCLUDE_PATH'] . ':' . get_include_path() );
@@ -75,29 +74,12 @@ if ( !$path_set ) {
 
 // We have an include path, so let's attempt to include
 if ( $path_set ) {
-	include( 'PHP/Includes/eGlooCLIAutoload.php' );
+	include( 'PHP/Includes/eGlooPHPUnitAutoload.php' );
 }
 
 // Let's make sure we loaded something here
 if ( !class_exists('eGlooCLI') ) {
 	echo 'eGloo Framework not found in expected location.' . "\n\n";
 	echo 'Please provide a valid include path one of two ways:' . "\n";
-	// echo '(1) egloo --egloo-include-path=/path/to/eglooframework OR' . "\n";
-	// echo '(2) export EGLOO_INCLUDE_PATH=/path/to/eglooframework' . "\n\n";
 	exit;
 }
-
-$arguments = $argv;
-
-eGlooCLI::setScriptArguments( $egloo_script_arguments );
-
-if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
-	$script_name = array_shift( $arguments );
-	$command = strtolower( array_shift( $arguments ) );
-
-	eGlooCLI::execute( $command, $arguments );
-} else {
-	eGlooCLI::printUsageInfo();
-}
-
-exit;
