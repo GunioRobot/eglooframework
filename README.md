@@ -29,27 +29,15 @@ the best way to install eGloo.
 
 ### Ubuntu 10.04 LTS
 
-sudo apt-get install php-apc php5-imagick php5-mcrypt php5-memcache php5-memcached php5-suhosin php5-cli php5 php5-common php5-dev php5-mysql php5-pgsql php5-sqlite php-soap php-openid php5-odbc php5-gd php5-xmlrpc
+	sudo apt-get install php-apc php5-imagick php5-mcrypt php5-memcache php5-memcached php5-suhosin php5-cli php5 php5-common php5-dev php5-mysql php5-pgsql php5-sqlite php-soap php-openid php5-odbc php5-gd php5-xmlrpc
+	sudo apt-get install apache2
+	sudo apt-get install git-core
+	sudo add-apt-repository ppa:pitti/postgresql
+	sudo apt-get update
+	sudo apt-get install postgresql-9.0 postgresql-client-9.0 postgresql-doc-9.0
+	sudo apt-get install mysql-server-5.1 mysql-client-5.1
 
-sudo apt-get install apache2
-
-sudo apt-get install git-core
-
-sudo add-apt-repository ppa:pitti/postgresql
-
-sudo apt-get update
-
-sudo apt-get install postgresql-9.0 postgresql-client-9.0 postgresql-doc-9.0
-
-sudo apt-get install mysql-server-5.1 mysql-client-5.1
-
-NOTE: Make sure apache has mod_rewrite enabled and AllowOverride All set (.htaccess allowed)
-
-Useful:
-Filezilla
-MySQL Query Browser
-MySQL Administrator
-pgAdmin3
+**NOTE: Make sure apache has mod_rewrite enabled and AllowOverride All set (.htaccess allowed)**
 
 After cloning eglooframework:
 
@@ -86,7 +74,7 @@ These can be changed by editing eglooframework/PHP/Classes/Performance/Caching/C
 
 In exchange for rapid development and proper SE design, eGloo sacrifices speed in development mode and ability to run without caching support.
 
-NOTE: eGloo is NOT meant to be run without the use of APC or memcached.  There are no plans to support running without a caching engine available for production.
+**NOTE: eGloo is NOT meant to be run without the use of APC or memcached.  There are no plans to support running without a caching engine available for production.**
 
 Documentation
 -------------
