@@ -20,9 +20,6 @@ MySQL Query Browser
 MySQL Administrator
 pgAdmin3
 
-Known issue: eGloo expects Smarty and Doctrine to be installed and able to be found by locate.  This is a bug, but
-you should know to have them already in the PHP path somewhere and run sudo updatedb before running the eGloo installer.
-
 After downloading eglooframework:
 
 tar -zxvf eglooframework-1dp1.tar.gz
