@@ -41,8 +41,8 @@ the best way to install eGloo.
 
 After cloning eglooframework:
 
-cd eglooframework/Build
-sudo ./Install.sh
+	cd eglooframework/Build
+	sudo ./Install.sh
 
 **Follow all instructions in installer**
 
