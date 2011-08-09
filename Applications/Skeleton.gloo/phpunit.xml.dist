@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+		 backupStaticAttributes="false"
+		 colors="true"
+		 convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true"
+		 processIsolation="false"
+		 stopOnFailure="false"
+		 syntaxCheck="false"
+		 bootstrap="./Test/eGlooPHPUnitBootstrap.php"
+>
+
+	<testsuites>
+		<testsuite name="eGloo Application Test Suite">
+			<directory>./Test/PHPUnit/</directory>
+		</testsuite>
+	</testsuites>
+
+	<groups>
+		<exclude>
+			<group>Peering</group>
+			<group>Performance</group>
+			<group>Scaling</group>
+		</exclude>
+	</groups>
+
+</phpunit>

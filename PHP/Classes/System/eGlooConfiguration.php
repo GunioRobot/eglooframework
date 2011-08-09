@@ -59,6 +59,31 @@ final class eGlooConfiguration {
 			$system_xml_path = '/etc/egloo/System.xml';
 		}
 
+		$matches = array();
+
+		if ( preg_match_all( '~ *([^/]+)[/]?~', getcwd(), $matches ) !== 0 ) {
+			$cwd_chunks = $matches[1];
+			$cwd_chunks_reversed = array_reverse($cwd_chunks);
+
+			$application_path = null;
+			$application_xml_path = null;
+			$found_application_path = false;
+
+			foreach( $cwd_chunks_reversed as $cwd_chunk ) {
+				if ( strpos( $cwd_chunk, '.gloo' ) !== false ) {
+					$found_application_path = true;
+					break;
+				} else {
+					$application_path .= '../';
+				}
+			}
+
+			if ( $found_application_path ) {
+				$application_path = './' . $application_path;
+				$application_xml_path = $application_path . 'Configuration/Config.xml';
+			}
+		}
+
 		// TODO move this somewhere cleaner
 		self::$configuration_options['egCDNConnections'] = array();
 		self::$configuration_options['egDatabaseConnections'] = array();
@@ -81,8 +106,13 @@ final class eGlooConfiguration {
 
 			// $success = self::loadApplicationConfigurationCache( $application_path, $overwrite, $config_cache );
 		
-			if ( !$success ) {
-				// self::loadApplicationConfigurationXML( $application_path, $overwrite );
+			if ( !$success && $found_application_path ) {
+				self::loadApplicationConfigurationXML( $application_path, $overwrite );
+			}
+
+			// HACK Loading the XML will overwrite this, so add it back
+			if ( $found_application_path ) {
+				self::setApplicationPath( $application_path );
 			}
 
 			if ( $prefer_htaccess ) {
@@ -98,10 +128,6 @@ final class eGlooConfiguration {
 		self::$rewriteBase = '/';
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
-
-		// if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
-		// 	self::secureEnvironment();
-		// }
 	}
 
 
@@ -113,7 +139,6 @@ final class eGlooConfiguration {
 		self::$configuration_options['egDatabaseConnections'] = array();
 
 		if ( ($useRuntimeCache && !self::loadRuntimeCacheClass()) || !$useRuntimeCache ) {
-		// if ( ($useRuntimeCache && !self::loadRuntimeCache()) || !$useRuntimeCache ) {
 			$success = self::loadFrameworkSystemCache();
 
 			if (!$success) {
@@ -142,7 +167,6 @@ final class eGlooConfiguration {
 			}
 
 			if (self::getUseRuntimeCache()) {
-				// self::writeRuntimeCache();
 				self::writeRuntimeCacheClass();
 			}
 		}
@@ -624,7 +648,11 @@ final class eGlooConfiguration {
 	}
 
 	public static function loadApplicationConfigurationXML( $application_name, $overwrite = true, $config_xml_filename = 'Config.xml' ) {
-		$config_xml_path = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/Configuration/' . $config_xml_filename;
+		if ( self::getApplicationPath() !== $application_name ) {
+			$config_xml_path = $application_name . 'Configuration/' . $config_xml_filename;
+		} else {
+			$config_xml_path = self::getApplicationsPath() . '/' . self::getApplicationPath() . '/Configuration/' . $config_xml_filename;
+		}
 
 		if ( file_exists($config_xml_path) && is_file($config_xml_path) && is_readable($config_xml_path) ) {
 			$configXMLObject = simplexml_load_file( $config_xml_path );
@@ -633,16 +661,18 @@ final class eGlooConfiguration {
 			// $errors = libxml_get_errors();
 			// echo_r($errors);
 
-			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:System/tns:Component' ) as $component ) {
-			//	$componentID = (string) $component['id'];
-			// 
-			//	if (isset(self::$configuration_possible_options[$componentID])) {
-			//		// if (!isset(self::$configuration_options[$componentID])) {
-			//			self::$configuration_options[$componentID] = (string) $component['value'];
-			//		// }
-			//	}
-			// }
-			// 
+			// Load applications after system... 
+			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
+				$componentID = (string) $component['id'];
+
+				if (isset(self::$configuration_possible_options[$componentID])) {
+					// For backwards compatibility until more testing done
+					if ( !isset(self::$configuration_options[$componentID]) || $overwrite ) {
+						self::$configuration_options[$componentID] = (string) $component['value'];
+					}
+				}
+			}
+
 			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option' ) as $option ) {
 				$optionID = (string) $option['id'];
 			
@@ -663,18 +693,6 @@ final class eGlooConfiguration {
 					self::$configuration_options['AppBuild'] = 'No application build provided';
 				}
 			}
-
-			// 
-			// // Load applications after system... 
-			// foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
-			//	$componentID = (string) $component['id'];
-			// 
-			//	if (isset(self::$configuration_possible_options[$componentID])) {
-			//		// if (!isset(self::$configuration_options[$componentID])) {
-			//			self::$configuration_options[$componentID] = (string) $component['value'];
-			//		// }
-			//	}
-			// }
 
 			if (!isset(self::$configuration_options['CustomVariables'])) {
 				self::$configuration_options['CustomVariables'] = array();
@@ -1532,9 +1550,13 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
+	public static function setApplicationPath( $relative_path ) {
+		self::$configuration_options['egApplication'] = $relative_path;
+	}
+
 	public static function getApplicationPHPPath( $absolute_path = false ) {
 		$retVal = null;
-		
+
 		if ( $absolute_path ) {
 			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/PHP';
 		} else {
