@@ -50,11 +50,11 @@ To see how to make an eGloo application, please refer to Skeleton.app in the eGl
 
 The webroot that is setup during install contains several files:
 
-index.php (eGloo Bootloader)
-PHP -> eglooframework/PHP (Symlink)
-Config.xml (Local Configuration Options)
-System.xml (eGloo System Configuration Information - DO NOT MODIFY)
-.htaccess (Environment variables and DB connection settings)
+	.htaccess // Environment variables and DB connection settings
+	Config.xml // Local Configuration Options
+	index.php // eGloo Bootloader
+	PHP -> eglooframework/PHP // Symlink
+	System.xml // eGloo System Configuration Information - **DO NOT MODIFY**
 
 eGloo Installer is "non-destructive".  If your webroot gets hosed, you can rerun the installer and it will not delete any
 files/symlinks currently set.  It will move your old .htaccess file to .htaccess-{timestamp}.
@@ -62,6 +62,7 @@ files/symlinks currently set.  It will move your old .htaccess file to .htaccess
 Important directories:
 
 Configuration Cache: /var/tmp/com.egloo.cache/
+
 Template Cache: /var/cache/egloo/{Application.app} (Exact directory OS-dependent, check System.xml for specific path)
 
 Hot-caching of CSS, XCSS, JS, XJS and Images happens in the webroot dynamically.  These directories can be safely deleted to

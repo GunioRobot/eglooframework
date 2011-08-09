@@ -31,7 +31,7 @@ if ( !class_exists( 'eGlooConfiguration', false ) ) {
 }
 
 // Load the install configuration
-eGlooConfiguration::loadCLIConfigurationOptions();
+eGlooConfiguration::loadCLIConfigurationOptions( true );
 
 // Bring up the eGlooLogger
 if ( !class_exists( 'eGlooLogger', false ) ) {
@@ -132,8 +132,8 @@ function eglooAutoload($class_name) {
 	if ( NULL === $cli_paths ) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkPHPPath( true );
-		$application_classes = eGlooConfiguration::getApplicationPHPPath( true );
-		$extra_class_path = eGlooConfiguration::getExtraClassPath( true );
+		$application_classes = eGlooConfiguration::getApplicationPHPPath( false );
+		$extra_class_path = eGlooConfiguration::getExtraClassPath( false );
 
 		$base_class_paths = array( $application_classes, $extra_class_path, $framework_classes );
 
