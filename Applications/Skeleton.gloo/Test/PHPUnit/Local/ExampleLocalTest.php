@@ -42,4 +42,11 @@ class ExampleLocalTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue( true );
 	}
 
+	public function testConstructor() {
+		$form = new Form();
+		$foo = new Foo();
+		$foo->thisFunction();
+		$this->assertTrue( is_object($form) && $form instanceof Form );
+	}
+
 }
