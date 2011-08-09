@@ -7,3 +7,9 @@
 [submodule "Library/Assetic"]
 	path = Library/Assetic
 	url = https://github.com/kriswallsmith/assetic.git
+[submodule "Library/Doctrine2DBAL"]
+	path = Library/Doctrine2DBAL
+	url = git://github.com/doctrine/dbal.git
+[submodule "Library/Doctrine2ORM"]
+	path = Library/Doctrine2ORM
+	url = git://github.com/doctrine/doctrine2.git
