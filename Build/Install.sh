@@ -1493,7 +1493,7 @@ printf "done.\n"
 if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chmod 664 "$CONFIG_PATH/Config.xml"
-	chmod 640 "$CONFIG_PATH/System.xml"
+	chmod 644 "$CONFIG_PATH/System.xml"
 
 	chmod -R 755 "$DOCUMENT_ROOT"
 
