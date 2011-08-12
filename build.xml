@@ -26,9 +26,10 @@
  <target name="parallelTasks"
 		 description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
   <parallel threadCount="2">
+	<!-- <antcall target="pdepend"/> -->
    <sequential>
 	<antcall target="pdepend"/>
-	<!-- <antcall target="phpmd"/> -->
+	<antcall target="phpmd"/>
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs"/>
