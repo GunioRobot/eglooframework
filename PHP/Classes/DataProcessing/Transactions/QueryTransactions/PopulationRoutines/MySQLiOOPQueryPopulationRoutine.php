@@ -72,6 +72,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 					if (is_string($value['value'])) {
 						if (isset($value['quote']) && $value['quote']) {
 							$processedParameters[] = '\'' . $connection->real_escape_string($value['value']) . '\'';
+						} else if (isset($value['escape']) && !$value['escape']) {
+							$processedParameters[] = $value['value'];
 						} else {
 							$processedParameters[] = $connection->real_escape_string($value['value']);
 						}

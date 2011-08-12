@@ -234,7 +234,7 @@ class ResizeImageContentManipulationRoutine extends ManipulationRoutine {
 		// Do stuff on the cloned DTO including copying to a working directory, resizing, etc 
 
 		// Return cloned and modified ImageDTO
-		return $retVal
+		return $retVal;
 	}
 
 }

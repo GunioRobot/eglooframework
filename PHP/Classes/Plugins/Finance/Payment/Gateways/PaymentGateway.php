@@ -41,31 +41,31 @@ abstract class PaymentGateway {
 	/* Class Constants */
 	
 	// Authorization for an amount
-	public static const CREDIT_AUTHORIZE = 'authorize';
+	const CREDIT_AUTHORIZE = 'authorize';
 	
 	// Capture funds from prior authorization
-	public static const CREDIT_PRIOR_AUTH_CAPTURE = 'prior_auth_capture';
+	const CREDIT_PRIOR_AUTH_CAPTURE = 'prior_auth_capture';
 	
 	// Authorize and capture
-	public static const CREDIT_AUTHORIZE_CAPTURE = 'auth_capture';
+	const CREDIT_AUTHORIZE_CAPTURE = 'auth_capture';
 	
 	// Setup a credit card reference
-	public static const CREDIT_REFERENCE_SET = 'reference_set';
+	const CREDIT_REFERENCE_SET = 'reference_set';
 
 	// Capture funds using credit card reference
-	public static const CREDIT_REFERENCE_TXN = 'reference_txn';
+	const CREDIT_REFERENCE_TXN = 'reference_txn';
 
 	// Remove a credit card reference
-	public static const CREDIT_REFERENCE_REMOVE = 'reference_remove';
+	const CREDIT_REFERENCE_REMOVE = 'reference_remove';
 
 	// Credit funds to a credit card reference
-	public static const CREDIT_REFERENCE_CREDIT = 'reference_credit';
+	const CREDIT_REFERENCE_CREDIT = 'reference_credit';
 
 	// Credit funds to a credit card account
-	public static const CREDIT_CREDIT = 'credit';
+	const CREDIT_CREDIT = 'credit';
 
 	// Void a credit card transaction before it clears
-	public static const CREDIT_VOID = 'void';
+	const CREDIT_VOID = 'void';
 
 	/* Public Data Members */
 	

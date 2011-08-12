@@ -49,7 +49,7 @@ class OracleDBQueryPopulationRoutine extends QueryPopulationRoutine {
 	// Expects $queryParameters to be in format [0] => (type => 'decimal', value=> 10) etc
 	private function populateQueryWithOracleByBindName( $queryTransaction, $queryParameters, $method = 'sprintf', $associative = false, $sort = false ) {
 		// TODO - should use oci_bind_by_name
-		throw new Exception('OracleDBQueryPopulationRoutine::populateQueryWithOracleByBindName() is not yet implemented.')
+		throw new Exception('OracleDBQueryPopulationRoutine::populateQueryWithOracleByBindName() is not yet implemented.');
 	}
 
 }
