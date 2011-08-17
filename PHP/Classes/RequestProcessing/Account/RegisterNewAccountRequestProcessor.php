@@ -236,7 +236,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 	
 	
 	/**
-	 * @return TRUE if the referralId is unique, FALSE otherwise.
+	 * @return true if the referralId is unique, false otherwise.
  	 */
 	private function isConfirmationCodeUnique($confirmationId){
 		

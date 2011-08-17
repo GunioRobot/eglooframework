@@ -116,7 +116,7 @@ function eglooAutoload($class_name) {
 		$autoload_hash = array();
 	}
 
-	static $possible_path = NULL;
+	static $possible_path = null;
 
 	// List here whatever formats you use for your file names. Note that, if you autoload
 	// a class that implements a non-loaded interface, you will also need to autoload that 
@@ -126,7 +126,7 @@ function eglooAutoload($class_name) {
 	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
 
 	// Set the first time autoload is called
-	if ( NULL === $possible_path ) {
+	if ( null === $possible_path ) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkRootPath() . '/PHP';
 		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' . 

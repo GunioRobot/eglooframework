@@ -59,7 +59,7 @@ class MySQLiOOPQueryExecutionRoutine extends QueryExecutionRoutine {
 		if (isset($metadata) && !empty($metadata)) {
 			while($column = $metadata->fetch_field()) {
 				$var = $column->name;
-				$$var = NULL;
+				$$var = null;
 				$refResults[] = &$$var;
 				$columns[] = $column->name;
 			}

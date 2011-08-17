@@ -119,7 +119,7 @@ final class eGlooLogger {
 	 * NOTE: DO NOT use XML yet.
 	 * 
 	 * @param $type		the type to set, either "log", "html", or "xml"
-	 * @returns NULL
+	 * @returns null
 	 */
 	 public static function setLoggingType($type){
 		self::$loggingType = $type;
@@ -155,9 +155,9 @@ final class eGlooLogger {
 	 * @param $timezone					an additional timezone to display in the logs, in case
 	 *									developers are not in the same timezone as their servers
 	 * @throws eGlooLoggerException		if there was an error writing to the log file
-	 * @returns NULL 
+	 * @returns null 
 	 */
-	public static function writeLog( $level, $message, $logPackage = 'Default', $data = NULL, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
+	public static function writeLog( $level, $message, $logPackage = 'Default', $data = null, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
 		if ( $level & self::$loggingLevel ) {
 			// Make sure we're running an eGloo Web App before actually logging to the web logs
 			if ( !defined('STDIN') ) {

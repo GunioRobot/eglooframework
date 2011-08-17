@@ -193,7 +193,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
     }
 
 	/**
-	 * @return TRUE if the referralId is unique, FALSE otherwise.
+	 * @return true if the referralId is unique, false otherwise.
  	 */
 	private function isReferralCodeUnique( $referralId ) {
 		
@@ -211,7 +211,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 	 * @param userID   		The user which requested the invitation.
 	 * @param emailAddress  The email address to send the invitation to
 	 * @param referralCode  The referral code used to log in to the system.
-	 * @return TRUE if successful, FALSE otherwise.
+	 * @return true if successful, false otherwise.
 	 */
 	private function addUserInvite($userID, $emailAddress, $referralCode){
 		$daoFunction='addUserInvite';
@@ -290,7 +290,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 	}
 
 	/**
-	 * @return TRUE if the referralId is unique, FALSE otherwise.
+	 * @return true if the referralId is unique, false otherwise.
  	 */
 	private function isConfirmationCodeUnique($confirmationId){
 		

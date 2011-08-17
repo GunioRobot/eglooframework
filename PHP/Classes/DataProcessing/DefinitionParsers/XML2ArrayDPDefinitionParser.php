@@ -200,7 +200,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		// Iterate over each DPStatementClass
 		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dataProcessingDynamicObject ) {
 			// Grab the ID for this particular DPDynamicObject
-			$dataProcessingDynamicObjectID = isset($dataProcessingDynamicObject['id']) ? (string) $dataProcessingDynamicObject['id'] : NULL;
+			$dataProcessingDynamicObjectID = isset($dataProcessingDynamicObject['id']) ? (string) $dataProcessingDynamicObject['id'] : null;
 
 			// If no ID is set for this DPDynamicObject, this is not a valid DataProcessing.xml and we should get out of here
 			if ( !$dataProcessingDynamicObjectID || trim($dataProcessingDynamicObjectID) === '' ) {
@@ -212,7 +212,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			// Iterate over each DPDynamicObjectStaticMethod in this DPDynamicObject
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectStaticMethod' ) as $dataProcessingDynamicObjectStaticMethod ) {
 				// Grab the ID for this particular DPDynamicObjectStaticMethod
-				$dataProcessingDynamicObjectStaticMethodID = isset($dataProcessingDynamicObjectStaticMethod['id']) ? (string) $dataProcessingDynamicObjectStaticMethod['id'] : NULL;
+				$dataProcessingDynamicObjectStaticMethodID = isset($dataProcessingDynamicObjectStaticMethod['id']) ? (string) $dataProcessingDynamicObjectStaticMethod['id'] : null;
 
 				// If no ID is set for this DPDynamicObjectStaticMethod, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingDynamicObjectStaticMethodID || trim($dataProcessingDynamicObjectStaticMethodID) === '' ) {
@@ -227,7 +227,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 					// Grab the ID for this particular DPDynamicObjectStaticMethodArgument
 					$dataProcessingDynamicObjectStaticMethodArgumentID =
-						isset($dataProcessingDynamicObjectStaticMethodArgument['id']) ? (string) $dataProcessingDynamicObjectStaticMethodArgument['id'] : NULL;
+						isset($dataProcessingDynamicObjectStaticMethodArgument['id']) ? (string) $dataProcessingDynamicObjectStaticMethodArgument['id'] : null;
 
 					// If no ID is set for this DPDynamicObjectStaticMethodArgument, this is not a valid DataProcessing.xml and we should get out of here
 					if ( !$dataProcessingDynamicObjectStaticMethodArgumentID || trim($dataProcessingDynamicObjectStaticMethodArgumentID) === '' ) {
@@ -246,7 +246,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 					// Grab the order for this particular DPDynamicObjectStaticMethodExecutionStatement
 					$dataProcessingDynamicObjectStaticMethodExecutionStatementOrder =
 						isset($dataProcessingDynamicObjectStaticMethodExecutionStatement['order']) ?
-							(string) $dataProcessingDynamicObjectStaticMethodExecutionStatement['order'] : NULL;
+							(string) $dataProcessingDynamicObjectStaticMethodExecutionStatement['order'] : null;
 
 					// If no order is set for this DPDynamicObjectStaticMethodExecutionStatement, this is not a valid DataProcessing.xml and we should get out of here
 					if ( !$dataProcessingDynamicObjectStaticMethodExecutionStatementOrder ||
@@ -345,7 +345,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			// Iterate over each DPDynamicObjectMethod in this DPDynamicObject
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectMethod' ) as $dataProcessingDynamicObjectMethod ) {
 				// Grab the ID for this particular DPDynamicObjectMethod
-				$dataProcessingDynamicObjectMethodID = isset($dataProcessingDynamicObjectMethod['id']) ? (string) $dataProcessingDynamicObjectMethod['id'] : NULL;
+				$dataProcessingDynamicObjectMethodID = isset($dataProcessingDynamicObjectMethod['id']) ? (string) $dataProcessingDynamicObjectMethod['id'] : null;
 
 				// If no ID is set for this DPDynamicObjectMethod, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingDynamicObjectMethodID || trim($dataProcessingDynamicObjectMethodID) === '' ) {
@@ -359,7 +359,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 					// Grab the ID for this particular DPDynamicObjectMethodArgument
 					$dataProcessingDynamicObjectMethodArgumentID =
-						isset($dataProcessingDynamicObjectMethodArgument['id']) ? (string) $dataProcessingDynamicObjectMethodArgument['id'] : NULL;
+						isset($dataProcessingDynamicObjectMethodArgument['id']) ? (string) $dataProcessingDynamicObjectMethodArgument['id'] : null;
 
 					// If no ID is set for this DPDynamicObjectMethodArgument, this is not a valid DataProcessing.xml and we should get out of here
 					if ( !$dataProcessingDynamicObjectMethodArgumentID || trim($dataProcessingDynamicObjectMethodArgumentID) === '' ) {
@@ -382,7 +382,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			// Iterate over each DPDynamicObjectConstant in this DPDynamicObject
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectConstant' ) as $dataProcessingDynamicObjectConstant ) {
 				// Grab the ID for this particular DPDynamicObjectConstant
-				$dataProcessingDynamicObjectConstantID = isset($dataProcessingDynamicObjectConstant['id']) ? (string) $dataProcessingDynamicObjectConstant['id'] : NULL;
+				$dataProcessingDynamicObjectConstantID = isset($dataProcessingDynamicObjectConstant['id']) ? (string) $dataProcessingDynamicObjectConstant['id'] : null;
 
 				// If no ID is set for this DPDynamicObjectConstant, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingDynamicObjectConstantID || trim($dataProcessingDynamicObjectConstantID) === '' ) {
@@ -391,15 +391,15 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				// Grab the type for this particular DPDynamicObjectConstant
 				$dataProcessingDynamicObjectConstantType =
-					isset($dataProcessingDynamicObjectConstant['type']) ? (string) $dataProcessingDynamicObjectConstant['type'] : NULL;
+					isset($dataProcessingDynamicObjectConstant['type']) ? (string) $dataProcessingDynamicObjectConstant['type'] : null;
 
 				// Grab the default value for this particular DPDynamicObjectConstant
 				$dataProcessingDynamicObjectConstantDefaultValue =
-					isset($dataProcessingDynamicObjectConstant['defaultValue']) ? (string) $dataProcessingDynamicObjectConstant['defaultValue'] : NULL;
+					isset($dataProcessingDynamicObjectConstant['defaultValue']) ? (string) $dataProcessingDynamicObjectConstant['defaultValue'] : null;
 
 				// Grab the default value type for this particular DPDynamicObjectConstant
 				$dataProcessingDynamicObjectConstantDefaultValueType =
-					isset($dataProcessingDynamicObjectConstant['defaultValueType']) ? (string) $dataProcessingDynamicObjectConstant['defaultValueType'] : NULL;
+					isset($dataProcessingDynamicObjectConstant['defaultValueType']) ? (string) $dataProcessingDynamicObjectConstant['defaultValueType'] : null;
 
 				$dpDynamicObjectConstants[$dataProcessingDynamicObjectConstantID] =
 					array(
@@ -416,7 +416,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectStaticMember' ) as $dataProcessingDynamicObjectStaticMember ) {
 				// Grab the ID for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectStaticMemberID =
-					isset($dataProcessingDynamicObjectStaticMember['id']) ? (string) $dataProcessingDynamicObjectStaticMember['id'] : NULL;
+					isset($dataProcessingDynamicObjectStaticMember['id']) ? (string) $dataProcessingDynamicObjectStaticMember['id'] : null;
 
 				// If no ID is set for this DPDynamicObjectStaticMember, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingDynamicObjectStaticMemberID || trim($dataProcessingDynamicObjectStaticMemberID) === '' ) {
@@ -425,19 +425,19 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				// Grab the type for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectStaticMemberType =
-					isset($dataProcessingDynamicObjectStaticMember['type']) ? (string) $dataProcessingDynamicObjectStaticMember['type'] : NULL;
+					isset($dataProcessingDynamicObjectStaticMember['type']) ? (string) $dataProcessingDynamicObjectStaticMember['type'] : null;
 
 				// Grab the default value for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectStaticMemberDefaultValue =
-					isset($dataProcessingDynamicObjectStaticMember['defaultValue']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValue'] : NULL;
+					isset($dataProcessingDynamicObjectStaticMember['defaultValue']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValue'] : null;
 
 				// Grab the default value type for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectStaticMemberDefaultValueType =
-					isset($dataProcessingDynamicObjectStaticMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValueType'] : NULL;
+					isset($dataProcessingDynamicObjectStaticMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectStaticMember['defaultValueType'] : null;
 
 				// Grab the scope for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectStaticMemberScope =
-					isset($dataProcessingDynamicObjectStaticMember['scope']) ? (string) $dataProcessingDynamicObjectStaticMember['scope'] : NULL;
+					isset($dataProcessingDynamicObjectStaticMember['scope']) ? (string) $dataProcessingDynamicObjectStaticMember['scope'] : null;
 
 				$dpDynamicObjectStaticMembers[$dataProcessingDynamicObjectStaticMemberID] =
 					array(
@@ -455,7 +455,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			foreach( $dataProcessingDynamicObject->xpath( 'child::DPDynamicObjectMember' ) as $dataProcessingDynamicObjectMember ) {
 				// Grab the ID for this particular DPDynamicObjectStaticMember
 				$dataProcessingDynamicObjectMemberID =
-					isset($dataProcessingDynamicObjectMember['id']) ? (string) $dataProcessingDynamicObjectMember['id'] : NULL;
+					isset($dataProcessingDynamicObjectMember['id']) ? (string) $dataProcessingDynamicObjectMember['id'] : null;
 
 				// If no ID is set for this DPDynamicObjectMember, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingDynamicObjectMemberID || trim($dataProcessingDynamicObjectMemberID) === '' ) {
@@ -464,23 +464,23 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				// Grab the type for this particular DPDynamicObjectMember
 				$dataProcessingDynamicObjectMemberType =
-					isset($dataProcessingDynamicObjectMember['type']) ? (string) $dataProcessingDynamicObjectMember['type'] : NULL;
+					isset($dataProcessingDynamicObjectMember['type']) ? (string) $dataProcessingDynamicObjectMember['type'] : null;
 
 				// Grab the default value for this particular DPDynamicObjectMember
 				$dataProcessingDynamicObjectMemberDefaultValue =
-					isset($dataProcessingDynamicObjectMember['defaultValue']) ? (string) $dataProcessingDynamicObjectMember['defaultValue'] : NULL;
+					isset($dataProcessingDynamicObjectMember['defaultValue']) ? (string) $dataProcessingDynamicObjectMember['defaultValue'] : null;
 
 				// Grab the default value type for this particular DPDynamicObjectMember
 				$dataProcessingDynamicObjectMemberDefaultValueType =
-					isset($dataProcessingDynamicObjectMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectMember['defaultValueType'] : NULL;
+					isset($dataProcessingDynamicObjectMember['defaultValueType']) ? (string) $dataProcessingDynamicObjectMember['defaultValueType'] : null;
 
 				// Grab the scope for this particular DPDynamicObjectMember
 				$dataProcessingDynamicObjectMemberScope =
-					isset($dataProcessingDynamicObjectMember['scope']) ? (string) $dataProcessingDynamicObjectMember['scope'] : NULL;
+					isset($dataProcessingDynamicObjectMember['scope']) ? (string) $dataProcessingDynamicObjectMember['scope'] : null;
 
 				// Grab the scope for this particular DPDynamicObjectMember
 				$dataProcessingDynamicObjectMemberManaged =
-					isset($dataProcessingDynamicObjectMember['managed']) ? (string) $dataProcessingDynamicObjectMember['managed'] : NULL;
+					isset($dataProcessingDynamicObjectMember['managed']) ? (string) $dataProcessingDynamicObjectMember['managed'] : null;
 
 				if ( strtolower($dataProcessingDynamicObjectMemberManaged) === 'true' ) {
 					$dataProcessingDynamicObjectMemberManaged = true;
@@ -538,7 +538,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		// Iterate over the DPSequence nodes so that we can parse each DPSequence definition
 		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPSequence' ) as $dpSequence ) {
 			// Grab the ID for this particular DPSequence
-			$dpSequenceID = isset($dpSequence['id']) ? (string) $dpSequence['id'] : NULL;
+			$dpSequenceID = isset($dpSequence['id']) ? (string) $dpSequence['id'] : null;
 
 			// If no ID is set for this DPSequence, this is not a valid DataProcessing.xml and we should get out of here
 			if ( !$dpSequenceID || trim($dpSequenceID) === '' ) {
@@ -630,7 +630,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		// Iterate over each DPStatementClass
 		foreach( $dataProcessingXMLObject->xpath( '/tns:DataProcessing/DPStatements/DPStatementClass' ) as $dataProcessingStatementClass ) {
 			// Grab the ID for this particular DPStatementClass
-			$dataProcessingStatementClassID = isset($dataProcessingStatementClass['id']) ? (string) $dataProcessingStatementClass['id'] : NULL;
+			$dataProcessingStatementClassID = isset($dataProcessingStatementClass['id']) ? (string) $dataProcessingStatementClass['id'] : null;
 
 			// If no ID is set for this DPStatementClass, this is not a valid DataProcessing.xml and we should get out of here
 			if ( !$dataProcessingStatementClassID || trim($dataProcessingStatementClassID) === '' ) {
@@ -642,7 +642,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			// Iterate over each DPStatement in this DPStatementClass
 			foreach( $dataProcessingStatementClass->xpath( 'child::DPStatement' ) as $dataProcessingStatement ) {
 				// Grab the ID for this particular DPStatement
-				$dataProcessingStatementID = isset($dataProcessingStatement['id']) ? (string) $dataProcessingStatement['id'] : NULL;
+				$dataProcessingStatementID = isset($dataProcessingStatement['id']) ? (string) $dataProcessingStatement['id'] : null;
 
 				// If no ID is set for this DPStatement, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingStatementID || trim($dataProcessingStatementID) === '' ) {
@@ -650,7 +650,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				}
 
 				// Grab the type for this particular DPStatement
-				$dataProcessingStatementType = isset($dataProcessingStatement['type']) ? (string) $dataProcessingStatement['type'] : NULL;
+				$dataProcessingStatementType = isset($dataProcessingStatement['type']) ? (string) $dataProcessingStatement['type'] : null;
 
 				// If no type is set for this DPStatement, this is not a valid DataProcessing.xml and we should get out of here
 				if ( !$dataProcessingStatementType || trim($dataProcessingStatementType) === '' ) {
@@ -663,8 +663,8 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				if ( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) ) {
 					foreach( $dataProcessingStatement->xpath( 'child::DPStatementArgumentLists/DPStatementArgumentList' ) as $dpStatementArgumentList ) {
-						$argumentListID = isset($dpStatementArgumentList['argumentListID']) ? (string) $dpStatementArgumentList['argumentListID'] : NULL;
-						$parameterPreparation = isset($dpStatementArgumentList['parameterPreparation']) ? (string) $dpStatementArgumentList['parameterPreparation'] : NULL;
+						$argumentListID = isset($dpStatementArgumentList['argumentListID']) ? (string) $dpStatementArgumentList['argumentListID'] : null;
+						$parameterPreparation = isset($dpStatementArgumentList['parameterPreparation']) ? (string) $dpStatementArgumentList['parameterPreparation'] : null;
 
 						$argumentLists[$argumentListID] = array( 'argumentListID' => $argumentListID, 'parameterPreparation' => $parameterPreparation );
 
@@ -672,16 +672,16 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 						if ( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') ) {
 							foreach( $dpStatementArgumentList->xpath( 'child::DPStatementArgument') as $dpStatementArgument ) {
-								$argumentID = isset($dpStatementArgument['id']) ? (string) $dpStatementArgument['id'] : NULL;
-								$argumentType = isset($dpStatementArgument['type']) ? (string) $dpStatementArgument['type'] : NULL;
+								$argumentID = isset($dpStatementArgument['id']) ? (string) $dpStatementArgument['id'] : null;
+								$argumentType = isset($dpStatementArgument['type']) ? (string) $dpStatementArgument['type'] : null;
 
 								$arguments[$argumentID] = array( 'argumentID' => $argumentID, 'argumentType' => $argumentType );
 
 								if ( $argumentType === 'integer' ) {
-									$arguments[$argumentID]['min'] = isset($dpStatementArgument['min']) ? (string) $dpStatementArgument['min'] : NULL;
-									$arguments[$argumentID]['max'] = isset($dpStatementArgument['max']) ? (string) $dpStatementArgument['max'] : NULL;
+									$arguments[$argumentID]['min'] = isset($dpStatementArgument['min']) ? (string) $dpStatementArgument['min'] : null;
+									$arguments[$argumentID]['max'] = isset($dpStatementArgument['max']) ? (string) $dpStatementArgument['max'] : null;
 								} else if ( $argumentType === 'string' ) {
-									$arguments[$argumentID]['pattern'] = isset($dpStatementArgument['pattern']) ? (string) $dpStatementArgument['pattern'] : NULL;
+									$arguments[$argumentID]['pattern'] = isset($dpStatementArgument['pattern']) ? (string) $dpStatementArgument['pattern'] : null;
 								}
 							}
 						}
@@ -696,7 +696,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				if ( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) ) {
 					foreach( $dataProcessingStatement->xpath( 'child::DPStatementReturn' ) as $dpStatementReturn ) {
-						$dpStatementReturnType = isset($dpStatementReturn['type']) ? (string) $dpStatementReturn['type'] : NULL;
+						$dpStatementReturnType = isset($dpStatementReturn['type']) ? (string) $dpStatementReturn['type'] : null;
 
 						$statementReturn['type'] = $dpStatementReturnType;
 
@@ -704,9 +704,9 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 						if ( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) ) {
 							foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumnSet' ) as $dpStatementReturnColumnSet ) {
-								$dpStatementReturnColumnSetTable = isset($dpStatementReturnColumnSet['table']) ? (string) $dpStatementReturnColumnSet['table'] : NULL;
-								$dpStatementReturnColumnSetPattern = isset($dpStatementReturnColumnSet['pattern']) ? (string) $dpStatementReturnColumnSet['pattern'] : NULL;
-								$dpStatementReturnColumnSetType = isset($dpStatementReturnColumnSet['type']) ? (string) $dpStatementReturnColumnSet['type'] : NULL;
+								$dpStatementReturnColumnSetTable = isset($dpStatementReturnColumnSet['table']) ? (string) $dpStatementReturnColumnSet['table'] : null;
+								$dpStatementReturnColumnSetPattern = isset($dpStatementReturnColumnSet['pattern']) ? (string) $dpStatementReturnColumnSet['pattern'] : null;
+								$dpStatementReturnColumnSetType = isset($dpStatementReturnColumnSet['type']) ? (string) $dpStatementReturnColumnSet['type'] : null;
 
 								$statementReturnColumnSets[$dpStatementReturnColumnSetTable] =
 									array( 'table' => $dpStatementReturnColumnSetTable, 'pattern' => $dpStatementReturnColumnSetPattern, 'type' => $dpStatementReturnColumnSetType );
@@ -719,19 +719,19 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 						if ( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) ) {
 							foreach( $dpStatementReturn->xpath( 'child::DPStatementReturnColumn' ) as $dpStatementReturnColumn ) {
-								$dpStatementReturnColumnID = isset($dpStatementReturnColumn['id']) ? (string) $dpStatementReturnColumn['id'] : NULL;
-								$dpStatementReturnColumnType = isset($dpStatementReturnColumn['type']) ? (string) $dpStatementReturnColumn['type'] : NULL;
+								$dpStatementReturnColumnID = isset($dpStatementReturnColumn['id']) ? (string) $dpStatementReturnColumn['id'] : null;
+								$dpStatementReturnColumnType = isset($dpStatementReturnColumn['type']) ? (string) $dpStatementReturnColumn['type'] : null;
 
 								$statementReturnColumns[$dpStatementReturnColumnID] = array( 'id' => $dpStatementReturnColumnID, 'type' => $dpStatementReturnColumnType );
 
 								if ( $dpStatementReturnColumnType === 'integer' ) {
 									$statementReturnColumns[$dpStatementReturnColumnID]['min'] =
-										isset($dpStatementReturnColumn['min']) ? (string) $dpStatementReturnColumn['min'] : NULL;
+										isset($dpStatementReturnColumn['min']) ? (string) $dpStatementReturnColumn['min'] : null;
 									$statementReturnColumns[$dpStatementReturnColumnID]['max'] =
-										isset($dpStatementReturnColumn['max']) ? (string) $dpStatementReturnColumn['max'] : NULL;
+										isset($dpStatementReturnColumn['max']) ? (string) $dpStatementReturnColumn['max'] : null;
 								} else if ( $dpStatementReturnColumnType === 'string' ) {
 									$statementReturnColumns[$dpStatementReturnColumnID]['pattern'] =
-										isset($dpStatementReturnColumn['pattern']) ? (string) $dpStatementReturnColumn['pattern'] : NULL;
+										isset($dpStatementReturnColumn['pattern']) ? (string) $dpStatementReturnColumn['pattern'] : null;
 								}
 							}
 						}
@@ -746,7 +746,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				if ( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) ) {
 					foreach( $dataProcessingStatement->xpath( 'child::DPStatementVariants/DPStatementVariant' ) as $dpStatementVariant ) {
-						$dpStatementVariantConnection = isset($dpStatementVariant['connection']) ? (string) $dpStatementVariant['connection'] : NULL;
+						$dpStatementVariantConnection = isset($dpStatementVariant['connection']) ? (string) $dpStatementVariant['connection'] : null;
 
 						$statementVariant = array( 'connection' => $dpStatementVariantConnection );
 
@@ -755,8 +755,8 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 						if ( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) ) {
 							foreach( $dpStatementVariant->xpath( 'child::DPStatementVariantEngineMode' ) as $dpStatementVariantEngineMode ) {
 								$dpStatementVariantEngineModeMode = isset($dpStatementVariantEngineMode['mode']) ?
-									eGlooConfiguration::getEngineModeFromString( (string) $dpStatementVariantEngineMode['mode'] ) : NULL;
-								$dpStatementVariantEngineModeName = isset($dpStatementVariantEngineMode['mode']) ? (string) $dpStatementVariantEngineMode['mode'] : NULL;
+									eGlooConfiguration::getEngineModeFromString( (string) $dpStatementVariantEngineMode['mode'] ) : null;
+								$dpStatementVariantEngineModeName = isset($dpStatementVariantEngineMode['mode']) ? (string) $dpStatementVariantEngineMode['mode'] : null;
 
 								$statementVariantEngineModes[$dpStatementVariantEngineModeMode] =
 									array( 'mode' => $dpStatementVariantEngineModeMode, 'modeName' => $dpStatementVariantEngineModeName );
@@ -765,7 +765,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 								if ( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) ) {
 									foreach( $dpStatementVariantEngineMode->xpath( 'child::DPStatementIncludePath' ) as $dpStatementIncludePath ) {
-										$dpStatementIncludePathArgumentList = isset($dpStatementIncludePath['argumentList']) ? (string) $dpStatementIncludePath['argumentList'] : NULL;
+										$dpStatementIncludePathArgumentList = isset($dpStatementIncludePath['argumentList']) ? (string) $dpStatementIncludePath['argumentList'] : null;
 
 										$dpStatementIncludePathValue = trim( (string) $dpStatementIncludePath );
 
@@ -789,11 +789,11 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 				if ( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) ) {
 					foreach( $dataProcessingStatement->xpath( 'child::DPStatementConstraints/DPStatementConstraint' ) as $dpStatementConstraint ) {
-						$dpStatementConstraintType = isset($dpStatementConstraint['type']) ? (string) $dpStatementConstraint['type'] : NULL;
-						$dpStatementConstraintMin = isset($dpStatementConstraint['min']) ? (string) $dpStatementConstraint['min'] : NULL;
-						$dpStatementConstraintMax = isset($dpStatementConstraint['max']) ? (string) $dpStatementConstraint['max'] : NULL;
-						$dpStatementConstraintGranularity = isset($dpStatementConstraint['granularity']) ? (string) $dpStatementConstraint['granularity'] : NULL;
-						$dpStatementConstraintLevel = isset($dpStatementConstraint['level']) ? (string) $dpStatementConstraint['level'] : NULL;
+						$dpStatementConstraintType = isset($dpStatementConstraint['type']) ? (string) $dpStatementConstraint['type'] : null;
+						$dpStatementConstraintMin = isset($dpStatementConstraint['min']) ? (string) $dpStatementConstraint['min'] : null;
+						$dpStatementConstraintMax = isset($dpStatementConstraint['max']) ? (string) $dpStatementConstraint['max'] : null;
+						$dpStatementConstraintGranularity = isset($dpStatementConstraint['granularity']) ? (string) $dpStatementConstraint['granularity'] : null;
+						$dpStatementConstraintLevel = isset($dpStatementConstraint['level']) ? (string) $dpStatementConstraint['level'] : null;
 
 						$statementConstraints[] = array(	'type' => $dpStatementConstraintType,
 															'min' => $dpStatementConstraintMin,

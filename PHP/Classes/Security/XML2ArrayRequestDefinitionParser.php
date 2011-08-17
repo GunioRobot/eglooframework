@@ -124,7 +124,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		// Iterate over the RequestAttributeSet nodes so that we can parse each request attribute set definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestAttributeSet' ) as $attributeSet ) {
 			// Grab the ID for this particular RequestAttributeSet
-			$attributeSetID = isset($attributeSet['id']) ? (string) $attributeSet['id'] : NULL;
+			$attributeSetID = isset($attributeSet['id']) ? (string) $attributeSet['id'] : null;
 
 			// If no ID is set for this RequestAttributeSet, this is not a valid Requests.xml and we should get out of here
 			if ( !$attributeSetID || trim($attributeSetID) === '' ) {
@@ -313,7 +313,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		// Iterate over the RequestClass nodes so that we can parse each request definition
 		foreach( $requestXMLObject->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
 			// Grab the ID for this particular RequestClass
-			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : NULL;
+			$requestClassID = isset($requestClass['id']) ? (string) $requestClass['id'] : null;
 
 			// If no ID is set for this RequestClass, this is not a valid Requests.xml and we should get out of here
 			if ( !$requestClassID || trim($requestClassID) === '' ) {
@@ -326,19 +326,19 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			// Iterate over the Request nodes for this RequestClass so that we can parse each request definition
 			foreach( $requestClass->xpath( 'child::Request' ) as $request ) {
 				// Grab the ID for this particular Request
-				$requestID = isset($request['id']) ? (string) $request['id'] : NULL;
+				$requestID = isset($request['id']) ? (string) $request['id'] : null;
 
 				// Grab the name of the RequestProcessor specified to handle this particular Request
 				// Example:
 				// $requestProcessor = new $processorID();
 				// $requestProcessor->processRequest();
-				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : NULL;
+				$processorID = isset($request['processorID']) ? (string) $request['processorID'] : null;
 
 				// Grab the name of the RequestProcessor specified to handle errors for this particular Request
 				// Example:
 				// $errorRequestProcessor = new $errorProcessorID();
 				// $errorRequestProcessor->processErrorRequest();
-				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : NULL;
+				$errorProcessorID = isset($request['errorProcessorID']) ? (string) $request['errorProcessorID'] : null;
 
 				// If no ID is set for this Request, this is not a valid Requests.xml and we should get out of here
 				if ( !$requestID || trim($requestID) === '' ) {

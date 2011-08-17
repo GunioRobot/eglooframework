@@ -530,7 +530,7 @@ final class eGlooConfiguration {
 		}
 
 		// Dump our configuration set
-		$config_dump = var_export(self::$configuration_options, TRUE);
+		$config_dump = var_export(self::$configuration_options, true);
 		file_put_contents($runtime_cache_path, $config_dump);
 	}
 
@@ -566,7 +566,7 @@ final class eGlooConfiguration {
 		file_put_contents( $runtime_cache_path . '.class.php' , $class_definition );
 
 		// Dump our configuration set
-		$config_dump = var_export(self::$configuration_options, TRUE);
+		$config_dump = var_export(self::$configuration_options, true);
 		file_put_contents($runtime_cache_path, $config_dump);
 	}
 
@@ -721,7 +721,7 @@ final class eGlooConfiguration {
 		}
 
 		// Dump our configuration set
-		$config_dump = var_export(self::$configuration_options, TRUE);
+		$config_dump = var_export(self::$configuration_options, true);
 		file_put_contents($config_cache_path, $config_dump);
 	}
 
@@ -905,7 +905,7 @@ final class eGlooConfiguration {
 		}
 
 		// Dump our configuration set
-		$config_dump = var_export(self::$configuration_options, TRUE);
+		$config_dump = var_export(self::$configuration_options, true);
 		file_put_contents($config_cache_path, $config_dump);
 	}
 
@@ -1226,7 +1226,7 @@ final class eGlooConfiguration {
 		}
 
 		// Dump our configuration set
-		$system_dump = var_export(self::$system_configuration, TRUE);
+		$system_dump = var_export(self::$system_configuration, true);
 		file_put_contents($system_cache_path, $system_dump);
 	}
 

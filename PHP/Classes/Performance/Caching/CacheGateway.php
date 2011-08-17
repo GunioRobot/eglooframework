@@ -252,7 +252,7 @@ class CacheGateway {
 					$this->_filecache = array();
 				}
 				
-				// $this->_filecache = var_export(, TRUE);
+				// $this->_filecache = var_export(, true);
 				// file_put_contents('ConfigCache.php', $config_dump);
 
 		} else {
@@ -637,7 +637,7 @@ class CacheGateway {
 
 	public function __destruct() {
 		if ($this->_cache_tiers & self::USE_FILECACHE) {
-			$cache_dump = var_export($this->_filecache, TRUE);
+			$cache_dump = var_export($this->_filecache, true);
 			file_put_contents($this->_cache_file_path, $cache_dump);
 		}
 	}

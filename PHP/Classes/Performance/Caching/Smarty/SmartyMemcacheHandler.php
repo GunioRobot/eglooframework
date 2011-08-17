@@ -43,7 +43,7 @@
  * @param    string   $cache_id       Cache identifier
  * @param    string   $compile_id     Compile identifier
  * @param    integer  $exp_time       Expiration time
- * @return   boolean                  TRUE on success, FALSE otherwise
+ * @return   boolean                  true on success, false otherwise
  */
 function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=null, $cache_id=null, $compile_id=null, $exp_time=null) {
     // Create unique cache id:
