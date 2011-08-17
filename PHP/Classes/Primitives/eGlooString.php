@@ -63,7 +63,7 @@ class eGlooString {
 
 		$cur_encoding = mb_detect_encoding($string) ;
 
-		if ($cur_encoding == "UTF-8" && mb_check_encoding($string,"UTF-8")) {
+		if ($cur_encoding == "UTF-8" && mb_check_encoding($string, "UTF-8")) {
 			$retVal = $string;
 		} else {
 			$retVal = utf8_encode($string);

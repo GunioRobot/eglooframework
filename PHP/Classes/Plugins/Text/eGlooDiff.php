@@ -87,8 +87,8 @@ class eGlooDiff {
 		$ret = '';
 		foreach($diff as $k){
 			if(is_array($k))
-				$ret .= (!empty($k['d'])?"<del>".implode(' ',$k['d'])."</del> ":'').
-					(!empty($k['i'])?"<ins>".implode(' ',$k['i'])."</ins> ":'');
+				$ret .= (!empty($k['d'])?"<del>".implode(' ', $k['d'])."</del> ":'').
+					(!empty($k['i'])?"<ins>".implode(' ', $k['i'])."</ins> ":'');
 			else $ret .= $k . ' ';
 		}
 		return $ret;

@@ -49,7 +49,7 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
     // Create unique cache id:
     // We are using smarty's internal functions here to be as compatible as possible.
     $_auto_id    = $smarty->_get_auto_id($cache_id, $compile_id);
-    $_cache_file = substr($smarty->_get_auto_filename(".", $tpl_file, $_auto_id),2);
+    $_cache_file = substr($smarty->_get_auto_filename(".", $tpl_file, $_auto_id), 2);
     $memcache_id  = "smarty_memcache|".$_cache_file;
     
     $cacheGateway = CacheGateway::getCacheGateway();
@@ -96,5 +96,3 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
 
     return $return;
 }
-
-?>

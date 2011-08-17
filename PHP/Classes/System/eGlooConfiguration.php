@@ -563,7 +563,7 @@ final class eGlooConfiguration {
 		$class_definition = '<?php final class eGlooRuntimeCacheClass {' .
 			'public static $configuration_options = ' . getArrayDefinitionString( self::$configuration_options ) . ';}';
 
-		file_put_contents( $runtime_cache_path . '.class.php' , $class_definition );
+		file_put_contents( $runtime_cache_path . '.class.php', $class_definition );
 
 		// Dump our configuration set
 		$config_dump = var_export(self::$configuration_options, true);

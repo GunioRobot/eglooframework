@@ -73,7 +73,7 @@ class ViewImageThumbnailRequestProcessor extends RequestProcessor {
             $newWidth = $imageWidth;
         }
 
-        MagickResizeImage( $magickWand, $newWidth, $newHeight, MW_LanczosFilter, 0.65 );
+        MagickResizeImage( $magickWand, $newWidth, $newHeight, MW_LANCZOSFILTER, 0.65 );
         $output = MagickGetImageBlob( $magickWand );
         $outputMIMEType = MagickGetImageMimeType( $magickWand );
 

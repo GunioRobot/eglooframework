@@ -84,7 +84,7 @@ final class eGlooLogger {
 		self::$requestDate = date( 'Y-m-d' );
 
 		$num = mt_rand ( 0, 0xffffff );
-		self::$requestID = sprintf ( "%06x" , $num );
+		self::$requestID = sprintf ( "%06x", $num );
 		
 		self::setLoggingLevel( $level );
 		self::setLoggingType( $format );
