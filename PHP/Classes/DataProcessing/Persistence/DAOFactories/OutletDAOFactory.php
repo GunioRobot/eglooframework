@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class OutletDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class OutletDAOFactory extends ConcreteDAOFactory {
 		return new OutletSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new OutletAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new OutletUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new OutletUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new OutletFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new OutletBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new OutletCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new OutletUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new OutletSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new OutletRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new OutletImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new OutletGenericCubeDAO( $this->_connection_name );
 	}

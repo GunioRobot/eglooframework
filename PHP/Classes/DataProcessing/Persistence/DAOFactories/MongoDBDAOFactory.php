@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class MongoDBDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class MongoDBDAOFactory extends ConcreteDAOFactory {
 		return new MongoDBSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new MongoDBAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new MongoDBUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new MongoDBUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new MongoDBFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new MongoDBBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new MongoDBCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new MongoDBUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new MongoDBSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new MongoDBRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new MongoDBImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new MongoDBGenericCubeDAO( $this->_connection_name );
 	}

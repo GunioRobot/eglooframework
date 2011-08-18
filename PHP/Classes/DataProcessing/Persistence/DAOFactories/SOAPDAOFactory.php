@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class SOAPDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class SOAPDAOFactory extends ConcreteDAOFactory {
 		return new SOAPSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new SOAPAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new SOAPUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new SOAPUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new SOAPFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new SOAPBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new SOAPCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new SOAPUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new SOAPSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new SOAPRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new SOAPImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new SOAPGenericCubeDAO( $this->_connection_name );
 	}

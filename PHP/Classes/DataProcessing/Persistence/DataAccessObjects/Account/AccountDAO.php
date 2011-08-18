@@ -22,7 +22,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DataAccessObjects
  * @version 1.0
  */
 
@@ -31,7 +33,9 @@
  *
  * Needs to be commented
  * 
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DataAccessObjects
  */
 abstract class AccountDAO extends AbstractDAO {
     

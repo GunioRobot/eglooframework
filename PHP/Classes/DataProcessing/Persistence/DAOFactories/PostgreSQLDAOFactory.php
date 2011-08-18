@@ -22,7 +22,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -31,7 +33,9 @@
  *
  * ConcreteDAOFactory subclass to create PGSQLDAO's
  * 
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DAOFactories
  */
 class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 
@@ -42,46 +46,10 @@ class PostgreSQLDAOFactory extends ConcreteDAOFactory {
 		return new PGSQLSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new PGSQLAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new PGSQLUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new PGSQLUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new PGSQLFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new PGSQLBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new PGSQLCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new PGSQLUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new PGSQLSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new PGSQLRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new PGSQLImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new PGSQLGenericCubeDAO( $this->_connection_name );
 	}

@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class OracleDBDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class OracleDBDAOFactory extends ConcreteDAOFactory {
 		return new OracleDBSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new OracleDBAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new OracleDBUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new OracleDBUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new OracleDBFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new OracleDBBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new OracleDBCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new OracleDBUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new OracleDBSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new OracleDBRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new OracleDBImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new OracleDBGenericCubeDAO( $this->_connection_name );
 	}

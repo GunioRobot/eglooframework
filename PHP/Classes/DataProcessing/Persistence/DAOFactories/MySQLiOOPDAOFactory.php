@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class MySQLiOOPDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class MySQLiOOPDAOFactory extends ConcreteDAOFactory {
 		return new MySQLiOOPSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new MySQLiOOPAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new MySQLiOOPUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new MySQLiOOPUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new MySQLiOOPFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new MySQLiOOPBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new MySQLiOOPCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new MySQLiOOPUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new MySQLiOOPSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new MySQLiOOPRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new MySQLiOOPImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new MySQLiOOPGenericCubeDAO( $this->_connection_name );
 	}

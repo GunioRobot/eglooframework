@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class CassandraDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class CassandraDAOFactory extends ConcreteDAOFactory {
 		return new CassandraSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new CassandraAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new CassandraUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new CassandraUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new CassandraFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new CassandraBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new CassandraCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new CassandraUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new CassandraSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new CassandraRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new CassandraImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new CassandraGenericCubeDAO( $this->_connection_name );
 	}
