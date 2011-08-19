@@ -155,7 +155,7 @@ class RegisterAndActivateNewAccountRequestProcessor extends RequestProcessor {
 				
 				//Send email:
 				$userID = $userDTO->getUserID();
-				$hostname = eGlooRequest::getServerName();
+				$hostname = eGlooHTTPRequest::getServerName();
 								
 		    	$confirmationID = $confirmationCode;
 		        $userID = $userDTO->getUserID();

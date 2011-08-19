@@ -59,7 +59,7 @@ class MassUserInviteRequestProcessor extends RequestProcessor {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "MassUserInvite: " . trim( $address ) );
   		}
 
-  		$hostname = eGlooRequest::getServerName();
+  		$hostname = eGlooHTTPRequest::getServerName();
   		
 		$userID = $_SESSION['USER_ID'];
 		

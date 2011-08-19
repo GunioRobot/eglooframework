@@ -1,8 +1,8 @@
 <?php
 /**
- * eGlooDaemonizer Class File
+ * eGlooXMLParser Class File
  *
- * Contains the class definition for the eGlooDaemonizer
+ * Contains the class definition for the eGlooXMLParser
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -21,22 +21,24 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category $category
  * @package $package
  * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * eGlooDaemonizer
+ * eGlooXMLParser
  *
  * $short_description
  *
  * $long_description
  *
+ * @category $category
  * @package $package
  * @subpackage $subpackage
  */
-class eGlooDaemonizer {
+class eGlooXMLParser {
 
 }
 

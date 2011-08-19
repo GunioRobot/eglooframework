@@ -169,7 +169,7 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 		}
 
-		$userAgent = eGlooRequest::getUserAgent();
+		$userAgent = eGlooHTTPRequest::getUserAgent();
 
 		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
 

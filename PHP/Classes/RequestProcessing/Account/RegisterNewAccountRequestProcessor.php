@@ -150,7 +150,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 			
 			//Send email:
 			$userID = $userDTO->getUserID();
-			$hostname = eGlooRequest::getServerName();
+			$hostname = eGlooHTTPRequest::getServerName();
 			
 			$subject = "eGloo Account Confirmation";
 				

@@ -27,7 +27,7 @@
 
 // Bring up the eGlooConfiguration: 12% Hit
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
-	include( 'PHP/Classes/System/eGlooConfiguration.php' );
+	include( 'PHP/Classes/System/Configuration/eGlooConfiguration.php' );
 }
 
 // Load the install configuration: 15% Hit
@@ -35,7 +35,7 @@ eGlooConfiguration::loadConfigurationOptions();
 
 // Bring up the eGlooLogger: 6% Hit
 if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/System/eGlooLogger.php' );
+	include( 'PHP/Classes/System/Utilities/eGlooLogger.php' );
 }
 
 // Initialize the eGlooLogger: 1% Hit
