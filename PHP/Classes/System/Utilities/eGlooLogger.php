@@ -22,7 +22,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category System
  * @package Utilities
+ * @subpackage Logging
  * @version 1.0
  */
 
@@ -42,6 +44,9 @@
  *
  * @author George Cooper
  * @author Thomas Patrick Read I ("Red Tom")
+ * @category System
+ * @package Utilities
+ * @subpackage Logging
  */
 final class eGlooLogger {
 	// Class Constants
