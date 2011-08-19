@@ -22,7 +22,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category System
  * @package Utilities
+ * @subpackage Exceptions
  * @version 1.0
  */
 
@@ -30,6 +32,9 @@
  * Private exception subclass for use by eGlooLogger
  *
  * @author George Cooper
+ * @category System
+ * @package Utilities
+ * @subpackage Exceptions
  */
 final class eGlooLoggerException extends Exception {
 
