@@ -38,6 +38,85 @@
  */
 class eGlooXML {
 
+	/**
+	 * @var array Children of this XML DOM
+	 */
+	protected $_children = null;
+
+	/**
+	 * @var object SimpleXMLElement object
+	 */
+	protected $_simpleXMLObject = null;
+
+	public function __construct( $xml_location ) {
+		$this->_simpleXMLObject = simplexml_load_file( $xml_location );
+	}
+
+	/**
+	 * Returns protected class member $_children
+	 *
+	 * @return array Children of this XML DOM
+	 */
+	public function getChildren() {
+		return $this->_children;
+	}
+
+	/**
+	 * Sets protected class member $_children
+	 *
+	 * @param children array Children of this XML DOM
+	 */
+	public function setChildren( $children ) {
+		$this->_children = $children;
+	}
+
+	/**
+	 * Get child by XPath
+	 *
+	 * @param $xpath XPath expression for child
+	 * @return eGlooXMLChild
+	 */
+	public function getChild( $xpath ) {
+		return $this->_children[$xpath];
+	}
+
+	/**
+	 * Set child by XPath
+	 *
+	 * @param $xpath XPath expression for child
+	 * @param eGlooXMLChild Child to set
+	 */
+	public function setChild( $xpath, eGlooXMLChild $child ) {
+		$this->_children[$xpath] = $child;
+	}
+
+	/**
+	 * Returns protected class member $_simpleXMLObject
+	 *
+	 * @return object SimpleXMLElement object
+	 */
+	public function getSimpleXMLObject() {
+		return $this->_simpleXMLObject;
+	}
+
+	/**
+	 * Sets protected class member $_simpleXMLObject
+	 *
+	 * @param simpleXMLObject object SimpleXMLElement object
+	 */
+	public function setSimpleXMLObject( $simpleXMLObject ) {
+		$this->_simpleXMLObject = $simpleXMLObject;
+	}
+
+	/**
+	 * Get eGlooXML object as array
+	 *
+	 * @return array Array representation of this eGlooXML
+	 */
+	public function toArray() {
+		
+	}
+
 	// From http://recursive-design.com/blog/2007/04/05/format-xml-with-php/
 	public static function formatXMLString( $xml ) {	
 

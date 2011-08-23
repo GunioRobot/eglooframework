@@ -40,5 +40,7 @@
  */
 class eGlooXMLParser {
 
+	// public static function 
+
 }
 

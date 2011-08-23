@@ -153,7 +153,10 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Loading " . $dp_xml_location, 'DataProcessing' );
 
 		// Attempt to load the specified DataProcessing.xml file
-		$dataProcessingXMLObject = simplexml_load_file( $dp_xml_location );
+		// $dataProcessingXMLObject = simplexml_load_file( $dp_xml_location );
+		$eglooXMLObj = new eGlooXML( $dp_xml_location );
+
+		die;
 
 		// If reading the DataProcessing.xml file failed, log the error
 		// TODO determine if we should throw an exception here...
