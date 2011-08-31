@@ -153,10 +153,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Loading " . $dp_xml_location, 'DataProcessing' );
 
 		// Attempt to load the specified DataProcessing.xml file
-		// $dataProcessingXMLObject = simplexml_load_file( $dp_xml_location );
-		$eglooXMLObj = new eGlooXML( $dp_xml_location );
-
-		die;
+		$dataProcessingXMLObject = simplexml_load_file( $dp_xml_location );
 
 		// If reading the DataProcessing.xml file failed, log the error
 		// TODO determine if we should throw an exception here...
@@ -164,6 +161,19 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
 				'XML2ArrayDPDefinitionParser: simplexml_load_file( "' . $dp_xml_location . '" ): ' . libxml_get_errors() );
 		}
+
+		$eglooXMLObj = new eGlooXML( $dp_xml_location );
+
+		$hydrated_array = array();
+
+		foreach( $eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dpDynamicObject ) {
+			$hydrated_array[ $dpDynamicObject->getNodeID() ] = $dpDynamicObject->getHydratedArray();
+		}
+
+		die_r($hydrated_array);
+
+		die_r($eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ));
+		die;
 
 		// Setup an array to hold all of our processed DPStatement definitions
 		$dataProcessingDynamicObjects = $this->loadDataProcessingDynamicObjects( $dataProcessingXMLObject, $overwrite );
@@ -221,7 +231,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				if ( !$dataProcessingDynamicObjectStaticMethodID || trim($dataProcessingDynamicObjectStaticMethodID) === '' ) {
 					throw new ErrorException("No ID specified in DPDynamicObjectStaticMethod. Please review your DataProcessing.xml");
 				}
-
 
 				$dpDynamicObjectStaticMethodArguments = array();
 

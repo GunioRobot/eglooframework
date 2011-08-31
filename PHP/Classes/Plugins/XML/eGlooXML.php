@@ -38,6 +38,9 @@
  */
 class eGlooXML {
 
+	const RETURN_ARRAY = 0x00;
+	const RETURN_FLATTENED = 0x01;
+
 	/**
 	 * @var array Children of this XML DOM
 	 */
@@ -48,8 +51,121 @@ class eGlooXML {
 	 */
 	protected $_simpleXMLObject = null;
 
-	public function __construct( $xml_location ) {
-		$this->_simpleXMLObject = simplexml_load_file( $xml_location );
+	public function __construct( $xml ) {
+		if ( is_string($xml) ) {
+			if ( file_exists($xml) && is_file($xml) && is_readable($xml) ) {
+				$this->_simpleXMLObject = simplexml_load_file( $xml );
+			} else {
+				$this->_simpleXMLObject = new SimpleXMLElement( $xml );
+			}
+		} else if ( $xml instanceof SimpleXMLElement ) {
+			$this->_simpleXMLObject = $xml;
+		} else {
+			throw new Exception( 'eGlooXML does not support instantiation from type ' . gettype($xml) . '.' );
+		}
+
+		if ( !$this->_simpleXMLObject ) {
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
+				'eGlooXML: simplexml_load_file( "' . $xml . '" ): ' . libxml_get_errors() );
+		}
+	}
+
+	/**
+	 * Executes a given XPath expression and returns the result
+	 *
+	 * @return mixed Result of XPath expression
+	 */
+	public function xpath( $xpath, $return = self::RETURN_ARRAY ) {
+		$retVal = null;
+
+		if ( $this->_simpleXMLObject->xpath( $xpath ) ) {
+			$retVal = array();
+
+			foreach( $this->_simpleXMLObject->xpath( $xpath ) as $xpath_result ) {
+				$retVal[] = new eGlooXML( $xpath_result );
+			}
+		}
+
+		if ( $return === self::RETURN_FLATTENED ) {
+			if ( empty($retVal) ) {
+				$retVal = null;
+			} else if ( count($retVal) === 1 ) {
+				$retVal = $retVal[0];
+			}
+		}
+
+		return $retVal;
+	}
+
+	/**
+	 * Returns XML node as a hydrated array
+	 *
+	 * @return array Hydrated representation of this XML node
+	 */
+	public function getHydratedArray() {
+		$retVal = null;
+
+		$retVal = array();
+
+		$objectName = $this->_simpleXMLObject->getName();
+
+		$children = array();
+
+		foreach( $this->_simpleXMLObject->children() as $child ) {
+			if ( $child->getName() !== $this->_simpleXMLObject->getName . 's' ) {
+				$elementGroup = $child->getName() . 's';
+			} else {
+				$elementGroup = $child->getName();
+			}
+
+			if ( isset($children[$child->getName()]) ) {
+				$children[$elementGroup] = array();
+			}
+
+			$childObjWrapper = new eGlooXML( $child );
+
+			if ( isset($children[$elementGroup][$child->getName()]) ) {
+				$children[$elementGroup][$child->getName()] = array();
+			}
+
+			if ( $childObjWrapper->hasNodeID() ) {
+				$children[$elementGroup][$child->getName()][$childObjWrapper->getNodeID()] = $childObjWrapper->getHydratedArray();
+			} else {
+				$children[$elementGroup][$child->getName()][] = $childObjWrapper->getHydratedArray();
+			}
+		}
+
+		$attributes = array();
+
+		foreach( $this->_simpleXMLObject->attributes() as $key => $value ) {
+			$attributes[$key] = (string) $value;
+		}
+
+		$retVal = array_merge( $children, $attributes );
+
+		return $retVal;
+	}
+
+	/**
+	 * Returns the ID for this XML node
+	 *
+	 * @return string ID of this XML node
+	 */
+	public function getNodeID() {
+		$retVal = isset($this->_simpleXMLObject['id']) ? (string) $this->_simpleXMLObject['id'] : null;
+
+		return $retVal;
+	}
+
+	/**
+	 * Returns true if there is an ID for this XML node, false otherwise
+	 *
+	 * @return string ID of this XML node
+	 */
+	public function hasNodeID() {
+		$retVal = isset($this->_simpleXMLObject['id']) ? true : false;
+
+		return $retVal;
 	}
 
 	/**
