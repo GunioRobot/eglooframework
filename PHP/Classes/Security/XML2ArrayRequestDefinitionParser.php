@@ -124,18 +124,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 		foreach( $eglooXMLObj->xpath( '/tns:Requests/RequestAttributeSet' ) as $attributeSet ) {
 			$requestAttributeSets[ $attributeSet->getNodeID() ] = $attributeSet->getHydratedArray();
 		}
-		
-		// foreach( $eglooXMLObj->xpath( '/tns:Requests/RequestClass' ) as $requestClass ) {
-		// 	$requestClasses[ $requestClass->getNodeID() ] = $requestClass->getHydratedArray();
-		// }
-		// 
-		// $hydrated_array = array(
-		// 	'requestClasses' => $requestClasses,
-		// 	'requestAttributeSets' => $requestAttributeSets,
-		// );
-		// 
-		// die_r($hydrated_array);
-		// die_r($requestAttributeSets);
 
 		// Setup an array to hold all of our processed request attribute set definitions
 		$requestClasses = array();
@@ -161,7 +149,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			foreach( $eglooXMLObj->xpath( 'child::BoolArgument' ) as $boolArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['boolArguments'][$boolArgument->getNodeID()] =
-					$boolArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$boolArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::BoolArgument' ) as $boolArgument ) {
@@ -184,11 +172,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-
 			foreach( $eglooXMLObj->xpath( 'child::SelectArgument' ) as $selectArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'][$selectArgument->getNodeID()] =
-					$selectArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ALL );
+					$selectArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ALL, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::SelectArgument' ) as $selectArgument ) {
@@ -221,11 +207,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-
 			foreach( $eglooXMLObj->xpath( 'child::VariableArgument' ) as $variableArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'][$variableArgument->getNodeID()] =
-					$variableArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$variableArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::VariableArgument' ) as $variableArgument ) {
@@ -253,11 +237,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$requestAttributeSets[$attributeSetID]['attributes']['formArguments'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-
 			foreach( $eglooXMLObj->xpath( 'child::FormArgument' ) as $formArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['formArguments'][$formArgument->getNodeID()] =
-					$formArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$formArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::FormArgument' ) as $formArgument ) {
@@ -273,11 +255,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$requestAttributeSets[$attributeSetID]['attributes']['complexArguments'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-			
 			foreach( $eglooXMLObj->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['complexArguments'][$complexArgument->getNodeID()] =
-					$complexArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$complexArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
@@ -299,11 +279,9 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 
 			$requestAttributeSets[$attributeSetID]['attributes']['depends'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-			
 			foreach( $eglooXMLObj->xpath( 'child::Depend' ) as $depend ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['depends'][$depend->getNodeID()] =
-					$depend->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$depend->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// foreach( $attributeSet->xpath( 'child::Depend' ) as $depend ) {
@@ -326,21 +304,10 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			// Decorators
 			$requestAttributeSets[$attributeSetID]['attributes']['decorators'] = array();
 
-			$eglooXMLObj = new eGlooXML( $attributeSet );
-			
 			foreach( $eglooXMLObj->xpath( 'child::Decorator' ) as $variableArgument ) {
 				$requestAttributeSets[$attributeSetID]['attributes']['decorators'] =
-					$eglooXMLObj->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES );
+					$eglooXMLObj->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
-
-			// foreach( $attributeSet->xpath( 'child::Decorator' ) as $decorator ) {
-			// 	$newDecorator = array();
-			// 
-			// 	$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
-			// 	$newDecorator['order'] = (string) $decorator['order'];
-			// 
-			// 	$requestAttributeSets[$attributeSetID]['attributes']['decorators'][$newDecorator['decoratorID']] = $newDecorator;
-			// }
 
 			// Init Routines
 			$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'] = array();

@@ -116,7 +116,7 @@ class eGlooXML {
 	 *
 	 * @return array Hydrated representation of this XML node
 	 */
-	public function getHydratedArray( $return_flags = self::RETURN_ARRAY, $build_flags = self::BUILD_ALL, $process_flags = self::PROCESS_ALL ) {
+	public function getHydratedArray( $return_flags = self::RETURN_ARRAY, $build_flags = self::BUILD_ALL, $process_flags = self::PROCESS_ALL, $mod_map = null ) {
 		$retVal = null;
 
 		$retVal = array();
