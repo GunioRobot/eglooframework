@@ -54,6 +54,11 @@ class eGlooXML {
 	const RETURN_FLATTENED		= 0x02;
 
 	/**
+	 * @var array Attributes of this XML node
+	 */
+	protected $_attributes = array();
+
+	/**
 	 * @var array Children of this XML DOM
 	 */
 	protected $_children = null;
@@ -172,7 +177,11 @@ class eGlooXML {
 
 			if ( $process_flags & self::PROCESS_ATTRIBUTES ) {
 				foreach( $this->_simpleXMLObject->attributes() as $key => $value ) {
-					$attributes[$key] = (string) $value;
+					if ( isset($this->$key) ) {
+						$attributes[$key] = $this->$key->getValue();
+					} else if ( !isset($this->$key) && !isset($this->_attributes[$key]) && (string) $value !== '' ) {
+						$attributes[$key] = (string) $value;
+					}
 				}
 
 				ksort($attributes);
@@ -221,6 +230,52 @@ class eGlooXML {
 	 */
 	public function getAttributeCount() {
 		return count( $this->_simpleXMLObject->attributes() );
+	}
+
+	/**
+	 * Returns protected class member $_attributes
+	 *
+	 * @return array Attributes of this XML node
+	 */
+	public function getAttributes() {
+		return $this->_attributes;
+	}
+
+	/**
+	 * Sets protected class member $_attributes
+	 *
+	 * @param attributes array Attributes of this XML node
+	 */
+	public function setAttributes( $attributes ) {
+		$this->_attributes = $attributes;
+	}
+
+	/**
+	 * Returns true or false if an attribute is set (processed)
+	 *
+	 * @return bool If the given attribute key is set
+	 */
+	public function issetAttribute( $key ) {
+		return isset( $this->_attributes[$key] );
+	}
+
+	/**
+	 * Returns attribute value requested by key from class member $_attributes
+	 *
+	 * @return string Attribute value by key
+	 */
+	public function getAttribute( $key ) {
+		return $this->_attributes[$key];
+	}
+
+	/**
+	 * Sets value for key in protected class member $_attributes
+	 *
+	 * @param key string Attribute key
+	 * @param value string Attribute value
+	 */
+	public function setAttribute( $key, $value ) {
+		$this->_attributes[$key] = $value;
 	}
 
 	/**
@@ -294,6 +349,70 @@ class eGlooXML {
 	 * @return array Array representation of this eGlooXML
 	 */
 	public function toArray() {
+		
+	}
+
+	public function __isset( $node_name ) {
+		$retVal = false;
+
+		if ( isset( $this->_attributes[$node_name] ) && $this->_attributes[$node_name]->getValue() !== null ) {
+			$retVal = true;
+		} else if ( isset( $this->_children[$node_name] ) && $this->_children[$node_name]->getValue() !== null ) {
+			$retVal = true;
+		} else if ( !isset( $this->_attributes[$node_name] ) && $this->_simpleXMLObject->xpath( '@' . $node_name) ) {
+			$attribute_values = $this->_simpleXMLObject->xpath( '@' . $node_name);
+			$attribute_value = (string) $attribute_values[0];
+
+			$this->_attributes[$node_name] = new eGlooXMLNode( $attribute_value, eGlooXMLNode::ATTRIBUTE );
+
+			$retVal = true;
+		} else if ( !isset( $this->_children[$node_name] ) && $this->_simpleXMLObject->xpath( $node_name) ) {
+			// TODO
+		} else {
+			// TODO
+		}
+
+		return $retVal;
+	}
+
+	public function __unset( $node_name ) {
+		if ( isset( $this->_attributes[$node_name] ) ) {
+			$this->_attributes[$node_name]->setValue(null);
+
+			if ( $this->_simpleXMLObject->xpath( '@' . $node_name) ) {
+				$this->_simpleXMLObject[$node_name] = null;
+			}
+		} else if ( isset( $this->_children[$node_name] ) ) {
+			$this->_children[$node_name]->setValue(null);
+
+			if ( $this->_simpleXMLObject->xpath( '@' . $node_name) ) {
+				// TODO
+			}
+		}
+	}
+
+	public function __get( $node_name ) {
+		$retVal = null;
+
+		if ( isset( $this->_attributes[$node_name] ) ) {
+			$retVal = $this->_attributes[$node_name];
+		} else if ( isset( $this->_children[$node_name] ) ) {
+			$retVal = $this->_children[$node_name];
+		} else if ( $this->_simpleXMLObject->xpath( '@' . $node_name) ) {
+			$attribute_values = $this->_simpleXMLObject->xpath( '@' . $node_name);
+			$attribute_value = (string) $attribute_values[0];
+
+			$this->_attributes[$node_name] = new eGlooXMLNode( $attribute_value, eGlooXMLNode::ATTRIBUTE );
+
+			$retVal = $this->_attributes[$node_name];
+		} else if ( $this->_simpleXMLObject->xpath( '@' . $node_name) ) {
+			// TODO
+		}
+
+		return $retVal;
+	}
+
+	public function __call( $method_name, $arguments ) {
 		
 	}
 
