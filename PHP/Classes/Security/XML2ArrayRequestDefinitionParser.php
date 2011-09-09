@@ -156,37 +156,20 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'] = array();
 
 			foreach( $eglooXMLObj->xpath( 'child::SelectArgument' ) as $selectArgument ) {
+				$selectArgument->type->toLowerCase();
+				$selectArgument->required->toLowerCase()->filter( array('true', 'false') );
+
+				if ( isset($selectArgument->scalarType) ) {
+					$selectArgument->scalarType->toLowerCase();
+				}
+
+				if ( isset($selectArgument->default) && (string) $selectArgument->required === 'true' ) {
+					unset($boolArgument->default);
+				}
+
 				$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'][$selectArgument->getNodeID()] =
 					$selectArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ALL, eGlooXML::PROCESS_ALL );
 			}
-
-			// foreach( $attributeSet->xpath( 'child::SelectArgument' ) as $selectArgument ) {
-			// 	$newSelectArgument = array();
-			// 
-			// 	$newSelectArgument['id'] = (string) $selectArgument['id'];
-			// 	$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
-			// 	$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
-			// 
-			// 	if ( isset($selectArgument['scalarType']) ) {
-			// 		$newSelectArgument['scalarType'] =	strtolower( (string) $selectArgument['scalarType'] );
-			// 	}
-			// 
-			// 	$newSelectArgument['values'] = array();
-			// 
-			// 	foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
-			// 		$newSelectArgument['values'][] = (string) $selectArgumentValue;
-			// 	}
-			// 
-			// 	if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
-			// 		$defaultSelectValue = (string) $selectArgument['default'];
-			// 		
-			// 		if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
-			// 			$newSelectArgument['default'] = $defaultSelectValue;
-			// 		}
-			// 	}
-			// 
-			// 	$requestAttributeSets[$attributeSetID]['attributes']['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
-			// }
 
 			$requestAttributeSets[$attributeSetID]['attributes']['variableArguments'] = array();
 
@@ -267,21 +250,17 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			// Decorators
 			$requestAttributeSets[$attributeSetID]['attributes']['decorators'] = array();
 
-			foreach( $eglooXMLObj->xpath( 'child::Decorator' ) as $variableArgument ) {
-				$requestAttributeSets[$attributeSetID]['attributes']['decorators'] =
-					$eglooXMLObj->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
+			foreach( $eglooXMLObj->xpath( 'child::Decorator' ) as $decorator ) {
+				$requestAttributeSets[$attributeSetID]['attributes']['decorators'][(string) $decorator->decoratorID] =
+					$decorator->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			// Init Routines
 			$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'] = array();
 
-			foreach( $attributeSet->xpath( 'child::InitRoutine' ) as $initRoutine ) {
-				$newInitRoutine = array();
-
-				$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
-				$newInitRoutine['order'] = (string) $initRoutine['order'];
-
-				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
+			foreach( $eglooXMLObj->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+				$requestAttributeSets[$attributeSetID]['attributes']['initRoutines'][(string) $initRoutine->initRoutineID] =
+					$initRoutine->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 			}
 
 			ksort($requestAttributeSets[$attributeSetID]['attributes']);
@@ -299,7 +278,7 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 					$uniqueKey, $requestAttributeSets[$attributeSetID], 'RequestValidation', 0, true );
 			}
 		}
-die_r($requestAttributeSets);
+
 		if ( $overwrite ) {
 			// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
 			// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
@@ -673,7 +652,6 @@ die_r($requestAttributeSets);
 			'requestAttributeSets' => $requestAttributeSets,
 		);
 
-		die_r($retVal);
 		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayRequestDefinitionParser: Requests.xml successfully processed", 'Security' );
 
