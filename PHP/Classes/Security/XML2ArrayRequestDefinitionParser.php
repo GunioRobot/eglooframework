@@ -279,6 +279,8 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
+die_r($requestAttributeSets);
+
 		if ( $overwrite ) {
 			// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
 			// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)

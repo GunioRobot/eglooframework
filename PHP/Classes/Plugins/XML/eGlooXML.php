@@ -119,9 +119,13 @@ class eGlooXML {
 	/**
 	 * Returns XML node as a hydrated array
 	 *
+	 * @param $return_flags Flags specifying return format
+	 * @param $build_flags Flags specifying build options
+	 * @param $process_flags Flags specifying process options
+	 *
 	 * @return array Hydrated representation of this XML node
 	 */
-	public function getHydratedArray( $return_flags = self::RETURN_ARRAY, $build_flags = self::BUILD_ALL, $process_flags = self::PROCESS_ALL, $mod_map = null ) {
+	public function getHydratedArray( $return_flags = self::RETURN_ARRAY, $build_flags = self::BUILD_ALL, $process_flags = self::PROCESS_ALL ) {
 		$retVal = null;
 
 		$retVal = array();
@@ -136,8 +140,8 @@ class eGlooXML {
 			if ( $process_flags & self::PROCESS_CHILDREN ) {
 				foreach( $this->_simpleXMLObject->children() as $child ) {
 					if ( $build_flags & self::BUILD_STRUCTURE ) {
-						if ( $child->getName() !== $this->_simpleXMLObject->getName . 's' ) {
-							$elementGroup = $child->getName() . 's';
+						if ( $child->getName() !== eGlooInflector::pluralize($this->_simpleXMLObject->getName()) ) {
+							$elementGroup = eGlooInflector::pluralize($child->getName());
 						} else {
 							$elementGroup = $child->getName();
 						}
