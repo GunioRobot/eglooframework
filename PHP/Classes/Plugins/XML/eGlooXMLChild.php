@@ -21,9 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @category $category
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package XML
+ * @subpackage Components
  * @version 1.0
  */
 
@@ -34,9 +34,9 @@
  *
  * $long_description
  *
- * @category $category
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package XML
+ * @subpackage Components
  */
 class eGlooXMLChild {
 

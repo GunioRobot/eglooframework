@@ -21,8 +21,8 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package XML
  * @version 1.0
  */
 
@@ -33,8 +33,8 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package XML
  */
 class eGlooXML {
 
@@ -418,6 +418,15 @@ class eGlooXML {
 
 	public function __call( $method_name, $arguments ) {
 		
+	}
+
+	/**
+	 * Return the string representation of this XML object
+	 *
+	 * @return string String representation of this XML object
+	 */
+	public function __toString() {
+		return (string) $this->_simpleXMLObject;
 	}
 
 	// From http://recursive-design.com/blog/2007/04/05/format-xml-with-php/
