@@ -279,8 +279,6 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 			}
 		}
 
-die_r($requestAttributeSets);
-
 		if ( $overwrite ) {
 			// We're done processing our request attribute sets, so let's store the structured array in cache for faster lookup
 			// For cache properties, the ttl is forever (0) and we can keep the cache piping hot by storing a local copy (true)
@@ -336,155 +334,133 @@ die_r($requestAttributeSets);
 				$requestClasses[$requestClassID]['requests'][$requestID] =
 					array('requestClass' => $requestClassID, 'requestID' => $requestID, 'processorID' => $processorID, 'errorProcessorID' => $errorProcessorID );
 
+				$eglooXMLObj = new eGlooXML( $request );
+
 				// Arguments
 				$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'] = array();
 
-				foreach( $request->xpath( 'child::BoolArgument' ) as $boolArgument ) {
-					$newBoolArgument = array();
+				foreach( $eglooXMLObj->xpath( 'child::BoolArgument' ) as $boolArgument ) {
+					$boolArgument->type->toLowerCase();
+					$boolArgument->required->toLowerCase()->filter( array('true', 'false') );
 
-					$newBoolArgument['id'] = (string) $boolArgument['id'];
-					$newBoolArgument['type'] = strtolower( (string) $boolArgument['type'] );
-					$newBoolArgument['required'] = strtolower( (string) $boolArgument['required'] );
-
-					if ($newBoolArgument['required'] === 'false' && isset($boolArgument['default'])) {
-						$defaultBoolValue = strtolower( (string) $boolArgument['default'] );
-						
-						if ($defaultBoolValue === 'true' || $defaultBoolValue === 'false') {
-							$newBoolArgument['default'] = $defaultBoolValue;
-						}
+					if ( isset($boolArgument->default) && (string) $boolArgument->required === 'false' ) {
+						$boolArgument->default->toLowerCase()->filter( array('true', 'false') );
+					} else if ( isset($boolArgument->default) ) {
+						unset($boolArgument->default);
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$newBoolArgument['id']] = $newBoolArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['boolArguments'][$boolArgument->getNodeID()] =
+						$boolArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'] = array();
 
-				foreach( $request->xpath( 'child::SelectArgument' ) as $selectArgument ) {
-					$newSelectArgument = array();
+				foreach( $eglooXMLObj->xpath( 'child::SelectArgument' ) as $selectArgument ) {
+					$selectArgument->type->toLowerCase();
+					$selectArgument->required->toLowerCase()->filter( array('true', 'false') );
 
-					$newSelectArgument['id'] = (string) $selectArgument['id'];
-					$newSelectArgument['type'] = strtolower( (string) $selectArgument['type'] );
-					$newSelectArgument['required'] = strtolower( (string) $selectArgument['required'] );
-
-					if ( isset($selectArgument['scalarType']) ) {
-						$newSelectArgument['scalarType'] = strtolower( (string) $selectArgument['scalarType'] );
+					if ( isset($selectArgument->scalarType) ) {
+						$selectArgument->scalarType->toLowerCase();
 					}
 
-					$newSelectArgument['values'] = array();
-
-					foreach( $selectArgument->xpath( 'child::value' ) as $selectArgumentValue ) {
-						$newSelectArgument['values'][] = (string) $selectArgumentValue;
+					if ( isset($selectArgument->default) && (string) $selectArgument->required === 'true' ) {
+						unset($boolArgument->default);
 					}
 
-					if ($newSelectArgument['required'] === 'false' && isset($selectArgument['default'])) {
-						$defaultSelectValue = (string) $selectArgument['default'];
-						
-						if (in_array($defaultSelectValue, $newSelectArgument['values'])) {
-							$newSelectArgument['default'] = $defaultSelectValue;
-						}
-					}
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$newSelectArgument['id']] = $newSelectArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['selectArguments'][$selectArgument->getNodeID()] =
+						$selectArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ALL, eGlooXML::PROCESS_ALL );
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'] = array();
 
-				foreach( $request->xpath( 'child::VariableArgument' ) as $variableArgument ) {
-					$newVariableArgument = array();
+				foreach( $eglooXMLObj->xpath( 'child::VariableArgument' ) as $variableArgument ) {
+					$variableArgument->type->toLowerCase();
+					$variableArgument->required->toLowerCase()->filter( array('true', 'false') );
 
-					$newVariableArgument['id'] = (string) $variableArgument['id'];
-					$newVariableArgument['type'] = strtolower( (string) $variableArgument['type'] );
-					$newVariableArgument['required'] = strtolower( (string) $variableArgument['required'] );
-					$newVariableArgument['regex'] = (string) $variableArgument['regex'];
+					if ( isset($variableArgument->default) ) {
+						$required = true;
+						$valid_type = false;
+						$default_matches_regex = false;
 
-					if ( isset($variableArgument['scalarType']) ) {
-						$newVariableArgument['scalarType'] = (string) $variableArgument['scalarType'];
-					}
+						if ( (string) $variableArgument->required === 'false' ) {
+							$required = false;
+						}
 
-					if ($newVariableArgument['required'] === 'false' && isset($variableArgument['default']) && $newVariableArgument['type'] !== 'postarray') {
-						$defaultVariableValue = (string) $variableArgument['default'];
+						if ( (string) $variableArgument->type !== 'postarray' ) {
+							$valid_type = true;
+						}
 
-						if (preg_match( $newVariableArgument['regex'], $defaultVariableValue )) {
-							$newVariableArgument['default'] = $defaultVariableValue;
+						if ( preg_match( (string) $variableArgument->regex, (string) $variableArgument->default ) ) {
+							$default_matches_regex = true;
+						}
+
+						if ( $required || !$valid_type || !$default_matches_regex ) {
+							unset( $variableArgument->default );
 						}
 					}
 
-					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$newVariableArgument['id']] = $newVariableArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['variableArguments'][$variableArgument->getNodeID()] =
+						$variableArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['formArguments'] = array();
 
-				foreach( $request->xpath( 'child::FormArgument' ) as $formArgument ) {
-					$newFormArgument = array();
+				foreach( $eglooXMLObj->xpath( 'child::FormArgument' ) as $formArgument ) {
+					$formArgument->type->toLowerCase();
+					$formArgument->required->toLowerCase()->filter( array('true', 'false') );
 
-					$newFormArgument['id'] = (string) $formArgument['id'];
-					$newFormArgument['type'] = strtolower( (string) $formArgument['type'] );
-					$newFormArgument['required'] = strtolower( (string) $formArgument['required'] );
-					$newFormArgument['formID'] = (string) $formArgument['formID'];
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['formArguments'][$newFormArgument['id']] = $newFormArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['formArguments'][$formArgument->getNodeID()] =
+						$formArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'] = array();
 
-				foreach( $request->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
-					$newComplexArgument = array();
+				foreach( $eglooXMLObj->xpath( 'child::ComplexArgument' ) as $complexArgument ) {
+					$complexArgument->type->toLowerCase();
+					$complexArgument->required->toLowerCase()->filter( array('true', 'false') );
 
-					$newComplexArgument['id'] = (string) $complexArgument['id'];
-					$newComplexArgument['type'] = strtolower( (string) $complexArgument['type'] );
-					$newComplexArgument['required'] = strtolower( (string) $complexArgument['required'] );
-					$newComplexArgument['validator'] = (string) $complexArgument['validator'];
-
-					if ( isset($complexArgument['scalarType']) ) {
-						$newComplexArgument['scalarType'] =	 (string) $complexArgument['scalarType'];
-					} else if ( isset($complexArgument['complexType']) ) {
-						$newComplexArgument['complexType'] =  (string) $complexArgument['complexType'];
-					}
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$newComplexArgument['id']] = $newComplexArgument;
+					$requestClasses[$requestClassID]['requests'][$requestID]['complexArguments'][$complexArgument->getNodeID()] =
+						$complexArgument->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				$requestClasses[$requestClassID]['requests'][$requestID]['depends'] = array();
 
-				foreach( $request->xpath( 'child::Depend' ) as $depend ) {
-					$newDepend = array();
-
-					$newDepend['id'] = (string) $depend['id'];
-					$newDepend['type'] = (string) $depend['type'];
-					$newDepend['children'] = array();
-
-					foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
-						$dependChildID = (string) $dependChild['id'];
-						$dependChildType = strtolower( (string) $dependChild['type'] );
-
-						$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
-					}
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$newDepend['id']] = $newDepend;
+				foreach( $eglooXMLObj->xpath( 'child::Depend' ) as $depend ) {
+					$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$depend->getNodeID()] =
+						$depend->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
+
+				// foreach( $request->xpath( 'child::Depend' ) as $depend ) {
+				// 	$newDepend = array();
+				// 
+				// 	$newDepend['id'] = (string) $depend['id'];
+				// 	$newDepend['type'] = (string) $depend['type'];
+				// 	$newDepend['children'] = array();
+				// 
+				// 	foreach( $depend->xpath( 'child::Child' ) as $dependChild ) {
+				// 		$dependChildID = (string) $dependChild['id'];
+				// 		$dependChildType = strtolower( (string) $dependChild['type'] );
+				// 
+				// 		$newDepend['children'][] = array('id' => $dependChildID, 'type' => $dependChildType);
+				// 	}
+				// 
+				// 	$requestClasses[$requestClassID]['requests'][$requestID]['depends'][$newDepend['id']] = $newDepend;
+				// }
 
 				// Decorators
 				$requestClasses[$requestClassID]['requests'][$requestID]['decorators'] = array();
 
-				foreach( $request->xpath( 'child::Decorator' ) as $decorator ) {
-					$newDecorator = array();
-
-					$newDecorator['decoratorID'] = (string) $decorator['decoratorID'];
-					$newDecorator['order'] = (string) $decorator['order'];
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][$newDecorator['decoratorID']] = $newDecorator;
+				foreach( $eglooXMLObj->xpath( 'child::Decorator' ) as $decorator ) {
+					$requestClasses[$requestClassID]['requests'][$requestID]['decorators'][(string) $decorator->decoratorID] =
+						$decorator->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				// InitRoutines
 				$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'] = array();
 
-				foreach( $request->xpath( 'child::InitRoutine' ) as $initRoutine ) {
-					$newInitRoutine = array();
-
-					$newInitRoutine['initRoutineID'] = (string) $initRoutine['initRoutineID'];
-					$newInitRoutine['order'] = (string) $initRoutine['order'];
-
-					$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'][$newInitRoutine['initRoutineID']] = $newInitRoutine;
+				foreach( $eglooXMLObj->xpath( 'child::InitRoutine' ) as $initRoutine ) {
+					$requestClasses[$requestClassID]['requests'][$requestID]['initRoutines'][(string) $initRoutine->initRoutineID] =
+						$initRoutine->getHydratedArray( eGlooXML::RETURN_ARRAY, eGlooXML::BUILD_ATTRIBUTES, eGlooXML::PROCESS_ALL );
 				}
 
 				// Request Attribute Set Includes
