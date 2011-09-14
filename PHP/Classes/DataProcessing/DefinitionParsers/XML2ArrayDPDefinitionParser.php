@@ -183,8 +183,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			'dataProcessingStatements' => $dataProcessingStatements
 		);
 
-		die_r($retVal);
-
 		// Mark successful completion of this method so that when debugging we can more accurately trace control flow
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: DataProcessing.xml successfully processed", 'DataProcessing' );
 
