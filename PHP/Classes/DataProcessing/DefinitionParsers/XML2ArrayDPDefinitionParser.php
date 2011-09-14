@@ -162,18 +162,18 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 				'XML2ArrayDPDefinitionParser: simplexml_load_file( "' . $dp_xml_location . '" ): ' . libxml_get_errors() );
 		}
 
-		$eglooXMLObj = new eGlooXML( $dp_xml_location );
-
-		$hydrated_array = array();
-
-		foreach( $eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dpDynamicObject ) {
-			$hydrated_array[ $dpDynamicObject->getNodeID() ] = $dpDynamicObject->getHydratedArray();
-		}
-
-		die_r($hydrated_array);
-
-		die_r($eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ));
-		die;
+		// $eglooXMLObj = new eGlooXML( $dp_xml_location );
+		// 
+		// $hydrated_array = array();
+		// 
+		// foreach( $eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dpDynamicObject ) {
+		// 	$hydrated_array[ $dpDynamicObject->getNodeID() ] = $dpDynamicObject->getHydratedArray();
+		// }
+		// 
+		// die_r($hydrated_array);
+		// 
+		// die_r($eglooXMLObj->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ));
+		// die;
 
 		// Setup an array to hold all of our processed DPStatement definitions
 		$dataProcessingDynamicObjects = $this->loadDataProcessingDynamicObjects( $dataProcessingXMLObject, $overwrite );
