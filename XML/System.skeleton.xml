@@ -58,6 +58,56 @@
 		<Option id="egFileCacheEnabled" displayName="eGloo File Caching Enabled" override="" type="" value="" required="true"/>
 		<Option id="egMemcacheCacheEnabled" displayName="eGloo Memcache Caching Enabled" override="" type="" value="" required="true"/>
 	</Caching>
+	<CLI>
+		<Component id="app" displayName="Application Combine Class" override="true" type="class" value="eGlooApplication"/>
+		<Component id="application" displayName="Application Combine Class" override="true" type="class" value="eGlooApplication"/>
+		<Component id="bundle" displayName="Bundle Combine Class" override="true" type="class" value="eGlooBundle"/>
+		<Component id="cache" displayName="Cache Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="check" displayName="Check Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="config" displayName="Configuration Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="configuration" displayName="Configuration Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="cube" displayName="Cube Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="cubes" displayName="Cube Combine Class" override="true" type="class" value="eGlooCache"/>
+		<Component id="daemon" displayName="Daemon Combine Class" override="true" type="class" value="eGlooDaemonMaster"/>
+		<Component id="daemons" displayName="Daemon Combine Class" override="true" type="class" value="eGlooDaemonMaster"/>
+		<Component id="daemonmaster" displayName="Daemon Combine Class" override="true" type="class" value="eGlooDaemonMaster"/>
+		<Component id="dm" displayName="Daemon Combine Class" override="true" type="class" value="eGlooDaemonMaster"/>
+		<Component id="data" displayName="Data Processing Combine Class" override="true" type="class" value="eGlooDataProcessing"/>
+		<Component id="dp" displayName="Data Processing Combine Class" override="true" type="class" value="eGlooDataProcessing"/>
+		<Component id="form" displayName="Forms Combine Class" override="true" type="class" value="eGlooForms"/>
+		<Component id="forms" displayName="Forms Combine Class" override="true" type="class" value="eGlooForms"/>
+		<Component id="framework" displayName="Framework Combine Class" override="true" type="class" value="eGlooFramework"/>
+		<Component id="global" displayName="Global Combine Class" override="true" type="class" value="eGlooGlobal"/>
+		<Component id="help" displayName="Help Combine Class" override="true" type="class" value="eGlooHelp"/>
+		<Component id="info" displayName="Information Combine Class" override="true" type="class" value="eGlooInfo"/>
+		<Component id="install" displayName="Install Combine Class" override="true" type="class" value="eGlooInstall"/>
+		<Component id="list" displayName="Lister Combine Class" override="true" type="class" value="eGlooLister"/>
+		<Component id="ls" displayName="Lister Combine Class" override="true" type="class" value="eGlooLister"/>
+		<Component id="log" displayName="Log Combine Class" override="true" type="class" value="eGlooLog"/>
+		<Component id="net" displayName="Network Combine Class" override="true" type="class" value="eGlooNetwork"/>
+		<Component id="network" displayName="Network Combine Class" override="true" type="class" value="eGlooNetwork"/>
+		<Component id="req" displayName="Request Library Combine Class" override="true" type="class" value="eGlooRequestLibrary"/>
+		<Component id="request" displayName="Request Library Combine Class" override="true" type="class" value="eGlooRequestLibrary"/>
+		<Component id="requests" displayName="Request Library Combine Class" override="true" type="class" value="eGlooRequestLibrary"/>
+		<Component id="run" displayName="Runtime Combine Class" override="true" type="class" value="eGlooRuntime"/>
+		<Component id="runtime" displayName="Runtime Combine Class" override="true" type="class" value="eGlooRuntime"/>
+		<Component id="search" displayName="Search Combine Class" override="true" type="class" value="eGlooSearch"/>
+		<Component id="server" displayName="Cache Combine Class" override="true" type="class" value="eGlooServer"/>
+		<Component id="sim" displayName="Simulation Combine Class" override="true" type="class" value="eGlooSimulation"/>
+		<Component id="simulate" displayName="Simulation Combine Class" override="true" type="class" value="eGlooSimulation"/>
+		<Component id="stat" displayName="Status Combine Class" override="true" type="class" value="eGlooStatus"/>
+		<Component id="status" displayName="Status Combine Class" override="true" type="class" value="eGlooStatus"/>
+		<Component id="sys" displayName="System Combine Class" override="true" type="class" value="eGlooSystem"/>
+		<Component id="system" displayName="System Combine Class" override="true" type="class" value="eGlooSystem"/>
+		<Component id="test" displayName="Test Combine Class" override="true" type="class" value="eGlooTest"/>
+		<Component id="ui" displayName="UI Combine Class" override="true" type="class" value="eGlooUI"/>
+		<Component id="uninstall" displayName="Uninstall Combine Class" override="true" type="class" value="eGlooUninstall"/>
+		<Component id="upgrade" displayName="Upgrade Combine Class" override="true" type="class" value="eGlooUpgrade"/>
+		<Component id="version" displayName="Version Combine Class" override="true" type="class" value="eGlooVersion"/>
+		<Component id="web" displayName="WebRoot Combine Class" override="true" type="class" value="eGlooWebRoot"/>
+		<Component id="webroot" displayName="WebRoot Combine Class" override="true" type="class" value="eGlooWebRoot"/>
+		<Component id="zalgo" displayName="Zalgo Combine Class" override="true" type="class" value="eGlooZalgo"/>
+	</CLI>
 	<Cubes>
 		<Component id="CubesPath" displayName="Cubes Path" override="false" type="path" value="" required="true"/>
 		<Option id="" displayName="" override="" type="" value="" required=""/>
