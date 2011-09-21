@@ -46,6 +46,7 @@ class eGlooHelp extends eGlooCombine {
 	protected static $_supported_commands = array(
 		'_empty' => array(),
 		'_zero_argument' => array(),
+		'all' => array(),
 	);
 
 	public function execute() {
@@ -53,9 +54,12 @@ class eGlooHelp extends eGlooCombine {
 
 		switch( $this->_command ) {
 			case '_empty' :
-				$retVal = $this->info();
+				$retVal = $this->printCommandInfo();
 				break;
 			case '_zero_argument' :
+				$retVal = $this->printHelpInfo();
+				break;
+			case 'all' :
 				$retVal = $this->_list();
 				break;
 			default :
@@ -65,7 +69,7 @@ class eGlooHelp extends eGlooCombine {
 		return $retVal;
 	}
 
-	protected function info() {
+	protected function printCommandInfo() {
 		$retVal = false;
 
 		if ( isset( $this->_command_arguments[0]) ) {
@@ -85,6 +89,10 @@ class eGlooHelp extends eGlooCombine {
 		return $retVal;
 	}
 
+	protected function printHelpInfo() {
+		echo self::getHelpString() . "\n";
+	}
+
 	// PHP is dumb - 'list' should be a valid method name
 	protected function _list() {
 		$retVal = false;
@@ -92,7 +100,7 @@ class eGlooHelp extends eGlooCombine {
 		$combine_list = eGlooConfiguration::getCLICombineList();
 
 		foreach( $combine_list as $combine_id => $combine_class ) {
-			if ( class_exists($combine_class) ) {
+			if ( class_exists($combine_class) && $combine_class !== get_class($this) ) {
 				echo $combine_class::getHelpString() . "\n";
 			}
 		}
@@ -106,32 +114,16 @@ class eGlooHelp extends eGlooCombine {
 		$retVal = false;
 
 		switch( $this->_command ) {
-			case 'info' :
-				$retVal = $this->infoCommandRequirementsSatisfied();
-				break;
-			case 'list' :
-				$retVal = $this->listCommandRequirementsSatisfied();
-				break;
+			// case 'info' :
+			// 	$retVal = $this->infoCommandRequirementsSatisfied();
+			// 	break;
+			// case 'list' :
+			// 	$retVal = $this->listCommandRequirementsSatisfied();
+			// 	break;
 			default :
 				$retVal = true;
 				break;
 		}
-
-		return $retVal;
-	}
-
-	protected function infoCommandRequirementsSatisfied() {
-		$retVal = false;
-
-		$retVal = true;
-
-		return $retVal;
-	}
-
-	protected function listCommandRequirementsSatisfied() {
-		$retVal = false;
-
-		$retVal = true;
 
 		return $retVal;
 	}
@@ -143,7 +135,11 @@ class eGlooHelp extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Forms Help';
+		$retVal = 'eGloo Help: Work in Progress' ."\n\n";
+		$retVal .= 'Common Commands:' . "\n\n";
+		$retVal .= 'See "egloo help <command>" for more information on a specific command';
+
+		return $retVal;
 	}
 
 }

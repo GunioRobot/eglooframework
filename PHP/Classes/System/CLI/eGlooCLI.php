@@ -61,30 +61,12 @@ class eGlooCLI {
 		if ( $combineObj !== null && $combineObj->isExecutable() ) {
 			$combineObj->execute();
 		} else {
-			self::printHelpInfoForCombineCommand( $combine_class );
+			self::printCommandHelpInfo( $combine_class );
 		}
 	}
 
-	public static function printHelpInfo() {
-		echo 'eGloo Help: Work in Progress' ."\n\n";
-
-		echo 'Common Commands:' . "\n\n";
-
-		echo 'See "egloo help <command>" for more information on a specific command' . "\n";
-	}
-
-	public static function printHelpInfoForCombineCommand( $combine_class ) {
+	public static function printCommandHelpInfo( $combine_class ) {
 		echo $combine_class::getHelpString() . "\n";
-	}
-
-	public static function printUsageInfo() {
-		// More later?  Change this later?  For now, this works
-		self::printHelpInfo();
-	}
-
-	public static function printVersionInfo() {
-		// TODO grab this from somewhere more sensible
-		echo 'Version 1.0 Developer Preview 2' ."\n";
 	}
 
 	public static function setScriptArguments( $script_arguments ) {

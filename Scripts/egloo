@@ -162,7 +162,7 @@ if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
 
 	eGlooCLI::execute( $command, $arguments );
 } else {
-	eGlooCLI::printUsageInfo();
+	echo eGlooHelp::getHelpString() . "\n";
 }
 
 exit;
