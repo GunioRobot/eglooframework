@@ -726,45 +726,6 @@ fi
 
 if [ -e "$DOCUMENT_ROOT/.htaccess" ]
 then
-	# echo -n "Use this location? [Y/n]: "
-	# read -e CONFIRM_CONTINUE
-	# 
-	# # Check if the user wants to use the default or specify their own configuration path
-	# case "$CONFIRM_CONTINUE" in
-	# 	# User chose to specify own configuration path
-	# 	"N" | "n" | "No" | "NO" | "no" )
-	# 		NEW_PATH_SET=0
-	# 	
-	# 		# Loop until we have a new path and the user has confirmed the location
-	# 		while [ "$NEW_PATH_SET" -ne 1 ]
-	# 		do
-	# 			echo -n "Enter New Location: "
-	# 			read -e CONFIG_PATH
-	# 			echo
-	# 			echo "Location: \"$CONFIG_PATH\""
-	# 			echo
-	# 	
-	# 			echo -n "Use this location? [y/N]: "
-	# 			read -e CONFIRM_CONTINUE
-	# 	
-	# 			# Make sure user entered right path
-	# 			case "$CONFIRM_CONTINUE" in
-	# 				# New path is good, break the loop
-	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-	# 					NEW_PATH_SET=1
-	# 				;;
-	# 				# New path is no good, loop back
-	# 				* )
-	# 				;;
-	# 			esac
-	# 		done		
-	# 	;;
-	# 
-	# 	# User chose the default path
-	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
-	# 	;;
-	# esac
-
 	cp "$DOCUMENT_ROOT/.htaccess" "$DOCUMENT_ROOT/.htaccess.$TIMESTAMP.old"
 fi
 
@@ -1298,45 +1259,6 @@ printf "Copying generated configuration to appropriate paths... "
 
 if [ -e "$CONFIG_PATH/System.xml" ]
 then
-	# echo -n "Use this location? [Y/n]: "
-	# read -e CONFIRM_CONTINUE
-	# 
-	# # Check if the user wants to use the default or specify their own configuration path
-	# case "$CONFIRM_CONTINUE" in
-	# 	# User chose to specify own configuration path
-	# 	"N" | "n" | "No" | "NO" | "no" )
-	# 		NEW_PATH_SET=0
-	# 	
-	# 		# Loop until we have a new path and the user has confirmed the location
-	# 		while [ "$NEW_PATH_SET" -ne 1 ]
-	# 		do
-	# 			echo -n "Enter New Location: "
-	# 			read -e CONFIG_PATH
-	# 			echo
-	# 			echo "Location: \"$CONFIG_PATH\""
-	# 			echo
-	# 	
-	# 			echo -n "Use this location? [y/N]: "
-	# 			read -e CONFIRM_CONTINUE
-	# 	
-	# 			# Make sure user entered right path
-	# 			case "$CONFIRM_CONTINUE" in
-	# 				# New path is good, break the loop
-	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-	# 					NEW_PATH_SET=1
-	# 				;;
-	# 				# New path is no good, loop back
-	# 				* )
-	# 				;;
-	# 			esac
-	# 		done		
-	# 	;;
-	# 
-	# 	# User chose the default path
-	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
-	# 	;;
-	# esac
-
 	mkdir -p "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP"
 	cp "$CONFIG_PATH/System.xml" "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP/System.xml"
 fi
@@ -1345,45 +1267,6 @@ cp "System.xml" "$CONFIG_PATH/System.xml"
 
 if [ -e "$DOCUMENT_ROOT/System.xml" ]
 then
-	# echo -n "Use this location? [Y/n]: "
-	# read -e CONFIRM_CONTINUE
-	# 
-	# # Check if the user wants to use the default or specify their own configuration path
-	# case "$CONFIRM_CONTINUE" in
-	# 	# User chose to specify own configuration path
-	# 	"N" | "n" | "No" | "NO" | "no" )
-	# 		NEW_PATH_SET=0
-	# 	
-	# 		# Loop until we have a new path and the user has confirmed the location
-	# 		while [ "$NEW_PATH_SET" -ne 1 ]
-	# 		do
-	# 			echo -n "Enter New Location: "
-	# 			read -e CONFIG_PATH
-	# 			echo
-	# 			echo "Location: \"$CONFIG_PATH\""
-	# 			echo
-	# 	
-	# 			echo -n "Use this location? [y/N]: "
-	# 			read -e CONFIRM_CONTINUE
-	# 	
-	# 			# Make sure user entered right path
-	# 			case "$CONFIRM_CONTINUE" in
-	# 				# New path is good, break the loop
-	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-	# 					NEW_PATH_SET=1
-	# 				;;
-	# 				# New path is no good, loop back
-	# 				* )
-	# 				;;
-	# 			esac
-	# 		done		
-	# 	;;
-	# 
-	# 	# User chose the default path
-	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
-	# 	;;
-	# esac
-
 	cp "$DOCUMENT_ROOT/System.xml" "$DOCUMENT_ROOT/System.xml.$TIMESTAMP.old"
 fi
 
@@ -1393,45 +1276,6 @@ cp "System.xml" "Config.xml"
 
 if [ -e "$CONFIG_PATH/Config.xml" ]
 then
-	# echo -n "Use this location? [Y/n]: "
-	# read -e CONFIRM_CONTINUE
-	# 
-	# # Check if the user wants to use the default or specify their own configuration path
-	# case "$CONFIRM_CONTINUE" in
-	# 	# User chose to specify own configuration path
-	# 	"N" | "n" | "No" | "NO" | "no" )
-	# 		NEW_PATH_SET=0
-	# 	
-	# 		# Loop until we have a new path and the user has confirmed the location
-	# 		while [ "$NEW_PATH_SET" -ne 1 ]
-	# 		do
-	# 			echo -n "Enter New Location: "
-	# 			read -e CONFIG_PATH
-	# 			echo
-	# 			echo "Location: \"$CONFIG_PATH\""
-	# 			echo
-	# 	
-	# 			echo -n "Use this location? [y/N]: "
-	# 			read -e CONFIRM_CONTINUE
-	# 	
-	# 			# Make sure user entered right path
-	# 			case "$CONFIRM_CONTINUE" in
-	# 				# New path is good, break the loop
-	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-	# 					NEW_PATH_SET=1
-	# 				;;
-	# 				# New path is no good, loop back
-	# 				* )
-	# 				;;
-	# 			esac
-	# 		done		
-	# 	;;
-	# 
-	# 	# User chose the default path
-	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
-	# 	;;
-	# esac
-
 	mkdir -p "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP"
 	cp "$CONFIG_PATH/Config.xml" "$CONFIG_PATH/InactiveConfigurations/$TIMESTAMP/Config.xml"
 fi
@@ -1440,45 +1284,6 @@ cp "Config.xml" "$CONFIG_PATH/Config.xml"
 
 if [ -e "$DOCUMENT_ROOT/Config.xml" ]
 then
-	# echo -n "Use this location? [Y/n]: "
-	# read -e CONFIRM_CONTINUE
-	# 
-	# # Check if the user wants to use the default or specify their own configuration path
-	# case "$CONFIRM_CONTINUE" in
-	# 	# User chose to specify own configuration path
-	# 	"N" | "n" | "No" | "NO" | "no" )
-	# 		NEW_PATH_SET=0
-	# 	
-	# 		# Loop until we have a new path and the user has confirmed the location
-	# 		while [ "$NEW_PATH_SET" -ne 1 ]
-	# 		do
-	# 			echo -n "Enter New Location: "
-	# 			read -e CONFIG_PATH
-	# 			echo
-	# 			echo "Location: \"$CONFIG_PATH\""
-	# 			echo
-	# 	
-	# 			echo -n "Use this location? [y/N]: "
-	# 			read -e CONFIRM_CONTINUE
-	# 	
-	# 			# Make sure user entered right path
-	# 			case "$CONFIRM_CONTINUE" in
-	# 				# New path is good, break the loop
-	# 				"Y" | "y" | "Yes" | "YES" | "yes" )
-	# 					NEW_PATH_SET=1
-	# 				;;
-	# 				# New path is no good, loop back
-	# 				* )
-	# 				;;
-	# 			esac
-	# 		done		
-	# 	;;
-	# 
-	# 	# User chose the default path
-	# 	* ) CONFIG_PATH=$DEFAULT_CONFIG
-	# 	;;
-	# esac
-
 	cp "$DOCUMENT_ROOT/Config.xml" "$DOCUMENT_ROOT/Config.xml.$TIMESTAMP.old"
 fi
 
