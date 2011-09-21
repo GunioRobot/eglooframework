@@ -65,11 +65,6 @@ abstract class eGlooCombine {
 	 */
 	protected $_raw_arguments = null;
 
-
-	public function __construct() {
-		
-	}
-
 	/**
 	 * Return an instance of this class built from the provided CLI arguments
 	 *
@@ -97,6 +92,32 @@ abstract class eGlooCombine {
 				if ( $combineObject->commandRequirementsSatisfied() ) {
 					$combineObject->setIsExecutable();
 				}
+			} else if ( is_string($command) && trim($command) !== '' && self::supportsEmptyCommand() ) {
+				$combineObject = new static();
+
+				array_unshift( $arguments, $command );
+
+				$combineObject->setCommand( '_empty' );
+				$combineObject->setRawArguments( $arguments );
+
+				$combineObject->parseOptions();
+				$combineObject->parseCommandArguments();
+
+				if ( $combineObject->commandRequirementsSatisfied() ) {
+					$combineObject->setIsExecutable();
+				}
+			}
+		} else if ( self::supportsZeroArgumentCommand() ) {
+			$combineObject = new static();
+
+			$combineObject->setCommand( '_zero_argument' );
+			$combineObject->setRawArguments( array() );
+
+			$combineObject->parseOptions();
+			$combineObject->parseCommandArguments();
+
+			if ( $combineObject->commandRequirementsSatisfied() ) {
+				$combineObject->setIsExecutable();
 			}
 		}
 
@@ -196,6 +217,26 @@ abstract class eGlooCombine {
 		$retVal = false;
 
 		if ( in_array( $command, array_keys(static::$_supported_commands) ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public static function supportsEmptyCommand() {
+		$retVal = false;
+
+		if ( in_array( '_empty', array_keys(static::$_supported_commands) ) ) {
+			$retVal = true;
+		}
+
+		return $retVal;
+	}
+
+	public static function supportsZeroArgumentCommand() {
+		$retVal = false;
+
+		if ( in_array( '_zero_argument', array_keys(static::$_supported_commands) ) ) {
 			$retVal = true;
 		}
 

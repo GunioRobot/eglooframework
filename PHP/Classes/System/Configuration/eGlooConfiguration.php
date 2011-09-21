@@ -129,13 +129,13 @@ final class eGlooConfiguration {
 			$success = false;
 
 			if ( !$success ) {
-				self::loadFrameworkSystemXML( $system_xml_path );
+				self::loadFrameworkSystemXML( $system_xml_path, true );
 			}
 
 			// $success = self::loadFrameworkConfigurationCache( $overwrite, $config_cache );
 
 			if ( !$success ) {
-				self::loadFrameworkConfigurationXML( $overwrite, $config_xml_path );
+				self::loadFrameworkConfigurationXML( $overwrite, $config_xml_path, true );
 			}
 
 			// $application_path = self::getApplicationPath();
@@ -683,7 +683,7 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
-	public static function loadApplicationConfigurationXML( $application_name, $overwrite = true, $config_xml_filename = 'Config.xml' ) {
+	public static function loadApplicationConfigurationXML( $application_name, $overwrite = true, $config_xml_filename = 'Config.xml', $load_cli_config = false ) {
 		if ( self::getApplicationPath() !== $application_name ) {
 			$config_xml_path = $application_name . 'Configuration/' . $config_xml_filename;
 		} else {
@@ -843,7 +843,7 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
-	public static function loadFrameworkConfigurationXML( $overwrite = true, $config_xml_path = './Config.xml' ) {
+	public static function loadFrameworkConfigurationXML( $overwrite = true, $config_xml_path = './Config.xml', $load_cli_config = false ) {
 		if ( file_exists($config_xml_path) && is_file($config_xml_path) && is_readable($config_xml_path) ) {
 			$configXMLObject = simplexml_load_file( $config_xml_path );
 
@@ -1118,7 +1118,7 @@ final class eGlooConfiguration {
 		return $retVal;
 	}
 
-	public static function loadFrameworkSystemXML( $system_xml_path = './System.xml' ) {
+	public static function loadFrameworkSystemXML( $system_xml_path = './System.xml', $load_cli_config = false ) {
 		if ( file_exists($system_xml_path) && is_file($system_xml_path) && is_readable($system_xml_path) ) {
 			$configXMLObject = simplexml_load_file( $system_xml_path );
 
@@ -1216,6 +1216,39 @@ final class eGlooConfiguration {
 				self::$configuration_options[$option['id']] = $option['value'];
 			}
 
+			if ( $load_cli_config ) {
+				if ( !isset(self::$configuration_possible_options['CLI']) ) {
+					self::$configuration_possible_options['CLI'] = array();
+				}
+
+				if ( !isset(self::$system_configuration['CLI']) ) {
+					self::$system_configuration['CLI'] = array();
+				}
+
+				if ( !isset(self::$configuration_options['CLI']) ) {
+					self::$configuration_options['CLI'] = array();
+				}
+
+				foreach($system_configuration['CLI']['Components'] as $component) {
+					if ($component['override'] === 'true') {
+						self::$configuration_possible_options['CLI'][$component['id']] = $component;
+					}
+
+					self::$system_configuration['CLI'][$component['id']] = $component;
+					self::$configuration_options['CLI'][$component['id']] = $component['value'];
+				}
+
+				//////////////////////////////////////// HMMMMMMMMMMM SHOULD THIS BE HERE?	Should be application array set
+				foreach($system_configuration['CLI']['Options'] as $option) {
+					if ($option['override'] === 'true') {
+						self::$configuration_possible_options['CLI'][$option['id']] = $option;
+					}
+
+					self::$system_configuration['CLI'][$option['id']] = $option;
+					self::$configuration_options['CLI'][$option['id']] = $option['value'];
+				}
+			}
+
 			foreach($system_configuration['System']['Components'] as $component) {
 				if ($component['override'] === 'true') {
 					self::$configuration_possible_options[$component['id']] = $component;
@@ -1233,8 +1266,6 @@ final class eGlooConfiguration {
 				self::$system_configuration[$option['id']] = $option;
 				self::$configuration_options[$option['id']] = $option['value'];
 			}
-
-			// self::$system_configuration = self::$configuration_options;
 		} else {
 			if (!file_exists($system_xml_path)) {
 				trigger_error("System XML for eGloo Framework not found.");
@@ -1640,6 +1671,28 @@ final class eGlooConfiguration {
 
 	public static function getCachePath() {
 		return self::$configuration_options['CachePath'];
+	}
+
+	public static function getCLICombineList() {
+		$retVal = null;
+
+		if (isset(self::$configuration_options['CLI'])) {
+			$retVal = self::$configuration_options['CLI'];
+		} else {
+			throw new ErrorException('Details for unset CLI combine list requested');
+		}
+
+		return $retVal;
+	}
+
+	public static function getCLICombineMapping( $combine_id ) {
+		$retVal = null;
+
+		if (isset(self::$configuration_options['CLI'][$combine_id])) {
+			$retVal = self::$configuration_options['CLI'][$combine_id];
+		}
+
+		return $retVal;
 	}
 
 	public static function getConfigurationPath() {

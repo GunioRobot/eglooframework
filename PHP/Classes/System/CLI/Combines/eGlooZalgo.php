@@ -40,9 +40,38 @@
  */
 class eGlooZalgo extends eGlooCombine {
 
+	/**
+	 * @var array List of supported commands and their options/required arguments
+	 */
+	protected static $_supported_commands = array(
+		'_empty' => array(),
+		'_zero_argument' => array(),
+	);
+
 	public function execute() {
+		$retVal = null;
+
+		switch( $this->_command ) {
+			case '_empty' :
+				$retVal = $this->info();
+				break;
+			case '_zero_argument' :
+				$retVal = $this->info();
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
+	protected function info() {
 		echo 'H҉̵̞̟̠̖̗̘Ȅ̐̑̒̚̕̚ IS C̒̓̔̿̿̿̕̚̚̕̚̕̚̕̚̕̚̕̚OMI҉̵̞̟̠̖̗̘NG > ͡҉҉ ̵̡̢̛̗̘̙̜̝̞' .
 			'̟̠͇̊̋̌̍̎̏̿̿̿̚ ҉ ҉҉̡̢̡̢̛̛̖̗̘̙̜̝̞̟̠̖̗̘̙̜̝̞̟̠̊̋̌̍̎̏̐̑̒̓̔̊̋̌̍̎̏̐̑ ͡҉҉ ' . "\n";
+	}
+
+	public function commandRequirementsSatisfied() {
+		return true;
 	}
 
 	/**

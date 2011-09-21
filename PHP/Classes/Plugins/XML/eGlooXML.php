@@ -82,8 +82,9 @@ class eGlooXML {
 		}
 
 		if ( !$this->_simpleXMLObject ) {
-			eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
-				'eGlooXML: simplexml_load_file( "' . $xml . '" ): ' . libxml_get_errors() );
+			$error_message = 'eGlooXML: simplexml_load_file( "' . $xml . '" ): ' . var_export(libxml_get_errors(), true);
+			eGlooLogger::writeLog( eGlooLogger::EMERGENCY, $error_message );
+			throw new Exception( $error_message );
 		}
 	}
 
@@ -99,7 +100,13 @@ class eGlooXML {
 			$retVal = array();
 
 			foreach( $this->_simpleXMLObject->xpath( $xpath ) as $xpath_result ) {
-				$retVal[] = new eGlooXML( $xpath_result );
+				try {
+					if ( $xpath_result !== false && !empty($xpath_result)) {
+						$retVal[] = new eGlooXML( $xpath_result );
+					}
+				} catch ( Exception $e ) {
+					// Ignore, logged inside constructor
+				}
 			}
 		}
 

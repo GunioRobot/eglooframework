@@ -39,10 +39,6 @@
  */
 class eGlooRuntime extends eGlooCombine {
 
-	protected function __construct() {
-		
-	}
-
 	/**
 	 * Return the help information for this class as a string
 	 *

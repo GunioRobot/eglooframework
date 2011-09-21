@@ -190,6 +190,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 	}
 
 	protected function loadDataProcessingDynamicObjects( $dpXMLObject, $overwrite = true ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Entered loadDataProcessingDynamicObjects()", 'DataProcessing' );
 		$retVal = null;
 
 		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
@@ -199,7 +200,6 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 		$dynamicObjects = array();
 
-// getSimpleXMLObject
 		// Iterate over each DPStatementClass
 		foreach( $dpXMLObject->xpath( '/tns:DataProcessing/DPDynamicObjects/DPDynamicObject' ) as $dynamicObject ) {
 			// Grab the ID for this particular DPDynamicObject
@@ -497,10 +497,12 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 		$retVal = $dynamicObjects;
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Exiting loadDataProcessingDynamicObjects()...", 'DataProcessing' );
 		return $retVal;
 	}
 
 	protected function loadDataProcessingSequences( $dpXMLObject, $overwrite = true ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Entered loadDataProcessingSequences()", 'DataProcessing' );
 		$retVal = null;
 
 		$dataProcessingSequences = array();
@@ -548,10 +550,12 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 		$retVal = $dataProcessingSequences;
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Exiting loadDataProcessingSequences()...", 'DataProcessing' );
 		return $retVal;
 	}
 
 	protected function loadDataProcessingStatements( $dpXMLObject, $overwrite = true ) {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Entered loadDataProcessingStatements()", 'DataProcessing' );
 		$retVal = null;
 
 		// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for DataProcessing
@@ -758,6 +762,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 		$retVal = $dataProcessingStatements;
 
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, "XML2ArrayDPDefinitionParser: Exiting loadDataProcessingStatements()...", 'DataProcessing' );
 		return $retVal;
 	}
 
