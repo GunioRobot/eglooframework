@@ -99,9 +99,33 @@ class eGlooHelp extends eGlooCombine {
 
 		$combine_list = eGlooConfiguration::getCLICombineList();
 
+		$longest = 0;
+
 		foreach( $combine_list as $combine_id => $combine_class ) {
-			if ( class_exists($combine_class) && $combine_class !== get_class($this) ) {
-				echo $combine_class::getHelpString() . "\n";
+			if (strlen($combine_id) > $longest) {
+				$longest = strlen($combine_id);
+			}
+		}
+
+		foreach( $combine_list as $combine_id => $combine_class ) {
+			if ( class_exists($combine_class) && $combine_class !== get_class($this) && $combine_class !== 'eGlooZalgo' ) {
+				$tab_string = '';
+
+				$name_length = $longest - strlen($combine_id);
+
+				if ( ($name_length / 8) < 1 ) {
+					$tab_count = 0;
+				} else if ( ($name_length / 8) === 1 ) {
+					$tab_count = 1;
+				} else {
+					$tab_count = ceil($name_length / 8);
+				}
+
+				for( $i = 0; $i <= $tab_count; $i++ ) {
+					$tab_string .= "\t";
+				}
+
+				echo $combine_id . ':' . $tab_string . $combine_class::getHelpString() . "\n";
 			}
 		}
 

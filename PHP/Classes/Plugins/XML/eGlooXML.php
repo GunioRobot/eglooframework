@@ -157,7 +157,19 @@ class eGlooXML {
 							$children[$elementGroup] = array();
 						}
 
-						$childObjWrapper = new eGlooXML( $child );
+						$childObjWrapper = null;
+
+						try {
+							if ( $child !== false && !empty($child)) {
+								$childObjWrapper = new eGlooXML( $child );
+							}
+						} catch ( Exception $e ) {
+							// Ignore, logged inside constructor
+						}
+
+						if ( !$childObjWrapper ) {
+							continue;
+						}
 
 						// if ( isset($children[$elementGroup][$child->getName()]) ) {
 						// 	$children[$elementGroup][$child->getName()] = array();
