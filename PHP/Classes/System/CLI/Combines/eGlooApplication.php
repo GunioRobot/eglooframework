@@ -41,6 +41,98 @@
 class eGlooApplication extends eGlooCombine {
 
 	/**
+	 * @var array List of supported commands and their options/required arguments
+	 */
+	protected static $_supported_commands = array(
+		'create' => array(),
+		'info' => array(),
+		'list' => array(),
+	);
+
+	public function execute() {
+		$retVal = null;
+
+		switch( $this->_command ) {
+			case 'create' :
+				$retVal = $this->create();
+				break;
+			case 'info' :
+				$retVal = $this->info();
+				break;
+			case 'list' :
+				$retVal = $this->_list();
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
+	protected function create() {
+		$retVal = false;
+
+		return $retVal;
+	}
+
+	protected function info() {
+		$retVal = false;
+
+		return $retVal;
+	}
+
+	// PHP is dumb - 'list' should be a valid method name
+	protected function _list() {
+		$retVal = false;
+
+		return $retVal;
+	}
+
+	public function commandRequirementsSatisfied() {
+		$retVal = false;
+
+		switch( $this->_command ) {
+			case 'create' :
+				$retVal = $this->createCommandRequirementsSatisfied();
+				break;
+			case 'info' :
+				$retVal = $this->infoCommandRequirementsSatisfied();
+				break;
+			case 'list' :
+				$retVal = $this->listCommandRequirementsSatisfied();
+				break;
+			default :
+				break;
+		}
+
+		return $retVal;
+	}
+
+	protected function createCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	protected function infoCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	protected function listCommandRequirementsSatisfied() {
+		$retVal = false;
+
+		$retVal = true;
+
+		return $retVal;
+	}
+
+	/**
 	 * Return the help information for this class as a string
 	 *
 	 * @return string the help information for this class
