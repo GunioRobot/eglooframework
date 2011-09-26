@@ -96,6 +96,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 					} else {
 						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
+				} else if ( $value['type'] === 'mixed' ) {
+					$processedParameters[] = $value['value'];
 				} else {
 					throw new Exception('MySQLiOOPQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
 				}
