@@ -8,8 +8,9 @@
  *	
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DataAccessObjects
  * @version 1.0
  */
 
@@ -20,8 +21,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DataAccessObjects
  */
 class MySQLiOOPSessionDAO extends SessionDAO {
 
@@ -54,7 +56,7 @@ class MySQLiOOPSessionDAO extends SessionDAO {
 
 		$queryParameters = array();
 		$queryParameters[] = array( 'type' => 'string', 'value' => $sessionDTO->getSessionID() );
-		$queryParameters[] = array( 'type' => 'string', 'value' => eGlooRequest::getRemoteAddress() );
+		$queryParameters[] = array( 'type' => 'string', 'value' => eGlooHTTPRequest::getRemoteAddress() );
 		$queryParameters[] = array( 'type' => 'string', 'value' => $sessionDataSerialized );
 
 		QueryPopulationManager::populateQueryTransaction($preparedQueryTransaction, $queryParameters);

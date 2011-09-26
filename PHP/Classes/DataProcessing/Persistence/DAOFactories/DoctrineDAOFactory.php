@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class DoctrineDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class DoctrineDAOFactory extends ConcreteDAOFactory {
 		return new DoctrineSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new DoctrineAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new DoctrineUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new DoctrineUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new DoctrineFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new DoctrineBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new DoctrineCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new DoctrineUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new DoctrineSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new DoctrineRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new DoctrineImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new DoctrineGenericCubeDAO( $this->_connection_name );
 	}

@@ -55,7 +55,7 @@ class MySQLiQueryExecutionRoutine extends QueryExecutionRoutine {
 
 		while($column = $metadata->fetch_field()) {
 			$var = $column->name;
-			$$var = NULL;
+			$$var = null;
 			$refResults[] = &$$var;
 			$columns[] = $column->name;
 		}

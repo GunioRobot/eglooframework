@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class MySQLDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class MySQLDAOFactory extends ConcreteDAOFactory {
 		return new MySQLSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new MySQLAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new MySQLUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new MySQLUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new MySQLFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new MySQLBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new MySQLCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new MySQLUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new MySQLSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new MySQLRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new MySQLImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new MySQLGenericCubeDAO( $this->_connection_name );
 	}

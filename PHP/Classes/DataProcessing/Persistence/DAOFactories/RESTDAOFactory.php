@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class RESTDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class RESTDAOFactory extends ConcreteDAOFactory {
 		return new RESTSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new RESTAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new RESTUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new RESTUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new RESTFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new RESTBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new RESTCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new RESTUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new RESTSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new RESTRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new RESTImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new RESTGenericCubeDAO( $this->_connection_name );
 	}

@@ -150,7 +150,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 			
 			//Send email:
 			$userID = $userDTO->getUserID();
-			$hostname = eGlooRequest::getServerName();
+			$hostname = eGlooHTTPRequest::getServerName();
 			
 			$subject = "eGloo Account Confirmation";
 				
@@ -236,7 +236,7 @@ class RegisterNewAccountRequestProcessor extends RequestProcessor {
 	
 	
 	/**
-	 * @return TRUE if the referralId is unique, FALSE otherwise.
+	 * @return true if the referralId is unique, false otherwise.
  	 */
 	private function isConfirmationCodeUnique($confirmationId){
 		

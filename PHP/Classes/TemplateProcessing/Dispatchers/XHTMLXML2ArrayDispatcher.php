@@ -185,7 +185,7 @@ class XHTMLXML2ArrayDispatcher extends TemplateDispatcher {
 			return false;
 		}
 
-		$userAgent = eGlooRequest::getUserAgent();
+		$userAgent = eGlooHTTPRequest::getUserAgent();
 
 		/**
 		 * If this is a valid request class/id, get the request denoted 

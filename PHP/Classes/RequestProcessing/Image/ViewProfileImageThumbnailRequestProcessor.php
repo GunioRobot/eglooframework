@@ -88,7 +88,7 @@ class ViewProfileImageThumbnailRequestProcessor extends RequestProcessor {
 				$newWidth = $imageWidthMax;
 			}
 	        
-	        MagickResizeImage( $magickWand, $newWidth, $newHeight, MW_LanczosFilter, 0.65 );
+	        MagickResizeImage( $magickWand, $newWidth, $newHeight, MW_LANCZOSFILTER, 0.65 );
 	        
 	        $profileImageThumbnailDTO = new ProfileImageDTO();
 	        $profileImageThumbnailDTO->setImageMIMEType( $imageDTO->getImageMIMEType() );

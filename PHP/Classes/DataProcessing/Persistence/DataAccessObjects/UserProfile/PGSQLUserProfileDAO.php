@@ -21,7 +21,9 @@
  * @author Keith Buel
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DataAccessObjects
  * @version 1.0
  */
 
@@ -30,7 +32,9 @@
  *
  * Needs to be commented
  * 
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DataAccessObjects
  */
 class PGSQLUserProfileDAO extends UserProfileDAO {
 
@@ -259,10 +263,10 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 			foreach ($testarray as $value) {
 				switch ($value['gender']){
 					case UserProfileDTO::$MEN:
-						$m = TRUE;
+						$m = true;
 						break;
 					case UserProfileDTO::$WOMEN:
-						$w = TRUE;
+						$w = true;
 						break;
 				}
 			}
@@ -279,29 +283,29 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 		// Need this for making sure it all works.
 		$testarray =  pg_fetch_all($result);
 		
-		$f = FALSE;
-		$d = FALSE;
-		$re = FALSE;
-		$ra = FALSE;
-		$w = FALSE;
+		$f = false;
+		$d = false;
+		$re = false;
+		$ra = false;
+		$w = false;
 
 		if ($testarray) {		
 			foreach ($testarray as $value) {
 				switch ($value['lookingforoption']){
 					case UserProfileDTO::$FRIENDSHIP:
-						$f= TRUE;
+						$f= true;
 						break;
 					case UserProfileDTO::$DATING:
-						$d = TRUE;
+						$d = true;
 						break;
 					case UserProfileDTO::$RELATIONSHIP:
-						$re=TRUE;
+						$re=true;
 						break;
 					case UserProfileDTO::$RANDOMPLAY:
-						$ra=TRUE;
+						$ra=true;
 						break;
 					case UserProfileDTO::$WHATEVER:
-						$w=TRUE;
+						$w=true;
 						break;
 				}
 			}

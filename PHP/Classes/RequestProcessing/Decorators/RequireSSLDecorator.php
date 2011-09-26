@@ -42,7 +42,7 @@ class RequireSSLDecorator extends RequestProcessorDecorator {
 	
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequireSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
 		
-		if ( eGlooRequest::isSSL() ) {
+		if ( eGlooHTTPRequest::isSSL() ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "RequireSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
 			return true;
 		} else {

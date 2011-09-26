@@ -45,13 +45,13 @@ class ForceNonSSLDecorator extends RequestProcessorDecorator {
 	
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceNonSSLDecorator::requestPreProcessing - Verifying Non-SSL", 'Decorators' );
 		
-		if ( !eGlooRequest::isSSL() ) {
+		if ( !eGlooHTTPRequest::isSSL() ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceNonSSLDecorator::requestPreProcessing - Non-SSL Confirmed", 'Decorators' );
 			return true;
 		} else {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceNonSSLDecorator::requestPreProcessing - SSL Active, Redirecting", 'Decorators' );
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI(), 'Decorators' );
-			header( 'Location: ' . 'http://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI() );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . eGlooHTTPRequest::getServerName() . eGlooHTTPRequest::getRequestURI(), 'Decorators' );
+			header( 'Location: ' . 'http://' . eGlooHTTPRequest::getServerName() . eGlooHTTPRequest::getRequestURI() );
 			return false;
 		}
 		

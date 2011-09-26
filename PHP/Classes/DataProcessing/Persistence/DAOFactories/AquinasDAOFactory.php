@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class AquinasDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class AquinasDAOFactory extends ConcreteDAOFactory {
 		return new AquinasSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new AquinasAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new AquinasUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new AquinasUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new AquinasFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new AquinasBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new AquinasCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new AquinasUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new AquinasSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new AquinasRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new AquinasImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new AquinasGenericCubeDAO( $this->_connection_name );
 	}

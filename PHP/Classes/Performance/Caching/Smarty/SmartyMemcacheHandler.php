@@ -43,13 +43,13 @@
  * @param    string   $cache_id       Cache identifier
  * @param    string   $compile_id     Compile identifier
  * @param    integer  $exp_time       Expiration time
- * @return   boolean                  TRUE on success, FALSE otherwise
+ * @return   boolean                  true on success, false otherwise
  */
 function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=null, $cache_id=null, $compile_id=null, $exp_time=null) {
     // Create unique cache id:
     // We are using smarty's internal functions here to be as compatible as possible.
     $_auto_id    = $smarty->_get_auto_id($cache_id, $compile_id);
-    $_cache_file = substr($smarty->_get_auto_filename(".", $tpl_file, $_auto_id),2);
+    $_cache_file = substr($smarty->_get_auto_filename(".", $tpl_file, $_auto_id), 2);
     $memcache_id  = "smarty_memcache|".$_cache_file;
     
     $cacheGateway = CacheGateway::getCacheGateway();
@@ -96,5 +96,3 @@ function smarty_cache_memcache($action, &$smarty, &$cache_content, $tpl_file=nul
 
     return $return;
 }
-
-?>

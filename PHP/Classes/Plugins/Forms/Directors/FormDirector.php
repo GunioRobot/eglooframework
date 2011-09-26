@@ -118,7 +118,7 @@ final class FormDirector {
 
 			// FormAttributeSets
 			foreach( $formsXMLObject->xpath( '/tns:Forms/FormAttributeSet' ) as $formAttributeSetNode ) {
-				$formAttributeSetNodeID = isset($formAttributeSetNode['id']) ? (string) $formAttributeSetNode['id'] : NULL;
+				$formAttributeSetNodeID = isset($formAttributeSetNode['id']) ? (string) $formAttributeSetNode['id'] : null;
 
 				if ( !$formAttributeSetNodeID || trim($formAttributeSetNodeID) === '' ) {
 					throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
@@ -231,7 +231,7 @@ final class FormDirector {
 					throw new ErrorException('No display formatter specified in form node \'' . $formAttributeSetNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formAttributeSetEncoding = isset($formAttributeSetNode['encoding']) ? (string) $formAttributeSetNode['encoding'] : NULL;
+				$formAttributeSetEncoding = isset($formAttributeSetNode['encoding']) ? (string) $formAttributeSetNode['encoding'] : null;
 
 				$prependHTML = null;
 				$appendHTML = null;
@@ -287,7 +287,7 @@ final class FormDirector {
 												);
 
 				foreach( $formAttributeSetNode->xpath( 'child::FormFieldSet' ) as $formFieldSet ) {
-					$formFieldSetID = isset($formFieldSet['id']) ? (string) $formFieldSet['id'] : NULL;
+					$formFieldSetID = isset($formFieldSet['id']) ? (string) $formFieldSet['id'] : null;
 
 					if ( !$formFieldSetID || trim($formFieldSetID) === '' ) {
 						throw new ErrorException("No FormFieldSet ID specified in FormFieldSet: '" . $formFieldSet .
@@ -322,7 +322,7 @@ final class FormDirector {
 					}
 
 					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : $formFieldSetIDCamel . 'FormFieldSetValidator';
-					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
+					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : null;
 
 					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
 						$formFieldSetNodeRequired = true;
@@ -355,7 +355,7 @@ final class FormDirector {
 						}
 					}
 
-					$formFieldSetErrorMessage = NULL;
+					$formFieldSetErrorMessage = null;
 					$formFieldSetErrorMessageLocalizationToken = $formFieldSetTokenPrefix . 'error';
 
 					foreach( $formFieldSet->xpath( 'child::ErrorMessage' ) as $legend ) {
@@ -389,7 +389,7 @@ final class FormDirector {
 					$formFieldSetFormFields = array();
 
 					foreach( $formFieldSet->xpath( 'child::FormField' ) as $formField ) {
-						$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
+						$formFieldID = isset($formField['id']) ? (string) $formField['id'] : null;
 
 						if ( !$formFieldID || trim($formFieldID) === '' ) {
 							throw new ErrorException("No FormField ID specified in FormField: '" . $formField .
@@ -398,10 +398,10 @@ final class FormDirector {
 
 						$formFieldTokenPrefix = $formFieldSetTokenPrefix . $formFieldID . '_formfield_';
 
-						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
-						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
-						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
-						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : null;
+						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : null;
+						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : null;
+						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : null;
 
 						if ( !$formFieldType || trim($formFieldType) === '' ) {
 							throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -454,7 +454,7 @@ final class FormDirector {
 							$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 							foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
-								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : null;
 
 								if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
 									throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
@@ -463,10 +463,10 @@ final class FormDirector {
 
 								$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
-								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
-								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
-								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
-								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
+								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : null;
+								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : null;
+								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : null;
+								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : null;
 
 								if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 									throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -659,7 +659,7 @@ final class FormDirector {
 
 				// FormField Nodes
 				foreach( $formAttributeSetNode->xpath( 'child::FormField' ) as $formField ) {
-					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
+					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : null;
 
 					if ( !$formFieldID || trim($formFieldID) === '' ) {
 						throw new ErrorException("No FormField ID specified in FormField: '" . $formField .
@@ -669,10 +669,10 @@ final class FormDirector {
 					$formFieldIDCamel = eGlooString::toCamelCase( $formFieldID, '_', true );
 					$formFieldTokenPrefix = $formAttributeSetNodeTokenPrefix . $formFieldID . '_formfield_';
 
-					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
-					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
-					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
-					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : null;
+					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : null;
+					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : null;
+					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : null;
 
 					if ( !$formFieldType || trim($formFieldType) === '' ) {
 						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -724,7 +724,7 @@ final class FormDirector {
 						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
-							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : null;
 
 							if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
 								throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
@@ -733,10 +733,10 @@ final class FormDirector {
 
 							$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
-							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
-							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
-							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
-							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
+							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : null;
+							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : null;
+							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : null;
+							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : null;
 
 							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 								throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -930,7 +930,7 @@ final class FormDirector {
 			}
 
 			foreach( $formsXMLObject->xpath( '/tns:Forms/Form' ) as $formNode ) {
-				$formNodeID = isset($formNode['id']) ? (string) $formNode['id'] : NULL;
+				$formNodeID = isset($formNode['id']) ? (string) $formNode['id'] : null;
 
 				if ( !$formNodeID || trim($formNodeID) === '' ) {
 					throw new ErrorException('No ID specified in form node. Please review your Forms.xml');
@@ -1040,8 +1040,8 @@ final class FormDirector {
 					throw new ErrorException('No display formatter specified in form node \'' . $formNodeID . '\'. Please review your Forms.xml');
 				}
 
-				$formNodeAction = isset($formNode['action']) && trim((string) $formNode['action']) !== '' ? (string) $formNode['action'] : NULL;
-				$formNodeEncoding = isset($formNode['encoding']) && trim((string) $formNode['encoding']) !== '' ? (string) $formNode['encoding'] : NULL;
+				$formNodeAction = isset($formNode['action']) && trim((string) $formNode['action']) !== '' ? (string) $formNode['action'] : null;
+				$formNodeEncoding = isset($formNode['encoding']) && trim((string) $formNode['encoding']) !== '' ? (string) $formNode['encoding'] : null;
 				$formNodeMethod = isset($formNode['method']) && trim((string) $formNode['method']) !== '' ? (string) $formNode['method'] : 'post';
 
 				$prependHTML = null;
@@ -1099,7 +1099,7 @@ final class FormDirector {
 												);
 
 				foreach( $formNode->xpath( 'child::FormFieldSet' ) as $formFieldSet ) {
-					$formFieldSetID = isset($formFieldSet['id']) ? (string) $formFieldSet['id'] : NULL;
+					$formFieldSetID = isset($formFieldSet['id']) ? (string) $formFieldSet['id'] : null;
 
 					if ( !$formFieldSetID || trim($formFieldSetID) === '' ) {
 						throw new ErrorException("No FormFieldSet ID specified in FormFieldSet: '" . $formFieldSet .
@@ -1112,7 +1112,7 @@ final class FormDirector {
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
-					// $formFieldSetNodeDisplayLocalized = isset( $formFieldSet['displayLocalized'] ) ? strtolower( (string) $formFieldSet['displayLocalized'] ) : NULL;
+					// $formFieldSetNodeDisplayLocalized = isset( $formFieldSet['displayLocalized'] ) ? strtolower( (string) $formFieldSet['displayLocalized'] ) : null;
 					// 
 					// if ( !$formFieldSetNodeDisplayLocalized || trim($formFieldSetNodeDisplayLocalized) === '' ) {
 					// 	throw new ErrorException('No localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
@@ -1150,7 +1150,7 @@ final class FormDirector {
 
 
 					$formFieldSetNodeValidator = isset($formFieldSet['validator']) ? (string) $formFieldSet['validator'] : $formFieldSetIDCamel . 'FormFieldSetValidator';;
-					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : NULL;
+					$formFieldSetNodeRequired = isset($formFieldSet['required']) ? (string) $formFieldSet['required'] : null;
 
 					if ( $formFieldSetNodeRequired && $formFieldSetNodeRequired === 'true' ) {
 						$formFieldSetNodeRequired = true;
@@ -1217,7 +1217,7 @@ final class FormDirector {
 					$formFieldSetFormFields = array();
 
 					foreach( $formFieldSet->xpath( 'child::FormField' ) as $formField ) {
-						$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
+						$formFieldID = isset($formField['id']) ? (string) $formField['id'] : null;
 
 						if ( !$formFieldID || trim($formFieldID) === '' ) {
 							throw new ErrorException("No FormField ID specified in FormField: '" . $formField .
@@ -1226,10 +1226,10 @@ final class FormDirector {
 
 						$formFieldTokenPrefix = $formFieldSetTokenPrefix . $formFieldID . '_formfield_';
 
-						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
-						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
-						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
-						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+						$formFieldType = isset($formField['type']) ? (string) $formField['type'] : null;
+						$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : null;
+						$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : null;
+						$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : null;
 
 						if ( !$formFieldType || trim($formFieldType) === '' ) {
 							throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -1245,7 +1245,7 @@ final class FormDirector {
 						// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 						// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 						//
-						// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
+						// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : null;
 						// 
 						// if ($formFieldNodeDisplayLocalized === 'true') {
 						// 	$formFieldNodeDisplayLocalized = true;
@@ -1299,7 +1299,7 @@ final class FormDirector {
 							$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 							foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
-								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+								$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : null;
 
 								if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
 									throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
@@ -1308,10 +1308,10 @@ final class FormDirector {
 
 								$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
-								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
-								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
-								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
-								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
+								$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : null;
+								$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : null;
+								$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : null;
+								$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : null;
 
 								if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 									throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -1329,7 +1329,7 @@ final class FormDirector {
 								// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 								// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 								//
-								// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
+								// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : null;
 								// 
 								// if ($formFieldChildNodeDisplayLocalized === 'true') {
 								// 	$formFieldChildNodeDisplayLocalized = true;
@@ -1521,7 +1521,7 @@ final class FormDirector {
 
 				// FormField Nodes
 				foreach( $formNode->xpath( 'child::FormField' ) as $formField ) {
-					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : NULL;
+					$formFieldID = isset($formField['id']) ? (string) $formField['id'] : null;
 
 					if ( !$formFieldID || trim($formFieldID) === '' ) {
 						throw new ErrorException("No FormField ID specified in FormField: '" . $formField .
@@ -1531,10 +1531,10 @@ final class FormDirector {
 					$formFieldIDCamel = eGlooString::toCamelCase( $formFieldID, '_', true );
 					$formFieldTokenPrefix = $formNodeTokenPrefix . $formFieldID . '_formfield_';
 
-					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : NULL;
-					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : NULL;
-					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : NULL;
-					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : NULL;
+					$formFieldType = isset($formField['type']) ? (string) $formField['type'] : null;
+					$formFieldValue = isset($formField['value']) ? (string) $formField['value'] : null;
+					$formFieldRequired =  isset($formField['required']) ? (string) $formField['required'] : null;
+					$formFieldValueSeeder = isset($formField['seeder']) ? (string) $formField['seeder'] : null;
 
 					if ( !$formFieldType || trim($formFieldType) === '' ) {
 						throw new ErrorException('No FormField type specified in FormField: \'' . $formFieldID .
@@ -1577,7 +1577,7 @@ final class FormDirector {
 					// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
-					// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : NULL;
+					// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : null;
 					// 
 					// if ($formFieldNodeDisplayLocalized === 'true') {
 					// 	$formFieldNodeDisplayLocalized = true;
@@ -1603,7 +1603,7 @@ final class FormDirector {
 						$errorMessageLocalizationToken = $formFieldTokenPrefix . 'error';
 
 						foreach( $formField->xpath( 'child::FormField' ) as $formFieldChild ) {
-							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : NULL;
+							$formFieldChildID = isset($formFieldChild['id']) ? (string) $formFieldChild['id'] : null;
 
 							if ( !$formFieldChildID || trim($formFieldChildID) === '' ) {
 								throw new ErrorException('No FormField ID specified in FormField Child: \'' . $formFieldChild .
@@ -1612,10 +1612,10 @@ final class FormDirector {
 
 							$formFieldContainerTokenPrefix = $formFieldTokenPrefix . $formFieldChildID . '_formfield_';
 
-							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : NULL;
-							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : NULL;
-							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : NULL;
-							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : NULL;
+							$formFieldChildType = isset($formFieldChild['type']) ? (string) $formFieldChild['type'] : null;
+							$formFieldChildValue = isset($formFieldChild['value']) ? (string) $formFieldChild['value'] : null;
+							$formFieldChildRequired =  isset($formFieldChild['required']) ? (string) $formFieldChild['required'] : null;
+							$formFieldChildValueSeeder = isset($formFieldChild['seeder']) ? (string) $formFieldChild['seeder'] : null;
 
 							if ( !$formFieldChildType || trim($formFieldChildType) === '' ) {
 								throw new ErrorException("No FormField type specified in FormField Child: '" . $formFieldChildID .
@@ -1633,7 +1633,7 @@ final class FormDirector {
 							// TODO: Add this back in when we support injection of FormAttributeSets where the Form localizer might not know how to localize the components
 							// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 							//
-							// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : NULL;
+							// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : null;
 							// 
 							// if ($formFieldChildNodeDisplayLocalized === 'true') {
 							// 	$formFieldChildNodeDisplayLocalized = true;
@@ -1829,9 +1829,9 @@ final class FormDirector {
 							$newTrigger = array();
 
 							// TODO throw exception if this is malformed.  Unused triggers / malformed triggers shouldn't be put in
-							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
-							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
-							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : null;
+							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : null;
+							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : null;
 
 							$createTriggers[] = $newTrigger;
 						}
@@ -1850,9 +1850,9 @@ final class FormDirector {
 						foreach( $readNode->xpath( 'child::Trigger' ) as $triggerNode ) {
 							$newTrigger = array();
 
-							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
-							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
-							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : null;
+							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : null;
+							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : null;
 
 							$readTriggers[] = $newTrigger;
 						}
@@ -1871,9 +1871,9 @@ final class FormDirector {
 						foreach( $updateNode->xpath( 'child::Trigger' ) as $triggerNode ) {
 							$newTrigger = array();
 
-							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
-							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
-							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : null;
+							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : null;
+							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : null;
 
 							$updateTriggers[] = $newTrigger;
 						}
@@ -1892,9 +1892,9 @@ final class FormDirector {
 						foreach( $destroyNode->xpath( 'child::Trigger' ) as $triggerNode ) {
 							$newTrigger = array();
 
-							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : NULL;
-							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : NULL;
-							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : NULL;
+							$newTrigger['type'] = isset($triggerNode['triggerType']) ? (string) $triggerNode['triggerType'] : null;
+							$newTrigger['key'] = isset($triggerNode['triggerKey']) ? (string) $triggerNode['triggerKey'] : null;
+							$newTrigger['value'] = isset($triggerNode['triggerValue']) ? (string) $triggerNode['triggerValue'] : null;
 
 							$destroyTriggers[] = $newTrigger;
 						}

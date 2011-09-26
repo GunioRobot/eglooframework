@@ -93,7 +93,7 @@ Cache-Control	max-age=86400
 			header( 'Content-type: ' . $fileMIMEType );
 			echo $output;
 		} else {
-			header( eGlooRequest::getServerProtocol() . ' 404 Not Found ' );
+			header( eGlooHTTPRequest::getServerProtocol() . ' 404 Not Found ' );
 		}
 
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, 'RawFileRequestProcessor: Exiting processRequest()' );

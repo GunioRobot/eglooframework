@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class eGlooDBDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class eGlooDBDAOFactory extends ConcreteDAOFactory {
 		return new eGlooDBSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new eGlooDBAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new eGlooDBUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new eGlooDBUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new eGlooDBFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new eGlooDBBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new eGlooDBCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new eGlooDBUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new eGlooDBSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new eGlooDBRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new eGlooDBImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new eGlooDBGenericCubeDAO( $this->_connection_name );
 	}

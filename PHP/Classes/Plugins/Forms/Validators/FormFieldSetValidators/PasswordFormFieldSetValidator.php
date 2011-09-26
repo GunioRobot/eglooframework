@@ -50,19 +50,19 @@ class PasswordFormFieldSetValidator extends FormFieldSetValidator {
 
 			if ( !preg_match('~^.{6,32}$~', $firstPasswordField->getValue() ) ) {
 				$firstPasswordField->setError( 
-					'password_length', 'Password must be between 6 and 32 characters long' , 'password_length_error_message' );
+					'password_length', 'Password must be between 6 and 32 characters long', 'password_length_error_message' );
 			}
 
 			// Example...
 			if ( preg_match('~[0-9]+~', $firstPasswordField->getValue() ) ) {
 				$firstPasswordField->setError( 
-					'password_digits', 'Password cannot contain digits' , 'password_digit_error_message' );
+					'password_digits', 'Password cannot contain digits', 'password_digit_error_message' );
 			}
 
 			// Example...
 			if ( preg_match('~[\'"]+~', $firstPasswordField->getValue() ) ) {
 				$firstPasswordField->setError( 
-					'password_invalid_characters', 'Password cannot contain the following characters: \',"' ,
+					'password_invalid_characters', 'Password cannot contain the following characters: \',"',
 					'password_invalid_characters_error_message' );
 			}
 

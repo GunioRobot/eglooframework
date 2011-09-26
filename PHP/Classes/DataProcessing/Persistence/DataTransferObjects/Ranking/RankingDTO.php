@@ -21,7 +21,9 @@
  * @author <UNKNOWN>
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package Data Transfer Objects
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DataTransferObjects
  * @version 1.0
  */
 
@@ -30,7 +32,9 @@
  * 
  * Needs to be commented
  *
- * @package Data Transfer Objects
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DataTransferObjects
  */
 class RankingDTO extends DataTransferObject {
     

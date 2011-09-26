@@ -67,7 +67,7 @@ class ValidatedFormField extends FormField {
 		if ( !empty($this->_formFieldChildren) ) {
 			foreach( $this->_formFieldChildren as $formFieldID => $formField ) {
 				if ( !$formField->validate() ) {
-					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors()
+					$this->_formFieldChildErrors[$formFieldID] = $formField->getErrors();
 				}
 			}
 		}

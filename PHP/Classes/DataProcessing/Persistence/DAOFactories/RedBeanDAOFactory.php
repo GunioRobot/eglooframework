@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class RedBeanDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class RedBeanDAOFactory extends ConcreteDAOFactory {
 		return new RedBeanSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new RedBeanAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new RedBeanUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new RedBeanUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new RedBeanFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new RedBeanBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new RedBeanCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new RedBeanUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new RedBeanSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new RedBeanRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new RedBeanImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new RedBeanGenericCubeDAO( $this->_connection_name );
 	}

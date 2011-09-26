@@ -21,8 +21,9 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
@@ -33,8 +34,9 @@
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category DataProcessing
+ * @package Persistence
+ * @subpackage DAOFactories
  */
 class RoutingDAOFactory extends ConcreteDAOFactory {
 
@@ -45,46 +47,10 @@ class RoutingDAOFactory extends ConcreteDAOFactory {
 		return new RoutingSessionDAO( $this->_connection_name ); 
 	}
 
-	public function getAccountDAO() {
-		return new RoutingAccountDAO( $this->_connection_name );
-	}
-	
-	public function getUserProfileDAO() {
-		return new RoutingUserProfileDAO( $this->_connection_name );
-	}
-
-	public function getUserProfilePageDAO() {
-		return new RoutingUserProfilePageDAO( $this->_connection_name );
-	}
-
-	public function getFriendsDAO() {
-		return new RoutingFriendsDAO( $this->_connection_name );
-	}
-	
-	public function getBlogDAO() {
-		return new RoutingBlogDAO( $this->_connection_name );
-	}
-
 	public function getCubeDAO() {
 		return new RoutingCubeDAO( $this->_connection_name );
 	}
 
-	public function getUserInvitesDAO() {
-		return new RoutingUserInvitesDAO( $this->_connection_name );	
-	}
-	
-	public function getSearchDAO() {
-		return new RoutingSearchDAO( $this->_connection_name );
-	}
-	
-	public function getRelationshipDAO() {
-		return new RoutingRelationshipDAO( $this->_connection_name );
-	}
-	
-	public function getImageDAO() {
-		return new RoutingImageDAO( $this->_connection_name );
-	}
-	
 	public function getGenericCubeDAO() {
 		return new RoutingGenericCubeDAO( $this->_connection_name );
 	}

@@ -42,13 +42,13 @@ class ForceSSLDecorator extends RequestProcessorDecorator {
 	
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - Verifying SSL", 'Decorators' );
 		
-		if ( eGlooRequest::isSSL() ) {
+		if ( eGlooHTTPRequest::isSSL() ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Confirmed", 'Decorators' );
 			return true;
 		} else {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "ForceSSLDecorator::requestPreProcessing - SSL Inactive, Redirecting", 'Decorators' );
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI(), 'Decorators' );
-			header( 'Location: ' . 'https://' . eGlooRequest::getServerName() . eGlooRequest::getRequestURI() );
+			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'https://' . eGlooHTTPRequest::getServerName() . eGlooHTTPRequest::getRequestURI(), 'Decorators' );
+			header( 'Location: ' . 'https://' . eGlooHTTPRequest::getServerName() . eGlooHTTPRequest::getRequestURI() );
 			return false;
 		}
 		

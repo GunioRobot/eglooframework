@@ -77,7 +77,7 @@ class JavascriptRequestProcessor extends RequestProcessor {
 				throw $e;
 			} else {
 				eGlooLogger::writeLog( eGlooLogger::WARN, 'JavascriptRequestProcessor: Template requested but not found: "' .
-					$this->requestInfoBean->getRequestID() . '" from user-agent "' . eGlooRequest::getUserAgent() . '"' );
+					$this->requestInfoBean->getRequestID() . '" from user-agent "' . eGlooHTTPRequest::getUserAgent() . '"' );
 				eGlooHTTPResponse::issueCustom404Response();
 			}
 		}

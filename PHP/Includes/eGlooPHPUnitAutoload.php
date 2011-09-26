@@ -27,7 +27,7 @@
 
 // Bring up the eGlooConfiguration
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
-	include( 'PHP/Classes/System/eGlooConfiguration.php' );
+	include( 'PHP/Classes/System/Configuration/eGlooConfiguration.php' );
 }
 
 // Load the install configuration
@@ -35,7 +35,7 @@ eGlooConfiguration::loadCLIConfigurationOptions( true );
 
 // Bring up the eGlooLogger
 if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/System/eGlooLogger.php' );
+	include( 'PHP/Classes/System/Utilities/eGlooLogger.php' );
 }
 
 // Initialize the eGlooLogger
@@ -116,7 +116,7 @@ function eglooAutoload($class_name) {
 		$autoload_hash = array();
 	}
 
-	// static $possible_path = NULL;
+	// static $possible_path = null;
 	$possible_path = null;
 
 	static $cli_paths = null;
@@ -129,7 +129,7 @@ function eglooAutoload($class_name) {
 	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
 
 	// Set the first time autoload is called
-	if ( NULL === $cli_paths ) {
+	if ( null === $cli_paths ) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkPHPPath( true );
 		$application_classes = eGlooConfiguration::getApplicationPHPPath( false );

@@ -22,21 +22,25 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DAOFactories
  * @version 1.0
  */
 
 /**
  * AbstractDAOFactory
- * 
+ *
  * This class defines an abstract AbstractDAOFactory.  It determines the appropriate
  * concrete AbstractDAOFactory.	 And then returns the correct requested DAO by calling
  * the appropriate functions on the concrete AbstractDAOFactory.
- * 
+ *
  * Details of this pattern can be seen on the following website:
  * http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html
- * 
+ *
+ * @category DataProcessing
  * @package Persistence
+ * @subpackage DAOFactories
  */
 class AbstractDAOFactory {
 
@@ -102,44 +106,8 @@ class AbstractDAOFactory {
 		return $this->getAppropriateFactory( $connection_name )->getSessionDAO();
 	}
 
-	public function getAccountDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getAccountDAO();
-	}
-
-	public function getUserProfileDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getUserProfileDAO();
-	}
-
-	public function getUserProfilePageDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getUserProfilePageDAO();
-	}
-
-	public function getFriendsDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getFriendsDAO();
-	}
-
-	public function getBlogDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getBlogDAO();
-	}
-
 	public function getCubeDAO( $connection_name = 'egPrimary' ) {
 		return $this->getAppropriateFactory( $connection_name )->getCubeDAO();
-	}
-
-	public function getUserInvitesDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getUserInvitesDAO();
-	}
-
-	public function getSearchDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getSearchDAO();
-	}
-
-	public function getImageDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getImageDAO();
-	}
-
-	public function getRelationshipDAO( $connection_name = 'egPrimary' ) {
-		return $this->getAppropriateFactory( $connection_name )->getRelationshipDAO();
 	}
 
 	public function getGenericCubeDAO( $connection_name = 'egPrimary' ) {

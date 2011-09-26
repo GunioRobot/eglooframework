@@ -72,6 +72,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 					if (is_string($value['value'])) {
 						if (isset($value['quote']) && $value['quote']) {
 							$processedParameters[] = '\'' . $connection->real_escape_string($value['value']) . '\'';
+						} else if (isset($value['escape']) && !$value['escape']) {
+							$processedParameters[] = $value['value'];
 						} else {
 							$processedParameters[] = $connection->real_escape_string($value['value']);
 						}
@@ -94,6 +96,8 @@ class MySQLiOOPQueryPopulationRoutine extends QueryPopulationRoutine {
 					} else {
 						throw new Exception('MySQLiOOPQueryPopulationRoutine: Type mismatch.  Expected float, got ' . gettype($value['value']) . ' with value ' . $value['value']);
 					}
+				} else if ( $value['type'] === 'mixed' ) {
+					$processedParameters[] = $value['value'];
 				} else {
 					throw new Exception('MySQLiOOPQueryPopulationRoutine: Invalid type specified for value: ' . $value['value']);
 				}

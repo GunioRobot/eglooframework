@@ -36,7 +36,7 @@
  * @package $package
  * @subpackage $subpackage
  */
-class ValidatedDateFormField extends ValidatedDateFormField {
+class ValidatedDateFormField extends DateFormField {
 
 }
 
