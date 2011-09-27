@@ -1,4 +1,6 @@
 <?php
+use \eGloo\Application;
+
 /**
  * eGlooApplication Class File
  *
@@ -71,6 +73,9 @@ class eGlooApplication extends eGlooCombine {
 
 	protected function create() {
 		$retVal = false;
+
+		$application = new Application();
+		$application->load( 'blah' );
 
 		return $retVal;
 	}
