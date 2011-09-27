@@ -99,7 +99,8 @@ class Application extends Bundle {
 	}
 
 	public function load( $app_bundle_path ) {
-		
+		$framework = new Framework();
+		die_r($framework);
 	}
 
 	public function save( $app_bundle_path ) {

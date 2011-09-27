@@ -166,7 +166,6 @@ final class eGlooConfiguration {
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
 	}
 
-
 	public static function loadConfigurationOptions( $overwrite = true, $prefer_htaccess = true, $config_xml = './Config.xml', $config_cache = null ) {
 		$useRuntimeCache = self::getUseRuntimeCache();
 
@@ -1759,6 +1758,10 @@ final class eGlooConfiguration {
 		return self::$configuration_options['egDatabaseConnections'];
 	}
 
+	public static function getDataStorePath() {
+		return self::$configuration_options['DataStorePath'];
+	}
+
 	public static function getDeploymentType() {
 		// TODO deprecate this
 		return self::getDeployment();
@@ -1774,10 +1777,6 @@ final class eGlooConfiguration {
 
 	public static function getDoctrineIncludePath() {
 		return self::$configuration_options['DoctrinePath'];
-	}
-
-	public static function getDataStorePath() {
-		return self::$configuration_options['DataStorePath'];
 	}
 
 	public static function getDocumentationPath() {
