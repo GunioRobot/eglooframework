@@ -63,11 +63,13 @@ class Application extends Bundle {
 	 * @param string Path for this application bundle
 	 */
 	public function __construct( $app_bundle_path = null ) {
-		
+		$this->_real_path = $app_bundle_path;
+
+		$this->init( $app_bundle_path );
 	}
 
 	public function build( $frameworkObj = null ) {
-		if ( !$frameworkObj ) {
+		if ( $frameworkObj ) {
 			
 		} else {
 			
@@ -75,7 +77,7 @@ class Application extends Bundle {
 	}
 
 	public function check( $frameworkObj = null ) {
-		if ( !$frameworkObj ) {
+		if ( $frameworkObj ) {
 			
 		} else {
 			
@@ -83,18 +85,34 @@ class Application extends Bundle {
 	}
 
 	public function generateChecksum( $frameworkObj = null ) {
-		if ( !$frameworkObj ) {
+		if ( $frameworkObj ) {
 			
 		} else {
 			
 		}
 	}
 
+	public function init( $app_bundle_path = null ) {
+		if ( file_exists($app_bundle_path) && is_dir($app_bundle_path) && strpos($app_bundle_path, '.gloo') ) {
+			$dir_name = preg_replace( '~.*/~', '', $app_bundle_path );
+			$dir_name = preg_replace( '~/~', '', $dir_name );
+
+			$this->_application_name = preg_replace( '~\.gloo~', '', $dir_name );
+
+			try {
+				$this->initInterfaceBundles( realpath($app_bundle_path) );
+			} catch (\Exception $e) {
+				echo $e->getMessage() . "\n";
+			}
+		}
+	}
+
 	public function install( $frameworkObj = null ) {
-		if ( !$frameworkObj ) {
-			
+		if ( $frameworkObj ) {
+			$applications_path = $frameworkObj->getApplicationsPath();
+
+			rename( $this->_real_path, $applications_path . '/' . $this->_application_name . '.gloo' );
 		} else {
-			
 		}
 	}
 
@@ -104,7 +122,20 @@ class Application extends Bundle {
 	}
 
 	public function save( $app_bundle_path ) {
-		
+		$retVal = false;
+
+		$save_path = $app_bundle_path . '/' . $this->_application_name . '.gloo';
+
+		if ( !is_writable( $save_path ) ) {
+			try {
+				mkdir( $save_path, 0755, true );
+				$retVal = true;
+			} catch (\Exception $e){
+				echo $e->getMessage() . "\n";
+			}
+		}
+
+		return $retVal;
 	}
 
 	public function uninstall( $frameworkObj = null ) {
@@ -183,6 +214,31 @@ class Application extends Bundle {
 	 */
 	public function removeInterfaceBundle( $bundle_name ) {
 		unset($this->_interface_bundles[$bundle_name]);
+	}
+
+	/**
+	 * Returns all interface bundles for this bundle
+	 *
+	 * @return array File paths for build files this application contains
+	 */
+	protected function initInterfaceBundles( $app_bundle_path ) {
+		if (!file_exists($app_bundle_path . '/InterfaceBundles')) {
+			throw new \ErrorException('No interface bundles found');
+		}
+
+		$retVal = array();
+
+		$it = new DirectoryIterator( $app_bundle_path . '/InterfaceBundles' );
+
+		foreach ($it as $i) {
+			if ( !in_array($i->getFilename(), array('.', '..', '.DS_Store')) ) {
+				$retVal[] = $i->getFilename();
+			}
+		}
+
+		$this->_interface_bundles = $retVal;
+
+		return $retVal;
 	}
 
 	/**

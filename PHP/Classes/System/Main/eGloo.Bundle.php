@@ -43,54 +43,59 @@ namespace eGloo;
 abstract class Bundle {
 
 	/**
-	 * @var array File paths for build files this application contains
+	 * @var array File paths for build files this bundle contains
 	 */
 	protected $_build_file_paths = array();
 
 	/**
-	 * @var array File paths for configuration files this application contains
+	 * @var array File paths for configuration files this bundle contains
 	 */
 	protected $_config_file_paths = array();
 
 	/**
-	 * @var array File paths for database files this application contains
+	 * @var array File paths for database files this bundle contains
 	 */
 	protected $_database_file_paths = array();
 
 	/**
-	 * @var array File paths for network files this application contains
+	 * @var array File paths for network files this bundle contains
 	 */
 	protected $_network_file_paths = array();
 
 	/**
-	 * @var array File paths for PHP files this application contains
+	 * @var array File paths for PHP files this bundle contains
 	 */
 	protected $_php_file_paths = array();
 
 	/**
-	 * @var array File paths for template files this application contains
+	 * @var Type Real path for this bundle
+	 */
+	protected $_real_path = null;
+
+	/**
+	 * @var array File paths for template files this bundle contains
 	 */
 	protected $_template_file_paths = array();
 
 	/**
-	 * @var array File paths for test files this application contains
+	 * @var array File paths for test files this bundle contains
 	 */
 	protected $_test_file_paths = array();
 
 	/**
-	 * @var array File paths for top level files this application contains
+	 * @var array File paths for top level files this bundle contains
 	 */
 	protected $_top_level_file_paths = null;
 
 	/**
-	 * @var array File paths for XML files this application contains
+	 * @var array File paths for XML files this bundle contains
 	 */
 	protected $_xml_file_paths = array();
 
 	/**
 	 * Returns protected class member $_build_file_paths
 	 *
-	 * @return array File paths for build files this application contains
+	 * @return array File paths for build files this bundle contains
 	 */
 	public function getBuildFilePaths() {
 		return $this->_build_file_paths;
@@ -99,7 +104,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_build_file_paths
 	 *
-	 * @param build_file_paths array File paths for build files this application contains
+	 * @param build_file_paths array File paths for build files this bundle contains
 	 */
 	public function setBuildFilePaths( $build_file_paths ) {
 		$this->_build_file_paths = $build_file_paths;
@@ -108,7 +113,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_config_file_paths
 	 *
-	 * @return array File paths for configuration files this application contains
+	 * @return array File paths for configuration files this bundle contains
 	 */
 	public function getConfigFilePaths() {
 		return $this->_config_file_paths;
@@ -117,7 +122,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_config_file_paths
 	 *
-	 * @param config_file_paths array File paths for configuration files this application contains
+	 * @param config_file_paths array File paths for configuration files this bundle contains
 	 */
 	public function setConfigFilePaths( $config_file_paths ) {
 		$this->_config_file_paths = $config_file_paths;
@@ -126,7 +131,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_database_file_paths
 	 *
-	 * @return array File paths for database files this application contains
+	 * @return array File paths for database files this bundle contains
 	 */
 	public function getDatabaseFilePaths() {
 		return $this->_database_file_paths;
@@ -135,7 +140,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_database_file_paths
 	 *
-	 * @param database_file_paths array File paths for database files this application contains
+	 * @param database_file_paths array File paths for database files this bundle contains
 	 */
 	public function setDatabaseFilePaths( $database_file_paths ) {
 		$this->_database_file_paths = $database_file_paths;
@@ -144,7 +149,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_network_file_paths
 	 *
-	 * @return array File paths for network files this application contains
+	 * @return array File paths for network files this bundle contains
 	 */
 	public function getNetworkFilePaths() {
 		return $this->_network_file_paths;
@@ -153,7 +158,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_network_file_paths
 	 *
-	 * @param network_file_paths array File paths for network files this application contains
+	 * @param network_file_paths array File paths for network files this bundle contains
 	 */
 	public function setNetworkFilePaths( $network_file_paths ) {
 		$this->_network_file_paths = $network_file_paths;
@@ -162,7 +167,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_php_file_paths
 	 *
-	 * @return array File paths for PHP files this application contains
+	 * @return array File paths for PHP files this bundle contains
 	 */
 	public function getPHPFilePaths() {
 		return $this->_php_file_paths;
@@ -171,16 +176,34 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_php_file_paths
 	 *
-	 * @param php_file_paths array File paths for PHP files this application contains
+	 * @param php_file_paths array File paths for PHP files this bundle contains
 	 */
 	public function setPHPFilePaths( $php_file_paths ) {
 		$this->_php_file_paths = $php_file_paths;
 	}
 
 	/**
+	 * Returns protected class member $_real_path
+	 *
+	 * @return Type Real path for this bundle
+	 */
+	public function getRealPath() {
+		return $this->_real_path;
+	}
+
+	/**
+	 * Sets protected class member $_real_path
+	 *
+	 * @param real_path Type Real path for this bundle
+	 */
+	public function setRealPath( $real_path ) {
+		$this->_real_path = $real_path;
+	}
+
+	/**
 	 * Returns protected class member $_template_file_paths
 	 *
-	 * @return array File paths for template files this application contains
+	 * @return array File paths for template files this bundle contains
 	 */
 	public function getTemplateFilePaths() {
 		return $this->_template_file_paths;
@@ -189,7 +212,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_template_file_paths
 	 *
-	 * @param template_file_paths array File paths for template files this application contains
+	 * @param template_file_paths array File paths for template files this bundle contains
 	 */
 	public function setTemplateFilePaths( $template_file_paths ) {
 		$this->_template_file_paths = $template_file_paths;
@@ -198,7 +221,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_test_file_paths
 	 *
-	 * @return array File paths for test files this application contains
+	 * @return array File paths for test files this bundle contains
 	 */
 	public function getTestFilePaths() {
 		return $this->_test_file_paths;
@@ -207,7 +230,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_test_file_paths
 	 *
-	 * @param test_file_paths array File paths for test files this application contains
+	 * @param test_file_paths array File paths for test files this bundle contains
 	 */
 	public function setTestFilePaths( $test_file_paths ) {
 		$this->_test_file_paths = $test_file_paths;
@@ -216,7 +239,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_top_level_file_paths
 	 *
-	 * @return array File paths for top level files this application contains
+	 * @return array File paths for top level files this bundle contains
 	 */
 	public function getTopLevelFilePaths() {
 		return $this->_top_level_file_paths;
@@ -225,7 +248,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_top_level_file_paths
 	 *
-	 * @param top_level_file_paths array File paths for top level files this application contains
+	 * @param top_level_file_paths array File paths for top level files this bundle contains
 	 */
 	public function setTopLevelFilePaths( $top_level_file_paths ) {
 		$this->_top_level_file_paths = $top_level_file_paths;
@@ -234,7 +257,7 @@ abstract class Bundle {
 	/**
 	 * Returns protected class member $_xml_file_paths
 	 *
-	 * @return array File paths for XML files this application contains
+	 * @return array File paths for XML files this bundle contains
 	 */
 	public function getXMLFilePaths() {
 		return $this->_xml_file_paths;
@@ -243,7 +266,7 @@ abstract class Bundle {
 	/**
 	 * Sets protected class member $_xml_file_paths
 	 *
-	 * @param xml_file_paths array File paths for XML files this application contains
+	 * @param xml_file_paths array File paths for XML files this bundle contains
 	 */
 	public function setXMLFilePaths( $xml_file_paths ) {
 		$this->_xml_file_paths = $xml_file_paths;
