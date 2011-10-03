@@ -176,6 +176,16 @@ function eglooAutoload($class_name) {
 	}
 
 	$possibility = str_replace( "&CLASS", $class_name, $permitted_formats );
+
+	// Supporting Namespaces
+	$ns_class_name = '';
+
+	if ( strpos($class_name, '\\') !== false ) {
+		$ns_class_name = str_replace( '\\', '.', $class_name );
+		$ns_possibility = str_replace( '&CLASS', $ns_class_name, $permitted_formats );
+		$possibility = array_merge( $possibility, $ns_possibility );
+	}
+
 	$realPath = null;
 
 	if ($sanityCheckClassLoading) {
@@ -194,6 +204,20 @@ function eglooAutoload($class_name) {
 			foreach ( new RecursiveIteratorIterator( $it ) as $currentNode ) {
 
 				if ( strpos( $currentNode->getFileName(), $class_name ) !== false ) {
+					// class_name was included, now compare against all permitted file name patterns
+					foreach ( $possibility as $compare ) {
+						// by using $compare, you will get a qualified file name
+
+						if ( $compare === $currentNode->getFileName() ) {
+							$realPath = $currentNode->getPathName();
+							if ($sanityCheckClassLoading && !in_array($realPath, $instances[$directory])) {
+								$instances[$directory][] = $realPath;
+							} else {
+								break;
+							}
+						}
+					}
+				} else if ( $ns_class_name !== '' && strpos( $currentNode->getFileName(), $ns_class_name ) !== false ) {
 					// class_name was included, now compare against all permitted file name patterns
 					foreach ( $possibility as $compare ) {
 						// by using $compare, you will get a qualified file name
