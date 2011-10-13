@@ -42,6 +42,11 @@ namespace eGloo\Combine;
 abstract class Combine {
 
 	/**
+	 * @var array List of supported commands and their options/required arguments
+	 */
+	protected static $_supported_commands = array();
+
+	/**
 	 * @var string Name of the command to execute
 	 */
 	protected $_command = null;

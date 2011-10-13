@@ -66,8 +66,8 @@
 		<Component id="check" displayName="Check Combine Class" override="true" type="class" value="\eGloo\Combine\Cache"/>
 		<Component id="config" displayName="Configuration Combine Class" override="true" type="class" value="\eGloo\Combine\Cache"/>
 		<Component id="configuration" displayName="Configuration Combine Class" override="true" type="class" value="\eGloo\Combine\Cache"/>
-		<Component id="cube" displayName="Cube Combine Class" override="true" type="class" value="\eGloo\Combine\Cache"/>
-		<Component id="cubes" displayName="Cube Combine Class" override="true" type="class" value="\eGloo\Combine\Cache"/>
+		<Component id="cube" displayName="Cube Combine Class" override="true" type="class" value="\eGloo\Combine\Cube"/>
+		<Component id="cubes" displayName="Cube Combine Class" override="true" type="class" value="\eGloo\Combine\Cube"/>
 		<Component id="daemon" displayName="Daemon Combine Class" override="true" type="class" value="\eGloo\Combine\DaemonMaster"/>
 		<Component id="daemons" displayName="Daemon Combine Class" override="true" type="class" value="\eGloo\Combine\DaemonMaster"/>
 		<Component id="daemonmaster" displayName="Daemon Combine Class" override="true" type="class" value="\eGloo\Combine\DaemonMaster"/>

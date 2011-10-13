@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooCube Class File
+ * eGloo\Combine\Bundle Class File
  *
- * Contains the class definition for the eGlooCube
+ * Contains the class definition for the eGloo\Combine\Bundle
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooCube
+ * eGloo\Combine\Bundle
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooCube extends eGlooCombine {
+class Bundle extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,7 +49,7 @@ class eGlooCube extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Cubes Help';
+		return 'eGloo Bundle Help';
 	}
 
 }
