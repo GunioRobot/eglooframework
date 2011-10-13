@@ -248,6 +248,67 @@ function eglooAutoload($class_name) {
 		}
 	}
 
+	// Path wasn't found, so let's try some fancy, fuzzy logic if we're doing namespaces
+	if ( $realPath === null && strpos($class_name, '\\') !== false ) {
+		$namespace = preg_replace( '~\\\([a-zA-Z0-9]+)$~', '', $class_name );
+		$namespace_regex = str_replace( '\\', '\\\\', $namespace );
+		$namespace_regex = '~\n\s*namespace\s+' . $namespace_regex . ';~';
+
+		$base_class = preg_replace( '~([a-zA-Z0-9]+\\\)~', '', $class_name );
+		$class_declaration_regex = '~\n\s*class\s+' . $base_class . '\s*([a-zA-Z0-9,]*\s*)*\s*{~';
+
+		// Go through each class path like normal
+		foreach ( $possible_path as $directory ) {
+			if ( file_exists( $directory ) && is_dir( $directory ) ) {
+				// Setup a test path and a marker for iterating
+				$next_step = preg_replace( '~^eGloo\\\~', '', $class_name, 1 );
+				$next_step = str_replace( '\\', '.', $next_step );
+				$next_step = preg_replace( '~\.~', '/', $next_step, 1 );
+
+				$fuzzied_path = '';
+
+				// Start comparing against possible fuzzy names/paths
+				while( $next_step !== $fuzzied_path ) {
+					$fuzzied_path = $next_step;
+
+					$file_paths = array();
+					$file_paths[] = $directory . '/' . $fuzzied_path  . '.php';
+					$file_paths[] = $directory . '/Classes/' . $fuzzied_path  . '.php';
+
+					// Let's check some paths
+					foreach( $file_paths as $file_path ) {
+						// See if this file exists
+						if ( file_exists( $file_path ) && is_file( $file_path ) && is_readable( $file_path ) ) {
+							// Found a file, let's inspect its contents to see if its what we want
+							$file_contents = file_get_contents( $file_path );
+
+							if ( preg_match( $namespace_regex, $file_contents ) !== 0 && preg_match( $class_declaration_regex, $file_contents ) !== 0 ) {
+								// Bingo, let's mark this and bail
+								$realPath = $file_path;
+								break;
+							}
+						}
+					}
+
+					if ( $realPath !== null ) {
+						break;
+					} else {
+						$next_step = preg_replace( '~\.~', '/', $fuzzied_path, 1 );
+					}
+				}
+
+				// Did we find something?
+				if ( $realPath !== null ) {
+					// We did.  Let's cache it and leave
+					include( $realPath );
+					$autoload_hash[$class_name] = realpath( $realPath );
+					$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+					break;
+				}
+			}
+		}
+	}
+
 	// No class file was found - let's check for dynamic includes based on namespace
 	if ( $realPath === null && strpos($class_name, '\\') !== false ) {
 

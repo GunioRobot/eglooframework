@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooDataProcessing Class File
+ * eGloo\Combine\DataProcessing Class File
  *
- * Contains the class definition for the eGlooDataProcessing
+ * Contains the class definition for the eGloo\Combine\DataProcessing
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooDataProcessing
+ * eGloo\Combine\DataProcessing
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooDataProcessing extends eGlooCombine {
+class DataProcessing extends Combine {
 
 	/**
 	 * @var array List of supported commands and their options/required arguments
@@ -71,13 +73,13 @@ class eGlooDataProcessing extends eGlooCombine {
 		if ( isset( $this->_command_arguments[0]) ) {
 			$info_subject = $this->_command_arguments[0];
 
-			$dpDirector = eGlooDPDirector::getInstance( null, null );
+			$dpDirector = \eGlooDPDirector::getInstance( null, null );
 
 			$dpDefinitions = null;
 
 			try {
 				$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
-			} catch ( eGlooDPDirectorException $e ) {
+			} catch ( \eGlooDPDirectorException $e ) {
 				// TODO better error handling.  For now this probably means the Forms.xml
 				// file was not found locally.  Just print message and move on, since this is
 				// just a listing command.
@@ -247,13 +249,13 @@ class eGlooDataProcessing extends eGlooCombine {
 	protected function _list() {
 		$retVal = false;
 
-		$dpDirector = eGlooDPDirector::getInstance( null, null );
+		$dpDirector = \eGlooDPDirector::getInstance( null, null );
 
 		$dpDefinitions = null;
 
 		try {
 			$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
-		} catch ( eGlooDPDirectorException $e ) {
+		} catch ( \eGlooDPDirectorException $e ) {
 			// TODO better error handling.  For now this probably means the Forms.xml
 			// file was not found locally.  Just print message and move on, since this is
 			// just a listing command.

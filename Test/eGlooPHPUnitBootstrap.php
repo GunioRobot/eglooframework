@@ -1,4 +1,6 @@
 <?php
+namespace eGloo;
+
 /**
  * eGloo Framework PHPUnit Control Script
  *
@@ -78,7 +80,7 @@ if ( $path_set ) {
 }
 
 // Let's make sure we loaded something here
-if ( !class_exists('eGlooCLI') ) {
+if ( !class_exists('\eGloo\CLI') ) {
 	echo 'eGloo Framework not found in expected location.' . "\n\n";
 	echo 'Please provide a valid include path one of two ways:' . "\n";
 	exit;

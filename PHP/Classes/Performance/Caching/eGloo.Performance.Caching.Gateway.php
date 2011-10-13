@@ -2,6 +2,8 @@
 namespace eGloo\Performance\Caching;
 
 use eGloo\Configuration as Configuration;
+use eGloo\Logger as Logger;
+use \Exception as Exception;
 use \Memcache as Memcache;
 
 /**
@@ -236,7 +238,7 @@ class Gateway {
 				$this->_memcache_servers['Other'] = $newMemcacheServer;
 
 			} catch ( Exception $exception ) {
-				eGlooLogger::writeLog( eGlooLogger::ERROR, 
+				Logger::writeLog( Logger::ERROR, 
 							   'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );	 
 			}
 		} else {
@@ -250,9 +252,9 @@ class Gateway {
 				if (file_exists($this->_cache_file_path)) {
 					$this->_filecache = eval( 'return ' . file_get_contents($this->_cache_file_path) . ';' );
 				} else {
-					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
+					// Logger::writeLog( Logger::NOTICE, 
 					// 	'eGloo cache file not found: ' . $cache_file_path , 'Cache' );	 
-					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
+					// Logger::writeLog( Logger::NOTICE, 
 					// 	'Creating eGloo cache file...', 'Cache' );
 					$this->_filecache = array();
 				}
@@ -291,7 +293,7 @@ class Gateway {
 				try {
 					apc_delete($id);
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
@@ -306,7 +308,7 @@ class Gateway {
 
 					$retVal = $memcacheServer->delete( $id );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -338,7 +340,7 @@ class Gateway {
 
 						$this->_piping_hot_cache[$id] = $retVal;
 					} catch ( Exception $exception ) {
-						eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						Logger::writeLog( Logger::ERROR, 
 							'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
 					}
 				} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
@@ -355,7 +357,7 @@ class Gateway {
 
 						$this->_piping_hot_cache[$id] = $retVal;
 					} catch ( Exception $exception ) {
-						eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						Logger::writeLog( Logger::ERROR, 
 							'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 					}
 				} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -417,7 +419,7 @@ class Gateway {
 				try {
 					$retVal = apc_store( $id, $obj, $ttl );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
@@ -432,7 +434,7 @@ class Gateway {
 
 					$retVal = $memcacheServer->set( $id, $obj, false, $ttl ); 
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -473,14 +475,14 @@ class Gateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -504,14 +506,14 @@ class Gateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -533,14 +535,14 @@ class Gateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					Logger::writeLog( Logger::ERROR, 
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -552,10 +554,10 @@ class Gateway {
 	}
 
 	public static function serverFailure( $host, $port ) {
-		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 
+		Logger::writeLog( Logger::EMERGENCY, 
 			'Memcache daemon on host ' . $host . ' and port ' . $port . ' has failed',
 			'Memcache' );
-		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Attempting server failover... ', 'Memcache' );
+		Logger::writeLog( Logger::EMERGENCY, 'Attempting server failover... ', 'Memcache' );
 	}
 
 	/**
@@ -566,7 +568,7 @@ class Gateway {
 		$cacheGateway = self::getCacheGateway();
 
 		if ($cacheGateway->active()) {
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'Initializing Caching System ', 'Cache' );
+			Logger::writeLog( Logger::DEBUG, 'Initializing Caching System ', 'Cache' );
 
 			// TODO Add a check for this.  It's unlikely that someone will be switching
 			// applications or bundles and not want to invalidate application/bundle level
