@@ -1,5 +1,6 @@
 <?php
 namespace eGloo\Combine;
+
 /**
  * eGloo\Combine\Combine Class File
  *

@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooVersion Class File
+ * eGloo\Combine\Uninstall Class File
  *
- * Contains the class definition for the eGlooVersion
+ * Contains the class definition for the eGloo\Combine\Uninstall
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -21,57 +23,24 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @category $category
- * @package $package
- * @subpackage $subpackage
+ * @category System
+ * @package CLI
+ * @subpackage Combines
  * @version 1.0
  */
 
 /**
- * eGlooVersion
+ * eGloo\Combine\Uninstall
  *
  * $short_description
  *
  * $long_description
  *
- * @category $category
- * @package $package
- * @subpackage $subpackage
+ * @category System
+ * @package CLI
+ * @subpackage Combines
  */
-class eGlooVersion extends eGlooCombine {
-
-	/**
-	 * @var array List of supported commands and their options/required arguments
-	 */
-	protected static $_supported_commands = array(
-		'_empty' => array(),
-		'_zero_argument' => array(),
-	);
-
-	public function execute() {
-		$retVal = null;
-
-		switch( $this->_command ) {
-			case '_empty' :
-				$retVal = $this->printVersionInfo();
-				break;
-			case '_zero_argument' :
-				$retVal = $this->printVersionInfo();
-				break;
-			default :
-				break;
-		}
-
-		return $retVal;
-	}
-
-	protected function printVersionInfo() {
-		echo self::getHelpString() . "\n";
-	}
-
-	public function commandRequirementsSatisfied() {
-		return true;
-	}
+class Uninstall extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -80,9 +49,7 @@ class eGlooVersion extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		$retVal = 'Version 1.0 Developer Preview 2';
-
-		return $retVal;
+		return 'eGloo Uninstall Help';
 	}
 
 }

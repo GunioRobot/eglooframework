@@ -77,7 +77,7 @@
 		<Component id="form" displayName="Forms Combine Class" override="true" type="class" value="\eGloo\Combine\Forms"/>
 		<Component id="forms" displayName="Forms Combine Class" override="true" type="class" value="\eGloo\Combine\Forms"/>
 		<Component id="framework" displayName="Framework Combine Class" override="true" type="class" value="\eGloo\Combine\Framework"/>
-		<Component id="global" displayName="Global Combine Class" override="true" type="class" value="\eGloo\Combine\Global"/>
+		<Component id="global" displayName="Global Combine Class" override="true" type="class" value="\eGloo\Combine\GlobalCombine"/>
 		<Component id="help" displayName="Help Combine Class" override="true" type="class" value="\eGloo\Combine\Help"/>
 		<Component id="info" displayName="Information Combine Class" override="true" type="class" value="\eGloo\Combine\Info"/>
 		<Component id="install" displayName="Install Combine Class" override="true" type="class" value="\eGloo\Combine\Install"/>

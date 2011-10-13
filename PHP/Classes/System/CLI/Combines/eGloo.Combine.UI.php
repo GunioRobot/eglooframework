@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooUI Class File
+ * eGloo\Combine\UI Class File
  *
- * Contains the class definition for the eGlooUI
+ * Contains the class definition for the eGloo\Combine\UI
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooUI
+ * eGloo\Combine\UI
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooUI extends eGlooCombine {
+class UI extends Combine {
 
 	/**
 	 * Return the help information for this class as a string

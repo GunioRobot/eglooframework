@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooForms Class File
+ * eGloo\Combine\Forms Class File
  *
- * Contains the class definition for the eGlooForms
+ * Contains the class definition for the eGloo\Combine\Forms
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooForms
+ * eGloo\Combine\Forms
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooForms extends eGlooCombine {
+class Forms extends Combine {
 
 	/**
 	 * @var array List of supported commands and their options/required arguments
@@ -71,13 +73,13 @@ class eGlooForms extends eGlooCombine {
 		if ( isset( $this->_command_arguments[0]) ) {
 			$info_subject = $this->_command_arguments[0];
 
-			$formDirector = FormDirector::getInstance();
+			$formDirector = \FormDirector::getInstance();
 
 			$formDefinitions = null;
 
 			try {
 				$formDefinitions = $formDirector->getParsedDefinitionsArrayFromXML();
-			} catch ( FormDirectorException $e ) {
+			} catch ( \FormDirectorException $e ) {
 				// TODO better error handling.  For now this probably means the Forms.xml
 				// file was not found locally.  Just print message and move on, since this is
 				// just a listing command.
@@ -182,13 +184,13 @@ class eGlooForms extends eGlooCombine {
 	protected function _list() {
 		$retVal = false;
 
-		$formDirector = FormDirector::getInstance();
+		$formDirector = \FormDirector::getInstance();
 
 		$formDefinitions = null;
 
 		try {
 			$formDefinitions = $formDirector->getParsedDefinitionsArrayFromXML();
-		} catch ( FormDirectorException $e ) {
+		} catch ( \FormDirectorException $e ) {
 			// TODO better error handling.  For now this probably means the Forms.xml
 			// file was not found locally.  Just print message and move on, since this is
 			// just a listing command.

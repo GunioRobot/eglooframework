@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooLister Class File
+ * eGloo\Combine\Lister Class File
  *
- * Contains the class definition for the eGlooLister
+ * Contains the class definition for the eGloo\Combine\Lister
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooLister
+ * eGloo\Combine\Lister
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooLister extends eGlooCombine {
+class Lister extends Combine {
 
 	/**
 	 * Return the help information for this class as a string

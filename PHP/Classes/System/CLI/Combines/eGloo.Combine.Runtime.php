@@ -1,10 +1,12 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooSimulation Class File
+ * eGloo\Combine\Runtime Class File
  *
- * Contains the class definition for the eGlooSimulation
+ * Contains the class definition for the eGloo\Combine\Runtime
  * 
- * Copyright 2011 eGloo LLC
+ * Copyright 2011 eGloo, LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +21,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo LLC
+ * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @category System
  * @package CLI
@@ -28,17 +30,16 @@
  */
 
 /**
- * eGlooSimulation
- *
- * $short_description
- *
- * $long_description
- *
+ * eGloo\Combine\Runtime Class
+ * 
+ * This is a class that exists solely to execute the eGloo runtime in a protected
+ * context to better enforce OOP access types and package security.
+ * 
  * @category System
  * @package CLI
  * @subpackage Combines
  */
-class eGlooSimulation extends eGlooCombine {
+class Runtime extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,8 +48,10 @@ class eGlooSimulation extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Simulation Help';
+		return 'eGloo Runtime Help';
+	}
+
+	public static function run() {
 	}
 
 }
-

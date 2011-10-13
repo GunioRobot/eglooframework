@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooUninstall Class File
+ * eGloo\Combine\Simulation Class File
  *
- * Contains the class definition for the eGlooUninstall
+ * Contains the class definition for the eGloo\Combine\Simulation
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooUninstall
+ * eGloo\Combine\Simulation
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooUninstall extends eGlooCombine {
+class Simulation extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,7 +49,7 @@ class eGlooUninstall extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Uninstall Help';
+		return 'eGloo Simulation Help';
 	}
 
 }

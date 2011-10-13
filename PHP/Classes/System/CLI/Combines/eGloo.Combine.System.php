@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooInfo Class File
+ * eGloo\Combine\System Class File
  *
- * Contains the class definition for the eGlooInfo
+ * Contains the class definition for the eGloo\Combine\System
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooInfo
+ * eGloo\Combine\System
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooInfo extends eGlooCombine {
+class System extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,7 +49,7 @@ class eGlooInfo extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Info Help';
+		return 'eGloo System Help';
 	}
 
 }

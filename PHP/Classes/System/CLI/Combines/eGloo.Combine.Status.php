@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooStatus Class File
+ * eGloo\Combine\Status Class File
  *
- * Contains the class definition for the eGlooStatus
+ * Contains the class definition for the eGloo\Combine\Status
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooStatus
+ * eGloo\Combine\Status
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooStatus extends eGlooCombine {
+class Status extends Combine {
 
 	/**
 	 * @var array List of supported commands and their options/required arguments
@@ -67,13 +69,13 @@ class eGlooStatus extends eGlooCombine {
 		if ( isset( $this->_command_arguments[0]) ) {
 			$info_subject = $this->_command_arguments[0];
 
-			$dpDirector = eGlooDPDirector::getInstance( null, null );
+			$dpDirector = \eGlooDPDirector::getInstance( null, null );
 
 			$dpDefinitions = null;
 
 			try {
 				$dpDefinitions = $dpDirector->getParsedDefinitionsArrayFromXML();
-			} catch ( eGlooDPDirectorException $e ) {
+			} catch ( \eGlooDPDirectorException $e ) {
 				// TODO better error handling.  For now this probably means the Forms.xml
 				// file was not found locally.  Just print message and move on, since this is
 				// just a listing command.
@@ -268,7 +270,7 @@ class eGlooStatus extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Request Help';
+		return 'eGloo Status Help';
 	}
 
 }

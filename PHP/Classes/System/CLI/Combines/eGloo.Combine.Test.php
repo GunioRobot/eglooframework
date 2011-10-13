@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooInstall Class File
+ * eGloo\Combine\Test Class File
  *
- * Contains the class definition for the eGlooInstall
+ * Contains the class definition for the eGloo\Combine\Test
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooInstall
+ * eGloo\Combine\Test
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooInstall extends eGlooCombine {
+class Test extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,7 +49,7 @@ class eGlooInstall extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Install Help';
+		return 'eGloo Test Help';
 	}
 
 }

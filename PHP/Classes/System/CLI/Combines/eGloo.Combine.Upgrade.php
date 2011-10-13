@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooUpgrade Class File
+ * eGloo\Combine\Upgrade Class File
  *
- * Contains the class definition for the eGlooUpgrade
+ * Contains the class definition for the eGloo\Combine\Upgrade
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooUpgrade
+ * eGloo\Combine\Upgrade
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooUpgrade extends eGlooCombine {
+class Upgrade extends Combine {
 
 	/**
 	 * Return the help information for this class as a string

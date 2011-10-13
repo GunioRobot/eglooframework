@@ -1,10 +1,12 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooRuntime Class File
+ * eGloo\Combine\Log Class File
  *
- * Contains the class definition for the eGlooRuntime
+ * Contains the class definition for the eGloo\Combine\Log
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +21,7 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @category System
  * @package CLI
@@ -28,16 +30,17 @@
  */
 
 /**
- * eGlooRuntime Class
- * 
- * This is a class that exists solely to execute the eGloo runtime in a protected
- * context to better enforce OOP access types and package security.
- * 
+ * eGloo\Combine\Log
+ *
+ * $short_description
+ *
+ * $long_description
+ *
  * @category System
  * @package CLI
  * @subpackage Combines
  */
-class eGlooRuntime extends eGlooCombine {
+class Log extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -46,10 +49,8 @@ class eGlooRuntime extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Runtime Help';
-	}
-
-	public static function run() {
+		return 'eGloo Log Help';
 	}
 
 }
+

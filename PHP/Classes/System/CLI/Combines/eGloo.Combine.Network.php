@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Combine;
+
 /**
- * eGlooFramework Class File
+ * eGloo\Combine\Network Class File
  *
- * Contains the class definition for the eGlooFramework
+ * Contains the class definition for the eGloo\Combine\Network
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +30,7 @@
  */
 
 /**
- * eGlooFramework
+ * eGloo\Combine\Network
  *
  * $short_description
  *
@@ -38,7 +40,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooFramework extends eGlooCombine {
+class Network extends Combine {
 
 	/**
 	 * Return the help information for this class as a string
@@ -47,7 +49,7 @@ class eGlooFramework extends eGlooCombine {
 	 * @author George Cooper
 	 **/
 	public static function getHelpString() {
-		return 'eGloo Framework Help';
+		return 'eGloo Network Help';
 	}
 
 }
