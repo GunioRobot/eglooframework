@@ -1,4 +1,6 @@
 <?php
+namespace eGloo;
+
 /**
  * eGlooCLI Class File
  *
@@ -36,7 +38,7 @@
  * @category System
  * @package CLI
  */
-class eGlooCLI {
+class CLI {
 
 	public static $verbose = false;
 
@@ -46,7 +48,7 @@ class eGlooCLI {
 
 	// TODO make a default for this so it doesn't freak out
 	public static function execute( $command = null, $arguments = null ) {
-		$combine_class = eGlooConfiguration::getCLICombineMapping( $command );
+		$combine_class = Configuration::getCLICombineMapping( $command );
 
 		if ( class_exists($combine_class) ) {
 			self::executeCombine( $combine_class, $arguments );

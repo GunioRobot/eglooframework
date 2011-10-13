@@ -1,4 +1,8 @@
 <?php
+namespace eGloo;
+
+use eGloo\Performance\Caching\Gateway as CacheGateway;
+
 /**
  * Class and Interface Autoloader
  *
@@ -25,76 +29,76 @@
  * @version 1.0
  */
 
-// Bring up the eGlooConfiguration
-if ( !class_exists( 'eGlooConfiguration', false ) ) {
-	include( 'PHP/Classes/System/Configuration/eGlooConfiguration.php' );
+// Bring up the eGloo\Configuration
+if ( !class_exists( 'Configuration', false ) ) {
+	include( 'PHP/Classes/System/Configuration/eGloo.Configuration.php' );
 }
 
 // Load the install configuration
-eGlooConfiguration::loadCLIConfigurationOptions();
+Configuration::loadCLIConfigurationOptions();
 
-// Bring up the eGlooLogger
-if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/System/Utilities/eGlooLogger.php' );
+// Bring up the eGloo\Logger
+if ( !class_exists( 'Logger', false ) ) {
+	include( 'PHP/Classes/System/Utilities/eGloo.Logger.php' );
 }
 
 global $egloo_script_arguments;
 
 if ( in_array('-v', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::STAGING;
+	$logging_level = Logger::STAGING;
 } else if ( in_array('-vv', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::DEVELOPMENT;
+	$logging_level = Logger::DEVELOPMENT;
 } else if ( in_array('-q', $egloo_script_arguments) ) {
-	$logging_level = eGlooLogger::LOG_OFF;
+	$logging_level = Logger::LOG_OFF;
 } else {
-	$logging_level = eGlooLogger::PRODUCTION;
+	$logging_level = Logger::PRODUCTION;
 }
 
-// Initialize the eGlooLogger
-eGlooLogger::initialize( $logging_level, eGlooConfiguration::getLogFormat( false ) );
+// Initialize the Logger
+Logger::initialize( $logging_level, Configuration::getLogFormat( false ) );
 
 
 // Bring up the caching system (needed for the autoloader)
-if ( !class_exists( 'CacheGateway', false ) ) {
-	include( 'PHP/Classes/Performance/Caching/CacheGateway.php' );
+if ( !class_exists( 'Gateway', false ) ) {
+	include( 'PHP/Classes/Performance/Caching/eGloo.Performance.Caching.Gateway.php' );
 }
 
 // Register eGloo Autoloader
-spl_autoload_register('eglooAutoload');
+spl_autoload_register('eGloo\Autoload');
 
 /**
  * These conditional includes are ordered for speed; do not reorganize without benchmarking and serious testing
  */
 
 // Load Haanga
-if ( eGlooConfiguration::getUseHaanga() ) {
-	include( eGlooConfiguration::getHaangaIncludePath() );
+if ( Configuration::getUseHaanga() ) {
+	include( Configuration::getHaangaIncludePath() );
 }
 
 // Load Smarty
-if ( eGlooConfiguration::getUseSmarty() ) {
-	include( eGlooConfiguration::getSmartyIncludePath() );	
+if ( Configuration::getUseSmarty() ) {
+	include( Configuration::getSmartyIncludePath() );	
 }
 
 // Load Swift
-if ( eGlooConfiguration::getUseSwift() ) {
-	include( eGlooConfiguration::getSwiftIncludePath() );
+if ( Configuration::getUseSwift() ) {
+	include( Configuration::getSwiftIncludePath() );
 }
 
 // Load Twig
-if ( eGlooConfiguration::getUseTwig() ) {
-	include( eGlooConfiguration::getTwigIncludePath() );
+if ( Configuration::getUseTwig() ) {
+	include( Configuration::getTwigIncludePath() );
 	spl_autoload_register(array('Twig_Autoloader', 'autoload'));
 }
 
 // Load S3/CloudFront
-if ( eGlooConfiguration::getUseS3() ) {
-	include( eGlooConfiguration::getS3IncludePath() );
+if ( Configuration::getUseS3() ) {
+	include( Configuration::getS3IncludePath() );
 }
 
 // Load Doctrine
-if ( eGlooConfiguration::getUseDoctrine() ) {
-	include( eGlooConfiguration::getDoctrineIncludePath() );
+if ( Configuration::getUseDoctrine() ) {
+	include( Configuration::getDoctrineIncludePath() );
 	spl_autoload_register(array('Doctrine', 'autoload'));
 }
 
@@ -113,10 +117,10 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
  *
  * @param string $class_name class or interface to load
  */
-function eglooAutoload($class_name) {
+function autoload($class_name) {
 	$cacheGateway = CacheGateway::getCacheGateway();
 	
-	if ( ( $autoload_hash = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime', true ) ) != null ) {
+	if ( ( $autoload_hash = $cacheGateway->getObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime', true ) ) != null ) {
 		if ( isset( $autoload_hash[$class_name] ) ) {
 			// Make sure we didn't just mark this as "not found"
 			if ( $autoload_hash[$class_name] !== false ) {
@@ -139,14 +143,14 @@ function eglooAutoload($class_name) {
 	// interface. Put the &CLASS wherever the $class_name might appear
 	static $permitted_formats = array("&CLASS.php");
 
-	$sanityCheckClassLoading = eGlooConfiguration::getPerformSanityCheckClassLoading();
+	$sanityCheckClassLoading = Configuration::getPerformSanityCheckClassLoading();
 
 	// Set the first time autoload is called
 	if ( null === $cli_paths ) {
 		// These are the default paths for this application
-		$framework_classes = eGlooConfiguration::getFrameworkPHPPath( true );
-		$application_classes = eGlooConfiguration::getApplicationPHPPath( true );
-		$extra_class_path = eGlooConfiguration::getExtraClassPath( true );
+		$framework_classes = Configuration::getFrameworkPHPPath( true );
+		$application_classes = Configuration::getApplicationPHPPath( true );
+		$extra_class_path = Configuration::getExtraClassPath( true );
 
 		$base_class_paths = array( $application_classes, $extra_class_path, $framework_classes );
 
@@ -199,9 +203,9 @@ function eglooAutoload($class_name) {
 
 		if ( file_exists( $directory ) && is_dir( $directory ) ) {
 
-			$it = new RecursiveDirectoryIterator( $directory );
+			$it = new \RecursiveDirectoryIterator( $directory );
 
-			foreach ( new RecursiveIteratorIterator( $it ) as $currentNode ) {
+			foreach ( new \RecursiveIteratorIterator( $it ) as $currentNode ) {
 
 				if ( strpos( $currentNode->getFileName(), $class_name ) !== false ) {
 					// class_name was included, now compare against all permitted file name patterns
@@ -261,7 +265,7 @@ function eglooAutoload($class_name) {
 							// to the global exception handler, just as if it was thrown.  Voila!
 							$errorException = new ErrorException($errorMessage);
 
-							eGlooLogger::global_exception_handler($errorException);
+							Logger::global_exception_handler($errorException);
 							exit;
 						}
 					}
@@ -269,7 +273,7 @@ function eglooAutoload($class_name) {
 
 				include( $realPath );
 				$autoload_hash[$class_name] = realpath( $realPath );
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+				$cacheGateway->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 				break;
 			}
 		}
@@ -279,7 +283,7 @@ function eglooAutoload($class_name) {
 	// TODO In the future, we should branch on this depending on deployment type
 	if ( $realPath === null ) {
 		$autoload_hash[$class_name] = false;
-		$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
+		$cacheGateway->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', $autoload_hash, 'Runtime', 0, true );
 	}
 
 }

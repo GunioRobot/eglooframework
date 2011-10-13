@@ -1,5 +1,9 @@
 #! /usr/bin/env php -q
 <?php
+namespace eGloo;
+
+use eGloo\Combine\Help as Help;
+
 /**
  * eGloo Framework Control Script
  *
@@ -144,7 +148,7 @@ if ( $path_set ) {
 }
 
 // Let's make sure we loaded something here
-if ( !class_exists('eGlooCLI') ) {
+if ( !class_exists('\eGloo\CLI') ) {
 	echo 'eGloo Framework not found in expected location.' . "\n\n";
 	echo 'Please provide a valid include path one of two ways:' . "\n";
 	echo '(1) egloo --egloo-include-path=/path/to/eglooframework OR' . "\n";
@@ -154,15 +158,15 @@ if ( !class_exists('eGlooCLI') ) {
 
 $arguments = $argv;
 
-eGlooCLI::setScriptArguments( $egloo_script_arguments );
+CLI::setScriptArguments( $egloo_script_arguments );
 
 if ( isset($arguments[1]) && !is_numeric($arguments[1]) ) {
 	$script_name = array_shift( $arguments );
 	$command = strtolower( array_shift( $arguments ) );
 
-	eGlooCLI::execute( $command, $arguments );
+	CLI::execute( $command, $arguments );
 } else {
-	echo eGlooHelp::getHelpString() . "\n";
+	echo Help::getHelpString() . "\n";
 }
 
 exit;
