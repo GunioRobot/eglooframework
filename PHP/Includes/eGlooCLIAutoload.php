@@ -120,7 +120,12 @@ if ( Configuration::getUseDoctrine() ) {
  *
  * @param string $class_name class or interface to load
  */
-function autoload($class_name) {
+function autoload( $class_name ) {
+	/* Hack for https://bugs.php.net/bug.php?id=50731 */
+	if ( strpos($class_name, '\\') === 0 ) {
+		$class_name = substr( $class_name, 1 );
+	}
+
 	$cacheGateway = CacheGateway::getCacheGateway();
 	
 	if ( ( $autoload_hash = $cacheGateway->getObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'autoload_hash', 'Runtime', true ) ) != null ) {
