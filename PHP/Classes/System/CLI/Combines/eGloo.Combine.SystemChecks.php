@@ -1,8 +1,18 @@
 <?php
+namespace eGloo\Combine;
+
+use eGloo;
+use eGloo\Configuration as Configuration;
+use eGloo\Logger as Logger;
+
+use eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \Exception as Exception;
+
 /**
- * eGlooSystemChecks Class File
+ * eGloo\Combine\SystemChecks Class File
  *
- * Contains the class definition for the eGlooSystemChecks
+ * Contains the class definition for the eGloo\Combine\SystemChecks
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +38,7 @@
  */
 
 /**
- * eGlooSystemChecks
+ * eGloo\Combine\SystemChecks
  *
  * $short_description
  *
@@ -38,7 +48,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooSystemChecks extends eGlooCombine {
+class SystemChecks extends Combine {
 
 	/**
 	 * Return the help information for this class as a string

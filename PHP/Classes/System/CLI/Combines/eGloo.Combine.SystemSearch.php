@@ -1,8 +1,18 @@
 <?php
+namespace eGloo\Combine;
+
+use eGloo;
+use eGloo\Configuration as Configuration;
+use eGloo\Logger as Logger;
+
+use eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \Exception as Exception;
+
 /**
- * eGlooSystemSearch Class File
+ * eGloo\Combine\SystemSearch Class File
  *
- * Contains the class definition for the eGlooSystemSearch
+ * Contains the class definition for the eGloo\Combine\SystemSearch
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +38,7 @@
  */
 
 /**
- * eGlooSystemSearch
+ * eGloo\Combine\SystemSearch
  *
  * $short_description
  *
@@ -38,7 +48,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooSystemSearch extends eGlooCombine {
+class SystemSearch extends Combine {
 
 	/**
 	 * Return the help information for this class as a string

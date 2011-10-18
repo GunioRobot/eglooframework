@@ -1,8 +1,18 @@
 <?php
+namespace eGloo\Combine;
+
+use eGloo;
+use eGloo\Configuration as Configuration;
+use eGloo\Logger as Logger;
+
+use eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \Exception as Exception;
+
 /**
- * eGlooSystemStatus Class File
+ * eGloo\Combine\SystemStatus Class File
  *
- * Contains the class definition for the eGlooSystemStatus
+ * Contains the class definition for the eGloo\Combine\SystemStatus
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -28,7 +38,7 @@
  */
 
 /**
- * eGlooSystemStatus
+ * eGloo\Combine\SystemStatus
  *
  * $short_description
  *
@@ -38,7 +48,7 @@
  * @package CLI
  * @subpackage Combines
  */
-class eGlooSystemStatus extends eGlooCombine {
+class SystemStatus extends eGlooCombine {
 
 	/**
 	 * Return the help information for this class as a string
