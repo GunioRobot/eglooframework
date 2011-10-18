@@ -1,8 +1,18 @@
 <?php
+namespace eGloo\Combine;
+
+use eGloo;
+use eGloo\Configuration as Configuration;
+use eGloo\Logger as Logger;
+
+use eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \Exception as Exception;
+
 /**
- * eGlooCrontab Class File
+ * eGloo\Combine\Crontab Class File
  *
- * Contains the class definition for the eGlooCrontab
+ * Contains the class definition for the eGloo\Combine\Crontab
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -21,24 +31,34 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @category System
- * @package CLI
- * @subpackage Combines
+ * @category $category
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * eGlooCrontab
+ * eGloo\Combine\Crontab
  *
  * $short_description
  *
  * $long_description
  *
- * @category System
- * @package CLI
- * @subpackage Combines
+ * @category $category
+ * @package $package
+ * @subpackage $subpackage
  */
-class eGlooCrontab {
+class Crontab extends Combine {
+
+	/**
+	 * Return the help information for this class as a string
+	 *
+	 * @return string the help information for this class
+	 * @author George Cooper
+	 **/
+	public static function getHelpString() {
+		return 'eGloo Crontab Help';
+	}
 
 }
 
