@@ -5,6 +5,7 @@ use eGloo\Configuration as Configuration;
 use eGloo\Logger as Logger;
 
 use eGloo\Performance\Caching\Gateway as CacheGateway;
+use eGloo\Plugin\Text\Inflector as Inflector;
 
 use \DOMDocument as DOMDocument;
 use \ErrorException as ErrorException;
@@ -159,8 +160,8 @@ class XML {
 			if ( $process_flags & self::PROCESS_CHILDREN ) {
 				foreach( $this->_simpleXMLObject->children() as $child ) {
 					if ( $build_flags & self::BUILD_STRUCTURE ) {
-						if ( $child->getName() !== eGlooInflector::pluralize($this->_simpleXMLObject->getName()) ) {
-							$elementGroup = eGlooInflector::pluralize($child->getName());
+						if ( $child->getName() !== Inflector::pluralize($this->_simpleXMLObject->getName()) ) {
+							$elementGroup = Inflector::pluralize($child->getName());
 						} else {
 							$elementGroup = $child->getName();
 						}
@@ -398,7 +399,7 @@ class XML {
 			$attribute_values = $this->_simpleXMLObject->xpath( '@' . $node_name);
 			$attribute_value = (string) $attribute_values[0];
 
-			$this->_attributes[$node_name] = new Node( $attribute_value, Node::ATTRIBUTE );
+			$this->_attributes[$node_name] = new XMLNode( $attribute_value, XMLNode::ATTRIBUTE );
 
 			$retVal = true;
 		} else if ( !isset( $this->_children[$node_name] ) && $this->_simpleXMLObject->xpath( $node_name) ) {
@@ -437,7 +438,7 @@ class XML {
 			$attribute_values = $this->_simpleXMLObject->xpath( '@' . $node_name);
 			$attribute_value = (string) $attribute_values[0];
 
-			$this->_attributes[$node_name] = new Node( $attribute_value, Node::ATTRIBUTE );
+			$this->_attributes[$node_name] = new XMLNode( $attribute_value, XMLNode::ATTRIBUTE );
 
 			$retVal = $this->_attributes[$node_name];
 		} else if ( $this->_simpleXMLObject->xpath( '@' . $node_name) ) {

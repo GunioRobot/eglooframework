@@ -1,10 +1,11 @@
 <?php
 namespace eGloo\Security\RequestValidator;
 
-use eGloo\Configuration as Configuration;
-use eGloo\Logger as Logger;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Logger as Logger;
 
-use eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Security\RequestDefinitionParser\XML2ArrayRequestDefinitionParser as XML2ArrayRequestDefinitionParser;
 
 use \DOMDocument as DOMDocument;
 use \ErrorException as ErrorException;
@@ -77,7 +78,7 @@ class RequestValidator {
 			$this->uibundle = $uibundle;
 
 			// We'll do a conditional check, but for now let's just build an XML parser
-			self::$requestDefinitionParser = \XML2ArrayRequestDefinitionParser::getInstance( $this->webapp, $this->uibundle );
+			self::$requestDefinitionParser = XML2ArrayRequestDefinitionParser::getInstance( $this->webapp, $this->uibundle );
 		}
 	}
 

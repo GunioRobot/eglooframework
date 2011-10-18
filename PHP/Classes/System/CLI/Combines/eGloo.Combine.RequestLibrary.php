@@ -1,6 +1,7 @@
 <?php
 namespace eGloo\Combine;
 
+use eGloo;
 use eGloo\Configuration as Configuration;
 use eGloo\Logger as Logger;
 
@@ -183,10 +184,10 @@ class RequestLibrary extends Combine {
 					$diff = \eGlooDiff::diff( $requestDefinitions, $rebuilt );
 
 					// echo_r($rebuilt['requestAttributeSets']);
-					echo_r(array_keys($diff));
+					// eGloo\echo_r(array_keys($diff));
 					
 					// SO....... the diff method stops when the diff hits... a diff.  I need to rethink this below
-die;
+// die;
 					if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
 						echo $addition_type . ' "' . $addition_id . '" added successfully.' . "\n";
 					} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
@@ -700,7 +701,7 @@ die;
 		if ( !$this->issetRequestClass( $request_class, $request_definitions ) ) {
 			if ( is_string($request_class) ) {
 				$new_request_class = array( 'requestClass' => $request_class, 'requests' => array() );
-				echo_r($request_definitions);
+				// eGloo\echo_r($request_definitions);
 				$request_definitions['requestClasses'][$request_class] = $new_request_class;
 				ksort($request_definitions['requestClasses']);
 				$retVal = $request_definitions;
