@@ -2,7 +2,7 @@
 namespace eGloo\Security\RequestValidator;
 
 use \eGloo\Configuration as Configuration;
-use \eGloo\Logger as Logger;
+use \eGloo\Utility\Logger as Logger;
 
 use \eGloo\Performance\Caching\Gateway as CacheGateway;
 use \eGloo\Security\RequestDefinitionParser\XML2ArrayRequestDefinitionParser as XML2ArrayRequestDefinitionParser;

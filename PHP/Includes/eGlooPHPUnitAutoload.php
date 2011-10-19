@@ -1,7 +1,7 @@
 <?php
 namespace eGloo;
 
-use eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
 
 use \RecursiveDirectoryIterator as RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator as RecursiveIteratorIterator;
@@ -41,8 +41,8 @@ if ( !class_exists( '\eGloo\Configuration', false ) ) {
 Configuration::loadCLIConfigurationOptions( true );
 
 // Bring up the Logger
-if ( !class_exists( '\eGloo\Logger', false ) ) {
-	include( 'PHP/Classes/System/Utilities/eGloo.Logger.php' );
+if ( !class_exists( '\eGloo\Utility\Logger', false ) ) {
+	include( 'PHP/Classes/System/Utilities/eGloo.Utility.Logger.php' );
 }
 
 // Initialize the Logger

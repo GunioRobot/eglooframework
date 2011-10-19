@@ -291,7 +291,7 @@ final class eGlooLogger {
 			// TODO determine how to handle multiple app logging -- branching folders or unique trace hashes
 			// Should probably be a deployment option
 
-			// Use eGlooHTTPRequest stuff... if it exists
+			// use \eGlooHTTPRequest stuff... if it exists
 			$not_found = 'Not found in HTTP headers';
 
 			$request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $not_found;

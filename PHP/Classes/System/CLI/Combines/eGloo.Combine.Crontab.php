@@ -1,11 +1,11 @@
 <?php
 namespace eGloo\Combine;
 
-use eGloo;
-use eGloo\Configuration as Configuration;
-use eGloo\Logger as Logger;
+use \eGloo;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
 
-use eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
 
 use \Exception as Exception;
 

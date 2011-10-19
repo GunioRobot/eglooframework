@@ -1,8 +1,8 @@
 <?php
 namespace eGloo\Performance\Caching;
 
-use eGloo\Configuration as Configuration;
-use eGloo\Logger as Logger;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
 use \Exception as Exception;
 use \Memcache as Memcache;
 

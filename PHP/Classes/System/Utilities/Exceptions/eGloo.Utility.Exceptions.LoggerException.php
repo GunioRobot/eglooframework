@@ -1,17 +1,13 @@
 <?php
-namespace eGloo\Security\RequestDefinitionParser;
+namespace eGloo\Utility\Exceptions;
 
-use \eGloo\Configuration as Configuration;
-use \eGloo\Utility\Logger as Logger;
-
-use \eGloo\Performance\Caching\Gateway as CacheGateway;
-
-use \ErrorException as ErrorException;
+use \Exception as Exception;
 
 /**
- * eGloo\Security\RequestDefinitionParser\Exception Class File
+ * eGloo\Utility\Exceptions\LoggerException Class File
  *
- * Contains the class definition for the eGloo\Security\RequestDefinitionParser\Exception.
+ * Contains the class definition for the eGloo\Utility\Exceptions\LoggerException, an exception
+ * class for eGloo framework logging functionality.
  * 
  * Copyright 2011 eGloo, LLC
  * 
@@ -30,36 +26,35 @@ use \ErrorException as ErrorException;
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package RequestProcessing
+ * @category System
+ * @package Utilities
  * @subpackage Exceptions
  * @version 1.0
  */
 
 /**
- * eGloo\Security\RequestDefinitionParser\Exception
- * 
- * An exception <description>
- * 
- * Long Description
+ * Private exception subclass for use by eGloo\Utility\Logger
  *
- * @package Security
+ * @author George Cooper
+ * @category System
+ * @package Utilities
  * @subpackage Exceptions
  */
-final class Exception extends \Exception {
+final class LoggerException extends Exception {
 
    /**
-    * eGloo\Security\RequestDefinitionParser\Exception constructor.  Takes a message and a code and invokes
-    * the parent (Exception) constructor.  May eventually contain additional
-    * code, but for now acts as a means of determining the exact type of
-    * exception thrown so it is possible to track down what threw it.
+    * eGloo\Utility\Exceptions\LoggerException constructor.  Takes a message and a code and invokes
+    * the parent (Exception) constructor.  May eventually contain additional code,
+    * but for now acts as a means of determining the exact type of exception thrown
+    * so it is possible to track down what threw it.
     *
     * @param $message   the message that this exception will contain
     * @param $code      the optional code of this exception (unused)
-    * @returns          an eGloo\Security\RequestDefinitionParser\Exception
+    * @returns          an eGloo\Utility\Exceptions\LoggerException
     */
    public function __construct( $message, $code = 0 ) {
        // Call parent constructor
        parent::__construct( $message, $code );
    }
-}
 
+}

@@ -1,11 +1,11 @@
 <?php
 namespace eGloo\Plugin\XML;
 
-use eGloo\Configuration as Configuration;
-use eGloo\Logger as Logger;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
 
-use eGloo\Performance\Caching\Gateway as CacheGateway;
-use eGloo\Plugin\Text\Inflector as Inflector;
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Plugin\Text\Inflector as Inflector;
 
 use \DOMDocument as DOMDocument;
 use \ErrorException as ErrorException;

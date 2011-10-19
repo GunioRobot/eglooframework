@@ -1,12 +1,19 @@
 <?php
-namespace eGloo;
+namespace eGloo\Utility;
 
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Exceptions\LoggerException as LoggerException;
+
+use \RequestInfoBean as RequestInfoBean;
+
+use \DateTime as DateTime;
+use \DateTimeZone as DateTimeZone;
 use \ErrorException as ErrorException;
 
 /**
- * eGloo\Logger Class File
+ * eGloo\Utility\Logger Class File
  *
- * Contains the class definition for the eGloo\Logger, a final class for 
+ * Contains the class definition for the eGloo\Utility\Logger, a final class for 
  * eGloo framework logging functionality.
  * 
  * Copyright 2011 eGloo, LLC
@@ -33,7 +40,7 @@ use \ErrorException as ErrorException;
  */
 
 /**
- * eGloo\Logger is responsible for handling all system logging for the eGloo web 
+ * eGloo\Utility\Logger is responsible for handling all system logging for the eGloo web 
  * application.	 It contains static constants for specifying levels of logging
  * and the type of notice of any particular logged message.	 Messages are evaluated
  * to determine if their notice level matches the current logging level of the system
@@ -92,14 +99,14 @@ final class Logger {
 	public static function initialize( $level, $format ) {
 		self::$requestDate = date( 'Y-m-d' );
 
-		$num = mt_rand ( 0, 0xffffff );
-		self::$requestID = sprintf ( "%06x", $num );
+		$num = mt_rand( 0, 0xffffff );
+		self::$requestID = sprintf( "%06x", $num );
 		
 		self::setLoggingLevel( $level );
 		self::setLoggingType( $format );
 
-		set_error_handler( array('\eGloo\Logger', 'global_error_handler') );
-		set_exception_handler( array('\eGloo\Logger', 'global_exception_handler') );
+		set_error_handler( array('\eGloo\Utility\Logger', 'global_error_handler') );
+		set_exception_handler( array('\eGloo\Utility\Logger', 'global_exception_handler') );
 
 		if ( !defined('STDIN') ) {
 			// TODO fix this so it actually says the actual level
@@ -139,7 +146,7 @@ final class Logger {
 			self::$logFilePath = self::$htmlFilePath;
 			$header = '<html><body BGCOLOR="#000000">';
 			if ( (file_put_contents( self::$logFilePath, $header . "\n", FILE_APPEND ) ) === false ) {
-				throw new Logger\Exception( 'Error writing to log' );
+				throw new LoggerException( 'Error writing to log' );
 			}
 		}
 
@@ -163,7 +170,7 @@ final class Logger {
 	 *									should be printed along with the given message
 	 * @param $timezone					an additional timezone to display in the logs, in case
 	 *									developers are not in the same timezone as their servers
-	 * @throws eGloo\Logger\Exception		if there was an error writing to the log file
+	 * @throws eGloo\Utility\Logger\Exception		if there was an error writing to the log file
 	 * @returns null 
 	 */
 	public static function writeLog( $level, $message, $logPackage = 'Default', $data = null, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
@@ -206,7 +213,7 @@ final class Logger {
 				//Default, write to error.log
 				if( self::$loggingType == self::LOG_LOG){
 					if ( (file_put_contents( $log_path . '/' . $logPackage . '.log', $message . "\n", FILE_APPEND ) ) === false ) {
-						throw new Logger\Exception( 'Error writing to log' );
+						throw new LoggerException( 'Error writing to log' );
 					}
 				}
 			} else {
@@ -295,7 +302,7 @@ final class Logger {
 			// TODO determine how to handle multiple app logging -- branching folders or unique trace hashes
 			// Should probably be a deployment option
 
-			// Use eGlooHTTPRequest stuff... if it exists
+			// use \eGlooHTTPRequest stuff... if it exists
 			$not_found = 'Not found in HTTP headers';
 
 			$request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $not_found;

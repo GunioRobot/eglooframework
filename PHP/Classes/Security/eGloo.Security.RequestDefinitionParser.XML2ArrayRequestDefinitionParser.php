@@ -1,11 +1,11 @@
 <?php
 namespace eGloo\Security\RequestDefinitionParser;
 
-use eGloo\Configuration as Configuration;
-use eGloo\Logger as Logger;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
 
-use eGloo\Performance\Caching\Gateway as CacheGateway;
-use eGloo\Plugin\XML\XML as eGlooXML;
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Plugin\XML\XML as eGlooXML;
 
 use \ErrorException as ErrorException;
 use \Exception as Exception;

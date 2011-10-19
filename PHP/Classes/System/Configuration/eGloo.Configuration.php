@@ -1,6 +1,8 @@
 <?php
 namespace eGloo;
 
+use \eGloo\Utility\Logger as Logger;
+
 /**
  * eGloo\Configuration Class File
  *
