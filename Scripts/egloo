@@ -2,7 +2,7 @@
 <?php
 namespace eGloo;
 
-use eGloo\Combine\Help as Help;
+use \eGloo\Combine\Help as Help;
 
 /**
  * eGloo Framework Control Script
