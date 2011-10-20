@@ -1,6 +1,15 @@
 <?php
+namespace eGloo\HTTP;
+
+use \eGloo;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * eGlooHTTPRequest Class File
+ * eGloo\HTTP\Request Class File
  *
  * $file_block_description
  * 
@@ -28,7 +37,7 @@
  */
 
 /**
- * eGlooHTTPRequest
+ * eGloo\HTTP\Request
  *
  * $short_description
  *
@@ -38,7 +47,7 @@
  * @package HTTP
  * @subpackage REST
  */
-class eGlooHTTPRequest {
+class Request {
 
 	const NOT_FOUND_IN_HEADERS_MESSAGE = 'Not found in HTTP headers';
 
@@ -54,7 +63,7 @@ class eGlooHTTPRequest {
 	private static $user_agent = null;
 	private static $user_agent_hash = null;
 
-// eGlooHTTPRequest::getRemoteAddress()
+// eGloo\HTTP\Request::getRemoteAddress()
 
 	public static function getHTTPHost() {
 		if ( self::$http_host === null ) {

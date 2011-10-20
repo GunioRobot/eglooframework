@@ -163,6 +163,10 @@ final class eGlooLogger {
 	 * @returns null 
 	 */
 	public static function writeLog( $level, $message, $logPackage = 'Default', $data = null, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
+		if ( is_array(spl_autoload_functions()) && in_array('eglooAutoload', spl_autoload_functions()) && class_exists('\eGloo\Utility\Logger', false) )  {
+			deprecate( __FILE__, '\eGloo\Utility\Logger' );
+		}
+
 		if ( $level & self::$loggingLevel ) {
 			// Make sure we're running an eGloo Web App before actually logging to the web logs
 			if ( !defined('STDIN') ) {
@@ -469,3 +473,6 @@ final class eGlooLogger {
 
 }
 
+if ( class_exists('\eGloo\Utility\Logger', false) )  {
+	deprecate( __FILE__, '\eGloo\Utility\Logger' );
+}

@@ -1,4 +1,6 @@
 <?php
+use \eGloo\Utility\Logger as Logger;
+
 /**
  * Class and Interface Autoloader
  *
@@ -27,7 +29,7 @@
 
 // Bring up the eGlooConfiguration: 12% Hit
 if ( !class_exists( 'eGlooConfiguration', false ) ) {
-	include( 'PHP/Classes/System/Configuration/eGlooConfiguration.php' );
+	include( 'PHP/Classes/System/Configuration/Deprecated/eGlooConfiguration.php' );
 }
 
 // Load the install configuration: 15% Hit
@@ -35,11 +37,19 @@ eGlooConfiguration::loadConfigurationOptions();
 
 // Bring up the eGlooLogger: 6% Hit
 if ( !class_exists( 'eGlooLogger', false ) ) {
-	include( 'PHP/Classes/System/Utilities/eGlooLogger.php' );
+	include( 'PHP/Classes/System/Utilities/Deprecated/eGlooLogger.php' );
 }
 
 // Initialize the eGlooLogger: 1% Hit
 eGlooLogger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
+
+// // Bring up the eGloo\Utility\Logger
+// if ( !class_exists( '\eGloo\Utility\Logger', false ) ) {
+// 	include( 'PHP/Classes/System/Utilities/eGloo.Utility.Logger.php' );
+// }
+// 
+// // Initialize the eGlooLogger: 1% Hit
+// Logger::initialize( eGlooConfiguration::getLoggingLevel(), eGlooConfiguration::getLogFormat() );
 
 // Bring up the caching system (needed for the autoloader): 2.5% Hit
 if ( !class_exists( 'CacheGateway', false ) ) {
@@ -617,6 +627,25 @@ function big( $mixed ) {
 	echo '<h1>';
 	print_r($mixed);
 	echo '</h1>';
+}
+
+/**
+ * Helpful alerts to note when deprecated functions are being used
+ */
+function deprecate( $deprecated, $replacement = null ) {
+	$class_name = '\\' . str_replace( '.', '\\', basename($deprecated, '.php') );
+
+	$alert_string = 'Warning: Class ' . $class_name . ' is deprecated.';
+
+	if ( $replacement !== null ) {
+		$alert_string .= '  Please use "' . $replacement . '" instead.';
+	}
+
+	if ( class_exists('\eGloo\Utility\Logger', false) ) {
+		Logger::writeLog( Logger::DEBUG, $alert_string, 'Deprecated' );
+	} else {
+		eGlooLogger::writeLog( eGlooLogger::DEBUG, $alert_string, 'Deprecated' );
+	}
 }
 
 /**

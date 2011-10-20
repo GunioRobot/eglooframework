@@ -1,6 +1,6 @@
 <?php
 /**
- * eGlooRequest Class File
+ * eGlooHTTPRequest Class File
  *
  * $file_block_description
  * 
@@ -21,22 +21,24 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category System
+ * @package HTTP
+ * @subpackage REST
  * @version 1.0
  */
 
 /**
- * eGlooRequest
+ * eGlooHTTPRequest
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category System
+ * @package HTTP
+ * @subpackage REST
  */
-class eGlooRequest {
+class eGlooHTTPRequest {
 
 	const NOT_FOUND_IN_HEADERS_MESSAGE = 'Not found in HTTP headers';
 
@@ -52,7 +54,7 @@ class eGlooRequest {
 	private static $user_agent = null;
 	private static $user_agent_hash = null;
 
-// eGlooRequest::getRemoteAddress()
+// eGlooHTTPRequest::getRemoteAddress()
 
 	public static function getHTTPHost() {
 		if ( self::$http_host === null ) {

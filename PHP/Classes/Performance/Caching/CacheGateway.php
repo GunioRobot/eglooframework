@@ -644,3 +644,4 @@ class CacheGateway {
 
 }
 
+deprecate( __FILE__, '\eGloo\Performance\Caching\Gateway' );

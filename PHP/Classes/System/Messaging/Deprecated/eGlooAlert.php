@@ -89,3 +89,4 @@ class eGlooAlert {
 
 }
 
+deprecate( __FILE__, '\eGloo\Messaging\Alert' );

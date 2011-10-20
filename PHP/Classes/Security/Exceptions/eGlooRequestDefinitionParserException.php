@@ -53,6 +53,5 @@ final class eGlooRequestDefinitionParserException extends Exception {
        parent::__construct( $message, $code );
    }
 }
- 
- 
-?>
+
+deprecate( __FILE__, '\eGloo\Security\RequestDefinitionParser\Exception' );

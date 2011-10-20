@@ -1,6 +1,19 @@
 <?php
+namespace eGloo\HTTP;
+
+use \eGloo;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
+
+use \RequestInfoBean as RequestInfoBean;
+use \TemplateDirectorFactory as TemplateDirectorFactory;
+use \XHTMLBuilder as XHTMLBuilder;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * eGlooHTTPResponse Class File
+ * eGloo\HTTP\Response Class File
  *
  * $file_block_description
  * 
@@ -28,7 +41,7 @@
  */
 
 /**
- * eGlooHTTPResponse
+ * eGloo\HTTP\Response
  *
  * $short_description
  *
@@ -38,7 +51,7 @@
  * @package HTTP
  * @subpackage REST
  */
-class eGlooHTTPResponse {
+class Response {
 
 	// Constants
 	const DISPATCH_CLASS = 'egCustomHTTPResponse';
@@ -60,7 +73,7 @@ class eGlooHTTPResponse {
 	}
 
 	public static function issueCustom404Response( $templateVariables = null, $dispatchClass = self::DISPATCH_CLASS, $dispatchID = self::HTTP_RESPONSE_404 ) {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered issueCustom404Response()" );
+		Logger::writeLog( Logger::DEBUG, "eGloo\HTTP\Response: Entered issueCustom404Response()" );
 
 		// Don't call eGlooResponse::outputXHTML from this context because it might invoke this function itself and cause an infinite loop
 		// This is considered, effectively, a more primitive path, thus it must use the fallback pattern
@@ -70,11 +83,11 @@ class eGlooHTTPResponse {
 		try {
 			$templateDirector->preProcessTemplate();
 		} catch (ErrorException $e) {
-			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
-				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+			if ( Configuration::getDeployment() === Configuration::DEVELOPMENT &&
+				 Logger::getLoggingLevel() === Logger::DEVELOPMENT) {
 				throw $e;
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::WARN, 'eGlooHTTPResponse: Template dispatch requested for ' .
+				Logger::writeLog( Logger::WARN, 'eGloo\HTTP\Response: Template dispatch requested for ' .
 					self::DISPATCH_CLASS . '/' . self::HTTP_RESPONSE_404 . ' but not found.' );
 				self::issueRaw404Response();
 			}
@@ -89,14 +102,14 @@ class eGlooHTTPResponse {
 		try {
 			$output = $templateDirector->processTemplate();
 		} catch (ErrorException $e) {
-			$errorMessage = 'eGlooHTTPResponse: Error processing template for ' . self::DISPATCH_CLASS . '/' .
+			$errorMessage = 'eGloo\HTTP\Response: Error processing template for ' . self::DISPATCH_CLASS . '/' .
 				self::HTTP_RESPONSE_404 . ': ' . $e->getMessage();
 
-			if ( eGlooConfiguration::getDeployment() === eGlooConfiguration::DEVELOPMENT &&
-				 eGlooLogger::getLoggingLevel() === eGlooLogger::DEVELOPMENT) {
+			if ( Configuration::getDeployment() === Configuration::DEVELOPMENT &&
+				 Logger::getLoggingLevel() === Logger::DEVELOPMENT) {
 				throw new ErrorException( $errorMessage );
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::WARN, $errorMessage );
+				Logger::writeLog( Logger::WARN, $errorMessage );
 				self::issueRaw404Response();
 			}
 		}
@@ -110,11 +123,11 @@ class eGlooHTTPResponse {
 		// TODO buffer output
 		echo $output;        
 
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting issueCustom404Response()" );
+        Logger::writeLog( Logger::DEBUG, "eGloo\HTTP\Response: Exiting issueCustom404Response()" );
 	}
 
 	public static function processCustom404Request( $requestProcessorID = null ) {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Entered processCustom404Request()" );
+		Logger::writeLog( Logger::DEBUG, "eGloo\HTTP\Response: Entered processCustom404Request()" );
 
 		// Reset headers on this request
 		self::resetHeaders();
@@ -125,7 +138,7 @@ class eGlooHTTPResponse {
 		$requestProcessor = new $requestProcessorID;
 		$requestProcessor->processRequest();
 
-        eGlooLogger::writeLog( eGlooLogger::DEBUG, "eGlooHTTPResponse: Exiting processCustom404Request()" );
+        Logger::writeLog( Logger::DEBUG, "eGloo\HTTP\Response: Exiting processCustom404Request()" );
 	}
 
 	public static function resetHeaders() {

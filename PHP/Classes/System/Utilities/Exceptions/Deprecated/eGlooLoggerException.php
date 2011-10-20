@@ -54,3 +54,5 @@ final class eGlooLoggerException extends Exception {
    }
 
 }
+
+deprecate( __FILE__, '\eGloo\Utility\Exceptions\LoggerException' );

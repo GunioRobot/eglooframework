@@ -721,7 +721,7 @@ else
 	mkdir -p "$DOCUMENT_ROOT/PHP/Classes/Utilities"
 
 	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooConfiguration.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooConfiguration.php"
-	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/eGlooLogger.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/eGlooLogger.php"
+	cp "$PARENT_DIRECTORY/PHP/Classes/Utilities/Deprecated/eGlooLogger.php" "$DOCUMENT_ROOT/PHP/Classes/Utilities/Deprecated/eGlooLogger.php"
 fi
 
 if [ -e "$DOCUMENT_ROOT/.htaccess" ]

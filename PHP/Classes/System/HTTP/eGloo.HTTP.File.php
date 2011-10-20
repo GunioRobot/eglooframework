@@ -1,8 +1,17 @@
 <?php
+namespace eGloo\HTTP;
+
+use \eGloo;
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * eGlooHTTPFile Class File
+ * eGloo\HTTP\File Class File
  *
- * Contains the class definition for the eGlooHTTPFile
+ * Contains the class definition for the eGloo\HTTP\File
  * 
  * Copyright 2011 eGloo, LLC
  * 
@@ -28,7 +37,7 @@
  */
 
 /**
- * eGlooHTTPFile
+ * eGloo\HTTP\File
  *
  * $short_description
  *
@@ -38,7 +47,7 @@
  * @package HTTP
  * @subpackage Files
  */
-class eGlooHTTPFile {
+class File {
 
 	/**
 	 * @var string ID of input field that this file was submitted from

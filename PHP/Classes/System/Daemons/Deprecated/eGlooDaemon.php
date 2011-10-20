@@ -93,3 +93,4 @@ abstract class Daemon {
 
 }
 
+deprecate( __FILE__, '\eGloo\Daemons\Daemon' );

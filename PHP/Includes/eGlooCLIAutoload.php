@@ -408,6 +408,21 @@ function big( $mixed ) {
 }
 
 /**
+ * Helpful alerts to note when deprecated functions are being used
+ */
+function deprecate( $deprecated, $replacement = null ) {
+	$class_name = '\\' . str_replace( '.', '\\', basename($deprecated, '.php') );
+
+	$alert_string = 'Warning: Class ' . $class_name . ' is deprecated.';
+
+	if ( $replacement !== null ) {
+		$alert_string .= '  Please use "' . $replacement . '" instead.';
+	}
+
+	Logger::writeLog( Logger::DEBUG, $alert_string, 'Deprecated' );
+}
+
+/**
  * almost_empty function.
  *
  * Like empty(), returns true if input evaluates to 0, '', an empty array, or null.

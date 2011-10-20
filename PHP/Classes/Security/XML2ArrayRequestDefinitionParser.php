@@ -2101,3 +2101,5 @@ final class XML2ArrayRequestDefinitionParser extends eGlooRequestDefinitionParse
 	}
 
 }
+
+deprecate( __FILE__, '\eGloo\Security\RequestDefinitionParser\XML2ArrayRequestDefinitionParser' );

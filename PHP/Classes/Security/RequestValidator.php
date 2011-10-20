@@ -106,3 +106,5 @@ class RequestValidator {
 	}
 
 }
+
+deprecate( __FILE__, '\eGloo\Security\RequestValidator\RequestValidator' );

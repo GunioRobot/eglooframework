@@ -2304,3 +2304,8 @@ final class eGlooConfiguration {
 	}
 
 }
+
+if ( class_exists('\eGloo\Utility\Logger', false) )  {
+	deprecate( __FILE__, '\eGloo\Configuration' );
+}
+

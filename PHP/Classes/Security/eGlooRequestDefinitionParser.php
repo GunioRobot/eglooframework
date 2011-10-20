@@ -197,3 +197,5 @@ abstract class eGlooRequestDefinitionParser {
 	}
 
 }
+
+deprecate( __FILE__, '\eGloo\Security\RequestDefinitionParser\RequestDefinitionParser' );

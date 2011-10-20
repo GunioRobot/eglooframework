@@ -371,3 +371,4 @@ class ExtendedRequestValidator extends RequestValidator {
 
 }
 
+deprecate( __FILE__, '\eGloo\Security\RequestValidator\ExtendedRequestValidator' );

@@ -1,8 +1,10 @@
 <?php
+namespace eGloo\Cron;
+
 /**
- * eGlooCronJob Class File
+ * eGloo\Cron\CronJob Class File
  *
- * Contains the class definition for the eGlooCronJob
+ * Contains the class definition for the eGloo\Cron\CronJob
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -21,22 +23,24 @@
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @category System
- * @package CronJobs
+ * @category $category
+ * @package $package
+ * @subpackage $subpackage
  * @version 1.0
  */
 
 /**
- * eGlooCronJob
+ * eGloo\Cron\CronJob
  *
  * $short_description
  *
  * $long_description
  *
- * @category System
- * @package CronJobs
+ * @category $category
+ * @package $package
+ * @subpackage $subpackage
  */
-class eGlooCronJob {
+class CronJob {
 
 }
 

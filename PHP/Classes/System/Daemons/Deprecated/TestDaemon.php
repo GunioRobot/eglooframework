@@ -128,3 +128,4 @@ class TestDaemon extends Daemon {
 
 }
 
+deprecate( __FILE__, '\eGloo\Daemons\TestDaemon' );

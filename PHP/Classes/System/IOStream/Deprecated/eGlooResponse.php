@@ -150,3 +150,4 @@ class eGlooResponse {
 
 }
 
+deprecate( __FILE__, '\eGloo\IOStream\Response' );
