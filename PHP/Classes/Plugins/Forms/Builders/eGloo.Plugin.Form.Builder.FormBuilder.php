@@ -1,6 +1,20 @@
 <?php
+namespace eGloo\Plugin\Form\Builder;
+
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
+
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \TemplateBuilder as TemplateBuilder;
+use \XHTMLDefaultTemplateEngine as XHTMLDefaultTemplateEngine;
+use \XHTMLXML2ArrayDispatcher as XHTMLXML2ArrayDispatcher;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * FormBuilder Class File
+ * eGloo\Plugin\Form\Builder\FormBuilder Class File
  *
  * $file_block_description
  * 
@@ -21,20 +35,22 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Builders
  * @version 1.0
  */
 
 /**
- * FormBuilder
+ * eGloo\Plugin\Form\Builder\FormBuilder
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Builders
  */
 class FormBuilder extends TemplateBuilder {
 
@@ -89,7 +105,7 @@ class FormBuilder extends TemplateBuilder {
 		} else {
 			$cacheGateway = CacheGateway::getCacheGateway();
 
-			$retVal = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'HardCache');
+			$retVal = $cacheGateway->getObject( Configuration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, 'HardCache');
 
 		    if ( $retVal != null ) {
 				$this->output = $retVal;
@@ -126,7 +142,7 @@ class FormBuilder extends TemplateBuilder {
 			try {
 				$retVal = $this->__fetch( $this->dispatchPath, $this->cacheID );
 				$cacheGateway = CacheGateway::getCacheGateway();
-				$cacheGateway->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
+				$cacheGateway->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . $this->hardCacheID, $retVal, 'HardCache', $this->ttl);
 			} catch (Exception $e) {
 				echo_r($e->getMessage());
 				die;
@@ -178,7 +194,7 @@ class FormBuilder extends TemplateBuilder {
 					}
 				}
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Exception thrown on XHTML engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
+				Logger::writeLog( Logger::EMERGENCY, 'Exception thrown on XHTML engine fetch(): ' . $e->getMessage(), 'TemplateProcessing' );
 			}
 		}
 

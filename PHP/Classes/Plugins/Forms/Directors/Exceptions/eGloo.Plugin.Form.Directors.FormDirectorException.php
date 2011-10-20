@@ -1,10 +1,15 @@
 <?php
+namespace eGloo\Plugin\Form\Directors;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * FormDirectorException Class File
+ * eGloo\Plugin\Form\Directors\FormDirectorException Class File
  *
- * $file_block_description
+ * Contains the class definition for the eGloo\Plugin\Form\Directors\FormDirectorException
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +24,26 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Directors
  * @version 1.0
  */
 
 /**
- * FormDirectorException
+ * eGloo\Plugin\Form\Directors\FormDirectorException
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Directors
  */
-final class FormDirectorException extends Exception {
+class FormDirectorException extends Exception {
 
    /**
     * FormDirectorException constructor.  Takes a message and a code and invokes

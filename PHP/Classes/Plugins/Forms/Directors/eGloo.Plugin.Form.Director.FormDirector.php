@@ -1,6 +1,16 @@
 <?php
+namespace eGloo\Plugin\Form\Director;
+
+use \eGloo\Configuration as Configuration;
+use \eGloo\Utility\Logger as Logger;
+
+use \eGloo\Performance\Caching\Gateway as CacheGateway;
+
+use \ErrorException as ErrorException;
+use \Exception as Exception;
+
 /**
- * FormDirector Class File
+ * eGloo\Plugin\Form\Director\FormDirector Class File
  *
  * $file_block_description
  * 
@@ -21,20 +31,22 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Directors
  * @version 1.0
  */
 
 /**
- * FormDirector
+ * eGloo\Plugin\Form\Director\FormDirector
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Directors
  */
 final class FormDirector {
 
@@ -52,7 +64,7 @@ final class FormDirector {
 
 	public static function getInstance() {
 		if (!self::$_singleton) {
-			self::$_singleton = new FormDirector();
+			self::$_singleton = new self();
 		}
 
 		return self::$_singleton;
@@ -64,7 +76,7 @@ final class FormDirector {
 		if ( file_exists($forms_xml_location) && is_file($forms_xml_location) && is_readable($forms_xml_location) ) {
 			$retVal = $this->loadFormDefinitions( false, $forms_xml_location );
 		} else {
-			throw new FormDirectorException( 'FormDirector: No Forms Definitions file found at "' . $forms_xml_location . '"' );
+			throw new FormDirectorException( 'eGloo\Plugin\Form\Director\FormDirector: No Forms Definitions file found at "' . $forms_xml_location . '"' );
 		}
 
 		return $retVal;
@@ -82,7 +94,7 @@ final class FormDirector {
 	 * This method reads the forms xml file from disk into a document object model.
 	 */
 	public function loadFormDefinitions( $overwrite = true, $forms_xml_location = null ) {
-		eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: Processing XML", 'Forms' );
+		Logger::writeLog( Logger::DEBUG, "eGloo\Plugin\Form\Director\FormDirector: Processing XML", 'Forms' );
 
 		$retVal = null;
 		$forms_xml_locations = array();
@@ -91,8 +103,8 @@ final class FormDirector {
 			$forms_xml_locations[] = $forms_xml_location;
 		} else {
 			// TODO have common area
-			$application_forms_xml_location = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . '/XML/Forms.xml';
-			$framework_forms_xml_location = eGlooConfiguration::getFrameworkRootPath() . '/XML/Forms.xml'; 
+			$application_forms_xml_location = Configuration::getApplicationsPath() . '/' . Configuration::getApplicationPath() . '/XML/Forms.xml';
+			$framework_forms_xml_location = Configuration::getFrameworkRootPath() . '/XML/Forms.xml'; 
 
 			$forms_xml_locations[] = $framework_forms_xml_location;
 			$forms_xml_locations[] = $application_forms_xml_location;
@@ -102,13 +114,13 @@ final class FormDirector {
 		$formAttributeSetNodes = array();
 
 		foreach( $forms_xml_locations as $xml_forms_location ) {
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, 'FormDirector: Loading ' . $xml_forms_location, 'Forms' );
+			Logger::writeLog( Logger::DEBUG, 'eGloo\Plugin\Form\Director\FormDirector: Loading ' . $xml_forms_location, 'Forms' );
 
 			$formsXMLObject = simplexml_load_file( $xml_forms_location );
 
 			if (!$formsXMLObject) {
-				eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
-					'FormDirector: simplexml_load_file( "' . $xml_forms_location . '" ): ' . libxml_get_errors() );
+				Logger::writeLog( Logger::EMERGENCY,
+					'eGloo\Plugin\Form\Director\FormDirector: simplexml_load_file( "' . $xml_forms_location . '" ): ' . libxml_get_errors() );
 			}
 
 			// Grab the cache handler specifically for this cache region.  We do this so that when we write to the cache for Form definitions
@@ -924,7 +936,7 @@ final class FormDirector {
 				}
 
 				if ( $overwrite ) {
-					$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes::' . $formAttributeSetNodeID,
+					$dispatchCacheRegionHandler->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes::' . $formAttributeSetNodeID,
 						$formAttributeSetNodes[$formAttributeSetNodeID], 'Dispatching', 0, true );
 				}
 			}
@@ -1909,7 +1921,7 @@ final class FormDirector {
 				}
 
 				if ( $overwrite ) {
-					$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes::' . $formNodeID,
+					$dispatchCacheRegionHandler->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes::' . $formNodeID,
 						$formNodes[$formNodeID], 'Dispatching', 0, true );
 				}
 			}
@@ -1920,10 +1932,10 @@ final class FormDirector {
 			$this->_formNodes = $formNodes;
 			$this->_formAttributeSetNodes = $formAttributeSetNodes;
 
-			$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes',
+			$dispatchCacheRegionHandler->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes',
 				$this->_formNodes, 'Dispatching', 0, true );
 
-			$dispatchCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes',
+			$dispatchCacheRegionHandler->storeObject( Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes',
 				$this->_formAttributeSetNodes, 'Dispatching', 0, true );
 		}
 
@@ -2532,15 +2544,15 @@ final class FormDirector {
 		$retVal = null;
 
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes';
+		$nodeCacheID = Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorNodes';
 
 		if ( !isset($this->_formNodes) || empty($this->_formNodes) ) {
 			if ( ($this->_formNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'Dispatching', true ) ) == null ) {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: Parsing Form Definition Nodes" );
+				Logger::writeLog( Logger::DEBUG, "eGloo\Plugin\Form\Director\FormDirector: Parsing Form Definition Nodes" );
 				$this->loadFormDefinitions();
 				$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->_formNodes, 'Dispatching', 0, true );
 			} else {
-				eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: Form Definition Nodes pulled from cache" );
+				Logger::writeLog( Logger::DEBUG, "eGloo\Plugin\Form\Director\FormDirector: Form Definition Nodes pulled from cache" );
 			}
 		}
 
@@ -2557,14 +2569,14 @@ final class FormDirector {
 		$retVal = null;
 
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
-		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes';
+		$nodeCacheID = Configuration::getUniqueInstanceIdentifier() . '::' . 'FormDirectorAttributeSetNodes';
 
 		if ( ($this->_formAttributeSetNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'Dispatching', true ) ) == null ) {
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: FormAttributeSet Definition Nodes pulled from cache" );
+			Logger::writeLog( Logger::DEBUG, "eGloo\Plugin\Form\Director\FormDirector: FormAttributeSet Definition Nodes pulled from cache" );
 			$this->loadFormDefinitions();
 			$dispatchCacheRegionHandler->storeObject( $nodeCacheID, $this->_formAttributeSetNodes, 'Dispatching', 0, true );
 		} else {
-			eGlooLogger::writeLog( eGlooLogger::DEBUG, "FormDirector: FormAttributeSet Definition Nodes pulled from cache" );
+			Logger::writeLog( Logger::DEBUG, "eGloo\Plugin\Form\Director\FormDirector: FormAttributeSet Definition Nodes pulled from cache" );
 		}
 
 		if (isset($this->_formAttributeSetNodes[$form_attribute_set_name])) {

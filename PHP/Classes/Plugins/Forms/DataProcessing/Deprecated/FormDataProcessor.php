@@ -1,6 +1,6 @@
 <?php
 /**
- * FormDTOInterface Interface File
+ * FormDataProcessor Class File
  *
  * $file_block_description
  * 
@@ -21,24 +21,25 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  * @version 1.0
  */
 
 /**
- * FormDTOInterface
+ * FormDataProcessor
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  */
-interface FormDTOInterface {
-
-	public function initWithForm( Form $form );
+class FormDataProcessor {
 
 }
 
+deprecate( __FILE__, '\eGloo\Plugin\Form\DataProcessing\FormDataProcessor' );

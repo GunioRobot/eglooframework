@@ -1,10 +1,12 @@
 <?php
+namespace eGloo\Plugin\Form\DataProcessing;
+
 /**
- * CRUDableDAOInterface Interface File
+ * eGloo\Plugin\Form\DataProcessing\ValidatedFormDataProcessor Class File
  *
- * $file_block_description
+ * Contains the class definition for the eGloo\Plugin\Form\DataProcessing\ValidatedFormDataProcessor
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,32 +21,26 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  * @version 1.0
  */
 
 /**
- * CRUDableDAOInterface
+ * eGloo\Plugin\Form\DataProcessing\ValidatedFormDataProcessor
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  */
-interface CRUDableDAOInterface {
-
-	public function CRUDCreate( $formDTO );
-
-	public function CRUDRead( $formDTO );
-
-	public function CRUDUpdate( $formDTO );
-
-	public function CRUDDestroy( $formDTO );
+class ValidatedFormDataProcessor extends FormDataProcessor {
 
 }
 

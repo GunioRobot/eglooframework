@@ -1,6 +1,6 @@
 <?php
 /**
- * SecureFormDataProcessor Class File
+ * ValidatedFormDataProcessor Class File
  *
  * $file_block_description
  * 
@@ -21,22 +21,25 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  * @version 1.0
  */
 
 /**
- * SecureFormDataProcessor
+ * ValidatedFormDataProcessor
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage DataProcessing
  */
-class SecureFormDataProcessor extends ValidatedFormDataProcessor {
+class ValidatedFormDataProcessor extends FormDataProcessor {
 
 }
 
+deprecate( __FILE__, '\eGloo\Plugin\Form\DataProcessing\ValidatedFormDataProcessor' );

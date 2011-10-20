@@ -1,6 +1,6 @@
 <?php
 /**
- * FormDataProcessor Class File
+ * CRUDableDAOInterface Interface File
  *
  * $file_block_description
  * 
@@ -21,22 +21,33 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage CRUD
  * @version 1.0
  */
 
 /**
- * FormDataProcessor
+ * CRUDableDAOInterface
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage CRUD
  */
-class FormDataProcessor {
+interface CRUDableDAOInterface {
+
+	public function CRUDCreate( $formDTO );
+
+	public function CRUDRead( $formDTO );
+
+	public function CRUDUpdate( $formDTO );
+
+	public function CRUDDestroy( $formDTO );
 
 }
 
+deprecate( __FILE__, '\eGloo\Plugin\Form\CRUD\CRUDableDAOInterface' );
