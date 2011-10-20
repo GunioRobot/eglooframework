@@ -1,6 +1,6 @@
 <?php
 /**
- * UKPhoneNumberFormFieldSetValidator Class File
+ * SecureForm Class File
  *
  * $file_block_description
  * 
@@ -23,12 +23,12 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @category Plugins
  * @package Forms
- * @subpackage Validators
+ * @subpackage Form
  * @version 1.0
  */
 
 /**
- * UKPhoneNumberFormFieldSetValidator
+ * SecureForm
  *
  * $short_description
  *
@@ -36,20 +36,26 @@
  *
  * @category Plugins
  * @package Forms
- * @subpackage Validators
+ * @subpackage Form
  */
-class UKPhoneNumberFormFieldSetValidator extends PhoneNumberFormFieldSetValidator {
+class SecureForm extends ValidatedForm {
 
-	public function validate( $ukPhoneNumberFormFieldSet ) {
+	public function encrypt() {
+		
+	}
+
+	public function decrypt() {
+		
+	}
+
+	public function isSecure() {
 		$retVal = false;
 
-		$retVal = parent::validate( $ukPhoneNumberFormFieldSet );
-		
-		if ( $retVal ) {
-			// TODO Validation - should branch based upon localization
-		}
+		// TODO check if secure...
+		$retVal = true;
 
 		return $retVal;
 	}
+
 }
 

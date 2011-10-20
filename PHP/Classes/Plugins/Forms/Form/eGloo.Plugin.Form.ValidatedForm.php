@@ -1,10 +1,12 @@
 <?php
+namespace eGloo\Plugin\Form;
+
 /**
- * ValidatedForm Class File
+ * eGloo\Plugin\Form\ValidatedForm Class File
  *
- * $file_block_description
+ * Contains the class definition for the eGloo\Plugin\Form\ValidatedForm
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +21,24 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Form
  * @version 1.0
  */
 
 /**
- * ValidatedForm
+ * eGloo\Plugin\Form\ValidatedForm
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Form
  */
 class ValidatedForm extends Form {
 

@@ -1,6 +1,8 @@
 <?php
+namespace eGloo\Plugin\Form;
+
 /**
- * FormErrorHandler Class File
+ * eGloo\Plugin\Form\SecureForm Class File
  *
  * $file_block_description
  * 
@@ -21,25 +23,40 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Form
  * @version 1.0
  */
 
 /**
- * FormErrorHandler
+ * eGloo\Plugin\Form\SecureForm
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage Form
  */
-class FormErrorHandler {
+class SecureForm extends ValidatedForm {
 
-	public function handle() {
+	public function encrypt() {
 		
+	}
+
+	public function decrypt() {
+		
+	}
+
+	public function isSecure() {
+		$retVal = false;
+
+		// TODO check if secure...
+		$retVal = true;
+
+		return $retVal;
 	}
 
 }

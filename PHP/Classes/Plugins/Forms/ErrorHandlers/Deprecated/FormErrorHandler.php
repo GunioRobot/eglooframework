@@ -1,6 +1,6 @@
 <?php
 /**
- * SecureForm Class File
+ * FormErrorHandler Class File
  *
  * $file_block_description
  * 
@@ -21,38 +21,27 @@
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage ErrorHandlers
  * @version 1.0
  */
 
 /**
- * SecureForm
+ * FormErrorHandler
  *
  * $short_description
  *
  * $long_description
  *
- * @package $package
- * @subpackage $subpackage
+ * @category Plugins
+ * @package Forms
+ * @subpackage ErrorHandlers
  */
-class SecureForm extends ValidatedForm {
+class FormErrorHandler {
 
-	public function encrypt() {
+	public function handle() {
 		
-	}
-
-	public function decrypt() {
-		
-	}
-
-	public function isSecure() {
-		$retVal = false;
-
-		// TODO check if secure...
-		$retVal = true;
-
-		return $retVal;
 	}
 
 }

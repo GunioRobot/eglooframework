@@ -1,10 +1,12 @@
 <?php
+namespace eGloo\Plugin\Form\ErrorHandler;
+
 /**
- * UKPhoneNumberFormFieldSetValidator Class File
+ * eGloo\Plugin\Form\ErrorHandler\FormErrorHandler Class File
  *
- * $file_block_description
+ * Contains the class definition for the eGloo\Plugin\Form\ErrorHandler\FormErrorHandler
  * 
- * Copyright 2011 eGloo, LLC
+ * Copyright 2011 eGloo LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +21,16 @@
  * limitations under the License.
  *  
  * @author George Cooper
- * @copyright 2011 eGloo, LLC
+ * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @category Plugins
  * @package Forms
- * @subpackage Validators
+ * @subpackage ErrorHandlers
  * @version 1.0
  */
 
 /**
- * UKPhoneNumberFormFieldSetValidator
+ * eGloo\Plugin\Form\ErrorHandler\FormErrorHandler
  *
  * $short_description
  *
@@ -36,20 +38,13 @@
  *
  * @category Plugins
  * @package Forms
- * @subpackage Validators
+ * @subpackage ErrorHandlers
  */
-class UKPhoneNumberFormFieldSetValidator extends PhoneNumberFormFieldSetValidator {
+class FormErrorHandler {
 
-	public function validate( $ukPhoneNumberFormFieldSet ) {
-		$retVal = false;
-
-		$retVal = parent::validate( $ukPhoneNumberFormFieldSet );
+	public function handle() {
 		
-		if ( $retVal ) {
-			// TODO Validation - should branch based upon localization
-		}
-
-		return $retVal;
 	}
+
 }
 

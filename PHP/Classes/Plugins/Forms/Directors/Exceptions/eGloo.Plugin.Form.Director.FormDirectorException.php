@@ -1,13 +1,13 @@
 <?php
-namespace eGloo\Plugin\Form\Directors;
+namespace eGloo\Plugin\Form\Director;
 
 use \ErrorException as ErrorException;
 use \Exception as Exception;
 
 /**
- * eGloo\Plugin\Form\Directors\FormDirectorException Class File
+ * eGloo\Plugin\Form\Director\FormDirectorException Class File
  *
- * Contains the class definition for the eGloo\Plugin\Form\Directors\FormDirectorException
+ * Contains the class definition for the eGloo\Plugin\Form\Director\FormDirectorException
  * 
  * Copyright 2011 eGloo LLC
  * 
@@ -33,7 +33,7 @@ use \Exception as Exception;
  */
 
 /**
- * eGloo\Plugin\Form\Directors\FormDirectorException
+ * eGloo\Plugin\Form\Director\FormDirectorException
  *
  * $short_description
  *
