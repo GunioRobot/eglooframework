@@ -6,6 +6,7 @@ use \eGloo\Utility\Logger as Logger;
 
 use \eGloo\Performance\Caching\Gateway as CacheGateway;
 use \eGloo\Plugin\XML\XML as eGlooXML;
+use \eGloo\Security\RequestDefinitionParser\ParserException as ParserException;
 
 use \ErrorException as ErrorException;
 use \Exception as Exception;
@@ -1212,7 +1213,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-GET array variable as an array
 					if (!is_array($variableValues)) {
-						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $variableArg['id'] . '\' is type \'' .
+						throw new ParserException('GET Array Access Error: GET ID \'' . $variableArg['id'] . '\' is type \'' .
 							gettype($variableValues) . '\', not type \'' . gettype(array()) . '\'');
 					}
 
@@ -1340,7 +1341,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-post array variable as an array
 					if (!is_array($variableValues)) {
-						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $variableArg['id'] . '\' is type \'' .
+						throw new ParserException('POST Array Access Error: POST ID \'' . $variableArg['id'] . '\' is type \'' .
 							gettype($variableValues) . '\', not type \'' . gettype(array()) . '\'');
 					}
 
@@ -1413,7 +1414,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-GET array variable as an array
 					if (!is_array($formArray)) {
-						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $formArg['id'] . '\' is type \'' .
+						throw new ParserException('GET Array Access Error: GET ID \'' . $formArg['id'] . '\' is type \'' .
 							gettype($formArray) . '\', not type \'' . gettype(array()) . '\'');
 					}
 				}
@@ -1442,7 +1443,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-post array variable as an array
 					if (!is_array($formArray)) {
-						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $formArg['id'] . '\' is type \'' .
+						throw new ParserException('POST Array Access Error: POST ID \'' . $formArg['id'] . '\' is type \'' .
 							gettype($formArray) . '\', not type \'' . gettype(array()) . '\'');
 					}
 
@@ -1627,7 +1628,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-GET array variable as an array
 					if (!is_array($complexValues)) {
-						throw new eGlooRequestDefinitionParserException('GET Array Access Error: GET ID \'' . $complexArg['id'] . '\' is type \'' .
+						throw new ParserException('GET Array Access Error: GET ID \'' . $complexArg['id'] . '\' is type \'' .
 							gettype($complexValues) . '\', not type \'' . gettype(array()) . '\'');
 					}
 
@@ -1767,7 +1768,7 @@ class XML2ArrayRequestDefinitionParser extends RequestDefinitionParser {
 
 					// Throw an exception if we attempt to access a non-post array variable as an array
 					if (!is_array($complexValues)) {
-						throw new eGlooRequestDefinitionParserException('POST Array Access Error: POST ID \'' . $complexArg['id'] . '\' is type \'' .
+						throw new ParserException('POST Array Access Error: POST ID \'' . $complexArg['id'] . '\' is type \'' .
 							gettype($complexValues) . '\', not type \'' . gettype(array()) . '\'');
 					}
 

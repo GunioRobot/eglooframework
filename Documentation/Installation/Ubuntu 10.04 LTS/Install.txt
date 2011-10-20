@@ -52,7 +52,7 @@ clear static cache and eGloo will repopulate them as needed.
 Finally, it is recommended that you: sudo cp ./Scripts/restartmemcache to /usr/bin/restartmemcache or /usr/local/bin/restartmemcache
 
 eGloo, by default, expects several memcache daemons on specific ports on localhost to be made available if memcache is used.
-These can be changed by editing eglooframework/PHP/Classes/Performance/Caching/CacheGateway.php and the restartmemcache script
+These can be changed by editing eglooframework/PHP/Classes/Performance/Caching/Deprecated/CacheGateway.php and the restartmemcache script
 
 In exchange for rapid development and proper SE design, eGloo sacrifices speed in development mode and ability to run without caching support.
 

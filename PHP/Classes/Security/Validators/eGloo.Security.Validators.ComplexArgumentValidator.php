@@ -1,6 +1,8 @@
 <?php
+namespace eGloo\Security\Validators;
+
 /**
- * ComplexArgumentValidator Class File
+ * eGloo\Security\Validators\ComplexArgumentValidator Class File
  *
  * $file_block_description
  * 
@@ -27,7 +29,7 @@
  */
 
 /**
- * ComplexArgumentValidator
+ * eGloo\Security\Validators\ComplexArgumentValidator
  *
  * $short_description
  *
@@ -41,4 +43,6 @@ abstract class ComplexArgumentValidator {
 	abstract public function validate( $argument, $complexType = null, $argumentID = null );
 
 }
+
+
 
