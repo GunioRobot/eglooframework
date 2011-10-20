@@ -2,18 +2,24 @@
 
 <project name="eGloo Framework" default="build" basedir=".">
  <property name="source" value="PHP"/>
+ <property name="build.native" value="${basedir}/Build/doxworking"/>
+ <property name="doxygen.cmd" value="/usr/bin/doxygen"/>
 
  <target name="clean"
 		 description="Clean up and create artifact directories">
   <delete dir="${basedir}/Build/api"/>
   <delete dir="${basedir}/Build/code-browser"/>
   <delete dir="${basedir}/Build/coverage"/>
+  <delete dir="${basedir}/Build/dox"/>
+  <delete dir="${basedir}/Build/doxworking"/>
   <delete dir="${basedir}/Build/logs"/>
   <delete dir="${basedir}/Build/pdepend"/>
 
   <mkdir dir="${basedir}/Build/api"/>
   <mkdir dir="${basedir}/Build/code-browser"/>
   <mkdir dir="${basedir}/Build/coverage"/>
+  <mkdir dir="${basedir}/Build/dox"/>
+  <mkdir dir="${basedir}/Build/doxworking"/>
   <mkdir dir="${basedir}/Build/logs"/>
   <mkdir dir="${basedir}/Build/pdepend"/>
  </target>
@@ -24,7 +30,7 @@
  </target>
 
  <target name="parallelTasks"
-		 description="Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel using a maximum of 2 threads.">
+		 description="Run the pdepend, phpmd, phpcpd, phpcs, doxygen and phploc tasks in parallel using a maximum of 2 threads.">
   <parallel threadCount="2">
 	<!-- <antcall target="pdepend"/> -->
    <sequential>
@@ -33,7 +39,7 @@
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs"/>
-   <antcall target="phpdoc"/>
+   <antcall target="doxygen"/>
    <antcall target="phploc"/>
   </parallel>
  </target>
@@ -88,16 +94,6 @@
   </exec>
  </target>
 
- <target name="phpdoc"
-		 description="Generate API documentation using PHPDocumentor">
-  <exec executable="phpdoc">
-   <arg value="--directory" />
-   <arg path="${source}" />
-   <arg value="--target" />
-   <arg path="${basedir}/Build/api" />
-  </exec>
- </target>
-
  <target name="phpcb"
 		 description="Aggregate tool output with PHP_CodeBrowser">
   <exec executable="phpcb">
@@ -109,6 +105,15 @@
    <arg path="${basedir}/Build/code-browser" />
   </exec>
  </target>
+
+ <target name="doxygen"
+		 description="Generate API documentation using Doxygen" >
+  <exec executable="${doxygen.cmd}"
+	    dir="${build.native}"
+	    failonerror="false">
+       <arg value="${basedir}/Doxygen.cfg"/>
+    </exec>
+  </target>
 
  <target name="build" depends="clean,parallelTasks,phpunit,phpcb"/>
 </project>

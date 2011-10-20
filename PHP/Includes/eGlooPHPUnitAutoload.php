@@ -2,6 +2,7 @@
 namespace eGloo;
 
 use \eGloo\Performance\Caching\Gateway as CacheGateway;
+use \eGloo\Utility\Logger as Logger;
 
 use \RecursiveDirectoryIterator as RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator as RecursiveIteratorIterator;
