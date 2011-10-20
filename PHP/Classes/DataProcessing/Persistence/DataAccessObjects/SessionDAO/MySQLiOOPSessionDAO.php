@@ -156,7 +156,6 @@ class MySQLiOOPSessionDAO extends SessionDAO {
 		// // Execute the prepared query.	Note that it is not necessary to escape
 		// $result = pg_execute($db_handle, "query", array($sessionLifeTime . " minutes"));
 		// 
-		// //Closes a motherfucking connection!
 		// pg_close( $db_handle );
 	}
 }

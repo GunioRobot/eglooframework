@@ -335,7 +335,6 @@ class PGSQLUserProfileDAO extends UserProfileDAO {
 		$userProfileDTO->setBirthDate($testarray['getbirthdate']);            
         
         //Get Sex
-        //*big shit eating grin*
          $result = pg_prepare($db_handle, "getSex", 'SELECT getSex($1);');
 
 		// Execute the prepared query.  Note that it is not necessary to escape

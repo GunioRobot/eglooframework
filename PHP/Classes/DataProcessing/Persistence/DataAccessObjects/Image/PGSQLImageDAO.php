@@ -148,7 +148,7 @@ class PGSQLImageDAO extends ImageDAO {
      */
     public function setImageElement( $userID, $requesterProfileID, $requestedProfileID, $imageDTO ) {
     	//Make sure the $userID supplied has access to the file.
-    	//Make sure the $profileID  used is allowed to set shit.
+    	//Make sure the $profileID  used is allowed to set something.
     	$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
 
   		//Prepare a query for execution

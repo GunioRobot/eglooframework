@@ -108,7 +108,6 @@ class PGSQLAccountDAO extends AccountDAO {
         $result = pg_execute($db_handle, "query", array($username,$password,$ipAddress,$userAgent));
         $testarray = pg_fetch_assoc($result);
                 
-        //Closes a motherfucking connection!
         pg_close( $db_handle );  		    
   		
   		//I need to figure out how to have pl/pgsql spit back a false or exception if the select fails.

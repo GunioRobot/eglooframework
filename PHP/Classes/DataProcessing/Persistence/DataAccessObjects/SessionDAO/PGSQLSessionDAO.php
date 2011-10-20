@@ -92,7 +92,6 @@ class PGSQLSessionDAO extends SessionDAO {
 		$result = pg_execute($db_handle, "query", array($sessionID));
 		$testarray = pg_fetch_row($result);
 		
-		//Closes a motherfucking connection!
 		pg_close( $db_handle );
 
 		$sessionDTO->setSessionID($testarray['0']);
@@ -127,7 +126,6 @@ class PGSQLSessionDAO extends SessionDAO {
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($sessionID));
 		
-		//Closes a motherfucking connection!
 		pg_close( $db_handle );
  	}
  
@@ -154,7 +152,6 @@ class PGSQLSessionDAO extends SessionDAO {
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($sessionLifeTime . " minutes"));
 
-		//Closes a motherfucking connection!
 		pg_close( $db_handle );
 	}
  }
