@@ -3,7 +3,7 @@
 <project name="eGloo Framework" default="build" basedir=".">
  <property name="source" value="PHP"/>
  <property name="build.native" value="${basedir}/Build/doxworking"/>
- <property name="doxygen.cmd" value="/usr/bin/doxygen"/>
+ <property name="doxygen.cmd" value="/usr/local/bin/doxygen"/>
 
  <target name="clean"
 		 description="Clean up and create artifact directories">
