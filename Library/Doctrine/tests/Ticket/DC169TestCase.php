@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_DC169_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_DC169_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -74,7 +74,7 @@ class Ticket_DC169_User extends Doctrine_Record
     public function setUp()
     {
         $this->actAs('Timestampable');
-        
+
         $this->hasOne('Ticket_DC169_Profile as Profile', array(
             'local' => 'id',
             'foreign' => 'user_id'

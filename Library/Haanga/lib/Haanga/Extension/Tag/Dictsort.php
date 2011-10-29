@@ -5,7 +5,7 @@ class Haanga_Extension_Tag_Dictsort
 
     /**
      *  Sorted a nested array by '$sort_by'
-     *  property on each sub-array. , if you want 
+     *  property on each sub-array. , if you want
      *  to see the original php file look filters/dictsort.php
      */
     static function generator($cmp, $args, $redirected)
@@ -20,7 +20,7 @@ class Haanga_Extension_Tag_Dictsort
         if (!Haanga_AST::is_var($args[0])) {
             $cmp->Error("Dictsort: First parameter must be an array");
         }
-        
+
         $var = $cmp->get_context($args[0]['var']);
         $cmp->set_context($redirected, $var);
 

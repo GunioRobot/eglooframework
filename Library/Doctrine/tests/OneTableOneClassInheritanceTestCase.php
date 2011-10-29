@@ -23,18 +23,18 @@
  * Doctrine_OneTableOneClassInheritance_TestCase
  *
  * @package     Doctrine
- * @author      Bjarte Stien Karlsen <bjartka@pvv.ntnu.no> 
+ * @author      Bjarte Stien Karlsen <bjartka@pvv.ntnu.no>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
  * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_OneTableOneClassInheritance_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_OneTableOneClassInheritance_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
-    public function prepareTables() 
+    public function prepareTables()
     { }
     public function testTableExporting()
     {

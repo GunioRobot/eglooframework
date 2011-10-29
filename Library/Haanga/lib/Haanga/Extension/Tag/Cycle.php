@@ -14,12 +14,12 @@ class Haanga_Extension_Tag_Cycle
         $code = hcode();
 
         $index = 'index_'.$cycle;
-        $def   = 'def_cycle_'.$cycle; 
+        $def   = 'def_cycle_'.$cycle;
 
         if (count($args) == 1 && Haanga_AST::is_var($args[0]) && isset($cmp->cycle[$args[0]['var']])) {
             $id    = $cmp->cycle[$args[0]['var']];
             $index = 'index_'.$id;
-            $def   = 'def_cycle_'.$id; 
+            $def   = 'def_cycle_'.$id;
         } else {
             if (!$declared) {
                 $code->do_if(hexpr(hexec('isset', hvar($def)), '==', FALSE));
@@ -33,7 +33,7 @@ class Haanga_Extension_Tag_Cycle
         /* isset($var) == FALSE */
         $expr = hexpr(hexec('isset', hvar($index)), '==', FALSE);
         $inc  = hexpr(hexpr(hexpr(hvar($index), '+', 1)), '%', hexec('count', hvar($def)));
-        
+
 
         if (!$declared) {
             if (isset($id)) {

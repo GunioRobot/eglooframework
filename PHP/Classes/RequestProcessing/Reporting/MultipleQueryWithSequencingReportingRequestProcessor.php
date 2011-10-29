@@ -3,21 +3,21 @@
  * MultipleQueryWithSequencingReportingRequestProcessor Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -133,7 +133,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 		$feederColumnKey = $output['column_key'];
 
 		$feederValue = implode(', ', $output[$feederColumnKey]);
-		
+
 		$retVal = array($output['column_key'] => $feederValue);
 
 		return $retVal;
@@ -312,7 +312,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 					$source = $parameter['source'];
 
 					if ( isset($this->_executedQueriesInFeederForm[$source]) ) {
-						if ( $loopColumn && isset($this->_executedQueriesInFeederForm[$source][$loopColumn]) ) { 
+						if ( $loopColumn && isset($this->_executedQueriesInFeederForm[$source][$loopColumn]) ) {
 							if ( isset($this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex]) ) {
 								$loopValue = $this->_executedQueriesInFeederForm[$source][$loopColumn][$loopIndex];
 								$newParameter = array('type' => $parameter['type'], 'value' => $loopValue);
@@ -335,7 +335,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 
 						if ( isset($this->_executedQueriesInFeederForm[$source]) ) {
 							$feederArrayForm = $this->_executedQueriesInFeederForm[$source];
-							
+
 							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
 
 							$newParameter = array('type' => $parameter['type'], 'value' => $feederStringForm);
@@ -364,7 +364,7 @@ abstract class MultipleQueryWithSequencingReportingRequestProcessor extends Mult
 							$feederStringForm = $this->getTransformedFeederStringFromArray($feederArrayForm);
 							$newParameter = array('type' => $parameter['type'], 'value' => $feederStringForm);
 						} else {
-							
+
 						}
 						// $this->_executedQueries[$lookupIndexSource]['loopResultSets'][];
 					}

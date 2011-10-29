@@ -2,5 +2,5 @@
 		<br />
 		<div>
 			<!--{$blogEntryContent}-->
-		</div>		           
+		</div>
 </div>

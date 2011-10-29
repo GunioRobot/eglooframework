@@ -8,7 +8,7 @@ class TestOfSimpleSeleniumRemoteControl extends UnitTestCase {
 		$remote_control = new SimpleSeleniumRemoteControl("tester", "http://simpletest.org/");
 		$this->assertEqual($remote_control->sessionIdParser('OK,123456789123456789'), '123456789123456789');
 	}
-	
+
 	function testIsUpReturnsFalseWhenDirectedToLocalhostDown() {
 		$remote_control = new SimpleSeleniumRemoteControl("tester", "http://simpletest.org/", "localhost-down");;
 		$this->assertFalse($remote_control->isUp());

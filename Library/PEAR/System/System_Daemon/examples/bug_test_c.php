@@ -68,7 +68,7 @@ while (!System_Daemon::isDying() && $runningOkay) {
     if ($runmode['logfirst']) {
         System_Daemon::getOption("appName");
     }
-    
+
     $runningOkay = fncProcessJobs();
     echo " - ".time()."\n";
     System_Daemon::iterate(2);

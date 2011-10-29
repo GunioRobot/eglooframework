@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_486_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_486_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables() {
         $this->tables = array('Country', 'State', 'Resort');

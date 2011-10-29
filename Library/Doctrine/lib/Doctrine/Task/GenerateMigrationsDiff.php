@@ -38,7 +38,7 @@ class Doctrine_Task_GenerateMigrationsDiff extends Doctrine_Task
            $optionalArguments    =   array('models_path'      => 'Specify the path to your doctrine models folder.');
 
     public function execute()
-    {   
+    {
         $migrationsPath = $this->getArgument('migrations_path');
         $modelsPath = $this->getArgument('models_path');
         $yamlSchemaPath = $this->getArgument('yaml_schema_path');

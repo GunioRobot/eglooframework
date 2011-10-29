@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  *  $Id$
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -30,7 +30,7 @@
  * @link        www.doctrine-project.org
  * @since       1.0
  */
-class Doctrine_Query_Expression_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_Expression_TestCase extends Doctrine_UnitTestCase
 {
     public function testUnknownExpressionInSelectClauseThrowsException()
     {
@@ -92,25 +92,25 @@ class Doctrine_Query_Expression_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->parseDqlQuery('SELECT u.id, CONCAT(u.name, u.loginname) FROM User u');
-        
+
         $this->assertEqual($q->getSqlQuery(), 'SELECT e.id AS e__id, CONCAT(e.name, e.loginname) AS e__0 FROM entity e WHERE (e.type = 0)');
     }
 
-    public function testConcatInSelectClauseSupportsLiteralStrings() 
+    public function testConcatInSelectClauseSupportsLiteralStrings()
     {
         $q = new Doctrine_Query();
-        
+
         $q->parseDqlQuery("SELECT u.id, CONCAT(u.name, 'The Man') FROM User u");
-        
+
         $this->assertEqual($q->getSqlQuery(), "SELECT e.id AS e__id, CONCAT(e.name, 'The Man') AS e__0 FROM entity e WHERE (e.type = 0)");
     }
 
-    public function testConcatInSelectClauseSupportsMoreThanTwoArgs() 
+    public function testConcatInSelectClauseSupportsMoreThanTwoArgs()
     {
         $q = new Doctrine_Query();
-        
+
         $q->parseDqlQuery("SELECT u.id, CONCAT(u.name, 'The Man', u.loginname) FROM User u");
-        
+
         $this->assertEqual($q->getSqlQuery(), "SELECT e.id AS e__id, CONCAT(e.name, 'The Man', e.loginname) AS e__0 FROM entity e WHERE (e.type = 0)");
     }
 
@@ -125,7 +125,7 @@ class Doctrine_Query_Expression_TestCase extends Doctrine_UnitTestCase
          $radius = '33';
 
          $query->select("l.*, i18n.*, GeoDistKM(l.lat, l.lon, $lat, $lon) distance")
-              ->from('Location l, l.LocationI18n i18n')          
+              ->from('Location l, l.LocationI18n i18n')
               ->where('l.id <> ? AND i18n.culture = ?', array(1, 'en'))
               ->having("distance < $radius")
               ->orderby('distance ASC')

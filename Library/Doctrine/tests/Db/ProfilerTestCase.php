@@ -31,14 +31,14 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {}
-    public function prepareData() 
+    public function prepareData()
     {}
-    
-    public function testQuery() 
+
+    public function testQuery()
     {
         $this->conn = Doctrine_Manager::getInstance()->openConnection(array('sqlite::memory:'));
 
@@ -47,15 +47,15 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
         $this->conn->setListener($this->profiler);
 
         $this->conn->exec('CREATE TABLE test (id INT)');
-        
+
         $this->assertEqual($this->profiler->lastEvent()->getQuery(), 'CREATE TABLE test (id INT)');
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getCode(), Doctrine_Db_Event::EXEC);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         $this->assertEqual($this->conn->count(), 1);
     }
-    public function testPrepareAndExecute() 
+    public function testPrepareAndExecute()
     {
 
         $stmt  = $this->conn->prepare('INSERT INTO test (id) VALUES (?)');
@@ -75,7 +75,7 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($this->conn->count(), 2);
     }
-    public function testMultiplePrepareAndExecute() 
+    public function testMultiplePrepareAndExecute()
     {
 
         $stmt = $this->conn->prepare('INSERT INTO test (id) VALUES (?)');
@@ -122,7 +122,7 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($this->profiler->lastEvent()->getCode(), Doctrine_Db_Event::EXECUTE);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
     }
-    public function testTransactionRollback() 
+    public function testTransactionRollback()
     {
         try {
             $this->conn->beginTransaction();
@@ -134,7 +134,7 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getCode(), Doctrine_Db_Event::BEGIN);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         try {
             $this->conn->rollback();
             $this->pass();
@@ -147,7 +147,7 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($this->profiler->lastEvent()->getCode(), Doctrine_Db_Event::ROLLBACK);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
     }
-    public function testTransactionCommit() 
+    public function testTransactionCommit()
     {
         try {
             $this->conn->beginTransaction();
@@ -159,7 +159,7 @@ class Doctrine_Connection_Profiler_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getCode(), Doctrine_Db_Event::BEGIN);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         try {
             $this->conn->commit();
             $this->pass();

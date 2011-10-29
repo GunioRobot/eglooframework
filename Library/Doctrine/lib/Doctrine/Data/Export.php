@@ -35,7 +35,7 @@ class Doctrine_Data_Export extends Doctrine_Data
     /**
      * constructor
      *
-     * @param string $directory 
+     * @param string $directory
      * @return void
      */
     public function __construct($directory)
@@ -46,13 +46,13 @@ class Doctrine_Data_Export extends Doctrine_Data
     /**
      * doExport
      *
-     * FIXME: This function has ugly hacks in it for temporarily disabling INDEXBY query parts of tables 
+     * FIXME: This function has ugly hacks in it for temporarily disabling INDEXBY query parts of tables
      * to export.
      *
      * Update from jwage: I am not sure if their is any other better solution for this. It may be the correct
-     * solution to disable the indexBy settings for tables when exporting data fixtures. Maybe a better idea 
-     * would be to extract this functionality to a pair of functions to enable/disable the index by settings 
-     * so simply turn them on and off when they need to query for the translations standalone and don't need 
+     * solution to disable the indexBy settings for tables when exporting data fixtures. Maybe a better idea
+     * would be to extract this functionality to a pair of functions to enable/disable the index by settings
+     * so simply turn them on and off when they need to query for the translations standalone and don't need
      * it to be indexed by the lang.
      *
      * @return void
@@ -108,7 +108,7 @@ class Doctrine_Data_Export extends Doctrine_Data
      *
      * Dump the prepared data to the fixtures files
      *
-     * @param string $array 
+     * @param string $array
      * @return void
      */
     public function dumpData(array $data)
@@ -144,7 +144,7 @@ class Doctrine_Data_Export extends Doctrine_Data
      *
      * Prepare the raw data to be exported with the parser
      *
-     * @param string $data 
+     * @param string $data
      * @return array
      */
     public function prepareData($data)
@@ -201,13 +201,13 @@ class Doctrine_Data_Export extends Doctrine_Data
                         $relationValue = $relationClassName . '_' . $value;
 
                         $preparedData[$className][$recordKey][$relationAlias] = $relationValue;
-                    } else if ($record->getTable()->hasField($key)) {                        
+                    } else if ($record->getTable()->hasField($key)) {
                         $preparedData[$className][$recordKey][$key] = $value;
                     }
                 }
             }
         }
-        
+
         return $preparedData;
     }
 }

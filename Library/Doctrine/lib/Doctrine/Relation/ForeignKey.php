@@ -52,9 +52,9 @@ class Doctrine_Relation_ForeignKey extends Doctrine_Relation
            }
         }
         if ($this->isOneToOne()) {
-            if ( ! $record->exists() || empty($id) || 
+            if ( ! $record->exists() || empty($id) ||
                  ! $this->definition['table']->getAttribute(Doctrine_Core::ATTR_LOAD_REFERENCES)) {
-                
+
                 $related = $this->getTable()->create();
             } else {
                 $dql  = 'FROM ' . $this->getTable()->getComponentName()
@@ -68,9 +68,9 @@ class Doctrine_Relation_ForeignKey extends Doctrine_Relation
                     $record, false);
         } else {
 
-            if ( ! $record->exists() || empty($id) || 
+            if ( ! $record->exists() || empty($id) ||
                  ! $this->definition['table']->getAttribute(Doctrine_Core::ATTR_LOAD_REFERENCES)) {
-                
+
                 $related = Doctrine_Collection::create($this->getTable());
             } else {
                 $query      = $this->getRelationDql(1);

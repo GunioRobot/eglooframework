@@ -1,8 +1,8 @@
 /** Baseline OLTP File.
- * 
+ *
  * @author Matthew Brennan
  * @version 0.1
- * 
+ *
  */
 
 -- Email address sequence, domain, table.
@@ -58,7 +58,7 @@ CONSTRAINT pk_role_types PRIMARY KEY (role_type_id)
 
 CREATE DOMAIN md5_hash_dom AS VARCHAR(32)
 	NOT NULL
-	CONSTRAINT md5_hash CHECK 
+	CONSTRAINT md5_hash CHECK
 		(
 			CHAR_LENGTH(value)=32
 			AND value ~ '[a-f0-9]{32,32}'
@@ -73,7 +73,7 @@ CREATE DOMAIN roles_ident_dom AS BIGINT
 	DEFAULT NEXTVAL('roles_ident_seq');
 
 
--- refactor role types . . . make roles into groups/roles similar to what 
+-- refactor role types . . . make roles into groups/roles similar to what
 -- Postgres and Unix do.
 -- Usertypes sequence, domain, table
 -- Decide late how to deal with "people" and "groups" outside of roles
@@ -158,7 +158,7 @@ CONSTRAINT fk_group_members_member_user_id FOREIGN KEY (member_user_id)
 
 
 -- Create the "Initialation User" as role 0
--- Make sure the role sequence skips 0. . . 
+-- Make sure the role sequence skips 0. . .
 -- Foreign key references for all of the tables that came before roles
 
 -- rolename for login

@@ -49,7 +49,7 @@ Doctrine\ODM\MongoDB\Tests\Mapping\User:
       discriminatorMap:
         home: HomePhonenumber
         work: WorkPhonenumber
-        
+
   lifecycleCallbacks:
-    prePersist: [ doStuffOnPrePersist, doOtherStuffOnPrePersistToo ] 
+    prePersist: [ doStuffOnPrePersist, doOtherStuffOnPrePersistToo ]
     postPersist: [ doStuffOnPostPersist ]

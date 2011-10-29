@@ -180,8 +180,8 @@ abstract class Doctrine_Access extends Doctrine_Locator_Injectable implements Ar
     }
 
     /**
-     * Check if the specified offset exists 
-     * 
+     * Check if the specified offset exists
+     *
      * @param mixed $offset The offset to check
      * @return boolean True if exists otherwise false
      */
@@ -191,9 +191,9 @@ abstract class Doctrine_Access extends Doctrine_Locator_Injectable implements Ar
     }
 
     /**
-     * Add the value  
-     * 
-     * @param mixed $value The value to add 
+     * Add the value
+     *
+     * @param mixed $value The value to add
      * @return void
      */
     public function add($value)

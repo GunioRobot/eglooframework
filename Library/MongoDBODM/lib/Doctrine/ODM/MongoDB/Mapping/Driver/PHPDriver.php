@@ -53,7 +53,7 @@ class PHPDriver implements Driver
     {
         call_user_func_array(array($className, 'loadMetadata'), array($metadata));
     }
-    
+
     /**
      * {@inheritDoc}
      * @todo Same code exists in AnnotationDriver, should we re-use it somehow or not worry about it?

@@ -2,7 +2,7 @@
 /* vim: set noai expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 /**
  * System_Daemon turns PHP-CLI scripts into daemons.
- * 
+ *
  * PHP version 5
  *
  * @category  System
@@ -24,7 +24,7 @@
  * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
  * @version   SVN: Release: $Id$
  * @link      http://trac.plutonia.nl/projects/system_daemon
- * 
+ *
  */
 class System_Daemon_Options
 {
@@ -34,14 +34,14 @@ class System_Daemon_Options
      * @var array
      */
     protected $_options = array();
-    
+
     /**
      * Definitions for all Options
      *
      * @var array
      */
     protected $_definitions = array();
-    
+
     /**
      * Wether all the options have been initialized
      *
@@ -55,25 +55,25 @@ class System_Daemon_Options
      * @var array
      */
     public $errors = array();
-    
-    
+
+
     /**
      * Constructor
-     * 
+     *
      * @param array $definitions The predefined option definitions
      */
-    public function __construct($definitions) 
+    public function __construct($definitions)
     {
         if (!is_array($definitions) || !count($definitions)) {
             return false;
         }
-        
+
         $this->_definitions = $definitions;
     }
-    
+
     /**
      * Retrieves any option found in $_definitions
-     * 
+     *
      * @param string $name Name of the Option
      *
      * @return boolean
@@ -90,7 +90,7 @@ class System_Daemon_Options
         }
         return $this->_options[$name];
     }
-    
+
     /**
      * Gets an array of options found in $_definitions
      *
@@ -100,10 +100,10 @@ class System_Daemon_Options
     {
         return $this->_options;
     }
-    
+
     /**
      * Sets any option found in $_definitions
-     * 
+     *
      * @param string $name  Name of the Option
      * @param mixed  $value Value of the Option
      *
@@ -118,14 +118,14 @@ class System_Daemon_Options
             $this->errors[] = "Option ".$name." invalid: ".$reason;
             $success        = false;
         }
-        
+
         $this->_options[$name] = $value;
         return $success;
     }
-        
+
     /**
      * Sets an array of options found in $_definitions
-     * 
+     *
      * @param array $use_options Array with Options
      *
      * @return boolean
@@ -140,7 +140,7 @@ class System_Daemon_Options
         }
         return $success;
     }
-    
+
     /**
      * Wether options are initialized
      *
@@ -150,24 +150,24 @@ class System_Daemon_Options
     {
         return $this->_isInitialized;
     }
-    
+
     /**
      * Checks if all the required options are set & met.
      * Initializes, sanitizes & defaults unset variables
-     * 
+     *
      * @param boolean $premature Whether to do a premature option init
      *
      * @return mixed integer or boolean
      */
-    public function init($premature=false) 
+    public function init($premature=false)
     {
         // If already initialized, skip
         if (!$premature && $this->isInitialized()) {
             return true;
-        }        
-        
+        }
+
         $options_met = 0;
-        
+
         foreach ($this->_definitions as $name=>$definition) {
             // Required options remain
             if (!isset($this->_options[$name])) {
@@ -178,25 +178,25 @@ class System_Daemon_Options
                     $this->errors[] = 'Required option: '.$name.
                         ' not set. No default value available either.';
                     return false;
-                } 
+                }
             }
-            
+
             $options_met++;
         }
-                
+
         if (!$premature) {
             $this->_isInitialized = true;
         }
-        
-        return $options_met;
-        
-    }
-    
 
-    
+        return $options_met;
+
+    }
+
+
+
     /**
      * Validates any option found in $_definitions
-     * 
+     *
      * @param string $name    Name of the Option
      * @param mixed  $value   Value of the Option
      * @param string &$reason Why something does not validate
@@ -206,28 +206,28 @@ class System_Daemon_Options
     protected function _validate($name, $value, &$reason="")
     {
         $reason = false;
-        
+
         if (!$reason && !isset($this->_definitions[$name])) {
             $reason = "Option ".$name." not found in definitions";
         }
-        
+
         $definition = $this->_definitions[$name];
-        
+
         if (!$reason && !isset($definition["type"])) {
             $reason = "Option ".$name.":type not found in definitions";
         }
-        
+
         // Compile array of allowd main & subtypes
         $_allowedTypes = $this->_allowedTypes($definition["type"]);
-        
+
         // Loop over main & subtypes to detect matching format
         if (!$reason) {
             $type_valid = false;
             foreach ($_allowedTypes as $type_a=>$sub_types) {
                 foreach ($sub_types as $type_b) {
-                    
+
                     // Determine range based on subtype
-                    // Range is used to contain an integer or strlen 
+                    // Range is used to contain an integer or strlen
                     // between min-max
                     $parts = explode("-", $type_b);
                     $from  = $to = false;
@@ -236,7 +236,7 @@ class System_Daemon_Options
                         $to     = $parts[1];
                         $type_b = "range";
                     }
-            
+
                     switch ($type_a) {
                     case "boolean":
                         $type_valid = is_bool($value);
@@ -274,14 +274,14 @@ class System_Daemon_Options
                             }
                             break;
                         case "creatable_filepath":
-                            if (is_dir(dirname($value)) 
+                            if (is_dir(dirname($value))
                                 && is_writable(dirname($value))
                             ) {
                                 $type_valid = true;
                             }
                             break;
                         case "normal":
-                        default: 
+                        default:
                             // String?
                             if (!is_resource($value)
                                 && !is_array($value)
@@ -292,7 +292,7 @@ class System_Daemon_Options
                                     $type_valid = true;
                                 } else {
                                     // Enfore range as well
-                                    if (strlen($value) >= $from 
+                                    if (strlen($value) >= $from
                                         && strlen($value) <= $to
                                     ) {
                                         $type_valid = true;
@@ -318,34 +318,34 @@ class System_Daemon_Options
                                     }
                                 }
                             }
-                            break;                            
+                            break;
                         }
                         break;
                     default:
                         $this->errors[] =  "Type ".
                             $type_a." not defined";
                         break;
-                    }                
+                    }
                 }
             }
         }
-        
+
         if (!$type_valid) {
             $reason = "Option ".$name." does not match type: ".
                 $definition["type"]."";
         }
-        
+
         if ($reason !== false) {
             $this->errors[] = $reason;
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Sets any option found in $_definitions to its default value
-     * 
+     *
      * @param string $name Name of the Option
      *
      * @return boolean
@@ -354,7 +354,7 @@ class System_Daemon_Options
     {
         if (!isset($this->_definitions[$name])) {
             return false;
-        }        
+        }
         $definition = $this->_definitions[$name];
 
         if (!isset($definition["type"])) {
@@ -363,10 +363,10 @@ class System_Daemon_Options
         if (!isset($definition["default"])) {
             return false;
         }
-        
+
         // Compile array of allowd main & subtypes
-        $_allowedTypes = $this->_allowedTypes($definition["type"]);        
-        
+        $_allowedTypes = $this->_allowedTypes($definition["type"]);
+
         $type  = $definition["type"];
         $value = $definition["default"];
 
@@ -374,34 +374,34 @@ class System_Daemon_Options
             // Replace variables
             $value = preg_replace_callback(
                 '/\{([^\{\}]+)\}/is',
-                array($this, "replaceVars"), 
+                array($this, "replaceVars"),
                 $value
             );
-            
+
             // Replace functions
             $value = preg_replace_callback(
                 '/\@([\w_]+)\(([^\)]+)\)/is',
-                array($this, "replaceFuncs"), 
+                array($this, "replaceFuncs"),
                 $value
             );
         }
-        
+
         $this->_options[$name] = $value;
         return true;
     }
-    
+
     /**
      * Callback function to replace variables in defaults
      *
      * @param array $matches Matched functions
-     * 
+     *
      * @return string
      */
     public function replaceVars($matches)
     {
         // Init
         $allowedVars = array(
-            "SERVER.SCRIPT_NAME", 
+            "SERVER.SCRIPT_NAME",
             "OPTIONS.*",
         );
         $filterVars  = array(
@@ -409,7 +409,7 @@ class System_Daemon_Options
                 "realpath",
             ),
         );
-        
+
         $fullmatch          = array_shift($matches);
         $fullvar            = array_shift($matches);
 
@@ -422,33 +422,33 @@ class System_Daemon_Options
         }
         $var_use            = false;
         $var_key            = $source.".".$var;
-        
+
         // Allowed
-        if (!in_array($var_key, $allowedVars) 
+        if (!in_array($var_key, $allowedVars)
             && !in_array($source.".*", $allowedVars)
         ) {
             return "FORBIDDEN_VAR_".$var_key;
         }
-        
+
         // Mapping of textual sources to real sources
         if ($source == "SERVER") {
             $source_use = &$_SERVER;
         } elseif ($source == "OPTIONS") {
-            $source_use = &$this->_options; 
+            $source_use = &$this->_options;
         } else {
             $source_use = false;
         }
-        
+
         // Exists?
         if ($source_use === false) {
             return "UNUSABLE_VARSOURCE_".$source;
         }
-        if (!isset($source_use[$var])) { 
-            return "NONEXISTING_VAR_".$var_key;     
+        if (!isset($source_use[$var])) {
+            return "NONEXISTING_VAR_".$var_key;
         }
-        
+
         $var_use = $source_use[$var];
-        
+
         // Filtering
         if (isset($filterVars[$var_key]) && is_array($filterVars[$var_key])) {
             foreach ($filterVars[$var_key] as $filter_function) {
@@ -457,16 +457,16 @@ class System_Daemon_Options
                 }
                 $var_use = call_user_func($filter_function, $var_use);
             }
-        }        
-        
-        return $var_use;        
+        }
+
+        return $var_use;
     }
-    
+
     /**
      * Callback function to replace function calls in defaults
      *
      * @param array $matches Matched functions
-     * 
+     *
      * @return string
      */
     public function replaceFuncs($matches)
@@ -475,28 +475,28 @@ class System_Daemon_Options
             "basename",
             "dirname",
         );
-        
+
         $fullmatch = array_shift($matches);
         $function  = array_shift($matches);
         $arguments = $matches;
-        
+
         if (!in_array($function, $allowedFunctions)) {
-            return "FORBIDDEN_FUNCTION_".$function;            
+            return "FORBIDDEN_FUNCTION_".$function;
         }
-        
+
         if (!function_exists($function)) {
-            return "NONEXISTING_FUNCTION_".$function; 
+            return "NONEXISTING_FUNCTION_".$function;
         }
-        
+
         return call_user_func_array($function, $arguments);
     }
 
     /**
      * Compile array of allowed types
-     * 
+     *
      * @param string $str String that contains allowed type information
-     * 
-     * @return array      
+     *
+     * @return array
      */
     protected function _allowedTypes($str)
     {
@@ -507,12 +507,12 @@ class System_Daemon_Options
             $type_a       = array_shift($raw_subtypes);
             if (!count($raw_subtypes)) {
                 $raw_subtypes = array("normal");
-            } 
+            }
             $allowed_types[$type_a] = $raw_subtypes;
         }
         return $allowed_types;
-    }    
-    
+    }
+
 
     /**
      * Check if a string has a unix proof file-format (stripped spaces,
@@ -526,26 +526,26 @@ class System_Daemon_Options
     {
         return preg_match('/^[a-z0-9_\.\/\-]+$/', $str);
     }
-    
+
     /**
-     * Check if a string has a unix proof format (stripped spaces, 
+     * Check if a string has a unix proof format (stripped spaces,
      * special chars, etc)
      *
      * @param string $str What string to test for unix compliance
-     * 
+     *
      * @return boolean
-     */   
+     */
     protected function strIsUnix( $str )
     {
         return preg_match('/^[a-z0-9_]+$/', $str);
     }
 
     /**
-     * Convert a string to a unix proof format (strip spaces, 
+     * Convert a string to a unix proof format (strip spaces,
      * special chars, etc)
-     * 
+     *
      * @param string $str What string to make unix compliant
-     * 
+     *
      * @return string
      */
     protected function strToUnix( $str )

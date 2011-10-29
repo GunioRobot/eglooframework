@@ -3,21 +3,21 @@
  * StyleSheetXML2ArrayDispatcher Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -64,7 +64,7 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Processing XML" );
 
 		//read the xml onces... global location to do this... it looks like it does this once per request.
-		$requestXMLObject = simplexml_load_file( eGlooConfiguration::getApplicationsPath() . '/' . 
+		$requestXMLObject = simplexml_load_file( eGlooConfiguration::getApplicationsPath() . '/' .
 			$this->application . '/InterfaceBundles/' . $this->interfaceBundle . '/CSS/Dispatch.xml'	 );
 
 		$dispatches = array();
@@ -154,13 +154,13 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 	}
 
 	/**
-	 * Only functional method available to the public.	
+	 * Only functional method available to the public.
 	 */
 	public function dispatch( $requestInfoBean, $userRequestID = null, $userRequestClass = null ) {
 		// TODO only if not cache
 		$dispatchCacheRegionHandler = CacheManagementDirector::getCacheRegionHandler('Dispatches');
 		$nodeCacheID = eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'StyleSheetXML2ArrayDispatcher';
-		
+
 		if ( ($this->dispatchNodes = $dispatchCacheRegionHandler->getObject( $nodeCacheID, 'Dispatching', true ) ) == null ) {
 			eGlooLogger::writeLog( eGlooLogger::DEBUG, "StyleSheetXML2ArrayDispatcher: Dispatch Nodes pulled from cache" );
 			$this->loadDispatchNodes();
@@ -174,7 +174,7 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		$userRequestID = $userRequestID !== null ? $userRequestID : $requestInfoBean->getRequestID();
 
 		/**
-		 * If this is a valid request class/id, get the request denoted 
+		 * If this is a valid request class/id, get the request denoted
 		 * by this request class and id.
 		 */
 		$stylesheetClients = $this->dispatchNodes;
@@ -185,11 +185,11 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		$userPlatform = null;
 		$dispatchPath = null;
 		$processTemplate = false;
-		
+
 		foreach( $stylesheetClients['Clients'] as $clientID => $client ) {
 			$matchFormat = (string) $client['matches'];
-			$match = preg_match ( $matchFormat, $userAgent ); 
-			
+			$match = preg_match ( $matchFormat, $userAgent );
+
 			if( $match ) {
 				eGlooLogger::writeLog( eGlooLogger::DEBUG, 'StyleSheetXML2ArrayDispatcher: Matched ' . (string) $client['id']);
 				$userClient = $client;
@@ -200,8 +200,8 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		if ( $userClient !== null ) {
 			foreach( $userClient['MajorVersions'] as $majorVersion ) {
 				$matchFormat = (string) $majorVersion['matches'];
-				$match = preg_match ( $matchFormat, $userAgent ); 
-	
+				$match = preg_match ( $matchFormat, $userAgent );
+
 				if( $match ) {
 					$userMajorVersion = $majorVersion;
 					break;
@@ -212,8 +212,8 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		if ( $userMajorVersion !== null ) {
 			foreach( $userMajorVersion['MinorVersions'] as $minorVersion ) {
 				$matchFormat = (string) $minorVersion['matches'];
-				$match = preg_match ( $matchFormat, $userAgent ); 
-	
+				$match = preg_match ( $matchFormat, $userAgent );
+
 				if( $match ) {
 					$userMinorVersion = $minorVersion;
 					break;
@@ -222,7 +222,7 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( $userMinorVersion !== null ) {
-			foreach( $userMinorVersion['Platforms'] as $platform ) {	   
+			foreach( $userMinorVersion['Platforms'] as $platform ) {
 				if( $userAgent === (string) $platform->UserAgent ) {
 					$userPlatform = $platform;
 					break;
@@ -231,7 +231,7 @@ class StyleSheetXML2ArrayDispatcher extends TemplateDispatcher {
 		}
 
 		if ( $userPlatform !== null ) {
-			foreach( $userPlatform['DispatchMaps'] as $map ) {	 
+			foreach( $userPlatform['DispatchMaps'] as $map ) {
 				if( $userRequestID === (string) $map['id'] ) {
 					$dispatchPath = (string) $map['dispatchPath'];
 					$processTemplate = $map['process'];

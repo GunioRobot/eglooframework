@@ -40,7 +40,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
 
     public function prepareData()
     {}
-    
+
     public function testSavingNewRecordAsRootWithoutRootIdThrowsException() {
         $node = new NestedSet_MultiRootNode();
         $node->name = 'root';
@@ -52,7 +52,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
             $this->pass();
         }
     }
-    
+
     public function testSavingNewRecordWithRootIdWorks() {
         $node = new NestedSet_MultiRootNode();
         $node->name = 'root';
@@ -67,7 +67,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
             $this->fail();
         }
     }
-    
+
     public function testSavingPersistentRecordAsRootAssignsIdToRootId() {
         $node = new NestedSet_MultiRootNode();
         $node->name = 'root';
@@ -83,7 +83,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
             $this->fail();
         }
     }
-    
+
     public function testSaveMultipleRootsWithChildren() {
         $root1 = new NestedSet_MultiRootNode();
         $root1->name = 'root1';
@@ -97,7 +97,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
         } catch (Doctrine_Tree_Exception $e) {
             $this->fail();
         }
-        
+
         $root2 = new NestedSet_MultiRootNode();
         $root2->name = 'root';
         $root2->save();
@@ -110,12 +110,12 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
         } catch (Doctrine_Tree_Exception $e) {
             $this->fail();
         }
-        
+
         // now a child for root1
         $child1 = new NestedSet_MultiRootNode();
         $child1->name = "child1";
         $child1->getNode()->insertAsLastChildOf($root1);
-        
+
         $root1->refresh(); // ! updates lft/rgt
         // test insertion
         $this->assertEqual(2, $child1->lft);
@@ -125,12 +125,12 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual(1, $root1->lft);
         $this->assertEqual(4, $root1->rgt);
         $this->assertEqual(0, $root1->level);
-        
+
         // now a child for root2
         $child2 = new NestedSet_MultiRootNode();
         $child2->name = "child2";
         $child2->getNode()->insertAsLastChildOf($root2);
-        
+
         $root2->refresh(); // ! updates lft/rgt
         // test insertion
         $this->assertEqual(2, $child2->lft);
@@ -140,7 +140,7 @@ class Doctrine_NestedSet_MultiRoot_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual(1, $root2->lft);
         $this->assertEqual(4, $root2->rgt);
         $this->assertEqual(0, $root2->level);
-        
+
         // query some
         $root1Id = $root1->id;
         $root2Id = $root2->id;

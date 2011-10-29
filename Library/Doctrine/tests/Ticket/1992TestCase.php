@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1992_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1992_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -103,7 +103,7 @@ class Ticket_1992_Person extends Doctrine_Record
 {
     public function setTableDefinition()
     {
-        $this->hasColumn('nummer', 'string', 16, array('type' => 'string', 'length' => 16, 'primary' => true));        
+        $this->hasColumn('nummer', 'string', 16, array('type' => 'string', 'length' => 16, 'primary' => true));
     }
 
     public function setUp()
@@ -117,7 +117,7 @@ class Ticket_1992_Profile extends Doctrine_Record
 {
     public function setTableDefinition()
     {
-        $this->hasColumn('id', 'integer', 4, array('type' => 'integer', 'length' => 4, 'unsigned' => 1, 'primary' => true, 'autoincrement' => true));        
+        $this->hasColumn('id', 'integer', 4, array('type' => 'integer', 'length' => 4, 'unsigned' => 1, 'primary' => true, 'autoincrement' => true));
         $this->hasColumn('name', 'string');
     }
 
@@ -133,7 +133,7 @@ class Ticket_1992_PersonProfile extends Doctrine_Record
     public function setTableDefinition()
     {
         $this->hasColumn('person_nummer', 'string', 16, array('type' => 'string', 'length' => 16, 'notnull' => true));
-        $this->hasColumn('profile_id', 'integer', 4, array('type' => 'integer', 'length' => 4, 'unsigned' => 1, 'notnull' => true));        
+        $this->hasColumn('profile_id', 'integer', 4, array('type' => 'integer', 'length' => 4, 'unsigned' => 1, 'notnull' => true));
     }
 
     public function setUp()

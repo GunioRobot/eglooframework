@@ -3,21 +3,21 @@
  * PGSQLImageDAO Class File
  *
  * Needs to be commented
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -31,7 +31,7 @@
  * PGSQLImageDAO
  *
  * Needs to be commented
- * 
+ *
  * @category DataProcessing
  * @package Persistence
  * @subpackage DataAccessObjects
@@ -43,10 +43,10 @@ class PGSQLImageDAO extends ImageDAO {
      * ImageDTO populated with the information and content of the image element
      * instance ID provided, if the profile ID requesting this operation has
      * sufficient privileges to do so.
-     * 
+     *
      * @param $requesterProfileID  the ID of the profile requesting this operation
      * @param $imageDTO  an ImageDTO referencing the image element instance
-     * 
+     *
      * @return ImageDTO
      */
     public function getImageElement( $requesterProfileID, $imageDTO ) {
@@ -58,10 +58,10 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($imageDTO->getElementInstanceID()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-		
+
 		$imageDTO->setElementType($testarray['output_elementtype']);
 		$imageDTO->setElementCreatorProfileID($testarray['output_creator_id']);
 		$imageDTO->setImageFileHash($testarray['output_imagefilehash']);
@@ -75,7 +75,7 @@ class PGSQLImageDAO extends ImageDAO {
 		$imageDTO->setImageFileName($testarray['output_filename']);
 		$imageDTO->setImageDimensionX($testarray['output_imagedimensionx']);
 		$imageDTO->setImageDimensionY($testarray['output_imagedimensiony']);
-		
+
 		return $imageDTO;
     }
 
@@ -83,12 +83,12 @@ class PGSQLImageDAO extends ImageDAO {
      * Returns an array of ImageDTO objects populated with the information for
      * all image elements owned by the requested profile ID if the profile ID
      * requesting this operation has sufficient privileges to do so.
-     *  
+     *
      * @param $requesterProfileID  the ID of the profile requesting this
      * operation
      * @param $requestedProfileID  the ID of the profile whose profile image
      * is being requested
-     * 
+     *
      * @return ImageDTO Array
      */
     public function getImageElementList( $requesterProfileID, $requestedProfileID ) {
@@ -97,21 +97,21 @@ class PGSQLImageDAO extends ImageDAO {
 
   		//Prepare a query for execution
   		$result = pg_prepare($db_handle, "query", 'SELECT ElementTypes.ElementType, ElementTypes.ElementPackagePath, Elements.Creator_ID, Elements.DateCreated, Image_Elements.ImageFileHash, Image_Elements.MIMEType, Image_Elements.Title, Image_Elements.Summery, Files.File,	Files.FileSize,	Files.DateUploaded,	Files.Uploader, ImageFiles.ImageDimensionX, ImageFiles.ImageDimensionY
-		FROM ElementTypes INNER JOIN Elements ON ElementTypes.ElementType_ID=Elements.ElementType_ID 
-			INNER JOIN Image_Elements ON Elements.Element_ID=Image_Elements.Element_ID 
-			INNER JOIN ImageFiles ON Image_Elements.ImageFileHash=ImageFiles.FileHash AND Image_Elements.MIMEType=ImageFiles.MIMEType 
+		FROM ElementTypes INNER JOIN Elements ON ElementTypes.ElementType_ID=Elements.ElementType_ID
+			INNER JOIN Image_Elements ON Elements.Element_ID=Image_Elements.Element_ID
+			INNER JOIN ImageFiles ON Image_Elements.ImageFileHash=ImageFiles.FileHash AND Image_Elements.MIMEType=ImageFiles.MIMEType
 			INNER JOIN Files ON ImageFiles.FileHash=Files.FileHash AND ImageFiles.MIMEType=Files.MIMEType
 		WHERE Image_Elements.Creator_ID=$1');
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($requestedProfileID));
-		
+
 		$testarray =  pg_fetch_all($result);
 		pg_close( $db_handle );
-		
+
 		if ($testarray) {
 			foreach ($testarray as $row) {
-				
+
 				$imageDTO = new ImageDTO();
 				$imageDTO->setElementType($row['output_elementtype']);
 				$imageDTO->setElementCreatorProfileID($row['output_creator_id']);
@@ -126,10 +126,10 @@ class PGSQLImageDAO extends ImageDAO {
 				$imageDTO->setImageFileName($row['output_filename']);
 				$imageDTO->setImageDimensionX($row['output_imagedimensionx']);
 				$imageDTO->setImageDimensionY($row['output_imagedimensiony']);
-				
+
 				return $imageDTO;
 			}
-		}	
+		}
     }
 
     /**
@@ -138,13 +138,13 @@ class PGSQLImageDAO extends ImageDAO {
      * image file primary key and linked to the requested profile ID
      * (new image element instance owner) if the user ID or the profile ID
      * requesting this operation has sufficient privileges to do so.
-     * 
+     *
      * @param $userID  the ID of the user account requesting this operation
      * @param $requesterProfileID  the ID of the profile requesting this
      * operation
      * @param $requestedProfileID  the ID of the profile whose profile image
      * will be set
-     * @param $imageDTO  an ImageDTO referencing the supplied image 
+     * @param $imageDTO  an ImageDTO referencing the supplied image
      */
     public function setImageElement( $userID, $requesterProfileID, $requestedProfileID, $imageDTO ) {
     	//Make sure the $userID supplied has access to the file.
@@ -156,10 +156,10 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($userID, $requesterProfileID, $imageDTO->getImageFileHash(), $imageDTO->getImageMIMEType(), $imageDTO->getImageElementTitle(), $imageDTO->getImageElementSummary()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-		
+
 		if ($testarray) {
 			$imageDTO->setElementInstanceID($testarray['output_element_id']);
 			$imageDTO->setElementType($testarray['output_type']);
@@ -172,9 +172,9 @@ class PGSQLImageDAO extends ImageDAO {
      * Takes an ImageDTO containing an image element instance ID and removes the
      * image element instance if the profile ID requesting this operation has
      * sufficient privileges to do so.
-     * 
+     *
      * @param $profileID  the ID of the profile requesting this operation
-     * @param $imageDTO  an ImageDTO referencing the image element instance 
+     * @param $imageDTO  an ImageDTO referencing the image element instance
      *
      * @return ImageDTO
      */
@@ -187,21 +187,21 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($profileID, $imageDTO->getElementInstanceID()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
     }
-    
+
     /**
      * Returns an ImageDTO populated with the information and content of the
      * profile image associated with the supplied profile ID if the profile ID
      * requesting this operation has sufficient privileges to do so.
-     * 
+     *
      * @param $requesterProfileID  the ID of the profile requesting this
      * operation
      * @param $requestedProfileID  the ID of the profile whose profile image
      * is being requested
-     * 
+     *
      * @return ImageDTO
      */
     public function getProfileImageElement( $requesterProfileID, $requestedProfileID ) {
@@ -213,12 +213,12 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($requestedProfileID));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-		
+
 		$imageDTO = new ImageDTO();
-		
+
 		$imageDTO->setElementInstanceID($testarray['output_element_id']);
 		$imageDTO->setElementID($testarray['output_elementtype_id']);
 		$imageDTO->setElementType($testarray['output_elementtype']);
@@ -232,12 +232,12 @@ class PGSQLImageDAO extends ImageDAO {
 		$imageDTO->setImageFileName($testarray['output_filename']);
 		$imageDTO->setImageDimensionX($testarray['output_imagedimensionx']);
 		$imageDTO->setImageDimensionY($testarray['output_imagedimensiony']);
-		
-		return $imageDTO;    	
+
+		return $imageDTO;
     }
 
     /**
-     * @return  
+     * @return
      */
     public function removeImage( $userID, $imageDTO ) {
     	//ProfileID needed? needs discussion as to who can remove Images.
@@ -248,14 +248,14 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($imageDTO->getImageFileHash(), $imageDTO->getImageMIMEType(), $userID));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-    	
+
     }
 
     /**
-     * @return  
+     * @return
      */
     public function removeProfileImageElement( $requesterProfileID, $requestedProfileID ) {
     	//Gets rid of an element so profile_ID is required
@@ -267,20 +267,20 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 //		$result = pg_execute($db_handle, "query", array($userID, $profileID));
-	
+
         // FIX This is handing a profile ID as the user ID (need to change procedure)
         $result = pg_execute($db_handle, "query", array($requesterProfileID, $requestedProfileID));
-    	
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-    		
+
     }
 
     /**
-     * @return ProfileImageDTO 
+     * @return ProfileImageDTO
      */
     public function setProfileImageElement( $userID, $requesterProfileID, $requestedProfileID, $imageDTO ) {
-    	//Make sure user owns profile, then create new element 
+    	//Make sure user owns profile, then create new element
     	//Make sure image was uploaded by UserID
     	//Is the userID check nessisary, will users be able to see the imageDTO if they do not own the image
 		$db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
@@ -290,10 +290,10 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($userID, $requestedProfileID, $imageDTO->getImageFileHash(), $imageDTO->getImageMIMEType()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-    
+
     	if ($testarray['output_successful']) {
 	    	$profileImageDTO = new ProfileImageDTO();
 	    	$profileImageDTO->setImageContent($imageDTO->getImageContent());
@@ -313,7 +313,7 @@ class PGSQLImageDAO extends ImageDAO {
     }
 
     /**
-     * @return ImageDTO 
+     * @return ImageDTO
      */
     public function storeNewImage( $userID, $imageDTO ) {
         $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
@@ -323,17 +323,17 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($imageDTO->getImageFileHash(), base64_encode($imageDTO->getImageContent()), $imageDTO->getImageMIMEType(), $imageDTO->getImageFileSize(), $userID, $imageDTO->getImageFileName(), $imageDTO->getImageDimensionX(), $imageDTO->getImageDimensionY()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-		
+
 		$imageDTO->setImageDateUploaded($testarray['output_dateuploaded']);
-		
-		return $imageDTO;        
+
+		return $imageDTO;
     }
 
     /**
-     * @return ImageDTO 
+     * @return ImageDTO
      */
     public function getImage( $userID, $imageDTO ) {
         $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
@@ -342,10 +342,10 @@ class PGSQLImageDAO extends ImageDAO {
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($imageDTO->getImageFileHash(), $imageDTO->getImageMIMEType()));
-		
+
 		$testarray =  pg_fetch_assoc($result);
 		pg_close( $db_handle );
-		
+
 		$imageDTO->setImageContent(base64_decode(($testarray['output_file'])));
         $imageDTO->setImageFileSize($testarray['output_filesize']);
 		$imageDTO->setImageDateUploaded($testarray['output_dateuploaded']);
@@ -353,12 +353,12 @@ class PGSQLImageDAO extends ImageDAO {
 		$imageDTO->setImageFileName($testarray['output_filename']);
 		$imageDTO->setImageDimensionX($testarray['output_imagedimensionx']);
 		$imageDTO->setImageDimensionY($testarray['output_imagedimensiony']);
-        
+
         return $imageDTO;
     }
 
     /**
-     * @return ImageDTO 
+     * @return ImageDTO
      */
     public function getUserImageList( $userID, $profileID ) {
         //no content on these dto
@@ -366,16 +366,16 @@ class PGSQLImageDAO extends ImageDAO {
         $db_handle = DBConnectionManager::getConnection()->getRawConnectionResource();
   		//Prepare a query for execution
   		$result = pg_prepare( $db_handle, "query", 'SELECT Files.FileHash, Files.MIMEType, Files.FileSize, Files.DateUploaded, Files.Uploader, Files.FileName, ImageFiles.ImageDimensionX, ImageFiles.ImageDimensionY
-													FROM Files 
+													FROM Files
 														INNER JOIN ImageFiles ON Files.FileHash=ImageFiles.FileHash AND Files.MIMEType=ImageFiles.MIMEType INNER JOIN FileOwners ON FileOwners.FileHash=Files.FileHash AND FileOwners.MIMEType=Files.MIMEType
 													WHERE FileOwners.User_ID=$1' );
 
 		// Execute the prepared query.  Note that it is not necessary to escape
 		$result = pg_execute($db_handle, "query", array($userID));
-		
+
 		$testarray =  pg_fetch_all($result);
 		pg_close( $db_handle );
-        
+
         foreach ($testarray as $row) {
         	$imageDTO = new ImageDTO();
             $imageDTO->setImageFileHash( $row['filehash'] );
@@ -388,10 +388,10 @@ class PGSQLImageDAO extends ImageDAO {
 			$imageDTO->setImageDimensionY($row['imagedimensiony']);
 			$retVal[] = $imageDTO;
         }
-        
+
         return $retVal;
     }
 
-} 
+}
 
 

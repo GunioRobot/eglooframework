@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1341_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1341_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -52,7 +52,7 @@ class Doctrine_Ticket_1341_TestCase extends Doctrine_UnitTestCase
               'id' => '1',
               'username' => 'jwage',
               'password' => 'changeme',
-              'Profile' => 
+              'Profile' =>
               array(
                 'id' => '1',
                 'name' => 'Jonathan H. Wage',

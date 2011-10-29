@@ -45,7 +45,7 @@ class Doctrine_Template_Listener_SoftDelete extends Doctrine_Record_Listener
     /**
      * __construct
      *
-     * @param string $options 
+     * @param string $options
      * @return void
      */
     public function __construct(array $options)
@@ -74,7 +74,7 @@ class Doctrine_Template_Listener_SoftDelete extends Doctrine_Record_Listener
     {
         $name = $this->_options['name'];
         $invoker = $event->getInvoker();
-        
+
         if ($this->_options['type'] == 'timestamp') {
             $invoker->$name = date('Y-m-d H:i:s', time());
         } else if ($this->_options['type'] == 'boolean') {
@@ -113,7 +113,7 @@ class Doctrine_Template_Listener_SoftDelete extends Doctrine_Record_Listener
         $query = $event->getQuery();
         if ( ! $query->contains($field)) {
             $query->from('')->update($params['component']['table']->getOption('name') . ' ' . $params['alias']);
-            
+
             if ($this->_options['type'] == 'timestamp') {
                 $query->set($field, '?', date('Y-m-d H:i:s', time()));
                 $query->addWhere($field . ' IS NULL');
@@ -127,10 +127,10 @@ class Doctrine_Template_Listener_SoftDelete extends Doctrine_Record_Listener
     }
 
     /**
-     * Implement preDqlSelect() hook and add the deleted flag to all queries for which this model 
+     * Implement preDqlSelect() hook and add the deleted flag to all queries for which this model
      * is being used in.
      *
-     * @param Doctrine_Event $event 
+     * @param Doctrine_Event $event
      * @return void
      */
     public function preDqlSelect(Doctrine_Event $event)

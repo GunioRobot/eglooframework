@@ -51,7 +51,7 @@ abstract class Doctrine_Template extends Doctrine_Record_Abstract
     /**
      * __construct
      *
-     * @param string $array 
+     * @param string $array
      * @return void
      */
     public function __construct(array $options = array())
@@ -102,20 +102,20 @@ abstract class Doctrine_Template extends Doctrine_Record_Abstract
 
     /**
      * Adds a plugin as a child to this plugin
-     * 
-     * @param Doctrine_Template $template 
+     *
+     * @param Doctrine_Template $template
      * @return Doctrine_Template. Chainable.
      */
     public function addChild(Doctrine_Template $template)
     {
         $this->_plugin->addChild($template);
-        
+
         return $this;
     }
 
     /**
-     * Get plugin instance 
-     * 
+     * Get plugin instance
+     *
      * @return void
      */
     public function getPlugin()
@@ -161,21 +161,21 @@ abstract class Doctrine_Template extends Doctrine_Record_Abstract
     }
 
     /**
-     * get 
-     * 
-     * @param mixed $name 
+     * get
+     *
+     * @param mixed $name
      * @return void
      */
-    public function get($name) 
+    public function get($name)
     {
         throw new Doctrine_Exception("Templates doesn't support accessors.");
     }
 
     /**
-     * set 
-     * 
-     * @param mixed $name 
-     * @param mixed $value 
+     * set
+     *
+     * @param mixed $name
+     * @param mixed $value
      * @return void
      */
     public function set($name, $value)
@@ -184,8 +184,8 @@ abstract class Doctrine_Template extends Doctrine_Record_Abstract
     }
 
     /**
-     * Blank method for template setup 
-     * 
+     * Blank method for template setup
+     *
      * @return void
      */
     public function setUp()
@@ -195,7 +195,7 @@ abstract class Doctrine_Template extends Doctrine_Record_Abstract
 
     /**
      * Blank method for template table definition
-     * 
+     *
      * @return void
      */
     public function setTableDefinition()

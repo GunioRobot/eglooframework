@@ -3,21 +3,21 @@
  * PasswordFormFieldSetValidator Class File
  *
  * Contains the class definition for the PasswordFormFieldSetValidator
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -49,19 +49,19 @@ class PasswordFormFieldSetValidator extends FormFieldSetValidator {
 			$firstPasswordField->setHasError( true );
 
 			if ( !preg_match('~^.{6,32}$~', $firstPasswordField->getValue() ) ) {
-				$firstPasswordField->setError( 
+				$firstPasswordField->setError(
 					'password_length', 'Password must be between 6 and 32 characters long', 'password_length_error_message' );
 			}
 
 			// Example...
 			if ( preg_match('~[0-9]+~', $firstPasswordField->getValue() ) ) {
-				$firstPasswordField->setError( 
+				$firstPasswordField->setError(
 					'password_digits', 'Password cannot contain digits', 'password_digit_error_message' );
 			}
 
 			// Example...
 			if ( preg_match('~[\'"]+~', $firstPasswordField->getValue() ) ) {
-				$firstPasswordField->setError( 
+				$firstPasswordField->setError(
 					'password_invalid_characters', 'Password cannot contain the following characters: \',"',
 					'password_invalid_characters_error_message' );
 			}

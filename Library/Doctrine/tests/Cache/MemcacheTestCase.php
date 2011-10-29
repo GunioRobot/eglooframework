@@ -31,14 +31,14 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Cache_Memcache_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Cache_Memcache_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareTables() 
+    public function prepareTables()
     { }
     public function prepareData()
     { }
 }
-class Doctrine_Cache_Memcache_Mock extends Doctrine_Cache_Memcache 
+class Doctrine_Cache_Memcache_Mock extends Doctrine_Cache_Memcache
 {
 }
 

@@ -127,7 +127,7 @@ class TestOfReflection extends UnitTestCase {
 		$reflection = new SimpleReflection('AnyDescendentInterface');
 		$this->assertIdentical($reflection->getMethods(), array('aMethod'));
 	}
-	
+
 	function testCanSeparateInterfaceMethodsFromOthers() {
 		$reflection = new SimpleReflection('AnyOldImplementation');
 		$this->assertIdentical($reflection->getMethods(), array('aMethod', 'extraMethod'));
@@ -195,7 +195,7 @@ class TestOfReflection extends UnitTestCase {
 		$function = $reflection->getSignature('__isset');
 		$this->assertEqual('function __isset($key)', $function);
 	}
-	
+
 	function testUnsetFunctionSignature() {
 		$reflection = new SimpleReflection('AnyOldOverloadedClass');
 		$function = $reflection->getSignature('__unset');
@@ -208,12 +208,12 @@ class TestOfReflection extends UnitTestCase {
 		$this->assertEqual(1, count($interfaces));
 		$this->assertEqual('AnyDescendentInterface', array_shift($interfaces));
 	}
-	
+
 	function testCreatingSignatureForAbstractMethod() {
 	    $reflection = new SimpleReflection('AnotherOldAbstractClass');
 	    $this->assertEqual($reflection->getSignature('aMethod'), 'function aMethod(AnyOldInterface $argument)');
 	}
-	
+
 	function testCanProperlyGenerateStaticMethodSignatures() {
 		$reflection = new SimpleReflection('AnyOldClassWithStaticMethods');
 		$this->assertEqual('static function aStatic()', $reflection->getSignature('aStatic'));
@@ -232,7 +232,7 @@ class TestOfReflectionWithTypeHints extends UnitTestCase {
 	function testParameterCreationForTypeHintingWithArray() {
 		eval('interface AnyOldArrayTypeHintedInterface {
 				  function amethod(array $argument);
-			  } 
+			  }
 			  class AnyOldArrayTypeHintedClass implements AnyOldArrayTypeHintedInterface {
 				  function amethod(array $argument) {}
 			  }');

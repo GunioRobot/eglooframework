@@ -14,6 +14,6 @@ class ZeroValueTest extends Doctrine_Record
         $this->hasColumn('is_super_admin', 'boolean', null, array('default' => false, 'notnull' => true,));
     }
 
-    public function setUp() 
+    public function setUp()
     { }
 }

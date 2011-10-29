@@ -101,7 +101,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                     foreach ($record->getPendingDeletes() as $pendingDelete) {
                         $pendingDelete->delete();
                     }
-                
+
                     foreach ($record->getPendingUnlinks() as $alias => $ids) {
                         if ($ids === false) {
                             $record->unlinkInDb($alias, array());
@@ -376,7 +376,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
         return $saveLater;
     }
-    
+
     /**
      * saveRelatedLocalKeys
      * saves all related (through LocalKey) records to $record
@@ -391,7 +391,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
         foreach ($record->getReferences() as $k => $v) {
             $rel = $record->getTable()->getRelation($k);
-            
+
             $local = $rel->getLocal();
             $foreign = $rel->getForeign();
 
@@ -408,7 +408,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                     if ( ! empty($id)) {
                         foreach ((array) $rel->getLocal() as $k => $columnName) {
                             $field = $record->getTable()->getFieldName($columnName);
-                            
+
                             if (isset($id[$k]) && $id[$k] && $record->getTable()->hasField($field)) {
                                 $record->set($field, $id[$k]);
                             }
@@ -548,11 +548,11 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
      * Inserts a record into database.
      *
      * This method inserts a transient record in the database, and adds it
-     * to the identity map of its correspondent table. It proxies to @see 
+     * to the identity map of its correspondent table. It proxies to @see
      * processSingleInsert(), trigger insert hooks and validation of data
      * if required.
      *
-     * @param Doctrine_Record $record   
+     * @param Doctrine_Record $record
      * @return boolean                  false if record is not valid
      */
     public function insert(Doctrine_Record $record)
@@ -584,7 +584,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
     /**
      * Replaces a record into database.
      *
-     * @param Doctrine_Record $record   
+     * @param Doctrine_Record $record
      * @return boolean                  false if record is not valid
      */
     public function replace(Doctrine_Record $record)
@@ -600,7 +600,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
                 $table = $record->getTable();
                 $identifier = (array) $table->getIdentifier();
-                $data = $record->getPrepared();       
+                $data = $record->getPrepared();
 
                 foreach ($data as $key  => $value) {
                     if ($value instanceof Doctrine_Expression) {
@@ -625,9 +625,9 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
     /**
      * Inserts a transient record in its table.
      *
-     * This method inserts the data of a single record in its assigned table, 
+     * This method inserts the data of a single record in its assigned table,
      * assigning to it the autoincrement primary key (if any is defined).
-     * 
+     *
      * @param Doctrine_Record $record
      * @return void
      */
@@ -937,13 +937,13 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
         if (empty($seq) && !is_array($identifier) &&
             $table->getIdentifierType() != Doctrine_Core::IDENTIFIER_NATURAL) {
             $id = false;
-            if ($record->$identifier == null) { 
+            if ($record->$identifier == null) {
                 if (($driver = strtolower($this->conn->getDriverName())) == 'pgsql') {
                     $seq = $table->getTableName() . '_' . $table->getColumnName($identifier);
                 } elseif ($driver == 'oracle' || $driver == 'mssql') {
                     $seq = $table->getTableName();
                 }
-    
+
                 $id = $this->conn->sequence->lastInsertId($seq);
             } else {
                 $id = $record->$identifier;

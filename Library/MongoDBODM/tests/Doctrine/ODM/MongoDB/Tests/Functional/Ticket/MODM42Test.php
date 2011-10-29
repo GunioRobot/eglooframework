@@ -77,7 +77,7 @@ class File
         return $this->id;
     }
 
-    public function getMongoFile() 
+    public function getMongoFile()
     {
         return $this->file;
     }

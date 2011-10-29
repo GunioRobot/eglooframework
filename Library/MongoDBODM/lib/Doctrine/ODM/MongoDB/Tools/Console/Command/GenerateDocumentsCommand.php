@@ -112,13 +112,13 @@ EOT
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $dm = $this->getHelper('dm')->getDocumentManager();
-        
+
         $cmf = new DisconnectedClassMetadataFactory();
         $cmf->setDocumentManager($dm);
         $cmf->setConfiguration($dm->getConfiguration());
         $metadatas = $cmf->getAllMetadata();
         $metadatas = MetadataFilter::filter($metadatas, $input->getOption('filter'));
-        
+
         // Process destination directory
         $destPath = realpath($input->getArgument('dest-path'));
 

@@ -77,7 +77,7 @@ class Doctrine_Ticket_DC39_TestCase extends Doctrine_UnitTestCase
     		$this->assertEqual($group->Users[0]->group_id, 2);
     		$this->assertEqual($group->Users[1]->group_id, 2);
     }
-   
+
 }
 
 class Ticket_DC39_Group extends Doctrine_Record
@@ -86,7 +86,7 @@ class Ticket_DC39_Group extends Doctrine_Record
 	{
 		$this->hasColumn('name', 'string', 255);
 	}
-	
+
 	public function setUp()
 	{
 		$this->hasMany('Ticket_DC39_User as Users', array(

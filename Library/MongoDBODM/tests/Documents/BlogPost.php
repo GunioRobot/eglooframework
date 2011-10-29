@@ -29,10 +29,10 @@ class BlogPost
     /** @ReferenceMany(targetDocument="Comment", mappedBy="parent", criteria={"isByAdmin"=true}, sort={"date"="desc"}) */
     public $adminComments = array();
 
-    /** @ReferenceOne(targetDocument="Comment", mappedBy="parent", repositoryMethod="findOneComment") */    
+    /** @ReferenceOne(targetDocument="Comment", mappedBy="parent", repositoryMethod="findOneComment") */
     public $repoComment;
 
-    /** @ReferenceMany(targetDocument="Comment", mappedBy="parent", repositoryMethod="findManyComments") */    
+    /** @ReferenceMany(targetDocument="Comment", mappedBy="parent", repositoryMethod="findManyComments") */
     public $repoComments;
 
     public function __construct($name = null)

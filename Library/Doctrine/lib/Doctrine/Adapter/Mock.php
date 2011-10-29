@@ -67,7 +67,7 @@ class Doctrine_Adapter_Mock implements Doctrine_Adapter_Interface, Countable
      * $conn = new Doctrine_Adapter_Mock('mysql');
      * </code>
      *
-     * @param string $name 
+     * @param string $name
      * @return void
      */
     public function __construct($name = null)
@@ -125,7 +125,7 @@ class Doctrine_Adapter_Mock implements Doctrine_Adapter_Interface, Countable
     /**
      * Add query to the stack of executed queries
      *
-     * @param string $query 
+     * @param string $query
      * @return void
      */
     public function addQuery($query)
@@ -136,7 +136,7 @@ class Doctrine_Adapter_Mock implements Doctrine_Adapter_Interface, Countable
     /**
      * Fake the execution of query and add it to the stack of executed queries
      *
-     * @param string $query 
+     * @param string $query
      * @return Doctrine_Adapter_Statement_Mock $stmt
      */
     public function query($query)
@@ -172,7 +172,7 @@ class Doctrine_Adapter_Mock implements Doctrine_Adapter_Interface, Countable
     /**
      * Quote a value for the dbms
      *
-     * @param string $input 
+     * @param string $input
      * @return string $quoted
      */
     public function quote($input)
@@ -183,7 +183,7 @@ class Doctrine_Adapter_Mock implements Doctrine_Adapter_Interface, Countable
     /**
      * Execute a raw sql statement
      *
-     * @param string $statement 
+     * @param string $statement
      * @return void
      */
     public function exec($statement)

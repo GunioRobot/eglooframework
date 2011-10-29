@@ -3,21 +3,21 @@
  * FormFieldSet Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -184,7 +184,7 @@ class FormFieldSet {
 
 	public function hasChildren() {
 		$retVal = false;
-		
+
 		if ( !empty($this->_formFieldChildren) ) {
 			$retVal = true;
 		}
@@ -258,7 +258,7 @@ class FormFieldSet {
 			if ( trim($this->getAppendHTML()) !== '' ) {
 				$retVal .= "\t" . $this->getAppendHTML() . "\n";
 			}
-			
+
 
 		}
 
@@ -336,10 +336,10 @@ class FormFieldSet {
 	public function insertElementBefore( $first_element_id, $second_element_id ) {
 		// $first_index = $this->_formFieldSetElementOrder[$first_element_id];
 		// $second_index = $this->_formFieldSetElementOrder[$second_element_id];
-		// 
+		//
 		// $this->_formFieldSetElementOrder[$first_element_id] = $second_index;
 		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
-		// 
+		//
 		// asort($this->_formFieldSetElementOrder);
 
 		return $this;
@@ -348,10 +348,10 @@ class FormFieldSet {
 	public function insertElementAfter( $first_element_id, $second_element_id ) {
 		// $first_index = $this->_formFieldSetElementOrder[$first_element_id];
 		// $second_index = $this->_formFieldSetElementOrder[$second_element_id];
-		// 
+		//
 		// $this->_formFieldSetElementOrder[$first_element_id] = $second_index;
 		// $this->_formFieldSetElementOrder[$second_element_id] = $first_index;
-		// 
+		//
 		// asort($this->_formFieldSetElementOrder);
 
 		return $this;
@@ -470,7 +470,7 @@ class FormFieldSet {
 	}
 
 	public function __destruct() {
-		
+
 	}
 
 }

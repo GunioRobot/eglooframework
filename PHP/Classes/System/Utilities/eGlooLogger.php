@@ -2,23 +2,23 @@
 /**
  * eGlooLogger Class File
  *
- * Contains the class definition for the eGlooLogger, a final class for 
+ * Contains the class definition for the eGlooLogger, a final class for
  * eGloo framework logging functionality.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -29,14 +29,14 @@
  */
 
 /**
- * eGlooLogger is responsible for handling all system logging for the eGloo web 
+ * eGlooLogger is responsible for handling all system logging for the eGloo web
  * application.	 It contains static constants for specifying levels of logging
  * and the type of notice of any particular logged message.	 Messages are evaluated
  * to determine if their notice level matches the current logging level of the system
  * and, if so, are tagged with the date, time, notice level, message and additional
  * output required based on the notice level of the message and any additional
- * information passed in via an array.	
- * 
+ * information passed in via an array.
+ *
  * All messages are written to the log path defined in eGlooConfiguration::getLoggingPath().
  * The logging path and the log file, "error.log", must both be writable by either the user
  * or the group which the apache (httpd) daemon belongs to.	 The eGloo directory must also
@@ -90,7 +90,7 @@ final class eGlooLogger {
 
 		$num = mt_rand ( 0, 0xffffff );
 		self::$requestID = sprintf ( "%06x", $num );
-		
+
 		self::setLoggingLevel( $level );
 		self::setLoggingType( $format );
 
@@ -118,18 +118,18 @@ final class eGlooLogger {
 	public static function getLoggingLevel() {
 		return self::$loggingLevel;
 	}
-	
+
 	 /**
 	 * Sets the logging type, either default log file, HTML, or XML
 	 * NOTE: DO NOT use XML yet.
-	 * 
+	 *
 	 * @param $type		the type to set, either "log", "html", or "xml"
 	 * @returns null
 	 */
 	 public static function setLoggingType($type){
 		self::$loggingType = $type;
 		//log is the default
-		
+
 		//Create the HTML headers, and change the logfile to an HTML file.
 		if($type == self::LOG_HTML){
 			self::$logFilePath = self::$htmlFilePath;
@@ -152,15 +152,15 @@ final class eGlooLogger {
 	 * message and any additional output specified by the level of the notice or the data array
 	 * passed in.
 	 *
-	 * @param $level					a bitmask (hexadecimal int) that represents the logging 
+	 * @param $level					a bitmask (hexadecimal int) that represents the logging
 	 *									level specified
 	 * @param $message					the message to be printed to the log file
-	 * @param $data						an optional array containing any other information that 
+	 * @param $data						an optional array containing any other information that
 	 *									should be printed along with the given message
 	 * @param $timezone					an additional timezone to display in the logs, in case
 	 *									developers are not in the same timezone as their servers
 	 * @throws eGlooLoggerException		if there was an error writing to the log file
-	 * @returns null 
+	 * @returns null
 	 */
 	public static function writeLog( $level, $message, $logPackage = 'Default', $data = null, $timezone = 'America/New_York', $aggregateApplicationLogs = true ) {
 		if ( $level & self::$loggingLevel ) {
@@ -172,7 +172,7 @@ final class eGlooLogger {
 				$dateTime->setTimezone( new DateTimeZone( $timezone ) );
 				$requested_local_time = $dateTime->format( 'Y.m.d h:i:sa T' );
 
-				$message = '[RequestID:' . self::$requestID . '] ' . $server_local_time . ' / ' . $requested_local_time . ' [' . 
+				$message = '[RequestID:' . self::$requestID . '] ' . $server_local_time . ' / ' . $requested_local_time . ' [' .
 							self::$logLevelStrings[$level] . '] ' . $message;
 
 				$message = wordwrap( $message, 120, "\n\t" );
@@ -213,9 +213,9 @@ final class eGlooLogger {
 
 	/**
 	 * Defines the default exception runtime handler.
-	 * 
+	 *
 	 * Long Description Goes Here
-	 * 
+	 *
 	 * @param Exception $exception exception thrown
 	 * @todo Finish commenting
 	 */

@@ -128,7 +128,7 @@ abstract class Doctrine_Cache_Abstract_TestCase extends Doctrine_UnitTestCase
         $this->assertFalse($cache->contains('bar_suffix'));
         $this->assertTrue($cache->contains('foo'));
     }
-    
+
     public function testDeleteByRegex()
     {
         if ( !$this->_isEnabled()) {
@@ -147,8 +147,8 @@ abstract class Doctrine_Cache_Abstract_TestCase extends Doctrine_UnitTestCase
         $this->assertFalse($cache->contains('bar_match_me'));
         $this->assertTrue($cache->contains('foo'));
     }
-    
-    abstract protected function _clearCache();    
+
+    abstract protected function _clearCache();
     abstract protected function _isEnabled();
     abstract protected function _getCacheDriver();
 }

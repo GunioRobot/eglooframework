@@ -2,7 +2,7 @@
 /**
  * CSSDefaultTemplateEngine Class File
  *
- * Contains the class definition for the CSSDefaultTemplateEngine, a subclass of 
+ * Contains the class definition for the CSSDefaultTemplateEngine, a subclass of
  * the TemplateEngine class.
  *
  * Copyright 2011 eGloo, LLC
@@ -18,7 +18,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -29,7 +29,7 @@
 
 /**
  * CSSDefaultTemplateEngine
- * 
+ *
  * Provides a class definition for a CSS template engine subclass of
  * the TemplateEngine class.
  *

@@ -65,7 +65,7 @@ class Doctrine_Transaction_Mssql extends Doctrine_Transaction
 
         $this->conn->execute($query);
     }
-    
+
     /**
      * Performs the rollback.
      */
@@ -73,7 +73,7 @@ class Doctrine_Transaction_Mssql extends Doctrine_Transaction
     {
         $this->conn->getDbh()->exec('ROLLBACK TRANSACTION');
     }
-    
+
     /**
      * Performs the commit.
      */
@@ -81,7 +81,7 @@ class Doctrine_Transaction_Mssql extends Doctrine_Transaction
     {
         $this->conn->getDbh()->exec('COMMIT TRANSACTION');
     }
-    
+
     /**
      * Begins a database transaction.
      */

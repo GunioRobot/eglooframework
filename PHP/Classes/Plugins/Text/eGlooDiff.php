@@ -3,21 +3,21 @@
  * eGlooDiff Class File
  *
  * Contains the class definition for the eGlooDiff
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -55,7 +55,7 @@ class eGlooDiff {
 
 		htmlDiff is a wrapper for the diff command, it takes two strings and
 		returns the differences in HTML. The tags used are <ins> and <del>,
-		which can easily be styled with CSS.  
+		which can easily be styled with CSS.
 	*/
 	public static function diff( $old, $new ) {
 		$matrix = array();
@@ -71,7 +71,7 @@ class eGlooDiff {
 					$omax = $oindex + 1 - $maxlen;
 					$nmax = $nindex + 1 - $maxlen;
 				}
-			}	
+			}
 		}
 
 		if($maxlen == 0) return array(array('d'=>$old, 'i'=>$new));

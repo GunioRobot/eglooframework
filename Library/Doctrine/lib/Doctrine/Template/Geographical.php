@@ -20,7 +20,7 @@
  */
 
 /**
- * Easily add longitude and latitude columns to your records and use inherited functionality for 
+ * Easily add longitude and latitude columns to your records and use inherited functionality for
  * calculating distances
  *
  * @package     Doctrine
@@ -60,7 +60,7 @@ class Doctrine_Template_Geographical extends Doctrine_Template
     }
 
     /**
-     * Initiate and get a distance query with the select parts for the number of kilometers and miles 
+     * Initiate and get a distance query with the select parts for the number of kilometers and miles
      * between this record and other zipcode records in the database
      *
      * @return Doctrine_Query $query
@@ -90,14 +90,14 @@ class Doctrine_Template_Geographical extends Doctrine_Template
     /**
      * Get distance between this record and another
      *
-     * @param string $Doctrine_Record 
-     * @param string $kilometers 
+     * @param string $Doctrine_Record
+     * @param string $kilometers
      * @return integer
      */
     public function getDistance(Doctrine_Record $record, $kilometers = false)
     {
         $query = $this->getDistanceQuery($kilometers);
-        
+
         $conditions = array();
         $values = array();
         foreach ((array) $record->getTable()->getIdentifier() as $id) {
@@ -112,7 +112,7 @@ class Doctrine_Template_Geographical extends Doctrine_Template
         $query->limit(1);
 
         $result = $query->execute()->getFirst();
-        
+
         if (isset($result['kilometers']) && $result['miles']) {
             return $kilometers ? $result->get('kilometers'):$result->get('miles');
         } else {

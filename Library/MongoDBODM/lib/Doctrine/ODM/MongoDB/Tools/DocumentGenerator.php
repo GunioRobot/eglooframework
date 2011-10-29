@@ -149,7 +149,7 @@ public function <methodName>()
      * Generate and write document classes for the given array of ClassMetadataInfo instances
      *
      * @param array $metadatas
-     * @param string $outputDirectory 
+     * @param string $outputDirectory
      * @return void
      */
     public function generate(array $metadatas, $outputDirectory)
@@ -163,7 +163,7 @@ public function <methodName>()
      * Generated and write document class to disk for the given ClassMetadataInfo instance
      *
      * @param ClassMetadataInfo $metadata
-     * @param string $outputDirectory 
+     * @param string $outputDirectory
      * @return void
      */
     public function writeDocumentClass(ClassMetadataInfo $metadata, $outputDirectory)
@@ -200,7 +200,7 @@ public function <methodName>()
     /**
      * Generate a PHP5 Doctrine 2 document class from the given ClassMetadataInfo instance
      *
-     * @param ClassMetadataInfo $metadata 
+     * @param ClassMetadataInfo $metadata
      * @return string $code
      */
     public function generateDocumentClass(ClassMetadataInfo $metadata)
@@ -226,8 +226,8 @@ public function <methodName>()
     /**
      * Generate the updated code for the given ClassMetadataInfo and document at path
      *
-     * @param ClassMetadataInfo $metadata 
-     * @param string $path 
+     * @param ClassMetadataInfo $metadata
+     * @param string $path
      * @return string $code;
      */
     public function generateUpdatedDocumentClass(ClassMetadataInfo $metadata, $path)
@@ -244,7 +244,7 @@ public function <methodName>()
     /**
      * Set the number of spaces the exported class should have
      *
-     * @param integer $numSpaces 
+     * @param integer $numSpaces
      * @return void
      */
     public function setNumSpaces($numSpaces)
@@ -256,7 +256,7 @@ public function <methodName>()
     /**
      * Set the extension to use when writing php files to disk
      *
-     * @param string $extension 
+     * @param string $extension
      * @return void
      */
     public function setExtension($extension)
@@ -277,7 +277,7 @@ public function <methodName>()
     /**
      * Set whether or not to generate annotations for the document
      *
-     * @param bool $bool 
+     * @param bool $bool
      * @return void
      */
     public function setGenerateAnnotations($bool)
@@ -298,7 +298,7 @@ public function <methodName>()
     /**
      * Set whether or not to try and update the document if it already exists
      *
-     * @param bool $bool 
+     * @param bool $bool
      * @return void
      */
     public function setUpdateDocumentIfExists($bool)
@@ -406,7 +406,7 @@ public function <methodName>()
         $tokens = token_get_all(file_get_contents($path));
         $lastSeenNamespace = "";
         $lastSeenClass = false;
-        
+
         for ($i = 0; $i < count($tokens); $i++) {
             $token = $tokens[$i];
             if ($token[0] == T_NAMESPACE) {
@@ -657,7 +657,7 @@ public function <methodName>()
             if ( ! isset($fieldMapping['association'])) {
                 continue;
             }
-    
+
             $lines[] = $this->generateAssociationMappingPropertyDocBlock($fieldMapping, $metadata);
             $lines[] = $this->spaces . 'private $' . $fieldMapping['fieldName']
                      . ($fieldMapping['type'] === ClassMetadataInfo::MANY ? ' = array()' : null) . ";\n";
@@ -780,7 +780,7 @@ public function <methodName>()
                 if ($fieldMapping['isCascadeMerge']) $cascades[] = '"merge"';
                 if ($fieldMapping['isCascadeRefresh']) $cascades[] = '"refresh"';
 
-                $typeOptions[] = 'cascade={' . implode(',', $cascades) . '}';            
+                $typeOptions[] = 'cascade={' . implode(',', $cascades) . '}';
             }
 
             $lines[] = $this->spaces . ' * @' . $this->annotationsPrefix . '' . $type . '(' . implode(', ', $typeOptions) . ')';

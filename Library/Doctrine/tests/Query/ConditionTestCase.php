@@ -30,13 +30,13 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_Condition_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_Condition_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData() { }
     public function prepareTables() { }
-    
+
     /** @todo belongs in TokenizerTestCase? */
-    public function testBracktExplode() 
+    public function testBracktExplode()
     {
         $tokenizer = new Doctrine_Query_Tokenizer();
         $str   = "item OR item OR item";
@@ -45,7 +45,7 @@ class Doctrine_Query_Condition_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($parts, array('item','item','item'));
 
     }
-    public function testConditionParser() 
+    public function testConditionParser()
     {
         $query = new Doctrine_Query($this->connection);
 
@@ -80,7 +80,7 @@ class Doctrine_Query_Condition_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($query->getSqlQuery(), "SELECT e.id AS e__id FROM entity e WHERE ((e.name LIKE 'z%' OR e.name LIKE 's%') AND e.name LIKE 'a%') AND (e.type = 0)");
     }
 
-    public function testConditionParser2() 
+    public function testConditionParser2()
     {
         $query = new Doctrine_Query($this->connection);
 

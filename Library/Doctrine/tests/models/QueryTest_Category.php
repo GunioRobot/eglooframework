@@ -1,10 +1,10 @@
 <?php
 class QueryTest_Category extends Doctrine_Record
-{    
+{
     /**
      * The depth of the category inside the tree.
-     * Non-persistent field. 
-     * 
+     * Non-persistent field.
+     *
      * @var integer
      */
     public $depth;

@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_2007_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_2007_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -74,7 +74,7 @@ class Ticket_2007_Faq extends Doctrine_Record
     public function setUp()
     {
         $searchable0 = new Doctrine_Template_Searchable(array(
-             'fields' => 
+             'fields' =>
              array(
               0 => 'title',
               1 => 'description',

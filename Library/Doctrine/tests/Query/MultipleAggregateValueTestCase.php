@@ -31,24 +31,24 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_MultipleAggregateValue_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_MultipleAggregateValue_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
     public function testInitData()
     {
         $user = new User();
         $user->name = 'jon';
-        
+
         $user->Album[0] = new Album();
         $user->Album[1] = new Album();
         $user->Album[2] = new Album();
-        
+
         $user->Book[0] = new Book();
         $user->Book[1] = new Book();
         $user->save();
     }
-    
+
     public function testMultipleAggregateValues()
     {
         $query = new Doctrine_Query();
@@ -57,17 +57,17 @@ class Doctrine_Query_MultipleAggregateValue_TestCase extends Doctrine_UnitTestCa
         $query->leftJoin('u.Album a, u.Book b');
         $query->where("u.name = 'jon'");
         $query->limit(1);
-        
+
         $user = $query->execute()->getFirst();
-        
+
         try {
             $name = $user->name;
             $num_albums = $user->num_albums;
-            $num_books = $user->num_books;    
+            $num_books = $user->num_books;
         } catch (Doctrine_Exception $e) {
             $this->fail();
         }
-        
+
         $this->assertEqual($num_albums, 3);
         $this->assertEqual($num_books, 2);
     }
@@ -79,7 +79,7 @@ class Doctrine_Query_MultipleAggregateValue_TestCase extends Doctrine_UnitTestCa
         $query->leftJoin('u.Album a, u.Book b');
         $query->where("u.name = 'jon'");
         $query->limit(1);
-        
+
         $users = $query->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         try {

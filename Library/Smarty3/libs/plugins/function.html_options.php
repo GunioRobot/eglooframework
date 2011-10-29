@@ -1,22 +1,22 @@
 <?php
 /**
  * Smarty plugin
- * 
+ *
  * @package Smarty
  * @subpackage PluginsFunction
  */
 
 /**
  * Smarty {html_options} function plugin
- * 
+ *
  * Type:     function<br>
  * Name:     html_options<br>
  * Purpose:  Prints the list of <option> tags generated from
  *            the passed parameters
- * 
+ *
  * @link http://smarty.php.net/manual/en/language.function.html.options.php {html_image}
  *      (Smarty online manual)
- * @author Monte Ohrt <monte at ohrt dot com> 
+ * @author Monte Ohrt <monte at ohrt dot com>
  * @param array $params parameters
  * Input:<br>
  *            - name       (optional) - string default "select"
@@ -25,7 +25,7 @@
  *            - selected   (optional) - string default not set
  *            - output     (required if not options supplied) - array
  * @param object $template template object
- * @return string 
+ * @return string
  * @uses smarty_function_escape_special_chars()
  */
 function smarty_function_html_options($params, $template)
@@ -64,10 +64,10 @@ function smarty_function_html_options($params, $template)
                     $extra .= ' ' . $_key . '="' . smarty_function_escape_special_chars($_val) . '"';
                 } else {
                     trigger_error("html_options: extra attribute '$_key' cannot be an array", E_USER_NOTICE);
-                } 
+                }
                 break;
-        } 
-    } 
+        }
+    }
 
     if (!isset($options) && !isset($values))
         return '';
@@ -82,15 +82,15 @@ function smarty_function_html_options($params, $template)
         foreach ($values as $_i => $_key) {
             $_val = isset($output[$_i]) ? $output[$_i] : '';
             $_html_result .= smarty_function_html_options_optoutput($_key, $_val, $selected);
-        } 
-    } 
+        }
+    }
 
     if (!empty($name)) {
         $_html_result = '<select name="' . $name . '"' . $extra . '>' . "\n" . $_html_result . '</select>' . "\n";
-    } 
+    }
 
     return $_html_result;
-} 
+}
 
 function smarty_function_html_options_optoutput($key, $value, $selected)
 {
@@ -102,18 +102,18 @@ function smarty_function_html_options_optoutput($key, $value, $selected)
         $_html_result .= '>' . smarty_function_escape_special_chars($value) . '</option>' . "\n";
     } else {
         $_html_result = smarty_function_html_options_optgroup($key, $value, $selected);
-    } 
+    }
     return $_html_result;
-} 
+}
 
 function smarty_function_html_options_optgroup($key, $values, $selected)
 {
     $optgroup_html = '<optgroup label="' . smarty_function_escape_special_chars($key) . '">' . "\n";
     foreach ($values as $key => $value) {
         $optgroup_html .= smarty_function_html_options_optoutput($key, $value, $selected);
-    } 
+    }
     $optgroup_html .= "</optgroup>\n";
     return $optgroup_html;
-} 
+}
 
 ?>

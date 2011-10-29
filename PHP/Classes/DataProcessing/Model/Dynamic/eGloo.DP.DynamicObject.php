@@ -3,21 +3,21 @@
  * eGloo\DP\DynamicObject Class File
  *
  * Contains the class definition for the eGloo\DP\DynamicObject
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -43,11 +43,11 @@ class DynamicObject {
 	protected $_managed_members = array();
 
 	public function __construct() {
-		
+
 	}
 
 	// public function __clone() {
-	// 	
+	//
 	// }
 
 	public function __call( $name, $arguments ) {
@@ -75,7 +75,7 @@ class DynamicObject {
 	}
 
 	// public function __invoke() {
-	// 	
+	//
 	// }
 
 	public function __get( $key ) {
@@ -137,15 +137,15 @@ class DynamicObject {
 	}
 
 	// public function __set_state() {
-	// 	
+	//
 	// }
-	// 
+	//
 	// public function __sleep() {
-	// 	
+	//
 	// }
-	// 
+	//
 	// public function __wakeup() {
-	// 	
+	//
 	// }
 
 	public function __toString() {
@@ -160,7 +160,7 @@ class DynamicObject {
 	}
 
 	public function __destruct() {
-		
+
 	}
 
 }

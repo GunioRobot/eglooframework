@@ -32,13 +32,13 @@
  */
 class Doctrine_Ticket_381_TestCase extends Doctrine_UnitTestCase {
 
-    public function prepareData() 
+    public function prepareData()
     { }
     public function prepareTables() {
         $this->tables = array('Book');
         parent::prepareTables();
     }
-    
+
     public function testTicket()
     {
         $obj = new Book();

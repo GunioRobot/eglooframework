@@ -6,7 +6,7 @@ LANGUAGE SQL
 AS $$
 CREATE LANGUAGE plpgsql;
 $$;
- 
+
 SELECT
     CASE
     WHEN EXISTS(
@@ -16,7 +16,7 @@ SELECT
     )
     THEN NULL
     ELSE make_plpgsql() END;
- 
+
 DROP FUNCTION make_plpgsql();
 
 CREATE TABLE Sessions (
@@ -41,12 +41,12 @@ CONSTRAINT fk_IdentifiedSessions_User_ID FOREIGN KEY (User_ID)
 	MATCH FULL
 	ON DELETE NO ACTION
 	ON UPDATE CASCADE
-);	
+);
 
  -- $userLogin$ LANGUAGE 'plpgsql';
 
--- User enters the site.  First time they come in php is like yo gimme cookie. 
--- they don't have a session, php generates a session and makes an ID up.  Sets a session cookie and puts the session ID in the cookie, then sends it 
+-- User enters the site.  First time they come in php is like yo gimme cookie.
+-- they don't have a session, php generates a session and makes an ID up.  Sets a session cookie and puts the session ID in the cookie, then sends it
 -- to the user.  Everytime the user enters the site it will use the session id to
 
 -- If successful return boolean of success.
@@ -59,24 +59,24 @@ CONSTRAINT fk_IdentifiedSessions_User_ID FOREIGN KEY (User_ID)
 CREATE OR REPLACE FUNCTION setSession (input_Session_ID TEXT, input_User_ID BIGINT, input_UserAgent TEXT, input_SessionData TEXT) RETURNS BOOLEAN AS $setSession$
 
 	DECLARE
-		
+
 	BEGIN
 		UPDATE Sessions
 		SET SessionData = input_SessionData, DateAccessed = CURRENT_TIMESTAMP
 		WHERE Session_ID = input_Session_ID;
-		
+
 		IF NOT FOUND THEN
 			INSERT INTO Sessions (Session_ID, UserAgent, SessionData)
 			VALUES (input_Session_ID, input_UserAgent, input_SessionData);
-			
+
 			IF input_User_ID NOTNULL THEN
 				INSERT INTO IdentifiedSessions (Session_ID, User_ID)
 				VALUES (input_Session_ID, input_User_ID);
 			END IF;
 		END IF;
-		
+
 	RETURN FOUND;
-	
+
 	END;
 
 -- $setSession$ LANGUAGE 'plpgsql';
@@ -85,32 +85,32 @@ CREATE OR REPLACE FUNCTION setSession (input_Session_ID TEXT, input_User_ID BIGI
 CREATE OR REPLACE FUNCTION getSession (input_Session_ID TEXT, OUT output_Session_ID TEXT, OUT output_User_ID BIGINT, OUT output_UserAgent TEXT, OUT output_SessionData TEXT, OUT output_SessionExists BOOLEAN) AS $getSession$
 
 	DECLARE
-			
+
 	BEGIN
 		UPDATE Sessions
 		SET DateAccessed = CURRENT_TIMESTAMP
 		WHERE Session_ID = input_Session_ID;
 
-		SELECT INTO 
-		output_Session_ID,		output_User_ID,		output_UserAgent, 	output_SessionData 
+		SELECT INTO
+		output_Session_ID,		output_User_ID,		output_UserAgent, 	output_SessionData
 		Sessions.Session_ID,	User_ID,			UserAgent, 			SessionData
 		FROM Sessions LEFT JOIN IdentifiedSessions ON Sessions.Session_ID = IdentifiedSessions.Session_ID
 		WHERE Sessions.Session_ID = input_Session_ID;
-		
+
 		output_SessionExists:=FOUND;
-				
---		SELECT INTO 
---		output_UserAgent, 	output_SessionData 
+
+--		SELECT INTO
+--		output_UserAgent, 	output_SessionData
 --		UserAgent, 			SessionData
 --		FROM Sessions
 --		WHERE Session_ID = inoutput_Session_ID;
-		
---		SELECT INTO 
+
+--		SELECT INTO
 --		output_User_ID
 --		User_ID
 --		FROM IdentifiedSessions
 --		WHERE Session_ID = inoutput_Session_ID;
-	
+
 	END;
 
 -- $getSession$ LANGUAGE 'plpgsql';
@@ -119,13 +119,13 @@ CREATE OR REPLACE FUNCTION getSession (input_Session_ID TEXT, OUT output_Session
 CREATE OR REPLACE FUNCTION deleteSession (input_Session_ID TEXT) RETURNS BOOLEAN AS $deleteSession$
 
 	DECLARE
-	
+
 	BEGIN
-		DELETE FROM Sessions 
+		DELETE FROM Sessions
 		WHERE Session_ID = input_Session_ID;
-	
+
 	RETURN TRUE;
-	
+
 	END;
 
 -- $deleteSession$ LANGUAGE 'plpgsql';
@@ -139,12 +139,12 @@ CREATE OR REPLACE FUNCTION deleteOldSessions (input_SessionLifeTime INTERVAL) RE
 -- I must cast into interval.
 
 	DECLARE
-	
+
 	BEGIN
-		DELETE FROM Sessions WHERE (CURRENT_TIMESTAMP-DateAccessed)>=input_sessionLifeTime;	
-	
+		DELETE FROM Sessions WHERE (CURRENT_TIMESTAMP-DateAccessed)>=input_sessionLifeTime;
+
 	RETURN TRUE;
-	
+
 	END;
-	
+
 -- $deleteOldSessions$ LANGUAGE 'plpgsql';-- This first role is what the webservers will use to log in and access/change information in the database.

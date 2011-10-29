@@ -43,17 +43,17 @@ class Doctrine_Ticket_1991_TestCase extends Doctrine_UnitTestCase {
         $tag = new NewTag();
         $tag->name = 'name';
         $tag->save();
-        
+
         $tag = new NewTag();
         $tag->name = 'foobar';
-        $tag->save();        
+        $tag->save();
     }
 
 
     public function testHydratation()
     {
         $q = new Doctrine_Query();
-        $q->select('t.name')->from('NewTag t INDEXBY t.name');        
+        $q->select('t.name')->from('NewTag t INDEXBY t.name');
         try {
             $results = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
         } catch (Exception $e) {

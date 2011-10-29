@@ -78,11 +78,11 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
     class WebUnitReporter extends SimpleReporter {
     	/**
     	 *    @var string Base directory for PUnit script, images and style sheets.
-    	 *    Needs to be a relative path from where the test scripts are run 
+    	 *    Needs to be a relative path from where the test scripts are run
     	 *    (and obviously, visible in the document root).
     	 */
     	var $path;
-        
+
         /**
          *    Does nothing yet. The first output will
          *    be sent on the first test start. For use
@@ -93,7 +93,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
             parent::__construct();
             $this->path = $path;
         }
-        
+
         /**
          *    Paints the top of the web page setting the
          *    title to the name of the starting test.
@@ -114,7 +114,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
             	);
             flush();
         }
-        
+
         /**
          *    Send the headers necessary to ensure the page is
          *    reloaded on every request. Otherwise you could be
@@ -128,7 +128,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
         }
-        
+
         /**
          *    Paints the CSS. Add additional styles here.
          *    @return string            CSS code as text.
@@ -137,7 +137,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
         function _getCss() {
             return SIMPLETEST_WEBUNIT_CSS;
         }
-        
+
         /**
          *    Paints the end of the test with a summary of
          *    the passes and failures.
@@ -161,8 +161,8 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
 			echo $this->outputScript('foo = "'.$this->toJsString($content).'";'."\nset_div_content('run', foo);");
             echo "\n</body>\n</html>\n";
         }
-        
-        
+
+
         /**
          *    Paints formatted text such as dumped variables.
          *    @param string $message        Text to show.
@@ -171,7 +171,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
         function paintFormattedMessage($message) {
            echo "add_log(\"".$this->toJsString("<pre>$message</pre>", true)."\");\n";
         }
-        
+
         /**
          *    Paints the start of a group test. Will also paint
          *    the page header and footer if this is the
@@ -185,7 +185,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
              Parent::paintGroupStart($test_name, $size);
              echo "add_group('$test_name');\n";
         }
- 
+
          /**
           *    Paints the start of a test case. Will also paint
           *    the page header and footer if this is the
@@ -252,7 +252,7 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
             $msg .= "-&gt;<strong>" . htmlentities($message) . "</strong><br />";
             echo "add_fail('$msg');\n";
         }
- 
+
         /**
 		 * Returns the script passed in wrapped in script tags.
 		 *
@@ -263,8 +263,8 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
 		{
 			return "<script type=\"text/javascript\">\n".$script."\n</script>\n";
 		}
-		
-        
+
+
         /**
 		 *	Transform a string into a format acceptable to JavaScript
 		 *  @param string $str	the string to transform
@@ -281,5 +281,5 @@ define('SIMPLETEST_WEBUNIT_CSS', '/* this space reseved for future use */');
 				);
 		}
     }
-    
+
 ?>

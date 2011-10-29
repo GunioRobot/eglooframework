@@ -21,16 +21,16 @@ class SimpleFlickrStreamXMLElement extends SimpleXMLElement {
 	    }
 	    return $html;
 	}
-	
+
 	function extractAuthor($entry) {
         return 	"<a href=\"".$entry->author->uri."\">".$entry->author->name."</a>";
 	}
-	
+
 	function extractFirstImage($entry) {
         $content = $entry->content;
 	    $content = substr($content, strpos($content, "<img src"));
         $image = substr($content, 0, strpos($content, " />") + 3);
-        
+
         return 	"<a href=\"".$entry->link[0]['href']."\">".$image."</a>";
     }
 }

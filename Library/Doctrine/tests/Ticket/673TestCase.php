@@ -14,7 +14,7 @@
 
 class Doctrine_Ticket_673_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
 
     public function prepareTables()
@@ -29,10 +29,10 @@ class Doctrine_Ticket_673_TestCase extends Doctrine_UnitTestCase
         ->update('T673_Student s')
         ->set('s.foo', 's.foo + 1')
         ->where('s.id = 2');
-      
+
       $this->assertTrue(preg_match_all('/(s_foo)/', $q->getSqlQuery(), $m) === 2);
       $this->assertTrue(preg_match_all('/(s_id)/', $q->getSqlQuery(), $m) === 1);
-      
+
       try {
         $q->execute();
         $this->pass();
@@ -44,7 +44,7 @@ class Doctrine_Ticket_673_TestCase extends Doctrine_UnitTestCase
         ->delete()
         ->from('T673_Student s')
         ->where('s.name = ? AND s.foo < ?', 'foo', 3);
-      
+
       $this->assertTrue(preg_match_all('/(s_name)/', $q->getSqlQuery(), $m) === 1);
       $this->assertTrue(preg_match_all('/(s_foo)/', $q->getSqlQuery(), $m) === 1);
 

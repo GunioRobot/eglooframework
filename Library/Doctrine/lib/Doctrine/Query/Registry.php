@@ -44,13 +44,13 @@ class Doctrine_Query_Registry
             $this->_queries[$key] = $query;
         } else {
             // namespace found
-            
+
             $e = explode('/', $key);
 
             $this->_queries[$e[0]][$e[1]] = $query;
         }
     }
-    
+
     public function get($key, $namespace = null)
     {
         if (isset($namespace)) {
@@ -64,19 +64,19 @@ class Doctrine_Query_Registry
             }
             $query = $this->_queries[$key];
         }
-        
+
         if ( ! ($query instanceof Doctrine_Query)) {
             $query = Doctrine_Query::create()
                 ->parseDqlQuery($query);
         }
-        
+
         return clone $query;
     }
-    
-    
+
+
     public function has($key, $namespace = null)
     {
-        return isset($namespace) 
+        return isset($namespace)
             ? isset($this->_queries[$namespace][$key])
             : isset($this->_queries[$key]);
     }

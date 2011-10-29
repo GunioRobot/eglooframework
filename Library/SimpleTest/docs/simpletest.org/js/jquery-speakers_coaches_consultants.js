@@ -17,10 +17,10 @@ jQuery(function($) {
 
     $('.vcard').each(function() {
         var hcard = $(this);
-    
+
         var latitude = hcard.find('.geo .latitude').text();
         var longitude = hcard.find('.geo .longitude').text();
-    
+
         var marker = new Marker(new LatLonPoint(latitude, longitude));
         marker.setInfoBubble(
             '<div class="bubble">' + hcard.html() + '</div>'

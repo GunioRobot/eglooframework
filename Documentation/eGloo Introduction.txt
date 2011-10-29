@@ -76,18 +76,18 @@ Getting Started:
 		Windows: Currently Not Supported
 
 	Installation:
-	
-		Installation of eGloo assumes the listed software requirements above, including a functional and 
+
+		Installation of eGloo assumes the listed software requirements above, including a functional and
 		tested LAMP environment with mod_rewrite active, .htaccess override enabled and a user with sudo
 		access to the system.
-	
+
 		Development:
 			Grab eGloo Framework from source anonymously:
 				git clone git://eglooframework.git.sourceforge.net/gitroot/eglooframework/eglooframework
-			
+
 			Switch to the Build folder in the source directory that was cloned
 				cd eglooframework/Build
-				
+
 			Run the eGloo installer as root and follow all prompts
 				sudo ./Install.sh
 
@@ -112,20 +112,20 @@ Getting Started:
 
 Tutorials:
 	Getting started with your first eGloo Application
-	
+
 	Creating new interface bundles
-	
+
 	Getting started with your first eGloo Cube
 
 Demo:
 	We eat our own dog food here and so our live demo is also our company website: http://www.egloo.com
 
 Porting Zend Applications to eGloo:
-	
+
 
 Documentation:
-	Generated Framework Documentation (PHPDoc): 
-	
+	Generated Framework Documentation (PHPDoc):
+
 	eGloo Framework Manual
 
 Frequently Asked Questions:
@@ -143,11 +143,11 @@ Resources:
 
 Contact
 	You can find us in #egloo on irc.freenode.net or the forums @ https://sourceforge.net/projects/eglooframework/forums
-	
+
 About
 	Company
 		Founded in 2006
-		
+
 	Who We Are
 		eGloo LLC
 			George Cooper - Founder, Chairman & CEO

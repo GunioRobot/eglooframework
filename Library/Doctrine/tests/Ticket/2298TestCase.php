@@ -1,6 +1,6 @@
 <?php
 
-class Doctrine_Ticket_2298_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_2298_TestCase extends Doctrine_UnitTestCase
 {
     public function testTokenizerIgnoresQuotes()
     {

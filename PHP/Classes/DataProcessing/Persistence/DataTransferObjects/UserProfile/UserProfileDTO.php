@@ -3,21 +3,21 @@
  * UserProfileDTO Class File
  *
  * Needs to be commented
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author Keith Buel
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -29,7 +29,7 @@
 
 /**
  * UserProfileDTO
- * 
+ *
  * Needs to be commented
  *
  * @category DataProcessing
@@ -37,7 +37,7 @@
  * @subpackage DataTransferObjects
  */
 class UserProfileDTO {
-    
+
     private $sex = null;
     private $interestedIn = array();
     private $birthDate = null;
@@ -45,18 +45,18 @@ class UserProfileDTO {
     private $homeTown = array();
     private $residence = null;
     private $email = null;
-    
+
     //interested in consts
     public static $MEN = "Men";
     public static $WOMEN = "Women";
-    
+
     //looking for consts
     public static $FRIENDSHIP = "Friendship";
     public static $DATING = "Dating";
     public static $RELATIONSHIP = "A Relationship";
     public static $RANDOMPLAY = "Random Play";
     public static $WHATEVER = "Whatever I can get";
-    
+
     public function getSex() {
         return $this->sex;
     }
@@ -68,7 +68,7 @@ class UserProfileDTO {
     public function getInterestedIn() {
         return $this->interestedIn;
     }
-    
+
     public function setInterestedIn( $menBool, $womenBool ) {
         $this->interestedIn[ self::$MEN ] = $menBool;
         $this->interestedIn[ self::$WOMEN ] = $womenBool;
@@ -102,7 +102,7 @@ class UserProfileDTO {
     public function getLookingFor() {
         return $this->lookingFor;
     }
-    
+
     public function setLookingFor( $friendBool, $dateBool, $relationShipBool, $randomBool, $whateverBool ) {
         $this->lookingFor[ self::$FRIENDSHIP ] = $friendBool;
         $this->lookingFor[ self::$DATING ] = $dateBool;
@@ -116,7 +116,7 @@ class UserProfileDTO {
     }
 
     public function setLookingForFriendship( $friendBool ) {
-        $this->lookingFor[ self::$FRIENDSHIP ] = $friendBool;        
+        $this->lookingFor[ self::$FRIENDSHIP ] = $friendBool;
     }
 
     public function getLookingForRelationship() {
@@ -124,7 +124,7 @@ class UserProfileDTO {
     }
 
     public function setLookingForRelationship( $relationshipBool ) {
-        $this->lookingFor[ self::$RELATIONSHIP ] = $relationshipBool;        
+        $this->lookingFor[ self::$RELATIONSHIP ] = $relationshipBool;
     }
 
     public function getLookingForDating() {
@@ -160,11 +160,11 @@ class UserProfileDTO {
         //[us_stateprovincename] - display field
         //[us_stateprovince_id] - key field for above
         //[us_citytown] - display field
-        
+
     }
 
     public function setHomeTown( $homeTown ) {
-        $this->homeTown['countryisocode'] = 'US'; 
+        $this->homeTown['countryisocode'] = 'US';
         $this->homeTown['us_citytown'] = $homeTown;
         //Hometown is an array composed of these fields
         //[countryname] - display field
@@ -199,7 +199,7 @@ class UserProfileDTO {
 		//[us_stateprovince_id] - key for above
 		//[us_postalcode1] - display
 		//[us_postalcode2] - display
-        
+
     }
 
     public function getEmail() {

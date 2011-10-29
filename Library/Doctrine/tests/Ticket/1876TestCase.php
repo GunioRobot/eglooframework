@@ -41,7 +41,7 @@ class Doctrine_Ticket_1876_TestCase extends Doctrine_UnitTestCase
         );
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     {
         for ($i = 0; $i < 2; $i++) {
@@ -49,37 +49,37 @@ class Doctrine_Ticket_1876_TestCase extends Doctrine_UnitTestCase
             $company->name = 'Test Company ' . ($i + 1);
             $company->save();
         }
-        
+
         for ($i = 0; $i < 10; $i++) {
             $recipe = new T1876_Recipe();
-            
+
             $recipe->name = 'test ' . $i;
             $recipe->company_id = ($i % 3 == 0) ? 1 : 2;
             $recipe->RecipeIngredients[]->name = 'test';
-            
+
             $recipe->save();
-            
+
             if ($i % 2 == 0) {
-                $recipe->delete(); 
+                $recipe->delete();
             }
         }
     }
-    
+
     public function testTicket()
     {
         Doctrine_Manager::getInstance()->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
-        
+
         try {
             $q = Doctrine_Query::create()
                 ->from('T1876_Recipe r')
                 ->leftJoin('r.Company c')
                 ->leftJoin('r.RecipeIngredients')
                 ->addWhere('c.id = ?', 2);
-            
+
             $this->assertEqual(
-                $q->getCountSqlQuery(), 
-                'SELECT COUNT(*) AS num_results ' . 
-                'FROM (SELECT t.id FROM t1876__recipe t ' . 
+                $q->getCountSqlQuery(),
+                'SELECT COUNT(*) AS num_results ' .
+                'FROM (SELECT t.id FROM t1876__recipe t ' .
                 'LEFT JOIN t1876__company t2 ON t.company_id = t2.id AND (t2.deleted_at IS NULL) ' .
                 'LEFT JOIN t1876__recipe_ingredient t3 ON t.id = t3.recipe_id AND (t3.deleted_at IS NULL) ' .
                 'WHERE t2.id = ? AND (t.deleted_at IS NULL) ' .
@@ -89,22 +89,22 @@ class Doctrine_Ticket_1876_TestCase extends Doctrine_UnitTestCase
         } catch (Exception $e) {
             $this->fail($e->getMessage());
         }
-        
+
         Doctrine_Manager::getInstance()->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, false);
     }
 }
-        
+
 class T1876_Recipe extends Doctrine_Record {
     public function setTableDefinition() {
         $this->hasColumn('id', 'integer', null, array('autoincrement' => true, 'primary' => true));
         $this->hasColumn('company_id', 'integer', null);
         $this->hasColumn('name', 'string', 255);
     }
-    
+
     public function setUp() {
         $this->hasOne('T1876_Company as Company', array('local' => 'company_id', 'foreign' => 'id'));
         $this->hasMany('T1876_RecipeIngredient as RecipeIngredients', array('local' => 'id', 'foreign' => 'recipe_id'));
-        
+
         $this->actAs('SoftDelete');
     }
 }
@@ -114,10 +114,10 @@ class T1876_Company extends Doctrine_Record {
         $this->hasColumn('id', 'integer', null, array('autoincrement' => true, 'primary' => true));
         $this->hasColumn('name', 'string', 255);
     }
-    
+
     public function setUp() {
         $this->hasMany('T1876_Recipe as Recipes', array('local' => 'id', 'foreign' => 'company_id'));
-        
+
         $this->actAs('SoftDelete');
     }
 }
@@ -128,10 +128,10 @@ class T1876_RecipeIngredient extends Doctrine_Record {
         $this->hasColumn('recipe_id', 'integer', null);
         $this->hasColumn('name', 'string', 255);
     }
-    
+
     public function setUp() {
         $this->hasOne('T1876_Recipe as Recipe', array('local' => 'recipe_id', 'foreign' => 'id'));
-        
+
         $this->actAs('SoftDelete');
     }
 }

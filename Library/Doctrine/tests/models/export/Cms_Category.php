@@ -1,13 +1,13 @@
 <?php
-class Cms_Category extends Doctrine_Record 
+class Cms_Category extends Doctrine_Record
 {
- 
-	public function setUp() 
+
+	public function setUp()
     {
 		$this->hasMany('Cms_CategoryLanguages as langs', array('local' => 'id', 'foreign' => 'category_id'));
 	}
- 
-	public function setTableDefinition() 
+
+	public function setTableDefinition()
     {
 		$this->hasColumn('created', 'timestamp');
 		$this->hasColumn('parent', 'integer', 11);

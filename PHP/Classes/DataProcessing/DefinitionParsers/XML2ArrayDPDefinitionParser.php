@@ -3,21 +3,21 @@
  * XML2ArrayDPDefinitionParser Class File
  *
  * Contains the class definition for the XML2ArrayDPDefinitionParser
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -28,7 +28,7 @@
 
 /**
  * XML2ArrayDPDefinitionParser
- * 
+ *
  * Parses and acts as a lookup for data processing definition file (DataProcessing.xml)
  * This is a specific subclass implementation of the eGlooDPDefinitionParser.
  *
@@ -132,7 +132,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 
 	/**
 	 * Method to load data processing nodes from DataProcessing.xml definitions file
-	 * 
+	 *
 	 * @throws ErrorException	if definition file cannot be read, has syntax errors, is missing
 	 *							required values or provides invalid values
 	 */
@@ -491,7 +491,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			$dpCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserDynamicObjectNodes',
 				$this->_dataProcessingDynamicObjects, 'DataProcessing', 0, true );
 
-			$dpCacheRegionHandler->storeObject( 
+			$dpCacheRegionHandler->storeObject(
 				eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::DynamicObjectNodesCached', true, 'DataProcessing', 0, true );
 		}
 
@@ -756,7 +756,7 @@ final class XML2ArrayDPDefinitionParser extends eGlooDPDefinitionParser {
 			$dpCacheRegionHandler->storeObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParserStatementNodes',
 				$this->_dataProcessingStatements, 'DataProcessing', 0, true );
 
-			$dpCacheRegionHandler->storeObject( 
+			$dpCacheRegionHandler->storeObject(
 				eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayDPDefinitionParser::StatementNodesCached', true, 'DataProcessing', 0, true );
 		}
 

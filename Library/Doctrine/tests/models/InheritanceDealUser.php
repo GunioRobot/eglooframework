@@ -11,7 +11,7 @@ class InheritanceEntityUser extends Doctrine_Record
     }
 
     public function setUp()
-    {  
+    {
     }
 }
 

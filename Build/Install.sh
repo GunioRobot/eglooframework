@@ -6,19 +6,19 @@
 # using the command ./Install.sh
 #
 # Copyright 2011 eGloo, LLC
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #        http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#  
+#
 # @author George Cooper
 # @copyright 2011 eGloo, LLC
 # @license http://www.apache.org/licenses/LICENSE-2.0
@@ -270,7 +270,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own configuration path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -279,10 +279,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$CONFIG_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -293,7 +293,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -340,7 +340,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own cache path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -349,10 +349,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$CACHE_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -404,7 +404,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own documentation path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -413,10 +413,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$DOCUMENTATION_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -427,7 +427,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -458,7 +458,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own log path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -467,10 +467,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$LOGPATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -481,7 +481,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -522,7 +522,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own documentation path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -531,10 +531,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$FRAMEWORK_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -545,7 +545,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -562,7 +562,7 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/Images" ] && [  ! -L "$FRAMEWORK_PATH/Images" ]
 	then
 		# mkdir -p "$FRAMEWORK_PATH"
-	
+
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Images" "$FRAMEWORK_PATH/Images"
 	else
@@ -572,7 +572,7 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/Library" ] && [  ! -L "$FRAMEWORK_PATH/Library" ]
 	then
 		# mkdir -p "$FRAMEWORK_PATH"
-	
+
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/Library" "$FRAMEWORK_PATH/Library"
 	else
@@ -582,7 +582,7 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/PHP" ] && [  ! -L "$FRAMEWORK_PATH/PHP" ]
 	then
 		# mkdir -p "$FRAMEWORK_PATH"
-		
+
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/PHP" "$FRAMEWORK_PATH/PHP"
 	else
@@ -602,7 +602,7 @@ then
 	if [ ! -e "$FRAMEWORK_PATH/XML" ] && [  ! -L "$FRAMEWORK_PATH/XML" ]
 	then
 		# mkdir -p "$DOCUMENT_ROOT"
-	
+
 		# Even if we're using Windows, NTFS does not allow hardlinks to directories
 		ln -s "$PARENT_DIRECTORY/XML" "$FRAMEWORK_PATH/XML"
 		# Only do this next bit on Ubuntu... getcwd() is broken
@@ -650,7 +650,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own documentation path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -659,10 +659,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$DOCUMENT_ROOT\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -673,7 +673,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -760,7 +760,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own documentation path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -769,10 +769,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$APPLICATIONS_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -783,7 +783,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -850,7 +850,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own documentation path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -859,10 +859,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$CUBES_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -873,7 +873,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -938,7 +938,7 @@ case "$CONFIRM_CONTINUE" in
 	# User chose to specify own data store path
 	"N" | "n" | "No" | "NO" | "no" )
 		NEW_PATH_SET=0
-		
+
 		# Loop until we have a new path and the user has confirmed the location
 		while [ "$NEW_PATH_SET" -ne 1 ]
 		do
@@ -947,10 +947,10 @@ case "$CONFIRM_CONTINUE" in
 			echo
 			echo "Location: \"$DATA_STORE_PATH\""
 			echo
-		
+
 			echo -n "Use this location? [y/N]: "
 			read -e CONFIRM_CONTINUE
-		
+
 			# Make sure user entered right path
 			case "$CONFIRM_CONTINUE" in
 				# New path is good, break the loop
@@ -961,7 +961,7 @@ case "$CONFIRM_CONTINUE" in
 				* )
 				;;
 			esac
-		done		
+		done
 	;;
 
 	# User chose the default path
@@ -1007,7 +1007,7 @@ if [ -f "$DEFAULT_SMARTY" ]
 then
 	echo "Smarty was found at the following location."
 	echo "\"$DEFAULT_SMARTY\""
-	echo 
+	echo
 	echo -n "Use this Smarty package? [Y/n]: "
 	read -e CONFIRM_CONTINUE
 
@@ -1039,7 +1039,7 @@ then
 					* )
 					;;
 				esac
-			done		
+			done
 		;;
 
 		# User chose the default path
@@ -1048,10 +1048,10 @@ then
 	esac
 else
 	echo "Smarty was not found at the default location."
-	echo 
+	echo
 	echo -n "Use Smarty package provided in eGloo Framework library? (If no, you will be prompted for an existing Smarty install) [Y/n]: "
 	read -e CONFIRM_CONTINUE
-	
+
 	# Check if the user wants to use the default or specify their own Smarty path
 	case "$CONFIRM_CONTINUE" in
 		# User chose to specify own Smarty path
@@ -1080,7 +1080,7 @@ else
 					* )
 					;;
 				esac
-			done		
+			done
 		;;
 
 		# User chose the default path
@@ -1109,7 +1109,7 @@ if [ -f "$DEFAULT_DOCTRINE" ]
 then
 	echo "Doctrine was found at the following location."
 	echo "\"$DEFAULT_DOCTRINE\""
-	echo 
+	echo
 	echo -n "Use this Doctrine package? [Y/n]: "
 	read -e CONFIRM_CONTINUE
 
@@ -1141,7 +1141,7 @@ then
 					* )
 					;;
 				esac
-			done		
+			done
 		;;
 
 		# User chose the default path
@@ -1150,10 +1150,10 @@ then
 	esac
 else
 	echo "Doctrine was not found at the default location."
-	echo 
+	echo
 	echo -n "Use Doctrine package provided in eGloo Framework library? (If no, you will be prompted for an existing Doctrine install) [Y/n]: "
 	read -e CONFIRM_CONTINUE
-	
+
 	# Check if the user wants to use the default or specify their own Doctrine path
 	case "$CONFIRM_CONTINUE" in
 		# User chose to specify own Doctrine path
@@ -1182,7 +1182,7 @@ else
 					* )
 					;;
 				esac
-			done		
+			done
 		;;
 
 		# User chose the default path
@@ -1201,7 +1201,7 @@ else
 	echo "Ignoring ownership and permissions of Doctrine Path for Windows"
 fi
 
-echo 
+echo
 printf "Writing configuration files... "
 
 if [ $DETECTED_PLATFORM -eq $OS_WINDOWS ]
@@ -1246,7 +1246,7 @@ if [ $DETECTED_PLATFORM -ne $OS_WINDOWS ]
 then
 	chown -R $WEB_USER:$WEB_GROUP "$CACHE_PATH"
 	chmod -R 755 "$CACHE_PATH"
-	
+
 	checkUserCanRead "$WEB_USER" "$CACHE_PATH"
 else
 	chmod -R 777 "$CACHE_PATH"
@@ -1304,7 +1304,7 @@ then
 
 	chmod 664 "$DOCUMENT_ROOT/Config.xml"
 	chown $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/Config.xml"
-	
+
 	chmod 640 "$DOCUMENT_ROOT/System.xml"
 	chown $WEB_USER:$WEB_GROUP "$DOCUMENT_ROOT/System.xml"
 else

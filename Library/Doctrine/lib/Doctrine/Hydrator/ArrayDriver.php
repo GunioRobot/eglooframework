@@ -55,9 +55,9 @@ class Doctrine_Hydrator_ArrayDriver extends Doctrine_Hydrator_Graph
         return true;
     }
 
-    public function getNullPointer() 
+    public function getNullPointer()
     {
-        return null;    
+        return null;
     }
 
     public function getLastKey(&$coll)
@@ -79,7 +79,7 @@ class Doctrine_Hydrator_ArrayDriver extends Doctrine_Hydrator_Graph
             $prev[$dqlAlias] =& $coll[$index];
             return;
         }
-        
+
         if ($coll) {
             if ($oneToOne) {
                 $prev[$dqlAlias] =& $coll;

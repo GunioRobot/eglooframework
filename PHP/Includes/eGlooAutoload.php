@@ -3,21 +3,21 @@
  * Class and Interface Autoloader
  *
  * This file contains the function definition for the __autoload runtime handler.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -87,13 +87,13 @@ if ( eGlooConfiguration::getUseDoctrine() ) {
 
 /**
  * Defines the class and interface autoload runtime handler.
- * 
- * When PHP encounters a class or interface that has not yet been loaded or defined, __autoload 
+ *
+ * When PHP encounters a class or interface that has not yet been loaded or defined, __autoload
  * is invoked with the class or interface name as its only parameter.  __autoload searches
  * the defined classpaths for possible matches.	 If a match is found, the file containing the
  * requested definition is included.  If __autoload exits without successfully matching and
  * loading the requested class or interface, the runtime will abort with an error.
- * 
+ *
  * The only permitted class or interface filename format is {CLASS_OR_INTERFACE_NAME}.php and is
  * case sensitive.	The only classpath checked is "../PHP/Classes", relative to the project root
  * and inclusive of all subdirectories.
@@ -119,7 +119,7 @@ function eglooAutoload($class_name) {
 	static $possible_path = null;
 
 	// List here whatever formats you use for your file names. Note that, if you autoload
-	// a class that implements a non-loaded interface, you will also need to autoload that 
+	// a class that implements a non-loaded interface, you will also need to autoload that
 	// interface. Put the &CLASS wherever the $class_name might appear
 	static $permitted_formats = array( '&CLASS.php' );
 
@@ -129,10 +129,10 @@ function eglooAutoload($class_name) {
 	if ( null === $possible_path ) {
 		// These are the default paths for this application
 		$framework_classes = eGlooConfiguration::getFrameworkRootPath() . '/PHP';
-		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' . 
+		$application_classes = eGlooConfiguration::getApplicationsPath() . '/' .
 			eGlooConfiguration::getApplicationPath() . '/PHP';
 
-		$extra_class_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+		$extra_class_path = eGlooConfiguration::getApplicationsPath() . '/' .
 			eGlooConfiguration::getApplicationPath() . '/' . eGlooConfiguration::getExtraClassPath();
 
 		// Customize this yourself, but leave the array_flip alone. We will use this to
@@ -142,7 +142,7 @@ function eglooAutoload($class_name) {
 		$possible_path = array_flip( array( $application_classes, $extra_class_path, $framework_classes ) );
 
 		// Merge the flipped arrays to get rid of duplicate "keys" (which are really the
-		// valid include paths) then strip out the keys leaving only uniques. This is 
+		// valid include paths) then strip out the keys leaving only uniques. This is
 		// marginally faster than using array_combine and array_unique and much more elegant.
 		$possible_path = array_keys( array_merge( $possible_path,
 			array_flip( explode( ini_get( 'include_path' ), ';' ) ) ) );
@@ -218,11 +218,11 @@ function eglooAutoload($class_name) {
 				if ($sanityCheckClassLoading) {
 					foreach( $instances as $directory => $instancePathSet) {
 						$noConflicts = true;
-				
+
 						if (count($instancePathSet) > 1) {
 							$noConflicts = false;
 							$errorMessage = 'Duplicate class "' . $class_name . '" found.';
-				
+
 							foreach($instances as $classPath => $classPathInstances) {
 								foreach($classPathInstances as $instance) {
 									$errorMessage .= "\n\tClass Path: " . $classPath . "\n\tInstance: " . $instance . "\n";

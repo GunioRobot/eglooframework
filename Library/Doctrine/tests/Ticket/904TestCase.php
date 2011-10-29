@@ -30,14 +30,14 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_904_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_904_TestCase extends Doctrine_UnitTestCase
 {
   public function prepareTables()
   {
     $this->tables[] = 'T904_Section';
     parent::prepareTables();
   }
-  
+
   public function testTicket()
   {
       try {
@@ -46,7 +46,7 @@ class Doctrine_Ticket_904_TestCase extends Doctrine_UnitTestCase
           $s->Translation['en']->title = 'Test title';
           $s->Translation['en']->summary = 'Test summary';
           $s->save();
-          
+
           $this->assertTrue($s->id > 0);
           $this->assertEqual($s->Translation['en']->title, 'Test title');
           $this->assertEqual($s->Translation['en']->summary, 'Test summary');
@@ -65,7 +65,7 @@ class T904_Section extends Doctrine_Record
     $this->hasColumn('title', 'string', 60, array('notnull' => true));
     $this->hasColumn('summary', 'string', 255);
   }
-  
+
   public function setUp()
   {
     parent::setUp();

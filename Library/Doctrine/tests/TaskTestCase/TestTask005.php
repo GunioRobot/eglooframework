@@ -1,7 +1,7 @@
 <?php
 /**
  * Fixture for Doctrine_Task_TestCase
- * 
+ *
  * @author Dan Bettles <danbettles@yahoo.co.uk>
  */
 

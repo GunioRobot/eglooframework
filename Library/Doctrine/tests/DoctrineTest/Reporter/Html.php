@@ -12,7 +12,7 @@ class DoctrineTest_Reporter_Html extends DoctrineTest_Reporter
   {
       color: red;
   }
-  
+
   #messages
   {
       font-family: courier new, monospace;
@@ -22,7 +22,7 @@ class DoctrineTest_Reporter_Html extends DoctrineTest_Reporter
       background-color: #f5f5f5;
       padding: 10px;
   }
-  
+
   #summary
   {
       border: 1px solid #333333;
@@ -31,12 +31,12 @@ class DoctrineTest_Reporter_Html extends DoctrineTest_Reporter
       color: white;
       margin-bottom: 10px;
   }
-  
+
   #wrapper
   {
-      
+
   }
-  
+
   #wrapper h1
   {
       font-size: 20pt;
@@ -58,7 +58,7 @@ class DoctrineTest_Reporter_Html extends DoctrineTest_Reporter
     public function paintFooter()
     {
         print '</div></div>';
-        
+
             $this->paintSummary();
     }
 

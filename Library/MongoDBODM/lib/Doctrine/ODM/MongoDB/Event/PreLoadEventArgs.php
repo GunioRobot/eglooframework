@@ -46,14 +46,14 @@ class PreLoadEventArgs extends EventArgs
      * @var array
      */
     private $data;
-    
+
     public function __construct($document, $em, array &$data)
     {
         $this->document = $document;
         $this->dm = $em;
         $this->data = $data;
     }
-    
+
     public function getDocument()
     {
         return $this->document;

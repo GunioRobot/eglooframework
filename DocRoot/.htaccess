@@ -28,7 +28,7 @@ SetEnv EG_CDN_CONNECTION_PRIMARY_SECRET_ACCESS_KEY primary_connection_secret_acc
 # Primary Database Engine
 SetEnv EG_DB_CONNECTION_PRIMARY_NAME primary_connection_name
 SetEnv EG_DB_CONNECTION_PRIMARY_HOST primary_connection_host
-SetEnv EG_DB_CONNECTION_PRIMARY_PORT 3306 
+SetEnv EG_DB_CONNECTION_PRIMARY_PORT 3306
 SetEnv EG_DB_CONNECTION_PRIMARY_DATABASE primary_connection_db
 SetEnv EG_DB_CONNECTION_PRIMARY_USER primary_connection_user
 SetEnv EG_DB_CONNECTION_PRIMARY_PASSWORD primary_connection_password
@@ -59,7 +59,7 @@ SetEnv EG_LOG_FORMAT LOG
 SetEnv EG_SANITY_CHECK_CLASS_LOADING ON
 
 # Rewrite Rules
-<IfModule rewrite_module> 
+<IfModule rewrite_module>
 RewriteEngine on
 
 # Modify the RewriteBase if you are using eGloo in a subdirectory

@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_Check_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_Check_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
@@ -39,15 +39,15 @@ class Doctrine_Query_Check_TestCase extends Doctrine_UnitTestCase
     public function testCheckParserSupportsStandardFunctions()
     {
         $q = new Doctrine_Query_Check('User');
-        
+
         $q->parse('LENGTH(name) > 6');
-        
+
         $this->assertEqual($q->getSql(), 'LENGTH(name) > 6');
     }
     public function testCheckParserThrowsExceptionForUnknownOperator()
     {
         $q = new Doctrine_Query_Check('User');
-        
+
         try {
             $q->parse('LENGTH(name) ? 6');
             $this->fail();
@@ -58,7 +58,7 @@ class Doctrine_Query_Check_TestCase extends Doctrine_UnitTestCase
     public function testCheckParserThrowsExceptionForUnknownFunction()
     {
         $q = new Doctrine_Query_Check('User');
-        
+
         try {
             $q->parse('SomeUnknownFunction(name) = 6');
             $this->fail();

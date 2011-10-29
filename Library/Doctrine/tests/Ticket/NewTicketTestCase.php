@@ -102,7 +102,7 @@ class Doctrine_Ticket_NewTicket_TestCase extends Doctrine_UnitTestCase
         //$r2 = $q2->execute();
         //var_dump($r2);
     }
-   
+
 }
 
 class Testing_AttributeDefinition extends Doctrine_Record

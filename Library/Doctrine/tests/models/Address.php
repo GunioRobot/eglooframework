@@ -1,9 +1,9 @@
 <?php
-class Address extends Doctrine_Record 
+class Address extends Doctrine_Record
 {
     public function setUp()
     {
-        $this->hasMany('User', array('local' => 'address_id', 
+        $this->hasMany('User', array('local' => 'address_id',
                                      'foreign' => 'user_id',
                                      'refClass' => 'EntityAddress'));
     }

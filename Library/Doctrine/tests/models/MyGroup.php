@@ -13,5 +13,5 @@ class MyGroup extends Doctrine_Record
     public function setUp()
     {
         $this->hasMany('MyUser as users', array('refClass' => 'MyUserGroup', 'local' => 'group_id', 'foreign' => 'user_id'));
-    } 
+    }
 }

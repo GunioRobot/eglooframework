@@ -2,7 +2,7 @@
 <?php
 /**
  * System_Daemon turns PHP-CLI scripts into daemons.
- * 
+ *
  * PHP version 5
  *
  * @category  System
@@ -15,16 +15,16 @@
 
 /**
  * System_Daemon Example Code
- * 
+ *
  * If you run this code successfully, a daemon will be spawned
  * but unless have already generated the init.d script, you have
  * no real way of killing it yet.
- * 
- * In this case wait 3 runs, which is the maximum for this example. 
- * 
- * 
+ *
+ * In this case wait 3 runs, which is the maximum for this example.
+ *
+ *
  * In panic situations, you can always kill you daemon by typing
- * 
+ *
  * killall -9 signals.php
  * OR:
  * killall -9 php
@@ -65,7 +65,7 @@ function myHandler($signal) {
 }
 
 
-// Spawn Daemon 
+// Spawn Daemon
 System_Daemon::start();
 
 // Here comes your own actual code
@@ -76,16 +76,16 @@ $cnt = 1;
 
 // While checks on 2 things in this case:
 // - That the Daemon Class hasn't reported it's dying
-// - That we're not executing more than 3 runs 
+// - That we're not executing more than 3 runs
 while (!System_Daemon::isDying() && $cnt <=3) {
     // Log something using the Daemon class's logging facility
     // Depending on runmode it will either end up:
     //  - In the /var/log/logparser.log
-    //  - On screen (in case we're not a daemon yet)  
+    //  - On screen (in case we're not a daemon yet)
     System_Daemon::info('{appName} running %s/3',
         $cnt
     );
-    
+
     // Relax the system by sleeping for a little bit
     // iterate() also clears statcache
     System_Daemon::iterate(2);

@@ -30,9 +30,9 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase
 {
-    public function testFlush() 
+    public function testFlush()
     {
         $user = $this->connection->getTable('User')->find(4);
         $this->assertTrue(is_numeric($user->Phonenumber[0]->entity_id));
@@ -127,7 +127,7 @@ class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase
         unset($user);
         $user = $this->objTable->find(5);
         $this->assertEqual($user->Phonenumber->count(), 0);
-        
+
         // ADDING REFERENCES WITH STRING KEYS
 
         $user->Phonenumber['home']->phonenumber = '123 123';
@@ -158,7 +158,7 @@ class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase
         $user = $this->objTable->find(5);
         $this->assertEqual($user->Phonenumber->count(), 3);
 
-        
+
         // ONE-TO-ONE REFERENCES
 
         $user->Email->address = 'drinker@drinkmore.info';
@@ -183,12 +183,12 @@ class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase
         $user = $this->objTable->find(5);
         $this->assertTrue($user->Email instanceof Email);
         $this->assertEqual($user->Email->address, 'absolutist@nottodrink.com');
-        
+
         $emails = $this->connection->query("FROM Email WHERE Email.id = $id");
         //$this->assertEqual(count($emails),0);
     }
 
-    public function testTransactions() 
+    public function testTransactions()
     {
 
         $this->connection->beginTransaction();
@@ -197,9 +197,9 @@ class Doctrine_Connection_UnitOfWork_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($this->connection->transaction->getState(),Doctrine_Transaction::STATE_SLEEP);
 
         $this->connection->beginTransaction();
-        
+
         $user = $this->objTable->find(6);
-        
+
         $user->name = 'Jack Daniels';
         $this->connection->flush();
         $this->connection->commit();

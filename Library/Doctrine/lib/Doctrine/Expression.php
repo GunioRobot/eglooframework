@@ -22,7 +22,7 @@
 /**
  * Doctrine_Expression memorizes a dql expression that use a db function.
  *
- * This class manages abstractions of dql expressions like query parts 
+ * This class manages abstractions of dql expressions like query parts
  * that use CONCAT(), MIN(), SUM().
  *
  * @package     Doctrine
@@ -42,12 +42,12 @@ class Doctrine_Expression
     /**
      * Creates an expression.
      *
-     * The constructor needs the dql fragment that contains one or more dbms 
+     * The constructor needs the dql fragment that contains one or more dbms
      * functions.
      * <code>
      * $e = new Doctrine_Expression("CONCAT('some', 'one')");
      * </code>
-     * 
+     *
      * @param string $expr                  sql fragment
      * @param Doctrine_Connection $conn     the connection (optional)
      */
@@ -62,8 +62,8 @@ class Doctrine_Expression
 
     /**
      * Retrieves the connection associated to this expression at creation,
-     * or the current connection used if it was not specified. 
-     * 
+     * or the current connection used if it was not specified.
+     *
      * @return Doctrine_Connection The connection
      */
     public function getConnection()
@@ -80,7 +80,7 @@ class Doctrine_Expression
      * <code>
      * $e->setExpression("CONCAT('some', 'one')");
      * </code>
-     * 
+     *
      * @param string $clause The expression to set
      * @return void
      */
@@ -90,7 +90,7 @@ class Doctrine_Expression
     }
 
     /**
-     * Parses a single expressions and substitutes dql abstract functions 
+     * Parses a single expressions and substitutes dql abstract functions
      * with their concrete sql counterparts for the given connection.
      *
      * @param string $expr The expression to parse
@@ -117,9 +117,9 @@ class Doctrine_Expression
     }
 
     /**
-     * Parses a set of expressions at once. 
+     * Parses a set of expressions at once.
      * @see parseExpression()
-     * 
+     *
      * @param string $clause    The clause. Can be complex and parenthesised.
      * @return string           The parsed clause.
      */
@@ -130,13 +130,13 @@ class Doctrine_Expression
         foreach ($e as $k => $expr) {
             $e[$k] = $this->parseExpression($expr);
         }
-        
+
         return implode(' ', $e);
     }
 
     /**
      * Gets the sql fragment represented.
-     * 
+     *
      * @return string
      */
     public function getSql()
@@ -146,9 +146,9 @@ class Doctrine_Expression
 
     /**
      * Magic method.
-     * 
+     *
      * Returns a string representation of this object. Proxies to @see getSql().
-     * 
+     *
      * @return string
      */
     public function __toString()

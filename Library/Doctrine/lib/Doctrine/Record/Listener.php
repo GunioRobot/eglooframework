@@ -35,24 +35,24 @@ class Doctrine_Record_Listener implements Doctrine_Record_Listener_Interface
     /**
      * @var array $_options        an array containing options
      */
-    protected $_options = array('disabled' => false); 
+    protected $_options = array('disabled' => false);
 
-    /** 
-     * setOption 
-     * sets an option in order to allow flexible listener 
-     * 
-     * @param mixed $name              the name of the option to set 
-     * @param mixed $value              the value of the option 
-     */ 
-    public function setOption($name, $value = null) 
-    { 
-        if (is_array($name)) { 
-            $this->_options = Doctrine_Lib::arrayDeepMerge($this->_options, $name); 
-        } else { 
-            $this->_options[$name] = $value; 
+    /**
+     * setOption
+     * sets an option in order to allow flexible listener
+     *
+     * @param mixed $name              the name of the option to set
+     * @param mixed $value              the value of the option
+     */
+    public function setOption($name, $value = null)
+    {
+        if (is_array($name)) {
+            $this->_options = Doctrine_Lib::arrayDeepMerge($this->_options, $name);
+        } else {
+            $this->_options[$name] = $value;
         }
     }
-    
+
     /**
      * getOptions
      * returns all options of this template and the associated values
@@ -64,22 +64,22 @@ class Doctrine_Record_Listener implements Doctrine_Record_Listener_Interface
         return $this->_options;
     }
 
-    /** 
-     * getOption 
-     * returns the value of given option 
-     * 
-     * @param string $name  the name of the option 
-     * @return mixed        the value of given option 
-     */ 
-    public function getOption($name) 
-    { 
-        if (isset($this->_options[$name])) { 
-            return $this->_options[$name]; 
-        } 
+    /**
+     * getOption
+     * returns the value of given option
+     *
+     * @param string $name  the name of the option
+     * @return mixed        the value of given option
+     */
+    public function getOption($name)
+    {
+        if (isset($this->_options[$name])) {
+            return $this->_options[$name];
+        }
 
-        return null; 
+        return null;
     }
-	
+
     public function preSerialize(Doctrine_Event $event)
     { }
 
@@ -133,7 +133,7 @@ class Doctrine_Record_Listener implements Doctrine_Record_Listener_Interface
 
     public function preValidate(Doctrine_Event $event)
     { }
-    
+
     public function postValidate(Doctrine_Event $event)
     { }
 }

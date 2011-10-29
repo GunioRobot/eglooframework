@@ -4,21 +4,21 @@
  *
  * Contains the class definition for the CacheGateway, a wrapper class for
  * tiered caching access and use.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -28,11 +28,11 @@
 
 /**
  * Cache Gateway
- * 
+ *
  * Provides an interface for common caching functionality such as read, write,
  * lifetime, deletion and statistics.  Is capable of caching by storage tier
  * based on importance of data persistence and data properties.
- * 
+ *
  * @package Performance
  * @subpackage Caching
  * @TODO implement tiered storage; currently only supports memcache
@@ -74,7 +74,7 @@ class CacheGateway {
 
 				// Runtime
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = 0; $i <= 0; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -90,7 +90,7 @@ class CacheGateway {
 
 				// Configuration
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 1; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -106,7 +106,7 @@ class CacheGateway {
 
 				// Request Validation / Request Processing
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 2; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -122,7 +122,7 @@ class CacheGateway {
 
 				// Dispatching
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 3; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -138,7 +138,7 @@ class CacheGateway {
 
 				// Session
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 4; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -154,7 +154,7 @@ class CacheGateway {
 
 				// Data Processing
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 5; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -170,7 +170,7 @@ class CacheGateway {
 
 				// Content
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 6; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -200,7 +200,7 @@ class CacheGateway {
 
 				// Templating
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 8; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -216,7 +216,7 @@ class CacheGateway {
 
 				// Other
 				$newMemcacheServer = new Memcache();
-				
+
 				for ($i = $i; $i <= 9; $i++) {
 					$newMemcacheServer->addServer(	self::MEMCACHED_HOST,
 													self::MEMCACHED_PORT + $i,
@@ -231,11 +231,11 @@ class CacheGateway {
 				$this->_memcache_servers['Other'] = $newMemcacheServer;
 
 			} catch ( Exception $exception ) {
-				eGlooLogger::writeLog( eGlooLogger::ERROR, 
-							   'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );	 
+				eGlooLogger::writeLog( eGlooLogger::ERROR,
+							   'Memcache Server Addition: ' . $exception->getMessage(), 'Memcache' );
 			}
 		} else {
-			
+
 		}
 	}
 
@@ -245,18 +245,18 @@ class CacheGateway {
 				if (file_exists($this->_cache_file_path)) {
 					$this->_filecache = eval( 'return ' . file_get_contents($this->_cache_file_path) . ';' );
 				} else {
-					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
-					// 	'eGloo cache file not found: ' . $cache_file_path , 'Cache' );	 
-					// eGlooLogger::writeLog( eGlooLogger::NOTICE, 
+					// eGlooLogger::writeLog( eGlooLogger::NOTICE,
+					// 	'eGloo cache file not found: ' . $cache_file_path , 'Cache' );
+					// eGlooLogger::writeLog( eGlooLogger::NOTICE,
 					// 	'Creating eGloo cache file...', 'Cache' );
 					$this->_filecache = array();
 				}
-				
+
 				// $this->_filecache = var_export(, true);
 				// file_put_contents('ConfigCache.php', $config_dump);
 
 		} else {
-			
+
 		}
 	}
 
@@ -286,7 +286,7 @@ class CacheGateway {
 				try {
 					apc_delete($id);
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
@@ -301,7 +301,7 @@ class CacheGateway {
 
 					$retVal = $memcacheServer->delete( $id );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -309,7 +309,7 @@ class CacheGateway {
 				unset($this->_filecache[$id]);
 			}
 		}
-		
+
 		return $retVal;
 	}
 
@@ -333,8 +333,8 @@ class CacheGateway {
 
 						$this->_piping_hot_cache[$id] = $retVal;
 					} catch ( Exception $exception ) {
-						eGlooLogger::writeLog( eGlooLogger::ERROR, 
-							'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );				 
+						eGlooLogger::writeLog( eGlooLogger::ERROR,
+							'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 					}
 				} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 					try {
@@ -350,7 +350,7 @@ class CacheGateway {
 
 						$this->_piping_hot_cache[$id] = $retVal;
 					} catch ( Exception $exception ) {
-						eGlooLogger::writeLog( eGlooLogger::ERROR, 
+						eGlooLogger::writeLog( eGlooLogger::ERROR,
 							'Memcache Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 					}
 				} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -379,7 +379,7 @@ class CacheGateway {
 		}
 
 		return $retVal;
-	} 
+	}
 
 	public function getStats() {
 		$retVal = null;
@@ -387,7 +387,7 @@ class CacheGateway {
 		if ($this->_cache_tiers & self::USE_MEMCACHE) {
 			$retVal = $this->_memcache->getStats();
 		} else if ($this->_cache_tiers & self::USE_FILECACHE) {
-			
+
 		}
 
 		return $retVal;
@@ -412,7 +412,7 @@ class CacheGateway {
 				try {
 					$retVal = apc_store( $id, $obj, $ttl );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'APC Cache Lookup for id \'' . $id . '\': ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
@@ -425,9 +425,9 @@ class CacheGateway {
 						$memcacheServer = $this->_memcache_servers['Other'];
 					}
 
-					$retVal = $memcacheServer->set( $id, $obj, false, $ttl ); 
+					$retVal = $memcacheServer->set( $id, $obj, false, $ttl );
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 							'Memcache Cache Write for id \'' . $id . '\': ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -454,7 +454,7 @@ class CacheGateway {
 			}
 		}
 
-		return $retVal; 
+		return $retVal;
 	}
 
 	public function flushAllCache() {
@@ -468,14 +468,14 @@ class CacheGateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -485,7 +485,7 @@ class CacheGateway {
 
 		$systemActions = $systemInfoBean->appendValue('SystemActions', 'CacheGateway Cache flushed');
 
-		return $retVal; 
+		return $retVal;
 	}
 
 	public function flushApplicationCache() {
@@ -499,14 +499,14 @@ class CacheGateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -514,7 +514,7 @@ class CacheGateway {
 			}
 		}
 
-		return $retVal; 
+		return $retVal;
 	}
 
 	public function flushUIBundleCache() {
@@ -528,14 +528,14 @@ class CacheGateway {
 				try {
 					$retVal = apc_clear_cache();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'APC Cache Flush: ' . $exception->getMessage(), 'APC' );
 				}
 			} else if ($this->_cache_tiers & self::USE_MEMCACHE) {
 				try {
 					$retVal = $this->_memcache->flush();
 				} catch ( Exception $exception ) {
-					eGlooLogger::writeLog( eGlooLogger::ERROR, 
+					eGlooLogger::writeLog( eGlooLogger::ERROR,
 						'Memcache Cache Flush: ' . $exception->getMessage(), 'Memcache' );
 				}
 			} else if ($this->_cache_tiers & self::USE_FILECACHE) {
@@ -543,11 +543,11 @@ class CacheGateway {
 			}
 		}
 
-		return $retVal; 
+		return $retVal;
 	}
 
 	public static function serverFailure( $host, $port ) {
-		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 
+		eGlooLogger::writeLog( eGlooLogger::EMERGENCY,
 			'Memcache daemon on host ' . $host . ' and port ' . $port . ' has failed',
 			'Memcache' );
 		eGlooLogger::writeLog( eGlooLogger::EMERGENCY, 'Attempting server failover... ', 'Memcache' );
@@ -568,10 +568,10 @@ class CacheGateway {
 			// caches, but who knows.
 			$egLastApplication = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastApplication', 'Runtime');
 			$egLastUIBundle = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'egLastUIBundle', 'Runtime');
-			
+
 			$currentApplication = eGlooConfiguration::getApplicationName();
 			$currentBundle = eGlooConfiguration::getUIBundleName();
-			
+
 			if ($currentApplication !== $egLastApplication) {
 				// Invalidate application level cache
 				$cacheGateway->flushApplicationCache();
@@ -632,7 +632,7 @@ class CacheGateway {
 
 		}
 
-		return self::$_singleton; 
+		return self::$_singleton;
 	}
 
 	public function __destruct() {

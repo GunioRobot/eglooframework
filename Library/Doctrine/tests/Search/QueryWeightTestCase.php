@@ -37,7 +37,7 @@ class Doctrine_Search_QueryWeight_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Search_Query('SearchTestIndex');
         $q->search("doctrine^2 OR 'dbal database'");
 
-        $sql = 'SELECT foreign_id, SUM(relevancy) AS relevancy_sum ' 
+        $sql = 'SELECT foreign_id, SUM(relevancy) AS relevancy_sum '
              . 'FROM (SELECT COUNT(keyword) * 2 AS relevancy, foreign_id '
              . 'FROM search_index '
              . 'WHERE keyword = ? '
@@ -52,7 +52,7 @@ class Doctrine_Search_QueryWeight_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($q->getSqlQuery(), $sql);
     }
-    
+
     public function testSearchSupportsMixingOfOperatorsParenthesisAndWeights()
     {
         $q = new Doctrine_Search_Query('SearchTestIndex');
@@ -119,11 +119,11 @@ class Doctrine_Search_QueryWeight_TestCase extends Doctrine_UnitTestCase
                          SELECT COUNT(keyword) AS relevancy, foreign_id
                             FROM search_index) AS query_alias
                             WHERE keyword != 'rdbms'
-                            GROUP BY foreign_id                            
+                            GROUP BY foreign_id
                             )
                 GROUP BY foreign_id
                 ORDER BY relevancy_sum";
-                
+
         $this->assertEqual($q->getSqlQuery(), $sql);
     }
 }

@@ -24,7 +24,7 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 
 /**
  * The DisconnectedClassMetadataFactory is used to create ClassMetadata objects
- * that do not require the document class actually exist. This allows us to 
+ * that do not require the document class actually exist. This allows us to
  * load some mapping information and use it to do things like generate code
  * from the mapping information.
  *

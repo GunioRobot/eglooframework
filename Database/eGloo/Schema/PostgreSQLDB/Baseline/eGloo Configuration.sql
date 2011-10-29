@@ -1,8 +1,8 @@
 /** Baseline eGloo Configuration File.
- * 
+ *
  * @author Matthew Brennan
  * @version 0.1
- * 
+ *
  */
 
 -- The eGloo Administrator Role which will be used for config by the software.
@@ -161,7 +161,7 @@ CREATE TABLE feature_object_type (
 	created_by	BIGINT DEFAULT 0 NOT NULL,
 	modified_by	BIGINT DEFAULT 0 NOT NULL,
 CONSTRAINT pk_feature_object_type PRIMARY KEY (feature_object_type_id),
-);	
+);
 
 CREATE SEQUENCE feature_objects_ident_seq
 	MINVALUE 0

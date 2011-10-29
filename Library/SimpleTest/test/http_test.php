@@ -43,7 +43,7 @@ class TestOfDirectRoute extends UnitTestCase {
 
 		$route->createConnection('POST', 15);
 	}
-	
+
 	function testDefaultDeleteRequest() {
 		$socket = new MockSimpleSocket();
 		$socket->expectAt(0, 'write', array("DELETE /here.html HTTP/1.0\r\n"));
@@ -55,7 +55,7 @@ class TestOfDirectRoute extends UnitTestCase {
 		$route->__construct(new SimpleUrl('http://a.valid.host/here.html'));
 		$this->assertSame($route->createConnection('DELETE', 15), $socket);
 	}
-	
+
 	function testDefaultHeadRequest() {
 		$socket = new MockSimpleSocket();
 		$socket->expectAt(0, 'write', array("HEAD /here.html HTTP/1.0\r\n"));
@@ -249,7 +249,7 @@ class TestOfHttpRequest extends UnitTestCase {
 		$request->readCookiesFromJar($jar, new SimpleUrl('/'));
 		$request->fetch(15);
 	}
-	
+
     function testReadingDeleteConnection() {
 		$socket = new MockSimpleSocket();
 
@@ -258,7 +258,7 @@ class TestOfHttpRequest extends UnitTestCase {
 		$route->expect('createConnection', array('DELETE', 15));
 
 		$request = new SimpleHttpRequest($route, new SimpleDeleteEncoding());
-		$this->assertIsA($request->fetch(15), 'SimpleHttpResponse');    	
+		$this->assertIsA($request->fetch(15), 'SimpleHttpResponse');
     }
 }
 

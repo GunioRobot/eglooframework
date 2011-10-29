@@ -69,7 +69,7 @@ class Doctrine_Node implements IteratorAggregate
     {
         $this->record = $record;
         $this->options = $options;
-        
+
         // Make sure that the tree object of the root class is used in the case
         // of column aggregation inheritance (single table inheritance).
         $class = $record->getTable()->getComponentName();

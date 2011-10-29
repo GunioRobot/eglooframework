@@ -3,21 +3,21 @@
  * eGlooRequestLibrary Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -174,7 +174,7 @@ class eGlooRequestLibrary extends eGlooCombine {
 
 					// echo_r($rebuilt['requestAttributeSets']);
 					echo_r(array_keys($diff));
-					
+
 					// SO....... the diff method stops when the diff hits... a diff.  I need to rethink this below
 die;
 					if ( isset($diff[2]) && isset($diff[2]['d']) && empty($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) && empty($diff[2]['i']) ) {
@@ -494,7 +494,7 @@ die;
 			} else if ( isset($diff[2]) && isset($diff[2]['d']) && isset($diff[2]) && isset($diff[2]['i']) ) {
 				$diff_output_original = $diff[2]['d'];
 				$diff_output_generated = $diff[2]['i'];
-				
+
 				echo "\n" . 'Discrepancies found in rebuild: ' . "\n\n";
 
 				echo 'Items found in original but not found in rebuild: ' . "\n\n";
@@ -684,7 +684,7 @@ die;
 		return $retVal;
 	}
 
-	protected function addRequestClass( $request_class, $request_definitions = null ) { 
+	protected function addRequestClass( $request_class, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( !$this->issetRequestClass( $request_class, $request_definitions ) ) {
@@ -695,7 +695,7 @@ die;
 				ksort($request_definitions['requestClasses']);
 				$retVal = $request_definitions;
 			} else if ( is_array($request_class) ) {
-				
+
 			}
 		} else {
 			// TODO this isn't right
@@ -709,11 +709,11 @@ die;
 		return $retVal;
 	}
 
-	protected function getRequestClass( $request_class_id, $request_definitions = null ) { 
+	protected function getRequestClass( $request_class_id, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
-			
+
 		} else {
 			echo 'Request Class "' . $request_class_id . '" not found.' . "\n";
 		}
@@ -721,19 +721,19 @@ die;
 		return $retVal;
 	}
 
-	protected function issetRequestClass( $request_class, $request_definitions = null ) { 
+	protected function issetRequestClass( $request_class, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( is_string($request_class) ) {
 			$retVal = isset($request_definitions['requestClasses'][$request_class]);
 		} else if ( is_array($request_class) ) {
-			
+
 		}
 
 		return $retVal;
 	}
 
-	protected function removeRequestClass( $request_class_id, $request_definitions = null ) { 
+	protected function removeRequestClass( $request_class_id, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
@@ -747,11 +747,11 @@ die;
 		return $retVal;
 	}
 
-	protected function updateRequestClass( $request_class_id, $request_definitions = null ) { 
+	protected function updateRequestClass( $request_class_id, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( $this->issetRequestClass( $request_class_id, $request_definitions ) ) {
-			
+
 		} else {
 			echo 'Request Class "' . $request_class_id . '" not found.' . "\n";
 		}
@@ -759,7 +759,7 @@ die;
 		return $retVal;
 	}
 
-	protected function addRequestAttributeSet( $request_attribute_set, $request_definitions = null ) { 
+	protected function addRequestAttributeSet( $request_attribute_set, $request_definitions = null ) {
 		$retVal = null;
 
 		if ( !$this->issetRequestClass( $request_attribute_set, $request_definitions ) ) {
@@ -780,14 +780,14 @@ die;
 							),
 					);
 
-				// Because we need to guarantee order for the diff later.  
+				// Because we need to guarantee order for the diff later.
 				ksort($new_request_attribute_set['attributes']);
 
 				$request_definitions['requestAttributeSets'][$request_attribute_set] = $new_request_attribute_set;
 				ksort($request_definitions['requestAttributeSets']);
 				$retVal = $request_definitions;
 			} else if ( is_array($request_attribute_set) ) {
-				
+
 			}
 		} else {
 			// TODO this isn't right
@@ -797,25 +797,25 @@ die;
 		return $retVal;
 	}
 
-	protected function getRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+	protected function getRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) {
 		$retVal = null;
 
 		return $retVal;
 	}
 
-	protected function issetRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+	protected function issetRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) {
 		$retVal = null;
 
 		return $retVal;
 	}
 
-	protected function removeRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+	protected function removeRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) {
 		$retVal = null;
 
 		return $retVal;
 	}
 
-	protected function updateRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) { 
+	protected function updateRequestAttributeSet( $request_attribute_set_id, $request_definitions = null ) {
 		$retVal = null;
 
 		return $retVal;
@@ -832,27 +832,27 @@ die;
 	}
 
 	// public static function getRequestClass( $requestClass ) {
-	// 	
+	//
 	// }
 
 	public static function getRequestID( $requestID ) {
-		
+
 	}
 
 	public static function getRequest( $requestClass, $requestID ) {
-		
+
 	}
 
 	public static function getRequestURLArrayByRequestProcessorName( $requestProcessorName ) {
-		
+
 	}
 
 	public static function getRequestURLArrayByRequestClassName( $requestClassName ) {
-		
+
 	}
 
 	public static function getRequestURLArrayByRequestIDName( $requestIDName ) {
-		
+
 	}
 
 	public static function getRequestURLArray( $absolute = false, $includeRewriteBase = true ) {
@@ -863,7 +863,7 @@ die;
 		$requestNodes = $cacheGateway->getObject( eGlooConfiguration::getUniqueInstanceIdentifier() . '::' . 'XML2ArrayRequestDefinitionParserNodes', 'RequestValidation' );
 
 		if ( $requestNodes == null ) {
-			
+
 		}
 
 		foreach($requestNodes as $requestNode) {
@@ -873,7 +873,7 @@ die;
 				// one day this will be a great feature
 				$url .= '';
 			}
-			
+
 			if ( $includeRewriteBase ) {
 				$url .= eGlooConfiguration::getRewriteBase();
 			}
@@ -887,11 +887,11 @@ die;
 	}
 
 	public static function getRequestProcessorNameByURL( $url ) {
-		
+
 	}
 
 	public static function getRequestProcessorInstanceByUrl( $url ) {
-		
+
 	}
 
 }

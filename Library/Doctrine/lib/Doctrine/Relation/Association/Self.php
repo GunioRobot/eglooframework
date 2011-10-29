@@ -44,7 +44,7 @@ class Doctrine_Relation_Association_Self extends Doctrine_Relation_Association
             case 'record':
                 $identifierColumnNames = $this->definition['table']->getIdentifierColumnNames();
                 $identifier = array_pop($identifierColumnNames);
-                $sub    = 'SELECT '.$this->definition['foreign'] 
+                $sub    = 'SELECT '.$this->definition['foreign']
                         . ' FROM '.$this->definition['refTable']->getTableName()
                         . ' WHERE '.$this->definition['local']
                         . ' = ?';
@@ -57,13 +57,13 @@ class Doctrine_Relation_Association_Self extends Doctrine_Relation_Association
                 $dql  = 'FROM ' . $this->definition['table']->getComponentName()
                       . '.' . $this->definition['refTable']->getComponentName()
                       . ' WHERE ' . $this->definition['table']->getComponentName()
-                      . '.' . $identifier 
+                      . '.' . $identifier
                       . ' IN (' . $sub . ')'
-                      . ' || ' . $this->definition['table']->getComponentName() 
+                      . ' || ' . $this->definition['table']->getComponentName()
                       . '.' . $identifier
                       . ' IN (' . $sub2 . ')';
 
-                $dql .= $this->getOrderBy($this->definition['table']->getComponentName(), false); 
+                $dql .= $this->getOrderBy($this->definition['table']->getComponentName(), false);
                 break;
             case 'collection':
                 $sub  = substr(str_repeat('?, ', $count),0,-2);

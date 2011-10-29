@@ -3,21 +3,21 @@
  * eGlooConfiguration Class File
  *
  * Contains the class definition for the eGlooConfiguration
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -141,7 +141,7 @@ final class eGlooConfiguration {
 			// $application_path = self::getApplicationPath();
 
 			// $success = self::loadApplicationConfigurationCache( $application_path, $overwrite, $config_cache );
-		
+
 			if ( !$success && $found_application_path ) {
 				self::loadApplicationConfigurationXML( $application_path, $overwrite );
 			}
@@ -215,7 +215,7 @@ final class eGlooConfiguration {
 		}
 
 		self::$uniqueInstanceID = md5(realpath('.') . self::getApplicationPath() . self::getUIBundleName());
-		
+
 		if ( isset( $_SERVER['EG_SECURE_ENVIRONMENT'] ) && $_SERVER['EG_SECURE_ENVIRONMENT'] === 'ON' ) {
 			self::secureEnvironment();
 		}
@@ -697,7 +697,7 @@ final class eGlooConfiguration {
 			// $errors = libxml_get_errors();
 			// echo_r($errors);
 
-			// Load applications after system... 
+			// Load applications after system...
 			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
 				$componentID = (string) $component['id'];
 
@@ -711,7 +711,7 @@ final class eGlooConfiguration {
 
 			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Option' ) as $option ) {
 				$optionID = (string) $option['id'];
-			
+
 				if (isset(self::$configuration_possible_options[$optionID])) {
 					// if (!isset(self::$configuration_options[$optionID])) {
 						self::$configuration_options[$optionID] = (string) $option['value'];
@@ -762,7 +762,7 @@ final class eGlooConfiguration {
 	}
 
 	public static function writeApplicationConfigurationXML( $application_name, $config_xml_path = 'Config.xml' ) {
-		
+
 	}
 
 	public static function clearApplicationCache( $application_cache_path = null ) {
@@ -811,7 +811,7 @@ final class eGlooConfiguration {
 
 		if ( file_exists($config_cache_path) && is_file($config_cache_path) && is_readable($config_cache_path) ) {
 			$cached_options_array_string = file_get_contents($config_cache_path);
-			
+
 			if ($cached_options_array_string) {
 				$cached_options = eval( 'return ' . file_get_contents($config_cache_path) .';' );
 
@@ -871,7 +871,7 @@ final class eGlooConfiguration {
 				}
 			}
 
-			// Load applications after system... 
+			// Load applications after system...
 			foreach( $configXMLObject->xpath( '/tns:Configuration/tns:Applications/tns:Component' ) as $component ) {
 				$componentID = (string) $component['id'];
 
@@ -967,7 +967,7 @@ final class eGlooConfiguration {
 			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
 			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
 			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/Schemas/eGlooConfiguration.xsd">';
-			
+
 			$xmlData .= '</tns:Configuration>';
 
 			$xmlObject = new SimpleXMLElement($xmlData);
@@ -982,7 +982,7 @@ final class eGlooConfiguration {
 			$networkXMLObject		= $xmlObject->addChild('Network');
 			$peeringXMLObject		= $xmlObject->addChild('Peering');
 			$systemXMLObject		= $xmlObject->addChild('System');
-			
+
 			foreach (self::$configuration_possible_options as $key => $value) {
 				$childXMLObject = null;
 
@@ -1050,7 +1050,7 @@ final class eGlooConfiguration {
 			// $domObject->save( $config_xml_path );
 
 			echo $formattedXML;
-			// 
+			//
 			die;
 		}
 	}
@@ -1105,7 +1105,7 @@ final class eGlooConfiguration {
 
 			foreach (self::$system_configuration as $key => $value) {
 				self::$configuration_options[$key] = $value['value'];
-				
+
 				if ($value['override'] === 'true') {
 					self::$configuration_possible_options[$key] = $value;
 				}
@@ -1401,11 +1401,11 @@ final class eGlooConfiguration {
 			$xmlData .= '<tns:Configuration xmlns:tns="com.egloo.www/eGlooConfiguration" ';
 			$xmlData .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
 			$xmlData .= 'xsi:schemaLocation="com.egloo.www/eGlooConfiguration ../XML/Schemas/eGlooConfiguration.xsd">';
-			
+
 			$xmlData .= '</tns:Configuration>';
 
 			$xmlObject = new SimpleXMLElement($xmlData);
-			
+
 			foreach ($system_configuration as $sectionID => $section) {
 
 				$sectionXMLObject = $xmlObject->addChild($sectionID);
@@ -1567,7 +1567,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['AppBuild'])) {
 			$retVal = self::$configuration_options['AppBuild'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1577,7 +1577,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['AppMaintenanceVersion'])) {
 			$retVal = self::$configuration_options['AppMaintenanceVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1587,7 +1587,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['AppMajorVersion'])) {
 			$retVal = self::$configuration_options['AppMajorVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1597,7 +1597,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['AppMinorVersion'])) {
 			$retVal = self::$configuration_options['AppMinorVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1607,7 +1607,7 @@ final class eGlooConfiguration {
 
 	public static function getApplicationPath( $absolute_path = false ) {
 		$retVal = null;
-		
+
 		if ( $absolute_path ) {
 			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'];
 		} else {
@@ -1635,7 +1635,7 @@ final class eGlooConfiguration {
 
 	public static function getApplicationTemplatesPath( $absolute_path = false ) {
 		$retVal = null;
-		
+
 		if ( $absolute_path ) {
 			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/Templates';
 		} else {
@@ -1647,7 +1647,7 @@ final class eGlooConfiguration {
 
 	public static function getApplicationXMLPath( $absolute_path = false ) {
 		$retVal = null;
-		
+
 		if ( $absolute_path ) {
 			$retVal = self::getApplicationsPath() . '/' . self::$configuration_options['egApplication'] . '/XML';
 		} else {
@@ -1660,7 +1660,7 @@ final class eGlooConfiguration {
 	public static function getUIBundleName() {
 		return self::$configuration_options['egInterfaceBundle'];
 	}
-	
+
 	public static function getDeployment() {
 		return self::$configuration_options['egEnvironment'];
 	}
@@ -1794,7 +1794,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['egBuild'])) {
 			$retVal = self::$configuration_options['egBuild'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1814,7 +1814,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['egMaintenanceVersion'])) {
 			$retVal = self::$configuration_options['egMaintenanceVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1824,7 +1824,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['egMajorVersion'])) {
 			$retVal = self::$configuration_options['egMajorVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -1834,7 +1834,7 @@ final class eGlooConfiguration {
 		if (isset(self::$configuration_options['egMinorVersion'])) {
 			$retVal = self::$configuration_options['egMinorVersion'];
 		}
-		
+
 		return $retVal;
 	}
 
@@ -2048,7 +2048,7 @@ final class eGlooConfiguration {
 			if ( $update_cache_on_set ) {
 				// TODO see if we should move this into an "update cache" method
 				self::writeFrameworkConfigurationCache();
-			
+
 				if (self::getUseRuntimeCache()) {
 					// self::writeRuntimeCache();
 					self::writeRuntimeCacheClass();
@@ -2062,7 +2062,7 @@ final class eGlooConfiguration {
 	public static function getLoggingPath() {
 		return self::$configuration_options['LoggingPath'];
 	}
-	
+
 	public static function getLoggingLevel( $update_cache_on_set = true ) {
 		if ( !isset(self::$configuration_options['egLogLevel']) ) {
 			self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
@@ -2078,19 +2078,19 @@ final class eGlooConfiguration {
 			}
 		} else if ( is_string(self::$configuration_options['egLogLevel']) ) {
 			switch( strtoupper(self::$configuration_options['egLogLevel']) ) {
-				case 'LOG_OFF' : 
+				case 'LOG_OFF' :
 					self::$configuration_options['egLogLevel'] = eGlooLogger::LOG_OFF;
 					break;
-				case 'PRODUCTION' : 
+				case 'PRODUCTION' :
 					self::$configuration_options['egLogLevel'] = eGlooLogger::PRODUCTION;
 					break;
-				case 'STAGING' : 
+				case 'STAGING' :
 					self::$configuration_options['egLogLevel'] = eGlooLogger::STAGING;
 					break;
-				case 'DEVELOPMENT' : 
+				case 'DEVELOPMENT' :
 					self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 					break;
-				default : 
+				default :
 					self::$configuration_options['egLogLevel'] = eGlooLogger::DEVELOPMENT;
 					break;
 			}
@@ -2098,7 +2098,7 @@ final class eGlooConfiguration {
 			if ( $update_cache_on_set ) {
 				// TODO see if we should move this into an "update cache" method
 				self::writeFrameworkConfigurationCache();
-			
+
 				if (self::getUseRuntimeCache()) {
 					// self::writeRuntimeCache();
 					self::writeRuntimeCacheClass();
@@ -2296,7 +2296,7 @@ final class eGlooConfiguration {
 
 	public static function issetCustomVariable( $index ) {
 		$retVal = false;
-		
+
 		if (isset(self::$configuration_options['CustomVariables'][$index])) {
 			$retVal = true;
 		}

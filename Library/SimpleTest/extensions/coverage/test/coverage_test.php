@@ -8,11 +8,11 @@ class CodeCoverageTest extends UnitTestCase {
         		!file_exists('DB/sqlite.php'),
                 'The Coverage extension needs to have PEAR installed');
     }
-	
+
 	function setUp() {
         require_once dirname(__FILE__) .'/../coverage.php';
     }
-	
+
     function testIsFileIncluded() {
         $coverage = new CodeCoverage();
         $this->assertTrue($coverage->isFileIncluded('aaa'));

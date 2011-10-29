@@ -31,7 +31,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  */
 class Doctrine_Validator_Creditcard extends Doctrine_Validator_Driver
-{                                                         
+{
     /**
      * checks if given value is a valid credit card number
      *

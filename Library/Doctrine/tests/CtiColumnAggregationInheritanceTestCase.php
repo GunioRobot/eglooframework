@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_CtiColumnAggregationInheritance_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_CtiColumnAggregationInheritance_TestCase extends Doctrine_UnitTestCase
 {
 
 }
@@ -51,7 +51,7 @@ class CTICATestParent2 extends CTICATestParent1
 
         $this->hasColumn('verified', 'boolean', 1);
         $this->hasColumn('type', 'integer', 2);
-        
+
         $this->setSubclasses(array(
             'CTICATest'  => array('type' => 1),
             'CTICATest2' => array('type' => 2)
@@ -92,7 +92,7 @@ class CTICATestOneToManyRelated extends Doctrine_Record
         $this->hasColumn('name', 'string');
         $this->hasColumn('cti_id', 'integer');
     }
-    
+
     public function setUp()
     {
         $this->hasMany('CTICATestParent1', array('local' => 'cti_id', 'foreign' => 'id'));

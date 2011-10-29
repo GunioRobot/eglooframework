@@ -30,13 +30,13 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_DC82_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_DC82_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
         $this->dbh = new Doctrine_Adapter_Mock('pgsql');
         $this->conn = $this->manager->openConnection($this->dbh);
-        
+
         $sql = $this->conn->export->exportClassesSql(array('Ticket_DC82_Article'));
         $this->assertEqual($sql, array(
             "CREATE UNIQUE INDEX model_unique_title ON ticket__d_c82__article (title) WHERE deleted = false",

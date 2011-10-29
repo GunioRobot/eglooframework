@@ -34,7 +34,7 @@ class Doctrine_Parser_Xml extends Doctrine_Parser
 {
     /**
      * dumpData
-     * 
+     *
      * Convert array to xml and dump to specified path or return the xml
      *
      * @param  string $array Array of data to convert to xml
@@ -46,14 +46,14 @@ class Doctrine_Parser_Xml extends Doctrine_Parser
     public function dumpData($array, $path = null, $charset = null)
     {
         $data = self::arrayToXml($array, 'data', null, $charset);
-        
+
         return $this->doDump($data, $path);
     }
 
     /**
      * arrayToXml
      *
-     * @param  string $array        Array to convert to xml    
+     * @param  string $array        Array to convert to xml
      * @param  string $rootNodeName Name of the root node
      * @param  string $xml          SimpleXmlElement
      * @return string $asXml        String of xml built from array
@@ -79,7 +79,7 @@ class Doctrine_Parser_Xml extends Doctrine_Parser
                 }
 
                 self::arrayToXml($value, $rootNodeName, $node, $charset);
-            } else if (is_int($key)) {               
+            } else if (is_int($key)) {
                 $xml->addChild($value, 'true');
             } else {
                 $charset = $charset ? $charset : 'utf-8';
@@ -105,9 +105,9 @@ class Doctrine_Parser_Xml extends Doctrine_Parser
     public function loadData($path)
     {
         $contents = $this->doLoad($path);
-        
+
         $simpleXml = simplexml_load_string($contents);
-        
+
         return $this->prepareData($simpleXml);
     }
 
@@ -116,7 +116,7 @@ class Doctrine_Parser_Xml extends Doctrine_Parser
      *
      * Prepare simple xml to array for return
      *
-     * @param  string $simpleXml 
+     * @param  string $simpleXml
      * @return array  $return
      */
     public function prepareData($simpleXml)

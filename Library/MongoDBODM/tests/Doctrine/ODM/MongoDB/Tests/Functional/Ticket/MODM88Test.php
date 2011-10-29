@@ -17,7 +17,7 @@ class MODM88Test extends \Doctrine\ODM\MongoDB\Tests\BaseTest
             ->select('_id', 'title');
         $q = $qb->getQuery();
         $document = $q->getSingleResult();
-        
+
         $this->assertEquals('Test Title', $document->getTitle());
         $this->assertNull($document->getBody());
 

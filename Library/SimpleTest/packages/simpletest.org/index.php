@@ -31,12 +31,12 @@ foreach ($languages as $language) {
 				$page = str_replace('CONTENT', $source->content(), $page);
 				$page = str_replace('INTERNAL', $source->internal(), $page);
 				$page = str_replace('EXTERNAL', $source->external(), $page);
-				
+
 				$links = $source->links(dirname(__FILE__).'/map.xml');
 				foreach ($links as $category => $link) {
 					$page = str_replace("LINKS_".strtoupper($category), $link, $page);
 				}
-				
+
 				$destination_dir = dirname($destination_path.$destination);
 				if (!is_dir($destination_dir)) {
 					mkdir($destination_dir);

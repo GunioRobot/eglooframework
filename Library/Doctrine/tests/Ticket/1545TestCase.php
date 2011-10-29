@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1545_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1545_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -70,7 +70,7 @@ class Ticket_1545_FooFilter extends Doctrine_Record_Filter
 {
     public function init()
     {
-        
+
     }
 
     public function filterGet(Doctrine_Record $record, $name)

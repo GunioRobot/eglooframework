@@ -22,7 +22,7 @@
 /**
  * Doctrine_Validator_TestCase
  * TestCase for Doctrine's validation component.
- * 
+ *
  * @todo More tests to cover the full interface of Doctrine_Validator_ErrorStack.
  *
  * @package     Doctrine
@@ -33,11 +33,11 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareTables() 
+    public function prepareTables()
     {
-        
+
         $this->tables[] = 'ValidatorTest';
         $this->tables[] = 'ValidatorTest_Person';
         $this->tables[] = 'ValidatorTest_FootballPlayer';
@@ -50,7 +50,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-    public function testIsValidType() 
+    public function testIsValidType()
     {
         $var = '123';
         $this->assertTrue(Doctrine_Validator::isValidType($var, 'string'));
@@ -107,7 +107,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         $this->assertFalse(Doctrine_Validator::isValidType($var, 'float'));
         $this->assertTrue(Doctrine_Validator::isValidType($var, 'array'));
         $this->assertFalse(Doctrine_Validator::isValidType($var, 'object'));
-        
+
         $var = new Exception();
         $this->assertFalse(Doctrine_Validator::isValidType($var, 'string'));
         $this->assertFalse(Doctrine_Validator::isValidType($var, 'integer'));
@@ -116,13 +116,13 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue(Doctrine_Validator::isValidType($var, 'object'));
     }
 
-    public function testValidate2() 
+    public function testValidate2()
     {
         $test = new ValidatorTest();
         $test->mymixed = "message";
         $test->myrange = 1;
         $test->myregexp = '123a';
-        
+
         $validator = new Doctrine_Validator();
         $validator->validateRecord($test);
 
@@ -139,7 +139,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         $test->save();
     }
 
-    public function testValidate() 
+    public function testValidate()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
         $user = $this->connection->getTable('User')->find(4);
@@ -180,7 +180,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
     /**
      * Tests the Email validator. (Doctrine_Validator_Email)
      */
-    public function testIsValidEmail() 
+    public function testIsValidEmail()
     {
 
         $validator = new Doctrine_Validator_Email();
@@ -199,7 +199,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
     /**
      * Tests saving records with invalid attributes.
      */
-    public function testSave() 
+    public function testSave()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
         $user = $this->connection->getTable("User")->find(4);
@@ -227,11 +227,11 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             $this->assertTrue(is_array($a));
             //var_dump(array_search($user, $a));
             $emailStack = $user->Email->errorStack();
-            $userStack  = $user->errorStack();            
+            $userStack  = $user->errorStack();
             $this->assertTrue(in_array('email', $emailStack['address']));
             $this->assertTrue(in_array('length', $userStack['name']));
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
 
@@ -239,10 +239,10 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
      * Tests whether the validate() callback works correctly
      * in descendants of Doctrine_Record.
      */
-    public function testValidationHooks() 
+    public function testValidationHooks()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
-        
+
         // Tests validate() and validateOnInsert()
         $user = new User();
          try {
@@ -260,7 +260,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             $this->assertTrue(in_array('notTheSaint', $stack['name']));  // validate() hook constraint
             $this->assertTrue(in_array('pwNotTopSecret', $stack['password'])); // validateOnInsert() hook constraint
         }
-        
+
         // Tests validateOnUpdate()
         $user = $this->connection->getTable("User")->find(4);
         try {
@@ -272,13 +272,13 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         } catch(Doctrine_Validator_Exception $e) {
             $invalidRecords = $e->getInvalidRecords();
             $this->assertEqual(count($invalidRecords), 1);
-            
+
             $stack = $invalidRecords[0]->errorStack();
-            
+
             $this->assertEqual($stack->count(), 1);
             $this->assertTrue(in_array('notNobody', $stack['loginname']));  // validateOnUpdate() hook constraint
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
 
@@ -286,13 +286,13 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
      * Tests whether the validateOnInsert() callback works correctly
      * in descendants of Doctrine_Record.
      */
-    public function testHookValidateOnInsert() 
+    public function testHookValidateOnInsert()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
-        
+
         $user = new User();
         $user->password = "1234";
-        
+
         try {
             $user->save();
             $this->fail();
@@ -300,7 +300,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             $errors = $user->errorStack();
             $this->assertTrue(in_array('pwNotTopSecret', $errors['password']));
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
 
@@ -308,15 +308,15 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
     public function testIssue()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VLD, true);
-        
+
         try {
             $person = new ValidatorTest_Person();
             $person->name = '';  // will raise a validation exception since name must be 'notblank'
             $person->is_football_player = true;
-        
+
             $person->ValidatorTest_FootballPlayer->team_name = 'liverpool';
             $person->ValidatorTest_FootballPlayer->goals_count = 2;
-        
+
             $person->save();
         }
         catch(Doctrine_Validator_Exception $e) {
@@ -324,7 +324,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             //var_dump($person->getErrorStack());
             //var_dump($person->ValidatorTest_FootballPlayer->getErrorStack());
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VLD, false);
     }
     */
@@ -334,11 +334,11 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
     public function testSetSameUniqueValueOnSameRecordThrowsNoException()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
-        
+
         $r = new ValidatorTest_Person();
         $r->identifier = '1234';
         $r->save();
-        
+
         $r = $this->connection->getTable('ValidatorTest_Person')->findAll()->getFirst();
         $r->identifier = 1234;
         try {
@@ -347,20 +347,20 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         catch (Doctrine_Validator_Exception $e) {
            $this->fail("Validator exception raised without reason!");
         }
-        
+
         $r->delete(); // clean up
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
-    
+
     public function testSetSameUniqueValueOnDifferentRecordThrowsException()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
-        
+
         $r = new ValidatorTest_Person();
         $r->identifier = '1234';
         $r->save();
-        
+
         $r = new ValidatorTest_Person();
         $r->identifier = 1234;
         try {
@@ -369,10 +369,10 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
         } catch (Doctrine_Validator_Exception $e) {
             $this->pass();
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
-    
+
     public function testValidationOnManyToManyRelations()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
@@ -400,10 +400,10 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             $this->assertTrue(in_array('notnull', $stack['zip']));
             $this->assertTrue(in_array('notblank', $stack['zip']));
         }
-        
+
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
-    
+
     public function testSaveInTransactionThrowsValidatorException()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
@@ -429,7 +429,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
             $this->assertTrue(in_array('usstate', $stack['state']));
             $this->assertTrue(in_array('notnull', $stack['zip']));
             $this->assertTrue(in_array('notblank', $stack['zip']));
-        } 
+        }
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
 
@@ -463,7 +463,7 @@ class Doctrine_Validator_TestCase extends Doctrine_UnitTestCase
 
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     }
-    
+
     public function testValidationIsTriggeredOnFlush()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);

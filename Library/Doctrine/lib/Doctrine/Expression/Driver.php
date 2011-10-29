@@ -590,7 +590,7 @@ class Doctrine_Expression_Driver extends Doctrine_Connection_Module
     /**
      * sin
      *
-     * @param string $value 
+     * @param string $value
      * @return void
      */
     public function sin($value)
@@ -611,7 +611,7 @@ class Doctrine_Expression_Driver extends Doctrine_Connection_Module
     /**
      * cos
      *
-     * @param string $value 
+     * @param string $value
      * @return void
      */
     public function cos($value)
@@ -636,7 +636,7 @@ class Doctrine_Expression_Driver extends Doctrine_Connection_Module
      *
      * for all native RDBMS functions the function name itself is returned
      */
-    public function __call($m, $a) 
+    public function __call($m, $a)
     {
         if ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_EXPR) {
             throw new Doctrine_Expression_Exception('Unknown expression: ' . $m);

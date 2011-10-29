@@ -1,20 +1,20 @@
 /**
  * Initial Schema File
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author Matt brennan
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -23,7 +23,7 @@
 
 --********* DOES NOT COMPILE DO NOT USE YET WORK IN PROGRESS *************
 
--- Domains or types for Table IDs 
+-- Domains or types for Table IDs
 -- Seequences for domains
 -- Constraint functions
 -- Standard Meta Data
@@ -50,7 +50,7 @@
 --					Discounts and discount priority (additive, stackable, hierarchichal)
 --					Domains for non sequence based identification?
 
-CREATE SEQUENCE user_ident_seq 
+CREATE SEQUENCE user_ident_seq
 	MINVALUE -9223372036854775808
 	START WITH -9223372036854775808;
 --	OWNED BY users.user_id-- Test this functionality
@@ -69,7 +69,7 @@ CONSTRAINT users_user_password_hash_nn NOT NULL (user_password_hash),
 CONSTRAINT pk_users PRIMARY KEY (user_id)
 );
 
-CREATE SEQUENCE security_question_ident_seq 
+CREATE SEQUENCE security_question_ident_seq
 	MINVALUE -9223372036854775808
 	START WITH -9223372036854775808;
 
@@ -119,7 +119,7 @@ CREATE TABLE user_email_addresses (
 	user_id BIGINT,
 	email_address_id BIGINT
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.	
+	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 CONSTRAINT pk_user_email_addresses (user_id,email_address_id),
 CONSTRAINT fk_user_email_addresses_user_id FOREIGN KEY (user_id)
 	REFERENCES users(user_id)
@@ -170,7 +170,7 @@ CREATE TABLE sessions (
 
 CREATE TABLE identified_sessions (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.	
+	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 )
 
 CREATE TABLE products (
@@ -178,7 +178,7 @@ CREATE TABLE products (
 	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 );
 
---Product tags can be used to categorize products, set up hierachies 
+--Product tags can be used to categorize products, set up hierachies
 CREATE TABLE product_tags (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
 	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
@@ -186,7 +186,7 @@ CREATE TABLE product_tags (
 
 CREATE TABLE product_sizes (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.	
+	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 );
 
 CREATE TABLE brands (
@@ -231,12 +231,12 @@ CREATE TABLE warehouses (
 
 CREATE TABLE shipments (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.	
+	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 );
 
 CREATE TABLE coupons (
 	created_timestamp	TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
-	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.	
+	modified_timestamp TIMESTAMPTZ DEFAULT NULL --Should be pushed to another table with modifications users_history or something.
 );
 
 CREATE TABLE product_coupons (

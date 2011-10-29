@@ -35,13 +35,13 @@ class Doctrine_Template_Searchable extends Doctrine_Template
     /**
      * __construct
      *
-     * @param array $options 
+     * @param array $options
      * @return void
      */
     public function __construct(array $options = array())
     {
 	      parent::__construct($options);
-        $this->_plugin = new Doctrine_Search($this->_options); 
+        $this->_plugin = new Doctrine_Search($this->_options);
     }
 
     /**
@@ -60,8 +60,8 @@ class Doctrine_Template_Searchable extends Doctrine_Template
      * Make the batchUpdateIndex() function available to the template so Doctrine_Record child classes
      * with the behavior enabled can all the function
      *
-     * @param integer $limit 
-     * @param integer $offset 
+     * @param integer $limit
+     * @param integer $offset
      * @return void
      */
     public function batchUpdateIndex($limit = null, $offset = null, $encoding = null)
@@ -72,8 +72,8 @@ class Doctrine_Template_Searchable extends Doctrine_Template
     /**
      * Proxy method so the batch updating can be called from table classes
      *
-     * @param integer $limit 
-     * @param integer $offset 
+     * @param integer $limit
+     * @param integer $offset
      * @return void
      */
     public function batchUpdateIndexTableProxy($limit = null, $offset = null, $encoding = null)
@@ -83,7 +83,7 @@ class Doctrine_Template_Searchable extends Doctrine_Template
 
     /**
      * Searchable keyword search proxy for Doctrine_Table
-     * 
+     *
      * @param string $string Keyword string to search for
      * @param Doctrine_Query $query Query object to alter. Adds where condition to limit the results using the search index
      * @return array    ids and relevancy

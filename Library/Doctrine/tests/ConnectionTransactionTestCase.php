@@ -3,7 +3,7 @@
 class Transaction_TestLogger implements Doctrine_Overloadable
 {
     private $messages = array();
-    
+
     public function __call($m, $a)
     {
         $this->messages[] = $m;
@@ -57,7 +57,7 @@ class Doctrine_Connection_Transaction_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($listener->pop(), 'onPreTransactionBegin');
 
         $this->assertEqual($user->id, 1);
-        
+
         $this->assertTrue($count < count($this->dbh));
 
         $this->connection->commit();
@@ -97,7 +97,7 @@ class Doctrine_Connection_Transaction_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($users[0]->id, 2);
 
         $this->assertEqual($users[1]->id, 3);
-        
+
         $this->assertTrue($count < count($this->dbh));
 
         $this->connection->commit();
@@ -112,7 +112,7 @@ class Doctrine_Connection_Transaction_TestCase extends Doctrine_UnitTestCase
 
 
         $user = $this->connection->getTable('User')->find(1);
-        
+
         $listener = new Transaction_TestLogger();
         $user->getTable()->getConnection()->setListener($listener);
         $this->connection->beginTransaction();
@@ -130,7 +130,7 @@ class Doctrine_Connection_Transaction_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($listener->pop(), 'onPreTransactionBegin');
 
         $this->assertEqual($user->id, 1);
-        
+
         $this->assertTrue($count < count($this->dbh));
 
         $this->connection->commit();
@@ -169,7 +169,7 @@ class Doctrine_Connection_Transaction_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($users[1]->id, 2);
 
         $this->assertEqual($users[2]->id, 3);
-        
+
         $this->assertTrue($count < count($this->dbh));
 
         $this->connection->commit();

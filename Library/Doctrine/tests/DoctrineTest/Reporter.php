@@ -26,8 +26,8 @@ class DoctrineTest_Reporter
             return '<span style="font-weight: bold; color: ' . $color . ';">' . $message . '</span>';
         }
     }
-    
-    public function setTestCase($test) 
+
+    public function setTestCase($test)
     {
         $this->_test = $test;
     }

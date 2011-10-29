@@ -163,7 +163,7 @@ Use the ``spaceless`` tag to remove whitespace between HTML tags:
 
     {# output will be <div><strong>foo</strong></div> #}
 
-In addition to the spaceless tag you can also control whitespace on a per tag 
+In addition to the spaceless tag you can also control whitespace on a per tag
 level.  By using the whitespace control modifier on your tags you can trim
 leading and or trailing whitespace from any tag type:
 

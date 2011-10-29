@@ -243,7 +243,7 @@ EOF
         \$className = \$this->class->fieldMappings['%2\$s']['targetDocument'];
         \$criteria = array_merge(
             array(\$this->class->fieldMappings['%2\$s']['mappedBy'] . '.\$id' => \$data['_id']),
-            isset(\$this->class->fieldMappings['%2\$s']['criteria']) ? \$this->class->fieldMappings['%2\$s']['criteria'] : array() 
+            isset(\$this->class->fieldMappings['%2\$s']['criteria']) ? \$this->class->fieldMappings['%2\$s']['criteria'] : array()
         );
         \$sort = isset(\$this->class->fieldMappings['%2\$s']['sort']) ? \$this->class->fieldMappings['%2\$s']['sort'] : array();
         \$return = \$this->unitOfWork->getDocumentPersister(\$className)->load(\$criteria, null, array(), 0, \$sort);

@@ -17,7 +17,7 @@ require_once(dirname(__FILE__) . '/../scorer.php');
  *
  *    This code is made available under the same terms as SimpleTest.  It is based
  *    off of code that Rene vd O originally published in patch [ 1594212 ]
- *    on the SimpleTest patches tracker. 
+ *    on the SimpleTest patches tracker.
  *
  *    @author Rene vd O (original code)
  *    @author Perrick Penet
@@ -26,31 +26,31 @@ require_once(dirname(__FILE__) . '/../scorer.php');
  */
 class Recorder extends SimpleReporter {
     var $results;
-  
+
 	function __construct() {
         parent::__construct();
         $this->results = array();
 	}
-	
+
 	function paintPass($message) {
         parent::paintPass($message);
         $breadcrumb = $this->getTestList();
         array_shift($breadcrumb);
         $test = implode("->", $breadcrumb);
-    
+
         $result["time"] = time();
         $result["status"] = "Passed";
         $result["test"] = $test;
         $result["message"] = $message;
         $this->results[] = $result;
 	}
-	
+
 	function paintFail($message) {
         parent::paintFail($message);
         $breadcrumb = $this->getTestList();
         array_shift($breadcrumb);
         $test = implode("->", $breadcrumb);
-    
+
         $result["time"] = time();
         $result["status"] = "Failed";
         $result["test"] = $test;

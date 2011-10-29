@@ -7,7 +7,7 @@ class CoverageDataHandlerTest extends UnitTestCase {
         		!file_exists('DB/sqlite.php'),
                 'The Coverage extension needs to have PEAR installed');
     }
-    
+
 	function setUp() {
        	require_once dirname(__FILE__) .'/../coverage_data_handler.php';
     }
@@ -38,7 +38,7 @@ class CoverageDataHandlerTest extends UnitTestCase {
         $handler = new CoverageDataHandler($this->tempdb());
         $handler->createSchema();
         $handler->write(array(
-    	'file1' => array(-2, -1, 1), 
+    	'file1' => array(-2, -1, 1),
     	'file2' => array(-2, -1, 1)
         ));
         $handler->write(array(

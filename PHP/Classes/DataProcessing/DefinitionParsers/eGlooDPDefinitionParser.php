@@ -3,21 +3,21 @@
  * eGlooDPDefinitionParser Class File
  *
  * Contains the class definition for the eGlooDPDefinitionParser
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -68,14 +68,14 @@ abstract class eGlooDPDefinitionParser {
 	 * can instantiate objects without implementing the singleton pattern.  We enforce this pattern
 	 * because no eGlooDPDefinitionParser needs to have more than one object instantiated at any
 	 * time.
-	 * 
+	 *
 	 * The constructor takes two arguments: the data connection name to parse DP nodes for and the relevant
 	 * engine mode to process them for (lazy loading).
 	 *
 	 * @param $connection_name a string representing the string of the connection we want to deal with
 	 * @param $engine_mode an integer constant referenced from ConnectionManager for the engine mode we're in
 	 *
-	 * @throws eGlooDPDefinitionParserException if attempting to construct a second instance of this class 
+	 * @throws eGlooDPDefinitionParserException if attempting to construct a second instance of this class
 	 */
 	final private function __construct( $connection_name, $engine_mode ) {
 		// Make sure we haven't already constructed a singleton instance.  Throw exception if we have

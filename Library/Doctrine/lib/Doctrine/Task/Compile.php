@@ -36,11 +36,11 @@ class Doctrine_Task_Compile extends Doctrine_Task
            $requiredArguments    =   array(),
            $optionalArguments    =   array('drivers'        =>  'Specify list of drivers you wish to compile. Ex: mysql|mssql|sqlite',
                                            'compiled_path'  =>  'The path where you want to write the compiled doctrine libs.');
-    
+
     public function execute()
     {
         $compiledPath = Doctrine_Core::compile($this->getArgument('compiled_path'), $this->getArgument('drivers', array()));
-        
+
         $this->notify('Compiled Doctrine successfully to: ' . $compiledPath);
     }
 }

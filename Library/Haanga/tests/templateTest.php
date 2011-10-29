@@ -24,7 +24,7 @@ class templateTest extends PHPUnit_Framework_TestCase
             Haanga_Compiler::setOption('strip_whitespace', FALSE);
         }
     }
-    /** 
+    /**
      * @dataProvider tplProvider
      */
     public function testRuntime($test_file, $data, $expected)
@@ -34,7 +34,7 @@ class templateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($output, $expected);
     }
 
-    /** 
+    /**
      * @dataProvider tplProvider
      */
     public function testLambda($test_file, $data, $expected)
@@ -46,7 +46,7 @@ class templateTest extends PHPUnit_Framework_TestCase
     }
 
 
-    /** 
+    /**
      * @dataProvider tplProvider
      */
     public function testIsCached($test_file, $data, $expected)
@@ -58,8 +58,8 @@ class templateTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(Haanga::$has_compiled);
     }
 
-    /** 
-     * @dataProvider tplProvider 
+    /**
+     * @dataProvider tplProvider
      * /
     public function testCLICompiler($test_file, $data, $expected)
     {
@@ -92,7 +92,7 @@ class templateTest extends PHPUnit_Framework_TestCase
             if (!is_file($expected)) {
                 if (!is_file($expected.".php")) {
                     continue;
-                } 
+                }
                 $expected .= ".php";
                 ob_start();
                 require $expected;

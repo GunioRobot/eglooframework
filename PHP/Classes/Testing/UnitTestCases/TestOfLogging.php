@@ -17,7 +17,7 @@ class TestOfLogging extends UnitTestCase {
     //     // $log->message('Should write this to a file');
     //     $this->assertTrue(1);
     // }
-    // 
+    //
     // function testFoo() {
     //     // @unlink('/temp/test.log');
     //     // $log = new Log('/temp/test.log');

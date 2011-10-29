@@ -47,7 +47,7 @@ class MapReduceTest extends \PHPUnit_Framework_TestCase
             $multiplier = new Currency($name, $multiplier);
             $this->dm->persist($multiplier);
         }
-        
+
         $stockItems = array(
             new StockItem('stock_item_0', new Money(9.99 * 0 + 5, $currencies['USD']), 5),
             new StockItem('stock_item_1', new Money(9.99 * 1 + 5, $currencies['USD']), 15 * 1 - 4),
@@ -217,7 +217,7 @@ class MapReduceTest extends \PHPUnit_Framework_TestCase
             ->reduce("function(k, vals) {
                 var sum = 0;
                 for (var i in vals) {
-                    sum += vals[i]; 
+                    sum += vals[i];
                 }
                 return sum;
             }");

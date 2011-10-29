@@ -30,13 +30,13 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Hook_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Hook_TestCase extends Doctrine_UnitTestCase
 {
 
-    public function testWordLikeParserSupportsHyphens() 
+    public function testWordLikeParserSupportsHyphens()
     {
         $parser = new Doctrine_Hook_WordLike();
-        
+
         $parser->parse('u', 'name', "'some guy' OR zYne");
 
         $this->assertEqual($parser->getCondition(), '(u.name LIKE ? OR u.name LIKE ?)');

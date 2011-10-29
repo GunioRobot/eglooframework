@@ -34,7 +34,7 @@ class Doctrine_Ticket_912_TestCase extends Doctrine_UnitTestCase {
   /**
    * prepareData
    */
-	
+
     public function prepareData()
     {
 	    $oResume = new ticket912_Resume;
@@ -45,11 +45,11 @@ class Doctrine_Ticket_912_TestCase extends Doctrine_UnitTestCase {
 	    $oResume->KnownLanguages[0]->Level->label = "Fluent";
 	    $oResume->save();
     }
-    
+
     /**
      * prepareTables
      */
-    
+
     public function prepareTables()
     {
     	$this->tables = array();
@@ -58,15 +58,15 @@ class Doctrine_Ticket_912_TestCase extends Doctrine_UnitTestCase {
     	$this->tables[] = 'ticket912_ResumeHasLanguage';
     	$this->tables[] = 'ticket912_LanguageLevel';
     	$this->tables[] = 'ticket912_Language';
-    	
+
     	parent :: prepareTables();
     }
-	
-    
+
+
     /**
      * Test the existence expected indexes
      */
-    
+
     public function testTicket()
     {
         $q = new Doctrine_Query();
@@ -78,16 +78,16 @@ class Doctrine_Ticket_912_TestCase extends Doctrine_UnitTestCase {
           ->leftJoin('Resume.KnownLanguages KnownLanguages')
           ->leftJoin('KnownLanguages.Level Level')
           ->leftJoin('KnownLanguages.Language Language');
-        
+
         $aResult = $q->fetchArray();
 
         // should be setted..
     	$issetLevel = isset($aResult[0]['KnownLanguages'][0]['Level']);
         $issetLanguage = isset($aResult[0]['KnownLanguages'][0]['Language']);
-        
+
         $this->assertTrue($issetLevel);
         $this->assertTrue($issetLanguage);
-    
+
     }
 }
 
@@ -101,7 +101,7 @@ class ticket912_Resume extends Doctrine_Record
 	/**
    * setTableDefinition
    */
-	
+
   public function setTableDefinition()
   {
     $this->setTableName('resume');
@@ -118,29 +118,29 @@ class ticket912_Resume extends Doctrine_Record
   /**
    * setUp
    */
-  
+
   public function setUp()
   {
     $this->hasMany('ticket912_ResumeHasLanguage as KnownLanguages', array('local' => 'id', 'foreign' => 'resume_id'));
-    
+
     $this->hasOne('ticket912_Person as Person', array(
       'local' => 'person_id',
-      'foreign' => 'id',    
+      'foreign' => 'id',
       'onDelete' => 'SET NULL',
       'onUpdate' => 'CASCADE'
       ));
-  } 
+  }
 }
 
 /**
  *  First level one to one relation class Language
  */
 class ticket912_Person extends Doctrine_Record
-{	
+{
   /**
    * setTableDefinition
    */
- 
+
   public function setTableDefinition()
   {
     $this->setTableName('person');
@@ -151,7 +151,7 @@ class ticket912_Person extends Doctrine_Record
       ));
 
     $this->hasColumn('name', 'string', 255, array ());
-  } 
+  }
 }
 
 
@@ -164,7 +164,7 @@ class ticket912_ResumeHasLanguage extends Doctrine_Record
   /**
    * setTableDefinition
    */
-	
+
   public function setTableDefinition()
   {
     $this->setTableName('resume_has_language');
@@ -186,15 +186,15 @@ class ticket912_ResumeHasLanguage extends Doctrine_Record
     $this->hasColumn('language_level_id', 'integer', 2, array (
       'unsigned' => true,
       ));
-    
+
     $this->hasColumn('comments', 'string', 4000, array ());
 
   }
 
   /**
    * setUp
-   */  
-  
+   */
+
   public function setUp()
   {
     $this->hasOne('ticket912_Resume as Resume', array('local' => 'resume_id',
@@ -211,7 +211,7 @@ class ticket912_ResumeHasLanguage extends Doctrine_Record
                                                   'foreign' => 'id',
                                                   'onDelete' => 'SET NULL',
                                                   'onUpdate' => 'CASCADE'));
-  } 
+  }
 }
 
 
@@ -223,8 +223,8 @@ class ticket912_Language extends Doctrine_Record
 {
   /**
    * setTableDefinition
-   */  
-	
+   */
+
 	public function setTableDefinition()
   {
   	$this->setTableName('language');
@@ -239,13 +239,13 @@ class ticket912_Language extends Doctrine_Record
 
   /**
    * setup
-   */  
-  
+   */
+
   public function setUp()
   {
     $this->hasMany('ticket912_Resume as Resumes', array('local' => 'id', 'foreign' => 'language_id'));
     $this->hasMany('ticket912_ResumeHasLanguage as ResumeKnownLanguages', array('local' => 'id', 'foreign' => 'language_id'));
-  } 
+  }
 }
 
 /**
@@ -256,8 +256,8 @@ class ticket912_LanguageLevel extends Doctrine_Record
 {
   /**
    * setTableDefinition
-   */  
-	
+   */
+
 	public function setTableDefinition()
   {
     $this->setTableName('language_level');
@@ -272,8 +272,8 @@ class ticket912_LanguageLevel extends Doctrine_Record
 
   /**
    * setUp
-   */  
-  
+   */
+
   public function setUp()
   {
     $this->hasMany('ticket912_ResumeHasLanguage as ResumeKnownLanguages', array(

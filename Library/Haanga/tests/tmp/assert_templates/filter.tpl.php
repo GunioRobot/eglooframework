@@ -15,7 +15,7 @@ function haanga_7c948c919295fb106667df66f458e608eb775422($vars, $return=FALSE, $
 '.htmlspecialchars(strtoupper((empty($foobar) == TRUE ? 'default value' : $foobar))).'
 ';
     $buffer1  = '
-    hola que 
+    hola que
 ';
     echo strtoupper($buffer1).'
 ';

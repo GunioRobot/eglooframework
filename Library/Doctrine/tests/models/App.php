@@ -14,6 +14,6 @@ class App extends Doctrine_Record {
             'local' => 'app_category_id',
             'foreign' => 'id'
         ));
-    }        
+    }
 }
 

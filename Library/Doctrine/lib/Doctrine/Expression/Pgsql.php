@@ -242,7 +242,7 @@ class Doctrine_Expression_Pgsql extends Doctrine_Expression_Driver
     {
         return $this->position($substr, $str);
     }
-    
+
     /**
      * position
      *
@@ -254,7 +254,7 @@ class Doctrine_Expression_Pgsql extends Doctrine_Expression_Driver
     {
         $substr = $this->getIdentifier($substr);
         $str = $this->getIdentifier($str);
-        
+
         return sprintf('POSITION(%s IN %s)', $substr, $str);
     }
 }

@@ -184,7 +184,7 @@ function getElementStyles() {
 			}
 		}
 	}
-	
+
 	return newStyle;
 }
 
@@ -208,7 +208,7 @@ function filterStyles(styles) {
 			delete styles[name];
 		}
 	}
-	
+
 	return styles;
 }
 
@@ -452,12 +452,12 @@ function standardSpeed( speed ) {
 	if ( !speed || typeof speed === "number" || $.fx.speeds[ speed ] ) {
 		return true;
 	}
-	
+
 	// invalid strings - treat as "normal" speed
 	if ( typeof speed === "string" && !$.effects[ speed ] ) {
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -472,7 +472,7 @@ $.fn.extend({
 			},
 			mode = args2.options.mode,
 			effectMethod = $.effects[effect];
-		
+
 		if ( $.fx.off || !effectMethod ) {
 			// delegate to the original method (e.g., .show()) if possible
 			if ( mode ) {
@@ -485,7 +485,7 @@ $.fn.extend({
 				});
 			}
 		}
-		
+
 		return effectMethod.call(this, args2);
 	},
 

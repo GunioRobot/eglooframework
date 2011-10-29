@@ -93,7 +93,7 @@ class ClassMetadataTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
 
         $this->assertEquals("DoctrineGlobal_User", $cm->fieldMappings['author']['targetDocument']);
     }
-    
+
     public function testMapManyToManyJoinTableDefaults()
     {
         $cm = new ClassMetadata('Documents\CmsUser');
@@ -102,7 +102,7 @@ class ClassMetadataTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
             'fieldName' => 'groups',
             'targetDocument' => 'CmsGroup'
         ));
-        
+
         $assoc = $cm->fieldMappings['groups'];
         $this->assertTrue(is_array($assoc));
     }

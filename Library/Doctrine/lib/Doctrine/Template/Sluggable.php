@@ -70,7 +70,7 @@ class Doctrine_Template_Sluggable extends Doctrine_Template
             $this->_options['indexName'] = $this->getTable()->getTableName().'_sluggable';
         }
         $this->hasColumn($name, $this->_options['type'], $this->_options['length'], $this->_options['options']);
-        
+
         if ($this->_options['unique'] == true && $this->_options['uniqueIndex'] == true) {
             $indexFields = array($this->_options['name']);
             $indexFields = array_merge($indexFields, $this->_options['uniqueBy']);

@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1383_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1383_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -83,7 +83,7 @@ class Ticket_1383_Brand extends Doctrine_Record
         $this->hasColumn('id', 'integer', null, array('primary' => true, 'autoincrement' => true));
         $this->hasColumn('name', 'string', 255, array('notnull' => true));
     }
-    
+
     public function setUp() {
         $this->hasMany(
             'Ticket_1383_Brand_Image',

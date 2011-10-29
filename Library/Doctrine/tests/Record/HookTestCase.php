@@ -30,12 +30,12 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Record_Hook_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Record_Hook_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
-    public function prepareTables() 
-    { 
+    public function prepareTables()
+    {
         $this->tables = array('RecordHookTest', 'SoftDeleteTest');
 
         parent::prepareTables();
@@ -44,7 +44,7 @@ class Doctrine_Record_Hook_TestCase extends Doctrine_UnitTestCase
     public function testInsertHooksGetInvoked()
     {
         $r = new RecordHookTest();
-        
+
         $r->name = 'record';
         $r->save();
 

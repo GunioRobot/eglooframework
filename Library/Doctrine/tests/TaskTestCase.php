@@ -21,7 +21,7 @@
 
 /**
  * Doctrine_Task_TestCase
- * 
+ *
  * N.B. Invalid task classes are loaded just-in-time to avoid clashes with the CLI tests.  Other test-specific
  * subclasses are declared at the bottom of this file.
  *
@@ -33,7 +33,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Task_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Task_TestCase extends Doctrine_UnitTestCase
 {
     public function setUp() {}
 
@@ -48,7 +48,7 @@ class Doctrine_Task_TestCase extends Doctrine_UnitTestCase
 
         /*
          * PHP 5.3-specific tests
-         * 
+         *
          * One would hope that authors of custom tasks would name their tasks manually, but since we can't guarantee
          * anything, we'll have to _try_ to create a sensible name
          */
@@ -71,7 +71,7 @@ class Doctrine_Task_TestCase extends Doctrine_UnitTestCase
 
     /**
      * Loads a PHP fixture from the directory for this test case
-     * 
+     *
      * @ignore
      * @param string $basename
      */

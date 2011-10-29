@@ -44,7 +44,7 @@ class Haanga_Extension_Tag extends Haanga_Extension
      *  Check if the current $tag (string) is registered as a custom
      *  tag, if so, it check wether it is just a custom tag or a custom block.
      *
-     *  This method is called from the lexer for each alpha (within {% %}), 
+     *  This method is called from the lexer for each alpha (within {% %}),
      *  to avoid parsing conflicts.
      *
      *  @param string $tag  Tag to check

@@ -167,7 +167,7 @@ html {
     $this->token = HG_Parser::T_BLOCK;
 }
 
-"&&" { 
+"&&" {
     $this->token = HG_Parser::T_AND;
 }
 
@@ -206,15 +206,15 @@ html {
 "TRUE" token_end {
     $this->token = HG_Parser::T_TRUE;
 }
-    
+
 "FALSE" token_end {
     $this->token = HG_Parser::T_FALSE;
 }
-    
+
 "!" token_end {
     $this->token = HG_Parser::T_NOT;
 }
-    
+
 
 "[" {
     $this->token = HG_Parser::T_BRACKETS_OPEN;
@@ -337,7 +337,7 @@ html {
 
 "if" token_end {
     $this->token = HG_Parser::T_IF;
-} 
+}
 
 "else" token_end {
     $this->token = HG_Parser::T_ELSE;

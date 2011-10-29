@@ -49,7 +49,7 @@ class Doctrine_Relation_LocalKey extends Doctrine_Relation
         if (is_null($id) || ! $this->definition['table']->getAttribute(Doctrine_Core::ATTR_LOAD_REFERENCES)) {
             $related = $this->getTable()->create();
 
-            // Ticket #1131 Patch.            
+            // Ticket #1131 Patch.
             if ( ! is_null($id)) {
                 $related->assignIdentifier($id);
                 $related->state(Doctrine_Record::STATE_PROXY);
@@ -62,7 +62,7 @@ class Doctrine_Relation_LocalKey extends Doctrine_Relation
                             ->getConnection()
                             ->query($dql, array($id))
                             ->getFirst();
-            
+
             if ( ! $related || empty($related)) {
                 $related = $this->getTable()->create();
             }

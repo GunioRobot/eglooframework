@@ -37,7 +37,7 @@ class DC521TestModel extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        
+
     }
 }
 
@@ -56,7 +56,7 @@ class DC521IdOnlyTestModel extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        
+
     }
 }
 
@@ -71,7 +71,7 @@ class DC521IdOnlyTestModel extends Doctrine_Record
  * @since       1.2
  * @version     $Revision$
  */
-class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
 {
     public function init()
     {
@@ -80,14 +80,14 @@ class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
     	   parent::init();
         $this->prepareTables();
     }
-    
+
     public function setUp()
     {
     	   $this->driverName = 'Pgsql';
         Doctrine_Manager::connection('pgsql://test:test@localhost/doctrine', 'Pgsql');
     	   parent::setUp();
     }
-    
+
     public function testEmptyPgsqlAutoIncrementField()
     {
         $m = new DC521TestModel();
@@ -101,7 +101,7 @@ class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
         $m->save();
         $this->assertEqual($m->id, 1);
     }
-    
+
     public function testIdOnlyPgsqlAutoIncrementFieldWithDefinedValue()
     {
         $m = new DC521IdOnlyTestModel();
@@ -109,7 +109,7 @@ class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
         $m->save();
         $this->assertEqual($m->id, 9999);
     }
-    
+
     public function testPgsqlAutoIncrementFieldWithDefinedValue()
     {
         $m = new DC521TestModel();
@@ -117,7 +117,7 @@ class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
         $m->save();
         $this->assertEqual($m->id, 9999);
     }
-    
+
     public function testPgsqlAutoIncrementFieldWithDefinedValueAndData()
     {
         $m = new DC521TestModel();
@@ -127,13 +127,13 @@ class Doctrine_Ticket_DC521_TestCase extends Doctrine_UnitTestCase
         $m->save();
         $this->assertEqual($m->id, 111111);
     }
-    
-    public function prepareTables() 
+
+    public function prepareTables()
     {
         $this->tables = array('DC521TestModel', 'DC521IdOnlyTestModel');
         parent::prepareTables();
     }
-    
+
     public function tearDown()
     {
         Doctrine_Manager::resetInstance();

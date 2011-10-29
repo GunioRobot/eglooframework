@@ -1,6 +1,6 @@
 --TEST--
 --SKIPIF--
-<?php 
+<?php
 if (substr(PHP_OS, 0, 3) == 'WIN') die("skip this test is for non-Windows platforms only");
 ?>
 --FILE--

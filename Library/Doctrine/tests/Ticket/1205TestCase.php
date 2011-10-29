@@ -1,28 +1,28 @@
 <?php
 class Doctrine_Ticket_1205_TestCase extends Doctrine_UnitTestCase
-{        
+{
     public function prepareData()
-    { 
+    {
         $user = new Ticket1205TestUser();
         $user->id = 1;
         $user->first_name = 'Slick';
         $user->last_name = 'Rick';
         $user->save();
-  
+
         $address = new Ticket1205TestAddress();
         $address->id = 1;
         $address->user_id = 1;
         $address->city = 'Anywhere';
-        $address->save();    
-    }    
-    
+        $address->save();
+    }
+
     public function prepareTables()
     {
         $this->tables[] = 'Ticket1205TestUser';
         $this->tables[] = 'Ticket1205TestAddress';
         parent::prepareTables();
-    }    
-    
+    }
+
     public function testTicket()
     {
         try {
@@ -73,7 +73,7 @@ class Ticket1205TestAddress extends Doctrine_Record
   }
 
   public function setUp()
-  {    
+  {
     $this->hasOne('Ticket1205TestUser as User', array('local'   => 'user_id',
                                                       'foreign' => 'id'));
   }

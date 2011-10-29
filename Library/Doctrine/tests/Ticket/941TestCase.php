@@ -14,24 +14,24 @@ class Doctrine_Ticket_941_TestCase extends Doctrine_UnitTestCase
 
   public function prepareData()
   {
-      $site = new Site();     
+      $site = new Site();
       $site->site_id      = 1;
-      $site->site_domain  = 'site1'; 
+      $site->site_domain  = 'site1';
       $site->save();
 
-      $site = new Site();     
+      $site = new Site();
       $site->site_id      = 2;
-      $site->site_domain  = 'site2'; 
+      $site->site_domain  = 'site2';
       $site->save();
 
-      $var  = new Variable(); 
+      $var  = new Variable();
       $var->variable_id   = 1;
-      $var->variable_name = 'var1'; 
+      $var->variable_name = 'var1';
       $var->save();
 
-      $var  = new Variable(); 
+      $var  = new Variable();
       $var->variable_id   = 2;
-      $var->variable_name = 'var2'; 
+      $var->variable_name = 'var2';
       $var->save();
 
       $varval = new SiteVarvalue();
@@ -65,10 +65,10 @@ class Doctrine_Ticket_941_TestCase extends Doctrine_UnitTestCase
       $query = $query->from('Site s LEFT JOIN s.Variables v LEFT JOIN v.Values vv WITH vv.site_id = s.site_id');
 
       $sites = $query->execute();
-      
+
       $this->assertEqual('site1', $sites[0]->site_domain);
       $this->assertEqual(2, count($sites));
-      
+
       // this is important for the understanding of the behavior
       $this->assertIdentical($sites[0]->Variables[0], $sites[1]->Variables[0]);
       $this->assertIdentical($sites[0]->Variables[1], $sites[1]->Variables[1]);
@@ -82,22 +82,22 @@ class Doctrine_Ticket_941_TestCase extends Doctrine_UnitTestCase
       $this->assertEqual('val3 dom2 var1', $sites[0]->Variables[0]->Values[1]->varvalue_value);
       $this->assertEqual('val2 dom1 var2', $sites[0]->Variables[1]->Values[0]->varvalue_value);
       $this->assertEqual('val4 dom2 var2', $sites[0]->Variables[1]->Values[1]->varvalue_value);
-      
+
       $this->assertEqual('var1', $sites[0]->Variables[0]->variable_name);
       $this->assertEqual('var1', $sites[1]->Variables[0]->variable_name);
-      
+
       $this->assertEqual('var2', $sites[0]->Variables[1]->variable_name);
       $this->assertEqual('var2', $sites[1]->Variables[1]->variable_name);
-      
-      
+
+
       // now array hydration
-      
+
       $sites = $query->fetchArray();
-      
+
       $this->assertEqual('site1', $sites[0]['site_domain']);
       $this->assertEqual('site2', $sites[1]['site_domain']);
       $this->assertEqual(2, count($sites));
-      
+
       // this is important for the understanding of the behavior
       $this->assertEqual(1, count($sites[0]['Variables'][0]['Values']));
       $this->assertEqual(1, count($sites[1]['Variables'][0]['Values']));
@@ -111,13 +111,13 @@ class Doctrine_Ticket_941_TestCase extends Doctrine_UnitTestCase
       // different contents when hydrating arrays
       $this->assertEqual('val2 dom1 var2', $sites[0]['Variables'][1]['Values'][0]['varvalue_value']);
       $this->assertEqual('val4 dom2 var2', $sites[1]['Variables'][1]['Values'][0]['varvalue_value']);
-      
+
       $this->assertEqual('var1', $sites[0]['Variables'][0]['variable_name']);
       $this->assertEqual('var1', $sites[1]['Variables'][0]['variable_name']);
-      
+
       $this->assertEqual('var2', $sites[0]['Variables'][1]['variable_name']);
       $this->assertEqual('var2', $sites[1]['Variables'][1]['variable_name']);
-      
+
   }
 
 }

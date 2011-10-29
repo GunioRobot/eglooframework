@@ -7,14 +7,14 @@
 				<div class="friendshipRequestListTitle">
 					 <a href="/internalMainPage/getInternalMainPage/&profileID=<!--{$currentEntry->get_profile_id()}-->" class="friendItemName clickable"><!--{$currentEntry->get_profilename()}--></a>
 				</div>
-				<div class="friendshipRequestReject clickable" 
+				<div class="friendshipRequestReject clickable"
 					 onclick="rejectFriendship('<!--{$currentEntry->get_profile_id()}-->', '<!--{$currentEntry->get_relationshiptype()}-->');
 					          $('#friendshipRequestItemContainer_<!--{$currentEntry->get_profile_id()}-->_<!--{$currentEntry->get_relationshiptype()}-->').fadeOut(1000).remove();
 					          appState['numberAlerts'] -= 1;
 					          $('#alertButton').html('Alerts ('+appState['numberAlerts']+')');">
 					reject
 				</div>
-				<div class="friendshipRequestAccept clickable" 
+				<div class="friendshipRequestAccept clickable"
 					 onclick="acceptFriendship('<!--{$currentEntry->get_profile_id()}-->', '<!--{$currentEntry->get_relationshiptype()}-->');
 					          $('#friendshipRequestItemContainer_<!--{$currentEntry->get_profile_id()}-->_<!--{$currentEntry->get_relationshiptype()}-->').fadeOut(1000).remove();
 					          appState['numberAlerts'] -= 1;

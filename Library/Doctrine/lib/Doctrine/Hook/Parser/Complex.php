@@ -33,7 +33,7 @@
 abstract class Doctrine_Hook_Parser_Complex extends Doctrine_Hook_Parser
 {
     protected $_tokenizer;
-    
+
     /**
      * Constructor.
      */
@@ -41,7 +41,7 @@ abstract class Doctrine_Hook_Parser_Complex extends Doctrine_Hook_Parser
     {
         $this->_tokenizer = new Doctrine_Query_Tokenizer();
     }
-    
+
     /**
      * parse
      * Parses given field and field value to DQL condition

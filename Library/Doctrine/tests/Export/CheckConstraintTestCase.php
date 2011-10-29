@@ -30,21 +30,21 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Export_CheckConstraint_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Export_CheckConstraint_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
     public function prepareTables()
     { }
-    
+
     public function testCheckConstraints()
     {
         $e = $this->conn->export;
 
         $sql = $e->exportClassesSql(array('CheckConstraintTest'));
-   
+
         $this->assertEqual($sql[0], 'CREATE TABLE check_constraint_test (id INTEGER PRIMARY KEY AUTOINCREMENT, price DECIMAL(2,2), discounted_price DECIMAL(2,2), CHECK (price >= 100), CHECK (price <= 5000), CHECK (price > discounted_price))');
-    
+
         try {
             $dbh = new PDO('sqlite::memory:');
             $dbh->exec($sql[0]);

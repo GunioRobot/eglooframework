@@ -85,13 +85,13 @@ body(A) ::= . { A = array(); }
 /* List of statements */
 code(A) ::= T_TAG_OPEN stmts(B). { if (count(B)) B['line'] = $this->lex->getLine();  A = B; }
 code(A) ::= T_HTML(B). {
-    A = array('operation' => 'html', 'html' => B, 'line' => $this->lex->getLine() ); 
+    A = array('operation' => 'html', 'html' => B, 'line' => $this->lex->getLine() );
 }
 code(A) ::= T_COMMENT(B). {
-    B=rtrim(B); A = array('operation' => 'comment', 'comment' => B); 
-} 
+    B=rtrim(B); A = array('operation' => 'comment', 'comment' => B);
+}
 code(A) ::= T_PRINT_OPEN filtered_var(B) T_PRINT_CLOSE.  {
-    A = array('operation' => 'print_var', 'variable' => B, 'line' => $this->lex->getLine() ); 
+    A = array('operation' => 'print_var', 'variable' => B, 'line' => $this->lex->getLine() );
 }
 
 stmts(A) ::= T_EXTENDS var_or_string(B) T_TAG_CLOSE. { A = array('operation' => 'base', B); }
@@ -105,7 +105,7 @@ stmts(A) ::= T_INCLUDE var_or_string(B) T_TAG_CLOSE. { A = array('operation' => 
 stmts(A) ::= custom_tag(B). { A = B; }
 stmts(A) ::= alias(B). { A = B; }
 stmts(A) ::= ifequal(B). { A = B; }
-stmts(A) ::= T_AUTOESCAPE varname(B) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(E) T_TAG_CLOSE. { 
+stmts(A) ::= T_AUTOESCAPE varname(B) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(E) T_TAG_CLOSE. {
     B = strtolower(B);
     if (B != 'on' && B != 'off') {
         $this->Error("Invalid autoescape param (".B."), it must be on or off");
@@ -113,20 +113,20 @@ stmts(A) ::= T_AUTOESCAPE varname(B) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END
     if (E != "endautoescape") {
         $this->Error("Invalid close tag ".E.", it must be endautoescape");
     }
-    A = array('operation' => 'autoescape', 'value' => B, 'body' => X); 
+    A = array('operation' => 'autoescape', 'value' => B, 'body' => X);
 }
 
 /* Statement */
 
 /* CUSTOM TAGS */
 custom_tag(A) ::= T_CUSTOM_TAG(B) T_TAG_CLOSE. {
-    A = array('operation' => 'custom_tag', 'name' => B, 'list'=>array()); 
+    A = array('operation' => 'custom_tag', 'name' => B, 'list'=>array());
 }
 custom_tag(A) ::= T_CUSTOM_TAG(B) T_AS varname(C) T_TAG_CLOSE. {
-    A = array('operation' => 'custom_tag', 'name' => B, 'as' => C, 'list'=>array()); 
+    A = array('operation' => 'custom_tag', 'name' => B, 'as' => C, 'list'=>array());
 }
-custom_tag(A) ::= T_CUSTOM_TAG(B) params(X) T_TAG_CLOSE. { 
-    A = array('operation' => 'custom_tag', 'name' => B, 'list' => X); 
+custom_tag(A) ::= T_CUSTOM_TAG(B) params(X) T_TAG_CLOSE. {
+    A = array('operation' => 'custom_tag', 'name' => B, 'list' => X);
 }
 custom_tag(A) ::= T_CUSTOM_TAG(B) params(X) T_AS varname(C) T_TAG_CLOSE. {
     A = array('operation' => 'custom_tag', 'name' => B, 'as' => C, 'list' => X);
@@ -134,15 +134,15 @@ custom_tag(A) ::= T_CUSTOM_TAG(B) params(X) T_AS varname(C) T_TAG_CLOSE. {
 
 /* tags as blocks */
 custom_tag(A) ::= T_CUSTOM_BLOCK(B) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(C) T_TAG_CLOSE. {
-    if ('end'.B != C) { 
-        $this->error("Unexpected ".C); 
-    } 
+    if ('end'.B != C) {
+        $this->error("Unexpected ".C);
+    }
     A = array('operation' => 'custom_tag', 'name' => B, 'body' => X, 'list' => array());
 }
 custom_tag(A) ::= T_CUSTOM_BLOCK(B) params(L) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(C) T_TAG_CLOSE. {
-    if ('end'.B != C) { 
-        $this->error("Unexpected ".C); 
-    } 
+    if ('end'.B != C) {
+        $this->error("Unexpected ".C);
+    }
     A = array('operation' => 'custom_tag', 'name' => B, 'body' => X, 'list' => L);
 }
 
@@ -150,7 +150,7 @@ custom_tag(A) ::= T_CUSTOM_BLOCK(B) params(L) T_TAG_CLOSE body(X) T_TAG_OPEN T_C
 custom_tag(A) ::= T_SPACEFULL T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(C) T_TAG_CLOSE. {
     if ('endspacefull' != C) {
         $this->error("Unexpected ".C);
-    } 
+    }
     A = array('operation' => 'spacefull', 'body' => X);
 }
 
@@ -159,15 +159,15 @@ alias(A) ::= T_WITH varname(B) T_AS varname(C) T_TAG_CLOSE body(X) T_TAG_OPEN T_
     if (Z != "endwith") {
         $this->Error("Unexpected ".Z.", expecting endwith");
     }
-    A = array('operation' => 'alias', 'var' => B, 'as' => C, 'body' => X); 
+    A = array('operation' => 'alias', 'var' => B, 'as' => C, 'body' => X);
 }
 
 /* Simple statements (don't require a end_tag or a body ) */
 stmt(A) ::= regroup(B). { A = B; }
 stmt ::= T_LOAD string(B). {
     if (!is_file(B) || !Haanga_Compiler::getOption('enable_load')) {
-        $this->error(B." is not a valid file"); 
-    } 
+        $this->error(B." is not a valid file");
+    }
     require_once B;
 }
 
@@ -194,7 +194,7 @@ for_def(A) ::= T_FOR varname(I) T_COMMA varname(B) T_IN filtered_var(C) T_TAG_CL
 }
 
 
-for_stmt(A) ::= for_def(B) body(D) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+for_stmt(A) ::= for_def(B) body(D) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endfor") {
         $this->Error("Unexpected ".Z.", expecting endfor");
     }
@@ -202,7 +202,7 @@ for_stmt(A) ::= for_def(B) body(D) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     A['body'] = D;
 }
 
-for_stmt(A) ::= for_def(B) body(D) T_TAG_OPEN T_EMPTY T_TAG_CLOSE body(E)  T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+for_stmt(A) ::= for_def(B) body(D) T_TAG_OPEN T_EMPTY T_TAG_CLOSE body(E)  T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endfor") {
         $this->Error("Unexpected ".Z.", expecting endfor");
     }
@@ -225,27 +225,27 @@ if_stmt(A) ::= T_IF expr(B) T_TAG_CLOSE body(X) T_TAG_OPEN T_ELSE T_TAG_CLOSE bo
 }
 
 /* ifchanged */
-ifchanged_stmt(A) ::= T_IFCHANGED T_TAG_CLOSE body(B) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+ifchanged_stmt(A) ::= T_IFCHANGED T_TAG_CLOSE body(B) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifchanged") {
         $this->Error("Unexpected ".Z.", expecting endifchanged");
     }
-    A = array('operation' => 'ifchanged', 'body' => B); 
+    A = array('operation' => 'ifchanged', 'body' => B);
 }
 
-ifchanged_stmt(A) ::= T_IFCHANGED params(X) T_TAG_CLOSE body(B) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+ifchanged_stmt(A) ::= T_IFCHANGED params(X) T_TAG_CLOSE body(B) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifchanged") {
         $this->Error("Unexpected ".Z.", expecting endifchanged");
     }
     A = array('operation' => 'ifchanged', 'body' => B, 'check' => X);
 }
-ifchanged_stmt(A) ::= T_IFCHANGED T_TAG_CLOSE body(B) T_TAG_OPEN T_ELSE T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+ifchanged_stmt(A) ::= T_IFCHANGED T_TAG_CLOSE body(B) T_TAG_OPEN T_ELSE T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifchanged") {
         $this->Error("Unexpected ".Z.", expecting endifchanged");
     }
-    A = array('operation' => 'ifchanged', 'body' => B, 'else' => C); 
+    A = array('operation' => 'ifchanged', 'body' => B, 'else' => C);
 }
 
-ifchanged_stmt(A) ::= T_IFCHANGED params(X) T_TAG_CLOSE body(B) T_TAG_OPEN T_ELSE T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+ifchanged_stmt(A) ::= T_IFCHANGED params(X) T_TAG_CLOSE body(B) T_TAG_OPEN T_ELSE T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifchanged") {
         $this->Error("Unexpected ".Z.", expecting endifchanged");
     }
@@ -257,13 +257,13 @@ ifequal(A) ::= T_IFEQUAL fvar_or_string(B) fvar_or_string(C) T_TAG_CLOSE body(X)
     if (Z != "endifequal") {
         $this->Error("Unexpected ".Z.", expecting endifequal");
     }
-    A = array('operation' => 'ifequal', 'cmp' => '==', 1 => B, 2 => C, 'body' => X); 
+    A = array('operation' => 'ifequal', 'cmp' => '==', 1 => B, 2 => C, 'body' => X);
 }
 ifequal(A) ::= T_IFEQUAL fvar_or_string(B) fvar_or_string(C) T_TAG_CLOSE body(X) T_TAG_OPEN T_ELSE T_TAG_CLOSE body(Y) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifequal") {
         $this->Error("Unexpected ".Z.", expecting endifequal");
     }
-    A = array('operation' => 'ifequal', 'cmp' => '==', 1 => B, 2 => C, 'body' => X, 'else' => Y); 
+    A = array('operation' => 'ifequal', 'cmp' => '==', 1 => B, 2 => C, 'body' => X, 'else' => Y);
 }
 ifequal(A) ::= T_IFNOTEQUAL fvar_or_string(B) fvar_or_string(C) T_TAG_CLOSE body(X) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endifnotequal") {
@@ -275,36 +275,36 @@ ifequal(A) ::= T_IFNOTEQUAL fvar_or_string(B) fvar_or_string(C) T_TAG_CLOSE body
     if (Z != "endifnotequal") {
         $this->Error("Unexpected ".Z.", expecting endifnotequal");
     }
-    A = array('operation' => 'ifequal', 'cmp' => '!=', 1 => B, 2 => C, 'body' => X, 'else' => Y); 
+    A = array('operation' => 'ifequal', 'cmp' => '!=', 1 => B, 2 => C, 'body' => X, 'else' => Y);
 }
 
 /* block stmt */
-block_stmt(A) ::= T_BLOCK varname(B) T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. { 
+block_stmt(A) ::= T_BLOCK varname(B) T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endblock") {
         $this->Error("Unexpected ".Z.", expecting endblock");
     }
-    A = array('operation' => 'block', 'name' => B, 'body' => C); 
+    A = array('operation' => 'block', 'name' => B, 'body' => C);
 }
 
 block_stmt(A) ::= T_BLOCK varname(B) T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) varname T_TAG_CLOSE. {
     if (Z != "endblock") {
         $this->Error("Unexpected ".Z.", expecting endblock");
     }
-    A = array('operation' => 'block', 'name' => B, 'body' => C); 
+    A = array('operation' => 'block', 'name' => B, 'body' => C);
 }
 
 block_stmt(A) ::= T_BLOCK T_NUMERIC(B) T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_TAG_CLOSE. {
     if (Z != "endblock") {
         $this->Error("Unexpected ".Z.", expecting endblock");
     }
-    A = array('operation' => 'block', 'name' => B, 'body' => C); 
+    A = array('operation' => 'block', 'name' => B, 'body' => C);
 }
 
 block_stmt(A) ::= T_BLOCK T_NUMERIC(B) T_TAG_CLOSE body(C) T_TAG_OPEN T_CUSTOM_END(Z) T_NUMERIC T_TAG_CLOSE. {
     if (Z != "endblock") {
         $this->Error("Unexpected ".Z.", expecting endblock");
     }
-    A = array('operation' => 'block', 'name' => B, 'body' => C); 
+    A = array('operation' => 'block', 'name' => B, 'body' => C);
 }
 
 /* filter stmt */
@@ -332,15 +332,15 @@ params(A) ::= var_or_string(B).                       { A = array(B); }
 
 
 /* variable or string (used on params) */
-var_or_string(A) ::= varname(B).    { A = array('var' => B); }  
-var_or_string(A) ::= T_NUMERIC(B).  { A = array('number' => B); }  
-var_or_string(A) ::= T_TRUE|T_FALSE(B).   { A = trim(@B); }  
+var_or_string(A) ::= varname(B).    { A = array('var' => B); }
+var_or_string(A) ::= T_NUMERIC(B).  { A = array('number' => B); }
+var_or_string(A) ::= T_TRUE|T_FALSE(B).   { A = trim(@B); }
 var_or_string(A) ::= string(B).     { A = array('string' => B); }
 
 /* filtered variables */
-fvar_or_string(A) ::= filtered_var(B).  { A = array('var_filter' => B); }  
-fvar_or_string(A) ::= T_NUMERIC(B).     { A = array('number' => B); }  
-fvar_or_string(A) ::= T_TRUE|T_FALSE(B).   { A = trim(@B); }  
+fvar_or_string(A) ::= filtered_var(B).  { A = array('var_filter' => B); }
+fvar_or_string(A) ::= T_NUMERIC(B).     { A = array('number' => B); }
+fvar_or_string(A) ::= T_TRUE|T_FALSE(B).   { A = trim(@B); }
 fvar_or_string(A) ::= string(B).        { A = array('string' => B); }
 
 /* */
@@ -361,6 +361,6 @@ expr(A) ::= fvar_or_string(B). { A = B; }
 varname(A) ::= varname(B) T_OBJ T_ALPHA(C). { if (!is_array(B)) { A = array(B); } else { A = B; }  A[]=array('object' => C);}
 varname(A) ::= varname(B) T_DOT T_ALPHA(C). { if (!is_array(B)) { A = array(B); } else { A = B; } A[] = array('object' => C);}
 varname(A) ::= varname(B) T_BRACKETS_OPEN var_or_string(C) T_BRACKETS_CLOSE. { if (!is_array(B)) { A = array(B); } else { A = B; }  A[]=C;}
-varname(A) ::= T_ALPHA(B). { A = B; } 
+varname(A) ::= T_ALPHA(B). { A = B; }
 /* T_BLOCK|T_CUSTOM|T_CUSTOM_BLOCK are also T_ALPHA */
-varname(A) ::= T_BLOCK|T_CUSTOM_TAG|T_CUSTOM_BLOCK(B). { A = B; } 
+varname(A) ::= T_BLOCK|T_CUSTOM_TAG|T_CUSTOM_BLOCK(B). { A = B; }

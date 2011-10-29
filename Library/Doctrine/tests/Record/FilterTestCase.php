@@ -30,23 +30,23 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Record_Filter_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Record_Filter_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
     public function prepareTables()
     {
         $this->tables = array('CompositeRecord', 'RelatedCompositeRecord');
-        
+
         parent::prepareTables();
     }
     public function testStandardFiltersThrowsExceptionWhenGettingUnknownProperties()
     {
         $u = new User();
-        
+
         try {
             $u->unknown;
-        
+
             $this->fail();
         } catch (Doctrine_Record_Exception $e) {
             $this->pass();
@@ -56,10 +56,10 @@ class Doctrine_Record_Filter_TestCase extends Doctrine_UnitTestCase
     public function testStandardFiltersThrowsExceptionWhenSettingUnknownProperties()
     {
         $u = new User();
-        
+
         try {
             $u->unknown = 'something';
-        
+
             $this->fail();
         } catch (Doctrine_Record_Exception $e) {
             $this->pass();
@@ -69,7 +69,7 @@ class Doctrine_Record_Filter_TestCase extends Doctrine_UnitTestCase
     public function testCompoundFilterSupportsAccessingRelatedComponentProperties()
     {
         $u = new CompositeRecord();
-        
+
         try {
             $u->name    = 'someone';
             $u->address = 'something';

@@ -59,7 +59,7 @@ class Doctrine_Record_Filter_Compound extends Doctrine_Record_Filter
             if ( ! $record->exists()) {
                 if (isset($record[$alias][$name])) {
                     $record[$alias][$name] = $value;
-                    
+
                     return $record;
                 }
             } else {

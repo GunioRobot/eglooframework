@@ -62,7 +62,7 @@ class Doctrine_Ticket_1015_TestCase extends Doctrine_UnitTestCase {
 
         // number of points for person id of 1 should be 15
         $this->assertEqual(15, $person['T1015_Points']['total']); //THIS WILL FAIL
-         
+
     }
 
     public function testDoctrineRawSQLJoinSelect()

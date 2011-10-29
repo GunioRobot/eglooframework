@@ -1,5 +1,5 @@
 <?php
-class EnumTest extends Doctrine_Record 
+class EnumTest extends Doctrine_Record
 {
     public function setTableDefinition() {
         $this->hasColumn('status', 'enum', 11, array('values' => array('open', 'verified', 'closed')));

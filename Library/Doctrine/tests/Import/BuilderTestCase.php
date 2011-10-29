@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Import_Builder_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Import_Builder_TestCase extends Doctrine_UnitTestCase
 {
     public function testInheritanceGeneration()
     {
@@ -55,10 +55,10 @@ class Doctrine_Import_Builder_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($schemaTestInheritanceParent->isSubClassOf('PackageSchemaTestInheritanceParent'));
         $this->assertTrue($schemaTestInheritanceChild1->isSubClassOf('BaseSchemaTestInheritanceChild1'));
         $this->assertTrue($schemaTestInheritanceChild2->isSubClassOf('BaseSchemaTestInheritanceChild2'));
-        
+
         $this->assertTrue($schemaTestInheritanceChild1->isSubClassOf('SchemaTestInheritanceParent'));
         $this->assertTrue($schemaTestInheritanceChild1->isSubClassOf('BaseSchemaTestInheritanceParent'));
-        
+
         $this->assertTrue($schemaTestInheritanceChild2->isSubClassOf('SchemaTestInheritanceParent'));
         $this->assertTrue($schemaTestInheritanceChild2->isSubClassOf('BaseSchemaTestInheritanceParent'));
         $this->assertTrue($schemaTestInheritanceChild2->isSubClassOf('SchemaTestInheritanceChild1'));

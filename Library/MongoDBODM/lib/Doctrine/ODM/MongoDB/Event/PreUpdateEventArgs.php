@@ -66,7 +66,7 @@ class PreUpdateEventArgs extends LifecycleEventArgs
 
     /**
      * Get the old value of the changeset of the changed field.
-     * 
+     *
      * @param  string $field
      * @return mixed
      */
@@ -92,7 +92,7 @@ class PreUpdateEventArgs extends LifecycleEventArgs
 
     /**
      * Set the new value of this field.
-     * 
+     *
      * @param string $field
      * @param mixed $value
      */

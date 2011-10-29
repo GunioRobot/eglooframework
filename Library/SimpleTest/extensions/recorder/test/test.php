@@ -4,16 +4,16 @@ require_once dirname(__FILE__) . '/../../../autorun.php';
 require_once(dirname(__FILE__) . '/../../recorder.php');
 
 class TestOfRecorder extends UnitTestCase {
-    
+
     function testContentOfRecorderWithOnePassAndOneFailure() {
         $test = new TestSuite();
         $test->addFile(dirname(__FILE__) . '/sample.php');
         $recorder = new Recorder();
         $test->run($recorder);
         $this->assertEqual(count($recorder->results), 2);
-        
+
         $d = '[\\\\\\/]'; // backslash or slash
-        
+
         $this->assertEqual(count($recorder->results[0]), 4);
         $this->assertPattern("/".substr(time(), 9)."/", $recorder->results[0]['time']);
         $this->assertEqual($recorder->results[0]['status'], "Passed");

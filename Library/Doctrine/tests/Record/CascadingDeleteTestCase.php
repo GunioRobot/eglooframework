@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
@@ -61,12 +61,12 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         $this->connection->clear();
 
         $r = $this->connection->query('FROM ForeignKeyTest');
-        
+
         $this->assertEqual($r->count(), 2);
-        
+
         // should delete the first child
         $r[0]->delete();
-        
+
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $r[0]->state());
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $r[0]->Children[0]->state());
 
@@ -76,12 +76,12 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($r->count(), 0);
     }
-    
+
     public function testCascadingDeleteEmulationWithListenerInvocations()
     {
         $cascadeListener = new CascadeDeleteListener($this);
         $this->conn->getTable('ForeignKeyTest')->addRecordListener($cascadeListener);
-        
+
         $r = new ForeignKeyTest;
         $r->name = 'Parent';
         $r->Children[0]->name = 'Child 1';
@@ -92,27 +92,27 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         $this->connection->clear();
 
         $r = $this->connection->query('FROM ForeignKeyTest');
-        
+
         $this->assertEqual($r->count(), 4);
 
         // should delete the children recursively
         $r[0]->delete();
-        
+
         // validate listener invocations
         $this->assertTrue($cascadeListener->preDeleteInvoked);
         $this->assertEqual(4, $cascadeListener->preDeleteInvocationCount);
         $this->assertTrue($cascadeListener->postDeleteInvoked);
         $this->assertEqual(4, $cascadeListener->postDeleteInvocationCount);
         $cascadeListener->reset();
-        
+
         $this->connection->clear();
 
         $r = $this->connection->query('FROM ForeignKeyTest');
         $this->assertEqual($r->count(), 0);
     }
-    
+
     public function testBidirectionalCascadeDeleteDoesNotCauseInfiniteLoop()
-    {        
+    {
         $house = new CascadeDelete_House();
         $house->bathrooms = 4;
         $owner = new CascadeDelete_HouseOwner();
@@ -120,21 +120,21 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         $owner->house = $house;
         $house->owner = $owner;
         $owner->save();
-        
+
         $this->assertEqual(Doctrine_Record::STATE_CLEAN, $owner->state());
         $this->assertEqual(Doctrine_Record::STATE_CLEAN, $house->state());
         $this->assertTrue($owner->exists());
         $this->assertTrue($house->exists());
-        
+
         $house->delete();
-        
+
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $owner->state());
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $house->state());
         $this->assertFalse($owner->exists());
         $this->assertFalse($house->exists());
-        
+
     }
-    
+
     public function testCascadingDeleteInOneToZeroOrOneRelation()
     {
         $owner = new CascadeDelete_HouseOwner();
@@ -146,9 +146,9 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         } catch (Doctrine_Exception $e) {
             $this->fail("Failed to delete record. Message:" . $e->getMessage());
         }
-        
+
     }
-    
+
     public function testDeletionOfCompositeKeys()
     {
         $compItem = new CascadeDelete_CompositeKeyItem();
@@ -156,11 +156,11 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         $compItem->id2 = 11;
         $compItem->save();
         $compItem->delete();
-        
+
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $compItem->state());
         $this->assertFalse($compItem->exists());
     }
-    
+
     public function testCascadeDeleteManyMany()
     {
         $a1 = new CascadeDelete_ManyManySideA();
@@ -169,16 +169,16 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
         $b1->name = 'other';
         $a1->Bs[] = $b1;
         //$b1->As[] = $a1; <- This causes 2 insertions into the AToB table => BUG
-        
+
         $a1->save();
-        
+
         $a1->delete();
-        
+
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $a1->state());
         $this->assertFalse($a1->exists());
         $this->assertEqual(Doctrine_Record::STATE_TCLEAN, $b1->state());
         $this->assertFalse($b1->exists());
-        
+
         $a1->refreshRelated('assocsA');
         $this->assertEqual(0, count($a1->assocsA));
         $b1->refreshRelated('assocsB');
@@ -189,36 +189,36 @@ class Doctrine_Record_CascadingDelete_TestCase extends Doctrine_UnitTestCase
 /* This listener is used to verify the correct invocations of listeners during the
    delete procedure, as well as to verify the object states at the defined points. */
 class CascadeDeleteListener extends Doctrine_Record_Listener {
-    
+
     private $_test;
     public $preDeleteInvoked = false;
     public $preDeleteInvocationCount = 0;
     public $postDeleteInvoked = false;
     public $postDeleteInvocationCount = 0;
-    
+
     public function __construct($test) {
         $this->_test = $test;
     }
-    
+
     public function preDelete(Doctrine_Event $event) {
         $this->_test->assertEqual(Doctrine_Record::STATE_CLEAN, $event->getInvoker()->state());
         $this->preDeleteInvoked = true;
         $this->preDeleteInvocationCount++;
     }
-    
+
     public function postDelete(Doctrine_Event $event) {
         $this->_test->assertEqual(Doctrine_Record::STATE_TCLEAN, $event->getInvoker()->state());
         $this->postDeleteInvoked = true;
         $this->postDeleteInvocationCount++;
     }
-    
+
     public function reset() {
         $this->preDeleteInvoked = false;
         $this->preDeleteInvocationCount = 0;
         $this->postDeleteInvoked = false;
         $this->postDeleteInvocationCount = 0;
     }
-    
+
 }
 
 /* The following is a typical one-to-one cascade => delete scenario. The association
@@ -263,7 +263,7 @@ class CascadeDelete_CompositeKeyItem extends Doctrine_Record {
 
 
 /* The following is an app-level cascade => delete setup of a many-many association
-   Note that such a scenario is very unlikely in the real world and also pretty 
+   Note that such a scenario is very unlikely in the real world and also pretty
    slow. */
 
 class CascadeDelete_ManyManySideA extends Doctrine_Record {
@@ -276,7 +276,7 @@ class CascadeDelete_ManyManySideA extends Doctrine_Record {
                 'local' => 'a_id', 'foreign' => 'b_id',
                 'refClass' => 'CascadeDelete_ManyManyAToB',
                 'cascade' => array('delete')));
-                
+
         // overrides the doctrine-generated relation to the association class
         // in order to apply the app-level cascade
         $this->hasMany('CascadeDelete_ManyManyAToB as assocsA', array(
@@ -295,7 +295,7 @@ class CascadeDelete_ManyManySideB extends Doctrine_Record {
                 'local' => 'b_id', 'foreign' => 'a_id',
                 'refClass' => 'CascadeDelete_ManyManyAToB',
                 'cascade' => array('delete')));
-        
+
         // overrides the doctrine-generated relation to the association class
         // in order to apply the app-level cascade
         $this->hasMany('CascadeDelete_ManyManyAToB as assocsB', array(

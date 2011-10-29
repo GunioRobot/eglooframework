@@ -1,7 +1,7 @@
 <?php
-class Forum_Entry extends Doctrine_Record { 
+class Forum_Entry extends Doctrine_Record {
     public function setTableDefinition() {
-        $this->hasColumn('author', 'string', 50); 
+        $this->hasColumn('author', 'string', 50);
         $this->hasColumn('topic', 'string', 100);
         $this->hasColumn('message', 'string', 99999);
         $this->hasColumn('parent_entry_id', 'integer', 10);

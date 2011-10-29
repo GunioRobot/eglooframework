@@ -92,7 +92,7 @@ class Haanga
 
     public static function getTemplateDir()
     {
-        return self::$templates_dir; 
+        return self::$templates_dir;
     }
 
     // configure(Array $opts) {{{
@@ -101,7 +101,7 @@ class Haanga
      *
      *  Options:
      *
-     *      - (string)   cache_dir 
+     *      - (string)   cache_dir
      *      - (string)   tempalte_dir
      *      - (callback) on_compile
      *      - (boolean)  debug
@@ -167,14 +167,14 @@ class Haanga
      *  Check the directory where the compiled templates
      *  are stored.
      *
-     *  @param string $dir 
+     *  @param string $dir
      *
      *  @return void
      */
     public static function checkCacheDir()
     {
         $dir = self::$cache_dir;
-        if (!is_dir($dir)) { 
+        if (!is_dir($dir)) {
             $old = umask(0);
             if (!mkdir($dir, 0777, TRUE)) {
                 throw new Haanga_Exception("{$dir} is not a valid directory");
@@ -245,7 +245,7 @@ class Haanga
 
         if ($checkdir && !$has_checkdir) {
             self::checkCacheDir();
-            $has_checkdir = TRUE; 
+            $has_checkdir = TRUE;
         }
 
         $compiler->reset();
@@ -298,15 +298,15 @@ class Haanga
      *  Load
      *
      *  Load template. If the template is already compiled, just the compiled
-     *  PHP file will be included an used. If the template is new, or it 
+     *  PHP file will be included an used. If the template is new, or it
      *  had changed, the Haanga compiler is loaded in memory, and the template
      *  is compiled.
      *
      *
      *  @param string $file
-     *  @param array  $vars 
+     *  @param array  $vars
      *  @param bool   $return
-     *  @param array  $blocks   
+     *  @param array  $blocks
      *
      *  @return string|NULL
      */
@@ -339,8 +339,8 @@ class Haanga
             } else {
                 $result = call_user_func(self::$check_set, $callback, TRUE, self::$check_ttl);
             }
-        } 
-        
+        }
+
         if (!is_file($php) || ($check && filemtime($tpl) > filemtime($php))) {
 
             if (!is_file($tpl)) {
@@ -353,7 +353,7 @@ class Haanga
                 mkdir(dirname($php), 0777, TRUE);
                 umask($old);
             }
-            
+
             $fp = fopen($php, "a+");
             /* try to block PHP file */
             if (!flock($fp, LOCK_EX | LOCK_NB)) {
@@ -361,8 +361,8 @@ class Haanga
                 fclose($fp);
                 if (is_file($php)) {
                     /*
-                    ** if there is an old version of the cache 
-                    ** load it 
+                    ** if there is an old version of the cache
+                    ** load it
                     */
                     require $php;
                     if (is_callable($callback)) {
@@ -416,7 +416,7 @@ class Haanga
             /* Load the cached PHP file */
             require $php;
             if (!is_callable($callback)) {
-                /* 
+                /*
                    really weird case ($php is empty, another process is compiling
                    the $tpl for the first time), so create a lambda function
                    for the template

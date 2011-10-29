@@ -30,15 +30,15 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
-    { 
+    public function prepareData()
+    {
     }
-    public function testInitData() 
+    public function testInitData()
     {
         $users = new Doctrine_Collection('User');
-        
+
         $users[0]->name = 'John';
         $users[0]->Phonenumber[0]->phonenumber = '123 123';
         $users[0]->Phonenumber[1]->phonenumber = '222 222';
@@ -100,10 +100,10 @@ class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase
         $users = $q->execute();
 
         $this->assertEqual($users->count(), 2);
-        
+
         $this->assertEqual($users[0]->state(), Doctrine_Record::STATE_PROXY);
         $this->assertEqual($users[1]->state(), Doctrine_Record::STATE_PROXY);
-        
+
         $this->assertEqual($users[0]->count, 2);
         $this->assertEqual($users[1]->count, 2);
     }
@@ -117,21 +117,21 @@ class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase
         $users = $q->execute();
 
         $this->assertEqual($users->count(), 2);
-        
+
         $this->assertEqual($users[0]->state(), Doctrine_Record::STATE_PROXY);
         $this->assertEqual($users[1]->state(), Doctrine_Record::STATE_PROXY);
-        
+
         $this->assertEqual($users[0]->count, 2);
         $this->assertEqual($users[1]->count, 2);
     }
 
-    public function testAggregateValueMappingSupportsLeftJoins() 
+    public function testAggregateValueMappingSupportsLeftJoins()
     {
         $q = new Doctrine_Query();
 
         $q->select('u.name, COUNT(p.id) count')->from('User u')->leftJoin('u.Phonenumber p')->groupby('u.id');
 
-        $users = $q->execute();   
+        $users = $q->execute();
 
         $this->assertEqual(count($users), 4);
 
@@ -163,7 +163,7 @@ class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($users[0]->max, 3);
         $this->assertEqual($users[0]->count, 3);
     }
-    
+
     public function testAggregateValueMappingSupportsMultipleValues2()
     {
         $q = new Doctrine_Query();
@@ -175,7 +175,7 @@ class Doctrine_Query_AggregateValue_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($users[0]['max'], 3);
         $this->assertEqual($users[0]['count'], 3);
     }
-    
+
     public function testAggregateValueMappingSupportsInnerJoins()
     {
         $q = new Doctrine_Query();

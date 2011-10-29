@@ -74,10 +74,10 @@ class Doctrine_Validator_Exception extends Doctrine_Exception implements Countab
     }
 
     /**
-     * This method will apply the value of the $function variable as a user_func 
+     * This method will apply the value of the $function variable as a user_func
      * to tall errorstack objects in the exception
      *
-     * @param mixed Either string with function name or array with object, 
+     * @param mixed Either string with function name or array with object,
      * functionname. See call_user_func in php manual for more inforamtion
      */
     public function inspect($function)

@@ -33,7 +33,7 @@
  */
 class Doctrine_Cache_Sqlite_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareTables() 
+    public function prepareTables()
     { }
     public function prepareData()
     { }

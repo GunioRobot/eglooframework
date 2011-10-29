@@ -51,7 +51,7 @@ class Doctrine_Formatter extends Doctrine_Connection_Module
         }
         $tmp = $this->conn->string_quoting;
 
-        $text = str_replace($tmp['escape_pattern'], 
+        $text = str_replace($tmp['escape_pattern'],
             $tmp['escape_pattern'] .
             $tmp['escape_pattern'], $text);
 
@@ -131,8 +131,8 @@ class Doctrine_Formatter extends Doctrine_Connection_Module
 
         return $tmp['start'] . $str . $tmp['end'];
     }
-    
-    
+
+
     /**
      * quoteMultipleIdentifier
      * Quotes multiple identifier strings
@@ -248,7 +248,7 @@ class Doctrine_Formatter extends Doctrine_Connection_Module
         return sprintf($this->conn->getAttribute(Doctrine_Core::ATTR_IDXNAME_FORMAT),
             preg_replace('/[^a-z0-9_\$]/i', '_', $idx));
     }
-    
+
     /**
      * Formatting a foreign Key name
      *

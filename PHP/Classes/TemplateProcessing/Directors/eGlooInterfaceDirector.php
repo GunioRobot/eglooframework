@@ -2,23 +2,23 @@
 /**
  * eGlooInterfaceDirector Class File
  *
- * Contains the class definition for the eGlooInterfaceDirector, a subclass 
+ * Contains the class definition for the eGlooInterfaceDirector, a subclass
  * of the TemplateDirector class.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -28,7 +28,7 @@
 
 /**
  * eGloo Interface Director
- * 
+ *
  * Provides a definition for an eGloo interface director subclass of
  * the TemplateDirector abstract class.
  *
@@ -117,7 +117,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 	}
 
 	public function postProcessTemplate() {
-		
+
 	}
 
 	public function setTemplateVariables( $tokenArray, $expose_system_variables = false, $system_variable_whitelist = null ) {
@@ -141,9 +141,9 @@ class eGlooInterfaceDirector extends TemplateDirector {
 	}
 
 	public function getTemplateBuilder() {
-		
+
 	}
-	
+
 	public function isCached() {
 		return $this->templateBuilder->isCached();
 	}
@@ -157,7 +157,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 				// TODO specify caching parameters for the smarty templates
 				// This needs to be base64_encoded because the cacheID is sued to create directories
 				$userAgentToken = substr( base64_encode( eGlooHTTPRequest::getUserAgent() ), 0, 64 );
-				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
+				$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();
 			}
 
 			$cacheID = $this->cacheID;
@@ -165,18 +165,18 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 		return $this->templateBuilder->isHardCached( $requestClass, $requestID, $cacheID );
 	}
-	
+
 	public function setCacheID( $cacheID = null, $ttl = 3600 ) {
 		if ($cacheID === null) {
 			// TODO specify caching parameters for the smarty templates
 			// This needs to be base64_encoded because the cacheID is sued to create directories
 			$userAgentToken = substr( base64_encode( eGlooHTTPRequest::getUserAgent() ), 0, 64 );
-			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();		
+			$this->cacheID = $userAgentToken . '|' . $this->requestInfoBean->getRequestID();
 		}
 
 		$this->ttl = $ttl;
 	}
-	
+
 	public function setHardCacheID( $requestClass = null, $requestID = null, $cacheID = null, $ttl = 3600 ) {
 		$requestClass = isset($requestClass) ? $requestClass : $this->requestInfoBean->getRequestClass();
 		$requestID = isset($requestID) ? $requestID : $this->requestInfoBean->getRequestID();
@@ -191,7 +191,7 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 		$this->templateBuilder->setHardCacheID( $requestClass, $requestID, $cacheID, $ttl );
 	}
-	
+
 	public function setTemplateBuilder( TemplateBuilder $templateBuilder, $userRequestID = null, $userRequestClass = null ) {
 		$this->templateBuilder = $templateBuilder;
 		// TODO uncomment this as part of refactoring for hard caching
@@ -207,5 +207,5 @@ class eGlooInterfaceDirector extends TemplateDirector {
 
 		$this->templateBuilder->setTemplateEngine();
 	}
-	
+
 }

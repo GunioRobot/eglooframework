@@ -10,9 +10,9 @@ function haanga_6b7e79ed219629bc512aa130b0742545436edf01($vars, $return=FALSE, $
     }
     foreach ($users as  $user) {
         echo '
-    
+
         '.htmlspecialchars(strtoupper($user['name'])).' == '.htmlspecialchars(strtoupper($user['name'])).'
-    
+
 ';
     }
     echo '

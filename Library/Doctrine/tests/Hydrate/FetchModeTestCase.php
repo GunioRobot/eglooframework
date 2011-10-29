@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
 {
 
     public function testFetchArraySupportsOneToManyRelations()
@@ -38,7 +38,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->select('u.*, p.*')->from('User u')->innerJoin('u.Phonenumber p')->where("u.name = 'zYne'");;
-        
+
         $users = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         $this->assertTrue(is_array($users));
@@ -50,7 +50,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->select('u.*, p.*')->from('User u')->innerJoin('u.Phonenumber p');
-        
+
         $users = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         $this->assertTrue(is_array($users));
@@ -62,7 +62,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->select('u.*, p.*')->from('User u')->innerJoin('u.Phonenumber p')->where("u.name = 'Jean Reno'");
-        
+
         $users = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         $this->assertTrue(is_array($users));
@@ -75,7 +75,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->select('u.*, e.*')->from('User u')->innerJoin('u.Email e');
-        
+
         $users = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         $this->assertEqual(count($users), 8);
@@ -86,7 +86,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $q = new Doctrine_Query();
 
         $q->select('u.*, e.*')->from('User u')->innerJoin('u.Email e')->where("u.name = 'zYne'");
-        
+
         $users = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
         $this->assertEqual(count($users), 1);
@@ -105,7 +105,7 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($users[0]['Email']['address'], 'zYne@example.com');
         $this->assertTrue($users[0] instanceof User);
-        $this->assertTrue($users instanceof Doctrine_Collection);  
+        $this->assertTrue($users instanceof Doctrine_Collection);
         $this->assertEqual($users[0]->state(), Doctrine_Record::STATE_CLEAN);
         $this->assertEqual($users[0]->id, 4);
 
@@ -154,20 +154,20 @@ class Doctrine_Hydrate_FetchMode_TestCase extends Doctrine_UnitTestCase
         $u->name = "fetch_array_test";
         $u->created = null;
         $u->save();
-  
+
         $q = new Doctrine_Query();
         $q->select('u.*')->from('User u')->where('u.id = ?');
         $users = $q->execute(array($u->id), Doctrine_Core::HYDRATE_ARRAY);
         $this->assertEqual($users[0]['created'], null);
     }
-    
+
     public function testHydrateNone()
     {
         $u = new User();
         $u->name = "fetch_array_test";
         $u->created = null;
         $u->save();
-  
+
         $q = new Doctrine_Query();
         $q->select('COUNT(u.id) num')->from('User u')->where('u.id = ?');
         $res = $q->execute(array($u->id), Doctrine_Core::HYDRATE_NONE);

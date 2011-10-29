@@ -40,7 +40,7 @@ language itself more or less as the application itself is built. The advantage
 of using PHP itself as the testing language is that there are no new languages
 to learn, testing can start straight away, and the developer can test any part
 of the code. Basically, all parts that can be accessed by the application code
-can also be accessed by the test code if they are in the same language. 
+can also be accessed by the test code if they are in the same language.
 EOD;
 /*---------------------------------------------------------------------------*/
 // Modify the maintainers are required
@@ -74,7 +74,7 @@ $options = array(
 	'version' => $version,
 	'packagedirectory' => $packagedir,
 	'outputdirectory' => $packagedir,
-	'pathtopackagefile' => $packagedir, 
+	'pathtopackagefile' => $packagedir,
 	'state' => $state,
 	'summary' => $shortDesc,
 	'description' => $longDesc,
@@ -103,7 +103,7 @@ $options = array(
 			'TODO' => 'doc',
 			'VERSION' => 'doc',
 		),
-	'ignore' => 
+	'ignore' =>
 		array(
 			"$packagedir/packages",
 			"$packagedir/ui",

@@ -6,11 +6,11 @@
     <li>"{{ gender['grouper'] }}" is equals to "{{ gender_list[i]["grouper"] }}"
     <ul>
         {% for item in gender['list'] %}
-        <li>{{ item['first_name']|upper|safe }} {{ item['last_name']|safe }} ({% firstof item['foobar'] item['bar'] "unset both" %}) {{ item['bar']|default:"default value"|upper }} 
+        <li>{{ item['first_name']|upper|safe }} {{ item['last_name']|safe }} ({% firstof item['foobar'] item['bar'] "unset both" %}) {{ item['bar']|default:"default value"|upper }}
         {% if "das" in item['last_name'] %}
             (Last name contains "das")
         {% endif %}
-        {% if forloop.last %} 
+        {% if forloop.last %}
              { Last item }
         {% endif %}</li>
 

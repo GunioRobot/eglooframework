@@ -53,7 +53,7 @@ class Doctrine_Record_Inheritance_TestCase extends Doctrine_UnitTestCase
 
         // does it have the expected data?
         $this->assertEqual($record['name'], 'Test me');
-        
+
 
     }
 }

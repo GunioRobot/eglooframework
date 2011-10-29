@@ -30,34 +30,34 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Record_State_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Record_State_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareTables() 
-    { 
+    public function prepareTables()
+    {
         $this->tables = array('Entity');
-        
+
         parent::prepareTables();
     }
 
-    public function prepareData() 
+    public function prepareData()
     { }
 
     public function testAssigningAutoincId()
     {
         $user = new User();
-        
+
         $this->assertEqual($user->id, null);
-        
+
         $user->name = 'zYne';
 
         $user->save();
 
         $this->assertEqual($user->id, 1);
-        
+
         $user->id = 2;
 
         $this->assertEqual($user->id, 2);
-        
+
         $user->save();
     }
 }

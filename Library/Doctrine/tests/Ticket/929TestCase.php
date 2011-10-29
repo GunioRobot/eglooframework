@@ -29,20 +29,20 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_929_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_929_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
-    {	   
+    {
         $oPerson = new T929_Person;
         $oPerson->name = 'Jonathan';
         $oPerson->Country->code = 'us';
         $oPerson->Country->Translation['fr']->name = 'Etats Unis';
-        $oPerson->Country->Translation['en']->name = 'United states';         
+        $oPerson->Country->Translation['en']->name = 'United states';
         $oPerson->save();
 
         parent::prepareData();
     }
- 
+
     public function prepareTables()
     {
         $this->tables = array();
@@ -53,10 +53,10 @@ class Doctrine_Ticket_929_TestCase extends Doctrine_UnitTestCase
 
         parent::prepareTables();
     }
-  
+
     public function testTicket()
     {
-        try { 
+        try {
             $q = new Doctrine_Query();
             $r = $q
                 ->from('T929_Person P')
@@ -68,7 +68,7 @@ class Doctrine_Ticket_929_TestCase extends Doctrine_UnitTestCase
                 ->where('P.name = ?', 'Jonathan')
                 ->fetchOne();
         } catch (Exception $e) {
-            $this->fail($e->getMessage());        
+            $this->fail($e->getMessage());
         }
     }
 }

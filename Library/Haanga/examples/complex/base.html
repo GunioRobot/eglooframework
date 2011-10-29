@@ -16,7 +16,7 @@ function foo_bar  () {
             {% ifchanged %}
             cesar
             {% ifchanged %}
-            Date {{ var }} foo 
+            Date {{ var }} foo
             dasdasdasdasdasldaksdhasd
             asdlkasjdlkasjdlkasjdlkajdas
                         dasa
@@ -44,15 +44,15 @@ function foo_bar  () {
         {% endblock test %}
         </td>
         <td>
-        {% block td %} 
+        {% block td %}
             {% filter lower|upper %}
                 Testing block with filter {{ forloop.counter }} :-)
             {% endfilter %}
         {% endblock %}
         </td>
     </tr>
-{% empty %} 
-<tr> 
+{% empty %}
+<tr>
     <td>
         Dear {{user}} you found a bug ;-)
     </td>

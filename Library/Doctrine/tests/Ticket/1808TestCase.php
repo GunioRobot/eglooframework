@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1808_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1808_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
@@ -51,6 +51,6 @@ class Doctrine_Ticket_1808_TestCase extends Doctrine_UnitTestCase
         $this->assertIdentical($user, $user2);
 
         $test = $userTable->findOneByNameAndLoginnameAndEmailId($user->name, $user->loginname, $user->email_id, Doctrine_Core::HYDRATE_ARRAY);
-        $this->assertTrue(is_array($test));   
+        $this->assertTrue(is_array($test));
     }
 }

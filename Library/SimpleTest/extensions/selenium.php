@@ -81,7 +81,7 @@ class SeleniumTestCase extends UnitTestCase
                 sprintf('%s failed', $method)
             );
         }
-                    
+
 		return call_user_func_array(
 			array($this->selenium, $method),
 			$arguments

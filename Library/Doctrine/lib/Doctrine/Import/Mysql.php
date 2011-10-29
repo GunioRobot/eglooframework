@@ -100,7 +100,7 @@ class Doctrine_Import_Mysql extends Doctrine_Import
     /**
      * lists table relations
      *
-     * Expects an array of this format to be returned with all the relationships in it where the key is 
+     * Expects an array of this format to be returned with all the relationships in it where the key is
      * the name of the foreign table, and the value is an array containing the local and foreign column
      * name
      *

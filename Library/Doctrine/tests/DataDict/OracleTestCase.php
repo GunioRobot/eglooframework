@@ -32,7 +32,7 @@
  */
 class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
 {
-    public function testGetPortableDeclarationSupportsNativeFloatType() 
+    public function testGetPortableDeclarationSupportsNativeFloatType()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'float'));
 
@@ -45,28 +45,28 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
     public function testGetPortableDeclarationSupportsNativeIntegerTypes()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'integer'));
-        
+
         $this->assertEqual($type, array('type' => array('integer'),
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'pls_integer', 'data_length' => 1));
-        
+
         $this->assertEqual($type, array('type' => array('integer', 'boolean'),
                                         'length' => 1,
                                         'unsigned' => null,
                                         'fixed' => null));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'binary_integer', 'data_length' => 1));
-        
+
         $this->assertEqual($type, array('type' => array('integer', 'boolean'),
                                         'length' => 1,
                                         'unsigned' => null,
                                         'fixed' => null));
     }
 
-    public function testGetPortableDeclarationSupportsNativeStringTypes() 
+    public function testGetPortableDeclarationSupportsNativeStringTypes()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'varchar'));
 
@@ -83,12 +83,12 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
                                         'fixed' => false));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'nvarchar2', 'data_length' => 1));
-        
+
         $this->assertEqual($type, array('type' => array('string', 'boolean'),
                                         'length' => 1,
                                         'unsigned' => null,
                                         'fixed' => false));
-        
+
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'char', 'data_length' => 1));
 
         $this->assertEqual($type, array('type' => array('string', 'boolean'),
@@ -97,17 +97,17 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
                                         'fixed' => true));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'nchar', 'data_length' => 1));
-        
+
         $this->assertEqual($type, array('type' => array('string', 'boolean'),
                                         'length' => 1,
                                         'unsigned' => null,
                                         'fixed' => true));
     }
 
-    public function testGetPortableDeclarationSupportsNativeNumberType() 
+    public function testGetPortableDeclarationSupportsNativeNumberType()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'number'));
-        
+
         $this->assertEqual($type, array('type' => array('integer'),
                                         'length' => null,
                                         'unsigned' => null,
@@ -115,7 +115,7 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
 
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'number', 'data_length' => 1));
-        
+
         $this->assertEqual($type, array('type' => array('integer', 'boolean'),
                                         'length' => 1,
                                         'unsigned' => null,
@@ -123,41 +123,41 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
 
     }
 
-    public function testGetPortableDeclarationSupportsNativeTimestampType() 
+    public function testGetPortableDeclarationSupportsNativeTimestampType()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'date'));
-        
+
         $this->assertEqual($type, array('type' => array('timestamp'),
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'timestamp'));
-        
+
         $this->assertEqual($type, array('type' => array('timestamp'),
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
     }
 
-    public function testGetPortableDeclarationSupportsNativeClobTypes() 
+    public function testGetPortableDeclarationSupportsNativeClobTypes()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'clob'));
-        
+
         $this->assertEqual($type, array('type' => array('clob'),
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
 
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'long'));
-        
+
         $this->assertEqual($type, array('type' => array('string', 'clob'),
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
-        
+
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'nclob'));
-        
+
         $this->assertEqual($type, array('type' => array('clob'),
                                         'length' => null,
                                         'unsigned' => null,
@@ -165,16 +165,9 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
 
     }
 
-    public function testGetPortableDeclarationSupportsNativeBlobTypes() 
+    public function testGetPortableDeclarationSupportsNativeBlobTypes()
     {
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'blob'));
-        
-        $this->assertEqual($type, array('type' => array('blob'),
-                                        'length' => null,
-                                        'unsigned' => null,
-                                        'fixed' => null));
-
-        $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'long raw'));
 
         $this->assertEqual($type, array('type' => array('blob'),
                                         'length' => null,
@@ -187,7 +180,14 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
                                         'length' => null,
                                         'unsigned' => null,
                                         'fixed' => null));
-        
+
+        $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'long raw'));
+
+        $this->assertEqual($type, array('type' => array('blob'),
+                                        'length' => null,
+                                        'unsigned' => null,
+                                        'fixed' => null));
+
         $type = $this->dataDict->getPortableDeclaration(array('data_type' => 'raw'));
 
         $this->assertEqual($type, array('type' => array('blob'),
@@ -196,16 +196,16 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
                                         'fixed' => null));
     }
 
-    public function testGetNativeDefinitionSupportsIntegerType() 
+    public function testGetNativeDefinitionSupportsIntegerType()
     {
         $a = array('type' => 'integer', 'length' => 20, 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'INTEGER');
-        
+
         $a['length'] = 8;
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(20)');
-        
+
         $a['length'] = 4;
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(10)');
@@ -213,77 +213,77 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
         $a['length'] = 3;
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(8)');
-        
+
         $a['length'] = 2;
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(5)');
-        
+
         $a['length'] = 1;
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(3)');
-        
+
         unset($a['length']);
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'INTEGER');
     }
 
-    public function testGetNativeDefinitionSupportsFloatType() 
+    public function testGetNativeDefinitionSupportsFloatType()
     {
         $a = array('type' => 'float', 'length' => 20, 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER');
     }
 
-    public function testGetNativeDefinitionSupportsBooleanType() 
+    public function testGetNativeDefinitionSupportsBooleanType()
     {
         $a = array('type' => 'boolean', 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'NUMBER(1)');
     }
 
-    public function testGetNativeDefinitionSupportsDateType() 
+    public function testGetNativeDefinitionSupportsDateType()
     {
         $a = array('type' => 'date', 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'DATE');
     }
 
-    public function testGetNativeDefinitionSupportsTimestampType() 
+    public function testGetNativeDefinitionSupportsTimestampType()
     {
         $a = array('type' => 'timestamp', 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'DATE');
     }
 
-    public function testGetNativeDefinitionSupportsTimeType() 
+    public function testGetNativeDefinitionSupportsTimeType()
     {
         $a = array('type' => 'time', 'fixed' => false);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'DATE');
     }
 
-    public function testGetNativeDefinitionSupportsClobType() 
+    public function testGetNativeDefinitionSupportsClobType()
     {
         $a = array('type' => 'clob');
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CLOB');
     }
 
-    public function testGetNativeDefinitionSupportsBlobType() 
+    public function testGetNativeDefinitionSupportsBlobType()
     {
         $a = array('type' => 'blob');
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'BLOB');
     }
 
-    public function testGetNativeDefinitionSupportsCharType() 
+    public function testGetNativeDefinitionSupportsCharType()
     {
         $a = array('type' => 'char', 'length' => 10);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CHAR(10)');
     }
 
-    public function testGetNativeDefinitionSupportsVarcharType() 
+    public function testGetNativeDefinitionSupportsVarcharType()
     {
         $a = array('type' => 'varchar', 'length' => 10);
 
@@ -293,45 +293,45 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
     public function testGetNativeDefinitionSupportsVarcharOwnParams()
     {
         $a = array('type' => 'varchar', 'length' => 10);
-        
+
         $this->conn->setParam('char_unit', 'CHAR');
         $this->conn->setParam('varchar2_max_length', 1000);
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'VARCHAR2(10 CHAR)');
-        
+
         $a['length'] = 1001;
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CLOB');
-        
+
         $this->conn->setParam('char_unit', 'BYTE');
         $this->conn->setParam('varchar2_max_length', 4000);
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'VARCHAR2(1001 BYTE)');
-        
+
         $this->conn->setParam('char_unit', null);
     }
 
-    public function testGetNativeDefinitionSupportsArrayType() 
+    public function testGetNativeDefinitionSupportsArrayType()
     {
         $a = array('type' => 'array', 'length' => 40);
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'VARCHAR2(40)');
     }
 
-    public function testGetNativeDefinitionSupportsStringType() 
+    public function testGetNativeDefinitionSupportsStringType()
     {
         $a = array('type' => 'string');
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CLOB');
     }
 
-    public function testGetNativeDefinitionSupportsArrayType2() 
+    public function testGetNativeDefinitionSupportsArrayType2()
     {
         $a = array('type' => 'array');
 
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CLOB');
     }
 
-    public function testGetNativeDefinitionSupportsObjectType() 
+    public function testGetNativeDefinitionSupportsObjectType()
     {
         $a = array('type' => 'object');
 
@@ -341,8 +341,8 @@ class Doctrine_DataDict_Oracle_TestCase extends Doctrine_UnitTestCase
     public function testGetNativeDefinitionSupportsLargerStrings()
     {
         $a = array('type' => 'string', 'length' => 4001);
-        
+
         $this->assertEqual($this->dataDict->getNativeDeclaration($a), 'CLOB');
     }
-    
+
 }

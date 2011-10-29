@@ -37,7 +37,7 @@
 
 /**
  *  Simple AST (abstract syntax tree) helper class. This
- *  helps to generate array structure that is then translated by 
+ *  helps to generate array structure that is then translated by
  *  the Haanga_Generator class.
  *
  */
@@ -412,7 +412,7 @@ class Haanga_AST
         if (!isset($last['exec'])) {
             throw new Exception("Invalid call to param()");
         }
-        
+
         $this->getValue($param, $value);
         $last['args'][] = $value;
 

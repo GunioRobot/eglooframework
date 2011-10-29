@@ -4,7 +4,7 @@
 {{ var|length }}
 {{ foobar|default:"default value"|upper}}
 {% upper %}
-    hola que 
+    hola que
 {% endupper %}
 {% lower %}TAL{% endlower %}
 {% filter upper|lower|cut:"e" %}

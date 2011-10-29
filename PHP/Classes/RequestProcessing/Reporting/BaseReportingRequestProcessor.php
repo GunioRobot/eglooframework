@@ -3,21 +3,21 @@
  * BaseReportingRequestProcessor Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -85,7 +85,7 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 			}
 		}
 
-		
+
 		$this->prepareRawDataReport();
 		$this->structureRawDataReport();
 		$this->setTemplateVariablesByMerge($this->getStructuredDataReport());
@@ -101,7 +101,7 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 			$retVal = $queryExecutionRoutine->executeTransactionWithConnection($queryToExecute, $connection);
 		} else {
 			$queryExecutionRoutine = QueryExecutionRoutineManager::getQueryExecutionRoutine($this->getPopulatedQuery());
-			$this->_executedQueryResponseTransaction = 
+			$this->_executedQueryResponseTransaction =
 				$queryExecutionRoutine->executeTransactionWithConnection($this->getPopulatedQuery(), $connection);
 
 			$retVal = $this->_executedQueryResponseTransaction;
@@ -114,7 +114,7 @@ abstract class BaseReportingRequestProcessor extends TemplatePatternRequestProce
 		return $this->_reportingConnection;
 	}
 
-	// This should eventually be sourced out of a specific 
+	// This should eventually be sourced out of a specific
 	protected function prepareConnection() {
 		$this->_reportingConnection = DBConnectionManager::getConnection($this->_connectionName, $this->_engineMode);
 	}

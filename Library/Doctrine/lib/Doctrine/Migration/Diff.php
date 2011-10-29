@@ -135,7 +135,7 @@ class Doctrine_Migration_Diff
     /**
      * Initialize some Doctrine models at a given path.
      *
-     * @param string $path 
+     * @param string $path
      * @return array $models
      */
     protected function _initializeModels($path)

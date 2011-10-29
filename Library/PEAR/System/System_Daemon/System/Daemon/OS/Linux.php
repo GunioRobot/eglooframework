@@ -2,7 +2,7 @@
 /* vim: set noai expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 /**
  * System_Daemon turns PHP-CLI scripts into daemons.
- * 
+ *
  * PHP version 5
  *
  * @category  System
@@ -24,7 +24,7 @@
  * @license   http://www.opensource.org/licenses/bsd-license.php New BSD Licence
  * @version   SVN: Release: $Id$
  * @link      http://trac.plutonia.nl/projects/system_daemon
- * * 
+ * *
  */
 class System_Daemon_OS_Linux extends System_Daemon_OS
 {
@@ -34,36 +34,36 @@ class System_Daemon_OS_Linux extends System_Daemon_OS
      * @var string
      */
     protected $_osVersionFile = "";
-    
+
     /**
      * Path to autoRun script
      *
      * @var string
      */
     protected $_autoRunDir = "/etc/init.d";
-    
-    
-    
+
+
+
     /**
      * Determines wether the system is compatible with this OS
      *
      * @return boolean
      */
-    public function isInstalled() 
+    public function isInstalled()
     {
         if (!stristr(PHP_OS, "Linux")) {
             return false;
         }
-        
+
         // Find out more specific
         // This is used by extended classes that inherit
         // this function
         if ($this->_osVersionFile) {
             if (!file_exists($this->_osVersionFile)) {
                 return false;
-            } 
-        } 
-        
+            }
+        }
+
         return true;
     }
 }

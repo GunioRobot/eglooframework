@@ -35,7 +35,7 @@ class RemoveTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $this->assertNull($user);
     }
 
-    
+
     public function testUnsetFromEmbeddedCollection()
     {
         $user = new User();
@@ -43,7 +43,7 @@ class RemoveTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $user->addGroup(new Group('test group 1'));
         $user->addGroup(new Group('test group 2'));
         $user->addGroup(new Group('test group 3'));
-        
+
         $this->dm->persist($user);
         $this->dm->flush();
         $this->dm->clear();

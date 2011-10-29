@@ -29,7 +29,7 @@ SchemaTestProfile:
     last_name:
       type: string(255)
   relations:
-    SchemaTestUser: 
+    SchemaTestUser:
       foreignType: one
     SchemaTestContact:
       foreignType: one
@@ -149,11 +149,11 @@ AliasTest:
     test_col:
       name: test_col as test_col_alias
       type: string(255)
-      
+
 # App-level cascade delete
 AppCascadeDeleteTest:
-  columns: 
-    id: 
+  columns:
+    id:
       primary: true
       autoincrement: true
       type: integer(4)
@@ -166,10 +166,10 @@ AppCascadeDeleteTest:
       local: alias_id
       foreign: id
       cascade: [delete]
-      
+
 ListenerTestAsArray:
   columns:
-    id: 
+    id:
       primary: true
       autoincrement: true
       type: integer(4)
@@ -178,10 +178,10 @@ ListenerTestAsArray:
     slug:
       type: string(60)
   listeners: [Doctrine_Template_Listener_Sluggable]
-  
+
 ListenerTestWithParameters:
   columns:
-    id: 
+    id:
       primary: true
       autoincrement: true
       type: integer(4)
@@ -189,12 +189,12 @@ ListenerTestWithParameters:
       type: string(50)
     slug:
       type: string(60)
-  listeners: 
+  listeners:
     Sluggable:
       useOptions: true
       class: Doctrine_Template_Listener_Sluggable
 
-# Long identifier test on FK      
+# Long identifier test on FK
 sfUserEmailAddressType:
   columns:
     name:

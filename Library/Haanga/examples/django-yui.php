@@ -46,6 +46,6 @@ $mem   = memory_get_usage();
 
 Haanga::Load($_GET['layout'], compact('debug', 'files', 'sql_queries'), FALSE, $blocks);
 var_dump(array(
- 'memory (mb)' => (memory_get_usage()-$mem)/(1024*1024), 
+ 'memory (mb)' => (memory_get_usage()-$mem)/(1024*1024),
  'time' => microtime(TRUE)-$time
  ));

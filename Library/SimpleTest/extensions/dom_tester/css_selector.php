@@ -8,7 +8,7 @@
 
 /**
  * CssSelector
- * 
+ *
  * Allow to navigate a DOM with CSS selector.
  *
  * based on getElementsBySelector version 0.4 - Simon Willison, 2003-03-25
@@ -169,7 +169,7 @@ class CssSelector {
           $token = $matches[1] ? $matches[1] : '*';
           $combinator = $matches[2] ? $matches[2] : '';
         }
-        
+
         // If we get here, token is JUST an element (not a class or ID selector)
         $nodes = $this->getElementsByTagName($nodes, $token, $combinator);
       }

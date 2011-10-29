@@ -146,8 +146,8 @@ class Doctrine_DataDict_Mssql extends Doctrine_DataDict
                     $type[] = 'boolean';
                 }
             break;
-            case 'date': 
-                $type[0] = 'date'; 
+            case 'date':
+                $type[0] = 'date';
             break;
             case 'datetime':
             case 'timestamp':
@@ -262,7 +262,7 @@ class Doctrine_DataDict_Mssql extends Doctrine_DataDict
         //$unsigned = (isset($field['unsigned']) && $field['unsigned']) ? ' UNSIGNED' : '';
         // MSSQL does not support the UNSIGNED keyword
         $unsigned = '';
-        $comment  = (isset($field['comment']) && $field['comment']) 
+        $comment  = (isset($field['comment']) && $field['comment'])
             ? " COMMENT " . $this->conn->quote($field['comment'], 'text') : '';
 
         $name = $this->conn->quoteIdentifier($name, true);

@@ -5,16 +5,16 @@
 
 {% endif %}
 
-<b> 
+<b>
 
-            Texto          laargo 
+            Texto          laargo
 
 
 
 </b>
 
 {% spacefull %}<pre>
-Este es un texto 
+Este es un texto
 
 con
         espacios
@@ -22,7 +22,7 @@ con
 </pre>{% endspacefull %}
 
 
-Another 
+Another
 
 
 

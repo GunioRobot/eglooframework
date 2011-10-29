@@ -57,7 +57,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
     /**
      * createDatabaseSql
      *
-     * @param string $name 
+     * @param string $name
      * @return void
      */
     public function createDatabaseSql($name)
@@ -114,7 +114,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
      *
      * @return void
      */
-    public function createTableSql($name, array $fields, array $options = array()) 
+    public function createTableSql($name, array $fields, array $options = array())
     {
         if ( ! $name)
             throw new Doctrine_Export_Exception('no valid table name specified');
@@ -132,8 +132,8 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                 if (isset($options['indexes'])) {
                     foreach ($options['indexes'] as $definition) {
                         if (is_string($definition['fields'])) {
-                            // Check if index already exists on the column                            
-                            $found = $found || ($local == $definition['fields']);                    
+                            // Check if index already exists on the column
+                            $found = $found || ($local == $definition['fields']);
                         } else if (in_array($local, $definition['fields']) && count($definition['fields']) === 1) {
                             // Index already exists on the column
                             $found = true;
@@ -145,14 +145,14 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                     // field is part of the PK and therefore already indexed
                     $found = true;
                 }
-                
+
                 if ( ! $found) {
                     if (is_array($local)) {
                       foreach($local as $localidx) {
                         $options['indexes'][$localidx] = array('fields' => array($localidx => array()));
                       }
                     } else {
-                      $options['indexes'][$local] = array('fields' => array($local => array()));                      
+                      $options['indexes'][$local] = array('fields' => array($local => array()));
                     }
                 }
             }
@@ -288,8 +288,8 @@ class Doctrine_Export_Mysql extends Doctrine_Export
             } else {
                 $dec = $this->conn->dataDict->getNativeDeclaration($field);
             }
-    
-            return $this->conn->quoteIdentifier($name, true) 
+
+            return $this->conn->quoteIdentifier($name, true)
                  . ' ' . $dec . $charset . $default . $notnull . $comment . $unique . $check . $collation;
         } catch (Exception $e) {
             throw new Doctrine_Exception('Around field ' . $name . ': ' . $e->getMessage() . "\n\n" . $e->getTraceAsString() . "\n\n");
@@ -450,7 +450,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                     $oldFieldName = $fieldName;
                 }
                 $oldFieldName = $this->conn->quoteIdentifier($oldFieldName, true);
-                $query .= 'CHANGE ' . $oldFieldName . ' ' 
+                $query .= 'CHANGE ' . $oldFieldName . ' '
                         . $this->getDeclaration($fieldName, $field['definition']);
             }
         }
@@ -472,7 +472,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
         }
 
         $name = $this->conn->quoteIdentifier($name, true);
-        
+
         return 'ALTER TABLE ' . $name . ' ' . $query;
     }
 
@@ -612,7 +612,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
         return $query;
     }
 
-    /** 
+    /**
      * getDefaultDeclaration
      * Obtain DBMS specific SQL code portion needed to set a default value
      * declaration to be used in statements like CREATE TABLE.
@@ -634,25 +634,25 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                     $field['default'] = ' ';
                 }
             }
-    
+
             // Proposed patch:
             if ($field['type'] == 'enum' && $this->conn->getAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM)) {
                 $fieldType = 'varchar';
             } else {
                 $fieldType = $field['type'];
             }
-            
+
             $default = ' DEFAULT ' . (is_null($field['default'])
-                ? 'NULL' 
+                ? 'NULL'
                 : $this->conn->quote($field['default'], $fieldType));
             //$default = ' DEFAULT ' . $this->conn->quote($field['default'], $field['type']);
         }
-        
+
         return $default;
     }
 
     /**
-     * Obtain DBMS specific SQL code portion needed to set an index 
+     * Obtain DBMS specific SQL code portion needed to set an index
      * declaration to be used in statements like CREATE TABLE.
      *
      * @param string $charset       name of the index
@@ -675,7 +675,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                     );
             }
         }
-        
+
         if ( ! isset($definition['fields'])) {
             throw new Doctrine_Export_Exception('No columns given for index ' . $name);
         }
@@ -686,7 +686,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
         $query = $type . 'INDEX ' . $this->conn->quoteIdentifier($name);
 
         $query .= ' (' . $this->getIndexFieldDeclarationList($definition['fields']) . ')';
-        
+
         return $query;
     }
 

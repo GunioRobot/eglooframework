@@ -51,7 +51,7 @@ class Doctrine_I18n extends Doctrine_Record_Generator
     /**
      * __construct
      *
-     * @param string $options 
+     * @param string $options
      * @return void
      */
     public function __construct($options)
@@ -104,7 +104,7 @@ class Doctrine_I18n extends Doctrine_Record_Generator
         $this->hasColumn($this->_options['i18nField'], $this->_options['type'], $this->_options['length'], $options);
 
         $this->bindQueryParts(array('indexBy' => $this->_options['i18nField']));
- 
+
         // Rewrite any relations to our original table
         $originalName = $this->_options['table']->getClassnameToReturn();
         $relations = $this->_options['table']->getRelationParser()->getPendingRelations();
@@ -114,10 +114,10 @@ class Doctrine_I18n extends Doctrine_Record_Generator
                 if (isset($relation['local']) && in_array($relation['local'], $this->_options['fields'])) {
                     // found one, let's rewrite it
                     $this->_options['table']->getRelationParser()->unsetPendingRelations($table);
-        
+
                     // and bind the rewritten one
                     $this->_table->getRelationParser()->bind($table, $relation);
-        
+
                     // now try to get the reverse relation, to rewrite it
                     $rp = Doctrine_Core::getTable($table)->getRelationParser();
                     $others = $rp->getPendingRelation($originalName);

@@ -81,7 +81,7 @@ class Doctrine_Connection_Sqlite extends Doctrine_Connection_Common
      * @see Doctrine_Expression
      * @return void
      */
-    public function connect() 
+    public function connect()
     {
         if ($this->isConnected) {
             return false;
@@ -121,7 +121,7 @@ class Doctrine_Connection_Sqlite extends Doctrine_Connection_Common
         if ( ! $dsn = $this->getOption('dsn')) {
             throw new Doctrine_Connection_Exception('You must create your Doctrine_Connection by using a valid Doctrine style dsn in order to use the create/drop database functionality');
         }
-        
+
         $info = $this->getManager()->parseDsn($dsn);
 
         $this->export->dropDatabase($info['database']);

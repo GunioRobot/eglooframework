@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1372_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1372_TestCase extends Doctrine_UnitTestCase
 {
     /* Test array of SQL queries to ensure uniqueness of queries */
     public function testExportSql()

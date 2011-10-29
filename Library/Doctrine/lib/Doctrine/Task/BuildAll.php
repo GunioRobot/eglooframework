@@ -35,30 +35,30 @@ class Doctrine_Task_BuildAll extends Doctrine_Task
     public $description          =   'Calls generate-models-from-yaml, create-db, and create-tables',
            $requiredArguments    =   array(),
            $optionalArguments    =   array();
-    
+
     protected $models,
               $tables;
-    
+
     public function __construct($dispatcher = null)
     {
         parent::__construct($dispatcher);
-        
+
         $this->models = new Doctrine_Task_GenerateModelsYaml($this->dispatcher);
         $this->createDb = new Doctrine_Task_CreateDb($this->dispatcher);
         $this->tables = new Doctrine_Task_CreateTables($this->dispatcher);
-        
+
         $this->requiredArguments = array_merge($this->requiredArguments, $this->models->requiredArguments, $this->createDb->requiredArguments, $this->tables->requiredArguments);
         $this->optionalArguments = array_merge($this->optionalArguments, $this->models->optionalArguments, $this->createDb->optionalArguments, $this->tables->optionalArguments);
     }
-    
+
     public function execute()
     {
         $this->models->setArguments($this->getArguments());
         $this->models->execute();
-        
+
         $this->createDb->setArguments($this->getArguments());
         $this->createDb->execute();
-        
+
         $this->tables->setArguments($this->getArguments());
         $this->tables->execute();
     }

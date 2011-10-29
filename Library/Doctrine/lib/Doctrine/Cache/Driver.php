@@ -202,10 +202,10 @@ abstract class Doctrine_Cache_Driver implements Doctrine_Cache_Interface
 
     /**
      * Delete all cache entries from the cache driver
-     * 
+     *
      * @return integer $count The number of deleted cache entries
      */
-    public function deleteAll() 
+    public function deleteAll()
     {
         $count = 0;
         if (is_array($keys = $this->_getCacheKeys())) {

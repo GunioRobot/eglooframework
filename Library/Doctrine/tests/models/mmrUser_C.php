@@ -1,9 +1,9 @@
 <?php
-class mmrUser_C extends Doctrine_Record 
+class mmrUser_C extends Doctrine_Record
 {
-    public function setUp() 
+    public function setUp()
     {
-        $this->hasMany('mmrGroup_C as Group', array('local' => 'user_id', 
+        $this->hasMany('mmrGroup_C as Group', array('local' => 'user_id',
                                                     'foreign' => 'group_id',
                                                     'refClass' => 'mmrGroupUser_C'));
 

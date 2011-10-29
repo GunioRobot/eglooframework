@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1986_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1986_TestCase extends Doctrine_UnitTestCase
 {
 	public function prepareData()
 	{
@@ -62,7 +62,7 @@ class Doctrine_Ticket_1986_TestCase extends Doctrine_UnitTestCase
 			$this->fail($e->getMessage());
 		}
 	}
-	 
+
 }
 
 class Testing_Ticket_1986_1 extends Doctrine_Record
@@ -100,12 +100,11 @@ class Testing_Ticket_1986Link extends Doctrine_Record
 		$this->hasColumn('id_1', 'integer', null, array());
 		$this->hasColumn('id_2', 'integer', null, array());
 	}
-	
+
 	public function setUp() {
 		// setup relations
 		$this->hasOne('Testing_Ticket_1986_1 as rel1', array('local' => 'id_1', 'foreign' => 'id', 'onDelete' => 'CASCADE'));
 		$this->hasOne('Testing_Ticket_1986_2 as rel2', array('local' => 'id_2', 'foreign' => 'id', 'onDelete' => 'CASCADE'));
 	}
-  
+
 }
-	

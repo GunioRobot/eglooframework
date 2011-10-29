@@ -30,7 +30,7 @@ class Swift_Mime_Grammar
    * @access private
    */
   private $_grammar = array();
-  
+
   /**
    * Initialize some RFC 2822 (and friends) ABNF grammar definitions.
    * @access protected
@@ -41,9 +41,9 @@ class Swift_Mime_Grammar
       '(', ')', '<', '>', '[', ']',
       ':', ';', '@', ',', '.', '"'
       );
-    
+
     /*** Refer to RFC 2822 for ABNF grammar ***/
-    
+
     //All basic building blocks
     $this->_grammar['NO-WS-CTL'] = '[\x01-\x08\x0B\x0C\x0E-\x19\x7F]';
     $this->_grammar['WSP'] = '[ \t]';
@@ -85,13 +85,13 @@ class Swift_Mime_Grammar
         '|[\x21-\x5A\x5E-\x7E])';
     $this->_grammar['no-fold-literal'] = '(?:\[(?:' . $this->_grammar['dtext'] .
         '|' . $this->_grammar['quoted-pair'] . ')*\])';
-    
+
     //Message IDs
     $this->_grammar['id-left'] = '(?:' . $this->_grammar['dot-atom-text'] . '|' .
         $this->_grammar['no-fold-quote'] . ')';
     $this->_grammar['id-right'] = '(?:' . $this->_grammar['dot-atom-text'] . '|' .
         $this->_grammar['no-fold-literal'] . ')';
-    
+
     //Addresses, mailboxes and paths
     $this->_grammar['local-part'] = '(?:' . $this->_grammar['dot-atom'] . '|' .
         $this->_grammar['quoted-string'] . ')';
@@ -105,7 +105,7 @@ class Swift_Mime_Grammar
     $this->_grammar['addr-spec'] = '(?:' . $this->_grammar['local-part'] . '@' .
         $this->_grammar['domain'] . ')';
   }
-  
+
   /**
    * Get the grammar defined for $name token.
    * @param string $name execatly as written in the RFC
@@ -124,7 +124,7 @@ class Swift_Mime_Grammar
         );
     }
   }
-  
+
   /**
    * Returns the tokens defined in RFC 2822 (and some related RFCs).
    * @return array
@@ -133,7 +133,7 @@ class Swift_Mime_Grammar
   {
     return $this->_grammar;
   }
-  
+
   /**
    * Returns the current special characters used in the syntax which need to be escaped.
    * @return array
@@ -142,7 +142,7 @@ class Swift_Mime_Grammar
   {
     return $this->_specials;
   }
-  
+
   /**
    * Escape special characters in a string (convert to quoted-pairs).
    * @param string $token

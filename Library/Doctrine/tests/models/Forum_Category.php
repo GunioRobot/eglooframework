@@ -11,7 +11,7 @@ class Forum_Category extends Doctrine_Record {
             'local' => 'id',
             'foreign' => 'parent_category_id'
         ));
-        
+
         $this->hasOne('Forum_Category as Parent', array(
             'local' => 'parent_category_id',
             'foreign' => 'id'

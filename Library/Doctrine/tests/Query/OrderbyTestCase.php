@@ -30,12 +30,12 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_Orderby_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_Orderby_TestCase extends Doctrine_UnitTestCase
 {
     public function testOrderByRandomIsSupported()
     {
         $q = new Doctrine_Query();
-        
+
         $q->select('u.name, RANDOM() rand')
           ->from('User u')
           ->orderby('rand DESC');
@@ -59,7 +59,7 @@ class Doctrine_Query_Orderby_TestCase extends Doctrine_UnitTestCase
     {
         try {
             $q = new Doctrine_Query();
-        
+
             $q->select('u.name')
               ->from('User u')
               ->orderby('COALESCE(u.id, u.name) DESC');
@@ -70,12 +70,12 @@ class Doctrine_Query_Orderby_TestCase extends Doctrine_UnitTestCase
             $this->fail($e->getMessage());
         }
     }
-    
+
     public function testOrderByWithMultipleCoalesce()
     {
         try {
             $q = new Doctrine_Query();
-        
+
             $q->select('u.name')
               ->from('User u')
               ->orderby('COALESCE(u.id, u.name) DESC, COALESCE(u.name, u.id) ASC');
@@ -91,7 +91,7 @@ class Doctrine_Query_Orderby_TestCase extends Doctrine_UnitTestCase
     {
         try {
             $q = new Doctrine_Query();
-        
+
             $q->select('u.name')
               ->from('User u')
               ->orderby('u.id ASC, u.name DESC');

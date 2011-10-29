@@ -191,7 +191,7 @@ interface Doctrine_Node_Interface {
     /**
      * moves node as prev sibling of dest record
      *
-     */  
+     */
     public function moveAsPrevSiblingOf(Doctrine_Record $dest);
 
     /**

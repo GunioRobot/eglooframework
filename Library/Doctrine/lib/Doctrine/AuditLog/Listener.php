@@ -42,10 +42,10 @@ class Doctrine_AuditLog_Listener extends Doctrine_Record_Listener
     /**
      * Instantiate AuditLog listener and set the Doctrine_AuditLog instance to the class
      *
-     * @param   Doctrine_AuditLog $auditLog 
+     * @param   Doctrine_AuditLog $auditLog
      * @return  void
      */
-    public function __construct(Doctrine_AuditLog $auditLog) 
+    public function __construct(Doctrine_AuditLog $auditLog)
     {
         $this->_auditLog = $auditLog;
     }
@@ -69,10 +69,10 @@ class Doctrine_AuditLog_Listener extends Doctrine_Record_Listener
      * Post insert event hook which creates the new version record
      * This will only insert a version record if the auditLog is enabled
      *
-     * @param   Doctrine_Event $event 
+     * @param   Doctrine_Event $event
      * @return  void
      */
-    public function postInsert(Doctrine_Event $event) 
+    public function postInsert(Doctrine_Event $event)
     {
         if ($this->_auditLog->getOption('auditLog')) {
             $class = $this->_auditLog->getOption('className');
@@ -152,7 +152,7 @@ class Doctrine_AuditLog_Listener extends Doctrine_Record_Listener
     /**
      * Get the next version number for the audit log
      *
-     * @param Doctrine_Record $record 
+     * @param Doctrine_Record $record
      * @return integer $nextVersion
      */
     protected function _getNextVersion(Doctrine_Record $record)

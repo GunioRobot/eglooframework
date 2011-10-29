@@ -3,21 +3,21 @@
  * HaangaTemplateEngine Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -70,8 +70,8 @@ class HaangaTemplateEngine extends Smarty implements TemplateEngineInterface {
 	}
 
 	public function setCustomDelimiters() {
-		$this->left_delimiter = $this->_custom_left_delimiter; 
-		$this->right_delimiter = $this->_custom_right_delimiter; 
+		$this->left_delimiter = $this->_custom_left_delimiter;
+		$this->right_delimiter = $this->_custom_right_delimiter;
 	}
 
 	public function setDeploymentOptions() {
@@ -122,10 +122,10 @@ class HaangaTemplateEngine extends Smarty implements TemplateEngineInterface {
 	public function setTemplatePaths( $templatePaths = null ) {
 		if ( !$templatePaths ) {
 	        // Get the template paths for the application and the framework
-			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName() . '/' . $this->packagePrefix . '/';
 
-			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/Templates/' . $this->packagePrefix . '/';
 
 			$extra_template_path = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . '/' . eGlooConfiguration::getExtraTemplatePath() . '/';
@@ -159,7 +159,7 @@ class HaangaTemplateEngine extends Smarty implements TemplateEngineInterface {
 			unset($this->templateRoots['Application']);
 			$this->config_dir = $this->templateRoots;
 		} else {
-			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
 			$this->templateRoots['Application'] = $application_template_path;
 			$this->template_dir = $this->templateRoots;
@@ -171,7 +171,7 @@ class HaangaTemplateEngine extends Smarty implements TemplateEngineInterface {
 			unset($this->templateRoots['ApplicationCommon']);
 			$this->config_dir = $this->templateRoots;
 		} else {
-			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/Templates/';
 			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
 			$this->template_dir = $this->templateRoots;

@@ -31,16 +31,16 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_Update_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_Update_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
-    public function prepareTables() 
+    public function prepareTables()
     {
         $this->tables = array('Entity', 'User', 'EnumTest');
         parent::prepareTables();
     }
-    public function testUpdateAllWithColumnAggregationInheritance() 
+    public function testUpdateAllWithColumnAggregationInheritance()
     {
         $q = new Doctrine_Query();
 
@@ -55,7 +55,7 @@ class Doctrine_Query_Update_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($q->getSqlQuery(), "UPDATE entity SET name = 'someone' WHERE (type = 0)");
     }
 
-    public function testUpdateWorksWithMultipleColumns() 
+    public function testUpdateWorksWithMultipleColumns()
     {
         $q = new Doctrine_Query();
 
@@ -69,8 +69,8 @@ class Doctrine_Query_Update_TestCase extends Doctrine_UnitTestCase
 
         $this->assertEqual($q->getSqlQuery(), "UPDATE entity SET name = 'someone', email_id = 5 WHERE (type = 0)");
     }
-    
-    public function testUpdateSupportsConditions() 
+
+    public function testUpdateSupportsConditions()
     {
         $q = new Doctrine_Query();
 

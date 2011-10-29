@@ -15,7 +15,7 @@ abstract class BaseCategory
      {
          $this->name = $name;
      }
-    
+
      public function getId()
      {
          return $this->id;

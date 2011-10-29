@@ -1,10 +1,10 @@
 <?php
-class gnatEmail extends Doctrine_Record 
+class gnatEmail extends Doctrine_Record
 {
-    public function setTableDefinition() 
+    public function setTableDefinition()
     {
         $this->hasColumn('address', 'string', 150);
     }
-    
-    
+
+
 }

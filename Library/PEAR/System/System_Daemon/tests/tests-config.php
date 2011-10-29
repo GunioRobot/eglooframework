@@ -2,9 +2,9 @@
 /* vim: set noai expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 /**
  * Script to set test parameters.
- *  
+ *
  * PHP version 5
- * 
+ *
  * @category  System
  * @package   System_Daemon
  * @author    Kevin van Zonneveld <kevin@vanzonneveld.net>
@@ -13,7 +13,7 @@
  * @version   SVN: Release: $Id$
  * @link      http://trac.plutonia.nl/projects/system_daemon
  */
-    
+
     $path = ini_get('include_path');
     ini_set('include_path', realpath('../') . PATH_SEPARATOR . $path);
 

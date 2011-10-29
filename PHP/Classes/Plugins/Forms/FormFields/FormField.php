@@ -3,21 +3,21 @@
  * FormField Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -215,7 +215,7 @@ class FormField {
 
 	public function hasChildren() {
 		$retVal = false;
-		
+
 		if ( !empty($this->_formFieldChildren) ) {
 			$retVal = true;
 		}
@@ -234,7 +234,7 @@ class FormField {
 			if ( trim($this->_prependHTML) !== '' ) {
 				$retVal = $prepend . "\t" . $this->_prependHTML . "\n";
 			}
- 
+
 			// TODO localize this.  Also, we ignore checkbox labeling to have it wrap the input field
 			if ( $render_labels && $this->getDisplayLabel() && trim($this->getDisplayLabel()) !== '' && $this->getFormFieldType() !== 'checkbox' ) {
 				$retVal .= $prepend . "\t" . $this->getLabelPrependHTML() . '<label id="formfield-' . $this->getID() . '-form-formfield-label" ' .
@@ -288,12 +288,12 @@ class FormField {
 						$retVal .= '/>' . $this->getInputAppendHTML() . "\n";
 					break;
 				case 'hidden' :
-					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' . 
+					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="' .
 						$this->getVariablePrepend() . '[' . $this->getID() . ']" class="' . $this->getCSSClassesString() .
 						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
 					break;
 				case 'max_file_size' :
-					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="MAX_FILE_SIZE" ' . 
+					$retVal .= $prepend . "\t" . '<input id="formfield-' . $this->getID() . '-form-formfield" name="MAX_FILE_SIZE" ' .
 						'class="' . $this->getCSSClassesString() .
 						'" type="hidden" value="' . $this->getValue() . '" />' . "\n";
 					break;
@@ -414,7 +414,7 @@ class FormField {
 	public function renderErrors( $render_child_errors = true ) {
 		$retVal = null;
 
-		
+
 
 		return $retVal;
 	}
@@ -506,10 +506,10 @@ class FormField {
 	public function insertElementBefore( $first_element_id, $second_element_id ) {
 		// $first_index = $this->_formFieldElementOrder[$first_element_id];
 		// $second_index = $this->_formFieldElementOrder[$second_element_id];
-		// 
+		//
 		// $this->_formFieldElementOrder[$first_element_id] = $second_index;
 		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
-		// 
+		//
 		// asort($this->_formFieldElementOrder);
 
 		return $this;
@@ -518,10 +518,10 @@ class FormField {
 	public function insertElementAfter( $first_element_id, $second_element_id ) {
 		// $first_index = $this->_formFieldElementOrder[$first_element_id];
 		// $second_index = $this->_formFieldElementOrder[$second_element_id];
-		// 
+		//
 		// $this->_formFieldElementOrder[$first_element_id] = $second_index;
 		// $this->_formFieldElementOrder[$second_element_id] = $first_index;
-		// 
+		//
 		// asort($this->_formFieldElementOrder);
 
 		return $this;
@@ -778,7 +778,7 @@ class FormField {
 	}
 
 	public function __destruct() {
-		
+
 	}
 
 }

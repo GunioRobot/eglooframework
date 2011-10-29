@@ -3,21 +3,21 @@
  * eGlooRequestDefinitionParser Class File
  *
  * Contains the class definition for the abstract eGloo request definition parser
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -28,9 +28,9 @@
 
 /**
  * eGlooRequestDefinitionParser
- * 
+ *
  * Validates requests against eGloo requests definitions
- * 
+ *
  * In future can call multiple classes in the security package to validate the request.
  * Fills the RequestInfoBean with validated Request info or nothing if the request is invalid.
  * Returns true if request is valid, or false if there a problem has been detected.
@@ -72,7 +72,7 @@ abstract class eGlooRequestDefinitionParser {
 	 * can instantiate objects without implementing the singleton pattern.  We enforce this pattern
 	 * because no eGlooRequestDefinitionParser needs to have more than one object instantiated at any
 	 * time.
-	 * 
+	 *
 	 * The constructor takes two arguments: the eGloo app to parse requests for and the relevant UI bundle.
 	 * The UI bundle is not used for validation purposes, but is stored in the RequestInfoBean for quick
 	 * access in the invoked RequestProcessor later in the runtime.
@@ -80,7 +80,7 @@ abstract class eGlooRequestDefinitionParser {
 	 * @param $webapp a string containing the name of the eGloo application whose Requests.xml we're parsing
 	 * @param $uibundle a string containing the name of the UI bundle for the eGloo application in question
 	 *
-	 * @throws eGlooRequestDefinitionParserException if attempting to construct a second instance of this class 
+	 * @throws eGlooRequestDefinitionParserException if attempting to construct a second instance of this class
 	 */
 	final private function __construct( $webapp, $uibundle ) {
 		// Make sure we haven't already constructed a singleton instance.  Throw exception if we have
@@ -164,11 +164,11 @@ abstract class eGlooRequestDefinitionParser {
 	}
 
 	/**
-	 * This method ensures that this is valid request, by checking arguments 
-	 * against the expectant values in the request definition object. if it is a valid 
+	 * This method ensures that this is valid request, by checking arguments
+	 * against the expectant values in the request definition object. if it is a valid
 	 * request, the request processor id needed process this request is populated
 	 * in the request info bean.
-	 * 
+	 *
 	 * @return true if this is a valid request, false otherwise
 	 */
 	abstract public function validateAndProcess($requestInfoBean);

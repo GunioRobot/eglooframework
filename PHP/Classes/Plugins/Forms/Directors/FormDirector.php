@@ -3,21 +3,21 @@
  * FormDirector Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -47,7 +47,7 @@ final class FormDirector {
 	private $_formAttributeSetNodes = null;
 
 	private function __construct() {
-		
+
 	}
 
 	public static function getInstance() {
@@ -73,7 +73,7 @@ final class FormDirector {
 	public function writeDefinitionsXMLFromArray( $form_definitions ) {
 		$retVal = false;
 
-		
+
 
 		return $retVal;
 	}
@@ -92,7 +92,7 @@ final class FormDirector {
 		} else {
 			// TODO have common area
 			$application_forms_xml_location = eGlooConfiguration::getApplicationsPath() . '/' . eGlooConfiguration::getApplicationPath() . '/XML/Forms.xml';
-			$framework_forms_xml_location = eGlooConfiguration::getFrameworkRootPath() . '/XML/Forms.xml'; 
+			$framework_forms_xml_location = eGlooConfiguration::getFrameworkRootPath() . '/XML/Forms.xml';
 
 			$forms_xml_locations[] = $framework_forms_xml_location;
 			$forms_xml_locations[] = $application_forms_xml_location;
@@ -778,7 +778,7 @@ final class FormDirector {
 
 							foreach( $formFieldChild->xpath( 'child::DisplayLabel' ) as $childDisplayLabelNode ) {
 								$childDisplayLabel = (string) $childDisplayLabelNode;
-								
+
 								if ( isset($childDisplayLabelNode['localizationToken']) ) {
 									$childDisplayLabelLocalizationToken = (string) $childDisplayLabelNode['localizationToken'];
 								}
@@ -1113,7 +1113,7 @@ final class FormDirector {
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
 					// $formFieldSetNodeDisplayLocalized = isset( $formFieldSet['displayLocalized'] ) ? strtolower( (string) $formFieldSet['displayLocalized'] ) : null;
-					// 
+					//
 					// if ( !$formFieldSetNodeDisplayLocalized || trim($formFieldSetNodeDisplayLocalized) === '' ) {
 					// 	throw new ErrorException('No localization setting specified in FormFieldSet \'' . $formFieldSetID . '\'. Please review your Forms.xml');
 					// } else if ($formFieldSetNodeDisplayLocalized === 'true') {
@@ -1246,7 +1246,7 @@ final class FormDirector {
 						// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 						//
 						// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : null;
-						// 
+						//
 						// if ($formFieldNodeDisplayLocalized === 'true') {
 						// 	$formFieldNodeDisplayLocalized = true;
 						// } else if ($formFieldNodeDisplayLocalized === 'false') {
@@ -1330,7 +1330,7 @@ final class FormDirector {
 								// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 								//
 								// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : null;
-								// 
+								//
 								// if ($formFieldChildNodeDisplayLocalized === 'true') {
 								// 	$formFieldChildNodeDisplayLocalized = true;
 								// } else if ($formFieldChildNodeDisplayLocalized === 'false') {
@@ -1578,7 +1578,7 @@ final class FormDirector {
 					// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 					//
 					// $formFieldNodeDisplayLocalized = isset( $formField['displayLocalized'] ) ? strtolower( (string) $formField['displayLocalized'] ) : null;
-					// 
+					//
 					// if ($formFieldNodeDisplayLocalized === 'true') {
 					// 	$formFieldNodeDisplayLocalized = true;
 					// } else if ($formFieldNodeDisplayLocalized === 'false') {
@@ -1634,7 +1634,7 @@ final class FormDirector {
 							// of the attribute set.  Uh, and this is only half complete.  Needs the localizer name (class)
 							//
 							// $formFieldChildNodeDisplayLocalized = isset( $formFieldChild['displayLocalized'] ) ? strtolower( (string) $formFieldChild['displayLocalized'] ) : null;
-							// 
+							//
 							// if ($formFieldChildNodeDisplayLocalized === 'true') {
 							// 	$formFieldChildNodeDisplayLocalized = true;
 							// } else if ($formFieldChildNodeDisplayLocalized === 'false') {
@@ -2498,7 +2498,7 @@ final class FormDirector {
 
 	/**
 	 * Validate and process a form build internally
-	 * 
+	 *
 	 * @return Fully built and validated form object or false on error
 	 */
 	public function processForm( $form_name, $parameter_method ) {
@@ -2515,7 +2515,7 @@ final class FormDirector {
 
 	/**
 	 * Validate and process a form passed in as an argument
-	 * 
+	 *
 	 * @return Fully built and validated form object or false on error
 	 */
 	public function processSubmittedForm( $formObj ) {

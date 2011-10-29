@@ -48,7 +48,7 @@ class CmsUser
      * @ReferenceMany(targetDocument="CmsGroup", cascade={"persist", "merge"})
      */
     public $groups;
-    
+
     public function __construct() {
         $this->phonenumbers = new ArrayCollection;
         $this->articles = new ArrayCollection;
@@ -108,9 +108,9 @@ class CmsUser
         }
         return false;
     }
-    
+
     public function getAddress() { return $this->address; }
-    
+
     public function setAddress(CmsAddress $address) {
         if ($this->address !== $address) {
             $this->address = $address;

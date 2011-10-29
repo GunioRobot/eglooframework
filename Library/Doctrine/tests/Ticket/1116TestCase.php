@@ -31,7 +31,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1116_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1116_TestCase extends Doctrine_UnitTestCase
 {
 	public function setUp()
 	{
@@ -53,12 +53,12 @@ class Doctrine_Ticket_1116_TestCase extends Doctrine_UnitTestCase
 		  ->where('s.username = ?', array('test'));
 
 		// to see the error switch dbh to a real db, the next line will trigger the error
-		$test = $q->fetchOne();  //will only fail with "real" mysql 
+		$test = $q->fetchOne();  //will only fail with "real" mysql
 		$this->assertFalse($test);
 
-		$sql    = $q->getSqlQuery(); // just getSql()?!?! and it works ? the params are ok after this call  
+		$sql    = $q->getSqlQuery(); // just getSql()?!?! and it works ? the params are ok after this call
 		$params = $q->getFlattenedParams();
-		$this->assertEqual(count($params), 1); // now we have array('test',null) very strange ..... 
+		$this->assertEqual(count($params), 1); // now we have array('test',null) very strange .....
 
 		$this->assertEqual($sql, "SELECT u.id AS u__id, u.username AS u__username, u.deleted_at AS u__deleted_at FROM user u WHERE (u.username = ? AND (u.deleted_at IS NULL))");
 		$this->assertEqual($params, array('test'));

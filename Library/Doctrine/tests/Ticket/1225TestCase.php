@@ -6,12 +6,12 @@ class Doctrine_Ticket_1225_TestCase extends Doctrine_UnitTestCase
         $this->tables = array('Ticket_1225_Tree');
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     {
     }
 
-    public function testMoveAsSameNodeThrowsException() 
+    public function testMoveAsSameNodeThrowsException()
     {
         $root1 = new Ticket_1225_Tree();
         $tree = $root1->getTable()->getTree();

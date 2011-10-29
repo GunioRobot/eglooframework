@@ -19,11 +19,11 @@ class Doctrine_Ticket_1830_TestCase extends Doctrine_UnitTestCase
       $this->manager->closeConnection($this->connection);
     }
 
-    public function prepareData() 
+    public function prepareData()
     {
     }
-    
-    public function prepareTables() 
+
+    public function prepareTables()
     {
         try {
             $this->conn->exec('DROP TABLE ticket_1830__article_translation');

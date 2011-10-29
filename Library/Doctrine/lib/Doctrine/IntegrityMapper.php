@@ -30,35 +30,35 @@
  * @version     $Revision$
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  */
-class Doctrine_IntegrityMapper 
+class Doctrine_IntegrityMapper
 {
     /**
-     * processDeleteIntegrity 
-     * 
-     * @param Doctrine_Record $record 
+     * processDeleteIntegrity
+     *
+     * @param Doctrine_Record $record
      * @return void
      */
     public function processDeleteIntegrity(Doctrine_Record $record)
     {
         $coll = $this->buildIntegrityRelationQuery($record);
-        
+
         $this->invokeIntegrityActions($record);
     }
 
     /**
-     * invokeIntegrityActions 
-     * 
-     * @param Doctrine_Record $record 
+     * invokeIntegrityActions
+     *
+     * @param Doctrine_Record $record
      * @return void
      */
     public function invokeIntegrityActions(Doctrine_Record $record)
     {
         $deleteActions = Doctrine_Manager::getInstance()
                          ->getDeleteActions($record->getTable()->getComponentName());
-                         
+
         foreach ($record->getTable()->getRelations() as $relation) {
             $componentName = $relation->getTable()->getComponentName();
-            
+
             foreach($record->get($relation->getAlias()) as $coll) {
                 if ( ! ($coll instanceof Doctrine_Collection)) {
                     $coll = array($coll);
@@ -80,15 +80,15 @@ class Doctrine_IntegrityMapper
     }
 
     /**
-     * buildIntegrityRelationQuery 
-     * 
-     * @param Doctrine_Record $record 
+     * buildIntegrityRelationQuery
+     *
+     * @param Doctrine_Record $record
      * @return array The result
      */
     public function buildIntegrityRelationQuery(Doctrine_Record $record)
     {
         $q = $record->getTable()->createQuery();
-        
+
         $aliases = array();
         $indexes = array();
 
@@ -117,13 +117,13 @@ class Doctrine_IntegrityMapper
     }
 
     /**
-     * buildIntegrityRelations 
-     * 
-     * @param Doctrine_Table $table 
-     * @param mixed $aliases 
-     * @param mixed $fields 
-     * @param mixed $indexes 
-     * @param mixed $components 
+     * buildIntegrityRelations
+     *
+     * @param Doctrine_Table $table
+     * @param mixed $aliases
+     * @param mixed $fields
+     * @param mixed $indexes
+     * @param mixed $components
      * @return void
      */
     public function buildIntegrityRelations(Doctrine_Table $table, &$aliases, &$fields, &$indexes, &$components)

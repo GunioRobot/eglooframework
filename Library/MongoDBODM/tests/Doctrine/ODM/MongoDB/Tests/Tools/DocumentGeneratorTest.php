@@ -107,7 +107,7 @@ class DocumentGeneratorTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
     {
         $metadata = $this->generateBookDocumentFixture();
         $metadata->mapField(array('fieldName' => 'test', 'type' => 'string'));
-        
+
         $this->generator->writeDocumentClass($metadata, $this->tmpDir);
 
         $this->assertFileExists($this->tmpDir . "/" . $this->namespace . "/~DocumentGeneratorBook.php");

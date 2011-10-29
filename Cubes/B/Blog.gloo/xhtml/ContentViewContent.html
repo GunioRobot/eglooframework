@@ -3,7 +3,7 @@
 <!--{foreach name=Blogs from=$blogDTOArray item=currentEntry}-->
 	<div class="blogItemContainer <!--{if $smarty.foreach.Blogs.index % 2 == 0}-->gray<!--{/if}-->">
 		<div class="blogListTitle clickable">
-			<a href="/blog/viewBlogEntry/&height=400&width=475&blogID=<!--{$currentEntry->getBlogID()}-->" class="thickbox" title="<!--{$currentEntry->getTitle()}-->"><!--{$currentEntry->getTitle()}--></a>	
+			<a href="/blog/viewBlogEntry/&height=400&width=475&blogID=<!--{$currentEntry->getBlogID()}-->" class="thickbox" title="<!--{$currentEntry->getTitle()}-->"><!--{$currentEntry->getTitle()}--></a>
 		</div>
 	</div>
 <!--{/foreach}-->

@@ -147,7 +147,7 @@ class Doctrine_Configurable_TestCase extends Doctrine_UnitTestCase
     public function testValidatorAttributeAcceptsBooleans()
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, true);
-        
+
         $this->assertEqual($this->manager->getAttribute(Doctrine_Core::ATTR_VALIDATE), true);
         $this->manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, false);
     }
@@ -161,14 +161,14 @@ class Doctrine_Configurable_TestCase extends Doctrine_UnitTestCase
     {
         $this->manager->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_RTRIM | Doctrine_Core::PORTABILITY_FIX_CASE);
 
-        $this->assertEqual($this->manager->getAttribute(Doctrine_Core::ATTR_PORTABILITY), 
+        $this->assertEqual($this->manager->getAttribute(Doctrine_Core::ATTR_PORTABILITY),
                            Doctrine_Core::PORTABILITY_RTRIM | Doctrine_Core::PORTABILITY_FIX_CASE);
         $this->manager->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL);
     }
 
     public function testDefaultListenerIsDoctrineEventListener()
     {
-        $this->assertTrue($this->manager->getAttribute(Doctrine_Core::ATTR_LISTENER) instanceof Doctrine_EventListener);                                                                     
+        $this->assertTrue($this->manager->getAttribute(Doctrine_Core::ATTR_LISTENER) instanceof Doctrine_EventListener);
     }
 
     public function testListenerAttributeAcceptsEventListenerObjects()
@@ -185,7 +185,7 @@ class Doctrine_Configurable_TestCase extends Doctrine_UnitTestCase
         $original = $this->connection->getTable('User')->getAttribute(Doctrine_Core::ATTR_COLL_KEY);
         try {
             $this->connection->getTable('User')->setAttribute(Doctrine_Core::ATTR_COLL_KEY, 'name');
-            
+
             $this->pass();
         } catch(Exception $e) {
             $this->fail();
@@ -197,7 +197,7 @@ class Doctrine_Configurable_TestCase extends Doctrine_UnitTestCase
     {
         try {
             $this->connection->getTable('User')->setAttribute(Doctrine_Core::ATTR_COLL_KEY, 'unknown');
-            
+
             $this->fail();
         } catch(Exception $e) {
             $this->pass();
@@ -208,7 +208,7 @@ class Doctrine_Configurable_TestCase extends Doctrine_UnitTestCase
     {
         try {
             $this->connection->setAttribute(Doctrine_Core::ATTR_COLL_KEY, 'name');
-            
+
             $this->fail();
         } catch(Exception $e) {
             $this->pass();

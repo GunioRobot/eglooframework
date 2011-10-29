@@ -37,7 +37,7 @@
 
 // Haanga_Exception {{{
 /**
- *  General exception class. It is thrown 
+ *  General exception class. It is thrown
  *  when something is not configured properly
  *
  */

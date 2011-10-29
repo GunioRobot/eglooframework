@@ -61,10 +61,10 @@ CREATE TABLE Users (
     LastName															VARCHAR(35) NOT NULL, -- Lower + Uppercase + spaces + apostrophes.
     NameSuffix															VARCHAR(10),
     ProfessionalSuffix													VARCHAR(4),
-    Gender																VARCHAR(10) NOT NULL, 
+    Gender																VARCHAR(10) NOT NULL,
     NumberOfInvites														SMALLINT NOT NULL DEFAULT 0,
 	UserAssociationLevel												SMALLINT NOT NULL, -- Need different name
-	Active																BOOLEAN DEFAULT FALSE,			
+	Active																BOOLEAN DEFAULT FALSE,
 CONSTRAINT pk_Users PRIMARY KEY (User_ID),
 CONSTRAINT fk_Users_UserName FOREIGN KEY (UserName)
 	REFERENCES PageNames(PageName)

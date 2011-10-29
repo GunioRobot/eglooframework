@@ -58,7 +58,7 @@ class Doctrine_Search_File extends Doctrine_Search
 
     public function buildRelation()
     {
-    	
+
     }
 
     /**
@@ -71,7 +71,7 @@ class Doctrine_Search_File extends Doctrine_Search
     {
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir),
                                                 RecursiveIteratorIterator::LEAVES_ONLY);
-                                                
+
         foreach ($it as $file) {
             if (strpos($file, DIRECTORY_SEPARATOR . '.svn') !== false) {
                 continue;

@@ -3,21 +3,21 @@
  * CacheManagementDirector Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -97,15 +97,15 @@ class CacheManagementDirector {
 	}
 
 	public static function getCacheGatewayNamespaces() {
-		
+
 	}
 
 	public static function getCacheGatewayKeysByNamespace() {
-		
+
 	}
 
 	public static function getAllCacheGatewayKeys() {
-		
+
 	}
 
 	public static function getAllCacheRegionLabels() {
@@ -113,7 +113,7 @@ class CacheManagementDirector {
 	}
 
 	public static function getAllCacheRegionMetadata() {
-		
+
 	}
 
 	public static function getAllCacheEntriesByRegion() {
@@ -129,7 +129,7 @@ class CacheManagementDirector {
 
 		foreach(self::$_cacheRegions as $cacheRegion) {
 			$handler = self::getCacheRegionHandler($cacheRegion);
-			
+
 			$retVal[$cacheRegion] = $handler->getAllCacheEntries();
 			// $retVal[$cacheRegion] = array(array('key' => 'foo', 'value' => 'bar', 'ttl' => 99, 'lastUpdated' => 971918));
 		}
@@ -139,7 +139,7 @@ class CacheManagementDirector {
 
 	// Not sure why you'd ever need this, but if you do, we'll let you eventually
 	public static function getAllCacheRegions() {
-		
+
 	}
 
 }

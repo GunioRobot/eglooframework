@@ -69,5 +69,5 @@ class Doctrine_Ticket_1028_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($relation instanceof Doctrine_Relation_LocalKey);
     }
 
-   
+
 }

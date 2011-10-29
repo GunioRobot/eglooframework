@@ -3,21 +3,21 @@
  * eGlooDPStatement Class File
  *
  * Contains the class definition for the eGlooDPStatement
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -69,7 +69,7 @@ class eGlooDPStatement extends eGlooDPPrimitive {
 		$framework_local_database_path = eGlooConfiguration::getFrameworkRootPath() . '/Database/Frameworks/Local/';
 		$framework_common_database_path = eGlooConfiguration::getFrameworkRootPath() . '/Database/Frameworks/Common/';
 		$framework_core_database_path = eGlooConfiguration::getFrameworkRootPath() . '/Database/Frameworks/Core/';
-		
+
 		$database_include_paths = array(
 			'Application' => $application_database_path,
 			'ExtraTemplatePath' => $extra_database_path,
@@ -148,7 +148,7 @@ protected function getConnection() {
 return $this->_reportingConnection;
 }
 
-// This should eventually be sourced out of a specific 
+// This should eventually be sourced out of a specific
 protected function prepareConnection() {
 $this->_reportingConnection = DBConnectionManager::getConnection($this->_connectionName, $this->_engineMode);
 }

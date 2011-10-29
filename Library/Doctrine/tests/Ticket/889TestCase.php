@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_889_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_889_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -39,7 +39,7 @@ class Doctrine_Ticket_889_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-	public function prepareData() 
+	public function prepareData()
     { }
 
 	public function testManyTreeRelationWithSelfRelation_Children() {
@@ -78,12 +78,12 @@ class Doctrine_Ticket_889_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue($component->Parents[0] instanceof Ticket_889);
     }
 
-	public function testInitData() 
+	public function testInitData()
     {
         $test = new Ticket_889();
 		$test->table_name = 'Feature';
 		$test->save();
-		
+
 		$test3 = new Ticket_889();
 		$test3->table_name = 'Application';
 		$test3->save();
@@ -111,23 +111,23 @@ class Ticket_889 extends Doctrine_Record
 
         // id
         $this->hasColumn(
-    			'id', 	
-    			'integer', 	
-    			10, 	
+    			'id',
+    			'integer',
+    			10,
     			array(	'primary' => true,
-    					'unsigned' => true, 	
-    					'autoincrement' => true	
+    					'unsigned' => true,
+    					'autoincrement' => true
     			)
     	);
 
         // table_name
-        $this->hasColumn(	
-    			'table_name', 
-    			'string', 
-    			100, 
-    			array(	'notnull' => true, 	
-    					'notblank' =>true, 
-    					'unique' => true 
+        $this->hasColumn(
+    			'table_name',
+    			'string',
+    			100,
+    			array(	'notnull' => true,
+    					'notblank' =>true,
+    					'unique' => true
     			)
     	);
 
@@ -137,20 +137,20 @@ class Ticket_889 extends Doctrine_Record
     {
         // Ticket_889_Relationship child_id
        	$this->hasMany(
-			'Ticket_889 as Parents', 
+			'Ticket_889 as Parents',
 			array(	'local' => 'child_id',
-					'foreign' => 'parent_id', 
-					'refClass' => 'Ticket_889_Relationship'	
-			) 
+					'foreign' => 'parent_id',
+					'refClass' => 'Ticket_889_Relationship'
+			)
 		);
 
         // Ticket_889_Relationship parent_id
         $this->hasMany(
-			'Ticket_889 as Children', 
+			'Ticket_889 as Children',
 			array(	'local' => 'parent_id',
-					'foreign' => 'child_id', 
+					'foreign' => 'child_id',
 					'refClass' => 'Ticket_889_Relationship'
-			) 
+			)
 		);
 
        }
@@ -171,21 +171,21 @@ class Ticket_889_Relationship extends Doctrine_Record
 
         // parent_id
         $this->hasColumn(
-    		'parent_id', 
-    		'integer', 
+    		'parent_id',
+    		'integer',
     		10,
-    		array( 	'primary' => true, 
-    				'unsigned' => true 
+    		array( 	'primary' => true,
+    				'unsigned' => true
     		)
     	);
 
         // child_id
         $this->hasColumn(
-    		'child_id', 
-    		'integer', 
-    		10, 
-    		array( 	'primary' => true, 
-    				'unsigned' => true 
+    		'child_id',
+    		'integer',
+    		10,
+    		array( 	'primary' => true,
+    				'unsigned' => true
     		)
     	);
     }

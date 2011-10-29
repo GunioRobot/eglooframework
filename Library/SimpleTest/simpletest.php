@@ -238,7 +238,7 @@ class SimpleTest {
                 'DefaultProxyPassword' => false,
                 'Preferred' => array(new HtmlReporter(), new TextReporter(), new XmlReporter()));
     }
-    
+
     /**
      *    @deprecated
      */

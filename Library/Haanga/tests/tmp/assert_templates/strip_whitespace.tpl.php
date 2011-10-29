@@ -9,14 +9,14 @@ function haanga_d7c4d5b38d3a7e0818e446612beff5c975ed8985($vars, $return=FALSE, $
         ob_start();
     }
     if (empty($test_global) === FALSE) {
-        
+
         foreach ($test_global as  $i) {
             echo ' '.htmlspecialchars($i).' '.htmlspecialchars($i).' ';
         }
-        
+
     }
     echo ' <b> Texto laargo </b> <pre>
-Este es un texto 
+Este es un texto
 
 con
         espacios

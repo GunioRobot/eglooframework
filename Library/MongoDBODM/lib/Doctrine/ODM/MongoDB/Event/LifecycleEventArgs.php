@@ -42,13 +42,13 @@ class LifecycleEventArgs extends EventArgs
      * @var object
      */
     private $document;
-    
+
     public function __construct($document, $em)
     {
         $this->document = $document;
         $this->dm = $em;
     }
-    
+
     public function getDocument()
     {
         return $this->document;

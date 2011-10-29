@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -42,13 +42,13 @@ class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-    public function prepareData() 
+    public function prepareData()
     {
         // first branch of the 'object hierarchy'
         $e1 = new RelE();
         $e1->name = "e 1";
         $e1->save();
-        
+
         $d1 = new RelD();
         $d1->name = "d 1";
         $d1->rel_e_id = $e1->id;
@@ -117,13 +117,13 @@ class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase
         $q->orderBy('a.id ASC');
         $res = $q->execute();
         //$res = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
-        
+
         //var_dump($res/*->toArray(true)*/);
-        
+
         $this->assertEqual('a 1', $res->getFirst()->get('name'));
         $this->assertTrue($res->getFirst()->get('b')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->exists());
-        
+
     }
 
     public function testHydrationSkippingRelationIfNotSetOnSiblingDepth4()
@@ -136,16 +136,16 @@ class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase
         $q->orderBy('a.id ASC');
         $res = $q->execute();
         //$res = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
-        
+
         //var_dump($res/*->toArray(true)*/);
-        
+
         $this->assertEqual('a 1', $res->getFirst()->get('name'));
         $this->assertTrue($res->getFirst()->get('b')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->get('d')->exists());
-        
+
     }
-    
+
     public function testHydrationSkippingRelationIfNotSetOnSiblingDepth5()
     {
         $q = new Doctrine_Query();
@@ -157,17 +157,17 @@ class Doctrine_Ticket_1228_TestCase extends Doctrine_UnitTestCase
         $q->orderBy('a.id ASC');
         $res = $q->execute();
         //$res = $q->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
-        
+
         //var_dump($res/*->toArray(true)*/);
-        
+
         $this->assertEqual('a 1', $res->getFirst()->get('name'));
         $this->assertTrue($res->getFirst()->get('b')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->get('d')->exists());
         $this->assertTrue($res->getFirst()->get('b')->get('c')->get('d')->get('e')->exists());
-        
+
     }
-    
+
 }
 
 class RelA extends Doctrine_Record {

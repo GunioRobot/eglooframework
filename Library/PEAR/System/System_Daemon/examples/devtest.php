@@ -2,7 +2,7 @@
 <?php
 /**
  * System_Daemon turns PHP-CLI scripts into daemons.
- * 
+ *
  * PHP version 5
  *
  * @category  System
@@ -15,11 +15,11 @@
 
 /**
  * System_Daemon Example Code
- * 
+ *
  * If you run this code successfully, a daemon will be spawned
- * and stopped directly. You should find a log enty in 
+ * and stopped directly. You should find a log enty in
  * /var/log/optest.log
- * 
+ *
  */
 
 // Make it possible to test in source directory
@@ -53,12 +53,12 @@ if (($os = System_Daemon_OS::factory('BSD')) === false) {
     echo 'Cannot create OS\n';
 } else {
     print_r($os->errors);
-    
+
     echo '\n';
-    
+
     echo $os->getAutoRunTemplatePath();
     echo '\n';
-    
+
     $details = $os->getDetails();
     echo '\n';
     print_r($details);

@@ -51,19 +51,19 @@ class JqueryTreemapReporter extends TreemapReporter {
 		echo "</script></head>";
 		echo "<body><ul>";
 	}
-	
+
 	function paintRectangleStart($node) {
 		echo "<li><span class=\"desc\">". basename($node->getDescription()) . "</span>";
 		echo "<span class=\"data\">" . $node->getTotalSize() . "</span>";
 	}
-	
+
 	function paintRectangleEnd() {}
-	
+
 	function paintResultsFooter() {
 		echo "</ul></body>";
 		echo "</html>";
 	}
-	
+
 	function divideMapNodes($map) {
 		foreach($map->getChildren() as $node) {
 			if (!$node->isLeaf()) {

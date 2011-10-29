@@ -90,11 +90,11 @@ class Doctrine_Cli_AnsiColorFormatter extends Doctrine_Cli_Formatter
         if (isset($parameters['fg'])) {
             $codes[] = $this->_foreground[$parameters['fg']];
         }
-        
+
         if (isset($parameters['bg'])) {
             $codes[] = $this->_background[$parameters['bg']];
         }
-        
+
         foreach ($this->_options as $option => $value) {
             if (isset($parameters[$option]) && $parameters[$option]) {
                 $codes[] = $value;

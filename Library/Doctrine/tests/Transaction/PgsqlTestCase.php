@@ -30,28 +30,28 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Transaction_Pgsql_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Transaction_Pgsql_TestCase extends Doctrine_UnitTestCase
 {
-    public function testCreateSavePointExecutesSql() 
+    public function testCreateSavePointExecutesSql()
     {
         $this->transaction->beginTransaction('mypoint');
-        
+
         $this->assertEqual($this->adapter->pop(), 'SAVEPOINT mypoint');
     }
-    public function testReleaseSavePointExecutesSql() 
+    public function testReleaseSavePointExecutesSql()
     {
         $this->transaction->commit('mypoint');
 
         $this->assertEqual($this->adapter->pop(), 'RELEASE SAVEPOINT mypoint');
     }
-    public function testRollbackSavePointExecutesSql() 
+    public function testRollbackSavePointExecutesSql()
     {
         $this->transaction->beginTransaction('mypoint');
         $this->transaction->rollback('mypoint');
 
         $this->assertEqual($this->adapter->pop(), 'ROLLBACK TO SAVEPOINT mypoint');
     }
-    public function testSetIsolationThrowsExceptionOnUnknownIsolationMode() 
+    public function testSetIsolationThrowsExceptionOnUnknownIsolationMode()
     {
         try {
             $this->transaction->setIsolation('unknown');
@@ -60,7 +60,7 @@ class Doctrine_Transaction_Pgsql_TestCase extends Doctrine_UnitTestCase
             $this->pass();
         }
     }
-    public function testSetIsolationExecutesSql() 
+    public function testSetIsolationExecutesSql()
     {
         $this->transaction->setIsolation('READ UNCOMMITTED');
 

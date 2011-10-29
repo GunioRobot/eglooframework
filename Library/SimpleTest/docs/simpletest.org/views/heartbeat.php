@@ -17,11 +17,11 @@ echo $heartbeat->view($_SERVER['QUERY_STRING']);
 class SimpleHeartBeat {
     public $log_directory;
     public $tests_directory;
-    
+
     function __construct($log_directory) {
         $this->log_directory = $log_directory;
     }
-    
+
     function view($querystring) {
         switch ($querystring) {
             case "last-commits":
@@ -50,10 +50,10 @@ class SimpleHeartBeat {
         } else {
             $html = $this->dataUnavailable();
         }
-        
+
         return $html;
     }
-    
+
     function displayLastCommits($number=5) {
         $entries = array();
         $xml = simplexml_load_file($this->log_directory."/svn.xml");
@@ -76,15 +76,15 @@ class SimpleHeartBeat {
 	                break;
 	            }
 	        }
-	
+
 	        $html .= "</dl>";
         } else {
             $html = $this->dataUnavailable();
         }
-        
+
         return $html;
     }
-    
+
     function displaySparkline($name="commits last week") {
         $method = $this->findMethod($name);
         $data = $this->$method();
@@ -99,10 +99,10 @@ class SimpleHeartBeat {
         } else {
             $html = $this->dataUnavailable();
         }
-        
+
         return $html;
     }
-    
+
     function dataUnavailable() {
         return "<div><em>data unavailable</em></div>";
     }
@@ -112,7 +112,7 @@ class SimpleHeartBeat {
                 return "commitsPerWeek";
         }
     }
-    
+
     function commitsPerWeek() {
         $data = array();
         $xml = simplexml_load_file($this->log_directory."/svn.xml");
@@ -124,27 +124,27 @@ class SimpleHeartBeat {
             }
             $data[$weekly]++;
         }
-        
+
         $data = $this->normalizeData($data, "week");
-        
+
         return $data;
     }
-    
+
     function normalizeData($data, $period="week") {
         $min = min(array_keys($data));
         $max = max(array_keys($data));
-        
+
         $normalized = array();
         $current = $min;
         while ($current <= $max) {
             $normalized[$current] = 0;
             $current = strtotime("+1 ".$period, $current);
         }
-        
+
         foreach ($data as $timestamp => $value) {
             $normalized[$timestamp] = $value;
         }
-        
+
         return $normalized;
     }
 }
@@ -156,7 +156,7 @@ class SimpleHeartBeat {
 class SimpleHeartBeatLog {
     public $node;
     public $content = "";
-    
+
     function __construct($node) {
         $this->node = $node;
         $this->content = file_get_contents($this->node->getPathname());
@@ -164,7 +164,7 @@ class SimpleHeartBeatLog {
 
     function result() {
         if (preg_match("/OK/", $this->content)) {
-            return "pass"; 
+            return "pass";
         } else {
             return "fail";
         }
@@ -173,12 +173,12 @@ class SimpleHeartBeatLog {
     function info() {
         return nl2br($this->content);
     }
-    
+
     function details() {
         $details = substr($this->node->getFilename(), 11);
         $details = $this->result(). " with ".substr($details, 0, -4);
         $details .= " - ".date("c", $this->node->getCTime());
-        
+
         return "<div class=\"".$this->result()."\">".$details."</div>";
     }
 }

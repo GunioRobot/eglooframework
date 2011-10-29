@@ -47,7 +47,7 @@ class DoctrineTest_Coverage
     private $result;
 
     /*
-     * Create a new Coverage object. We read data from a fixed file. 
+     * Create a new Coverage object. We read data from a fixed file.
      */
     public function __construct()
     {
@@ -91,10 +91,10 @@ class DoctrineTest_Coverage
 
         $totals = $this->result["totals"];
 
-        echo '<tr><td>TOTAL</td><td>' , 
-            $totals['percentage'] , '%</td><td>' , 
-            $totals['lines'] , '</td><td>' , 
-            $totals['covered'] , '</td><td>', 
+        echo '<tr><td>TOTAL</td><td>' ,
+            $totals['percentage'] , '%</td><td>' ,
+            $totals['lines'] , '</td><td>' ,
+            $totals['covered'] , '</td><td>',
             $totals['maybe'] , '</td><td>',
             $totals['notcovered'] , '</td><td></tr>';
 
@@ -123,10 +123,10 @@ class DoctrineTest_Coverage
     /**
      * Generate the report.
      *
-     * This method will analyze the coverage data and create a data array that 
-     * contains information about each of the classes in Doctrine/lib. It will 
-     * also generate html files for each file that has coverage data with 
-     * information about what lines that are covered. 
+     * This method will analyze the coverage data and create a data array that
+     * contains information about each of the classes in Doctrine/lib. It will
+     * also generate html files for each file that has coverage data with
+     * information about what lines that are covered.
      *
      *
      * @uses generateCoverageInfoCoveredFile
@@ -152,8 +152,8 @@ class DoctrineTest_Coverage
 
             if (strpos($file->getPathname(), ".svn")) {
                 continue;
-            } 
-            
+            }
+
             $class = $this->getClassNameFromFileName($file->getPathname());
 
             if (strpos($class, '_Interface')) {
@@ -172,11 +172,11 @@ class DoctrineTest_Coverage
             }
         }
         $this->result["totals"] = array(
-            "lines" => $this->totallines, 
+            "lines" => $this->totallines,
             "notcovered" => $this->totalnotcovered,
-            "covered" => $this->totalcovered, 
-            "maybe" => $this->totalmaybe, 
-            "percentage" => $this->calculateTotalPercentage());  
+            "covered" => $this->totalcovered,
+            "maybe" => $this->totalmaybe,
+            "percentage" => $this->calculateTotalPercentage());
 
         $this->result["data"] = $coverageInfo;
 
@@ -189,7 +189,7 @@ class DoctrineTest_Coverage
      *
      * Return the name of a class from its filename.
      *
-     * This method simply removes the Doctrine Path and raplces _ with / and 
+     * This method simply removes the Doctrine Path and raplces _ with / and
      * removes .php to get the classname for a file
      *
      * @param string $fileName The name of the file
@@ -217,8 +217,8 @@ class DoctrineTest_Coverage
     /**
      * Generate Coverage for a class that is not in the coverage report.
      *
-     * This method will simply check if the method has no lines that should be 
-     * tested or not. Then it will return data to be stored for later use. 
+     * This method will simply check if the method has no lines that should be
+     * tested or not. Then it will return data to be stored for later use.
      *
      * @param string $class The name of a class
      * @return array An associative array with coverage information
@@ -250,15 +250,15 @@ class DoctrineTest_Coverage
 
 
     /*
-     * Save a html report for the given filename 
+     * Save a html report for the given filename
      *
-     * @param string $fileName The name of the file 
+     * @param string $fileName The name of the file
      */
     public function saveFile($fileName)
     {
         $className = $this->getClassNameFromFileName($fileName);
         $title = "Coverage for " . $className;
-        
+
         $html = '<html>
     <head>
         <title>' . $title . '</title>

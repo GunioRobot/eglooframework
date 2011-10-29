@@ -36,7 +36,7 @@ class Doctrine_Task_GenerateSql extends Doctrine_Task
            $requiredArguments    =   array('models_path'    =>  'Specify complete path to your Doctrine_Record definitions.',
                                            'sql_path'       =>  'Path to write the generated sql.'),
            $optionalArguments    =   array();
-    
+
     public function execute()
     {
         if (is_dir($this->getArgument('sql_path'))) {
@@ -46,11 +46,11 @@ class Doctrine_Task_GenerateSql extends Doctrine_Task
         } else {
             throw new Doctrine_Task_Exception('Invalid sql path.');
         }
-        
+
         $sql = Doctrine_Core::generateSqlFromModels($this->getArgument('models_path'));
-        
+
         file_put_contents($path, $sql);
-        
+
         $this->notify('Generated SQL successfully for models');
     }
 }

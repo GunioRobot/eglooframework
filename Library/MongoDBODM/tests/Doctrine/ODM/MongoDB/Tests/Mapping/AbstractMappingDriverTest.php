@@ -296,7 +296,7 @@ class User
         $metadata->mapOneReference(array(
            'fieldName' => 'address',
            'targetDocument' => 'Doctrine\\ODM\\MongoDB\\Tests\\Mapping\\Address',
-           'cascade' => 
+           'cascade' =>
            array(
            0 => 'remove',
            )
@@ -304,7 +304,7 @@ class User
         $metadata->mapManyReference(array(
            'fieldName' => 'phonenumbers',
            'targetDocument' => 'Doctrine\\ODM\\MongoDB\\Tests\\Mapping\\Phonenumber',
-           'cascade' => 
+           'cascade' =>
            array(
            1 => 'persist',
            ),
@@ -317,7 +317,7 @@ class User
         $metadata->mapManyReference(array(
            'fieldName' => 'groups',
            'targetDocument' => 'Doctrine\\ODM\\MongoDB\\Tests\\Mapping\\Group',
-           'cascade' => 
+           'cascade' =>
            array(
            0 => 'remove',
            1 => 'persist',

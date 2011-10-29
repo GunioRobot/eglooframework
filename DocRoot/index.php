@@ -1,6 +1,6 @@
 <?php
 /**
- * eGloo Framework Bootstrap File 
+ * eGloo Framework Bootstrap File
  *
  * This file contains the bootstrap for the eGloo framework
  *
@@ -62,7 +62,7 @@ if ( $isValidRequest ) {
 	$requestProcessor->processRequest();
 } else {
 	$errorRequestProcessor = RequestProcessorFactory::getErrorRequestProcessor( $requestInfoBean );
-	
+
 	if ($errorRequestProcessor) {
 		$errorRequestProcessor->processErrorRequest();
 	} else {

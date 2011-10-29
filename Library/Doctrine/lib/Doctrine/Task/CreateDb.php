@@ -34,7 +34,7 @@ class Doctrine_Task_CreateDb extends Doctrine_Task
 {
     public $description          =   'Create all databases for your connections. If the database already exists, nothing happens.',
            $optionalArguments    =   array();
-    
+
     public function execute()
     {
         $manager = Doctrine_Manager::getInstance();

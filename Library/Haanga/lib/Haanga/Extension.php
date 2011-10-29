@@ -98,7 +98,7 @@ Abstract Class Haanga_Extension
 
     // generator(string $name, Haanga_Compiler $compiler, Array $args) {{{
     /**
-     *  Executer the generator method of the extension. If 
+     *  Executer the generator method of the extension. If
      *  the extension doesn't has any generator method, an empty
      *  will be returned.
      *
@@ -120,8 +120,8 @@ Abstract Class Haanga_Extension
     // }}}
 
     // hasGenerator(string $name) {{{
-    /** 
-     *  Return TRUE if the extension has a  
+    /**
+     *  Return TRUE if the extension has a
      *  generator method
      *
      *  @param string $name Extension name
@@ -156,16 +156,16 @@ Abstract Class Haanga_Extension
         if (!is_callable(array($zclass, 'main'))) {
             throw new Haanga_Compiler_Exception("{$name}: missing main method in {$zclass} class");
         }
-        
+
         $reflection = new ReflectionMethod($zclass, 'main');
         $content    = file($this->getFilePath($tag_name));
 
         $start   = $reflection->getStartLine()-1;
         $end     = $reflection->getEndLine();
-        $content = array_slice($content, $start, $end-$start); 
+        $content = array_slice($content, $start, $end-$start);
 
         $content[0] = str_replace("main", $name, $content[0]);
-        
+
 
         return "if (!function_exists('{$name}')) {\n".implode("", $content)."}";
     }

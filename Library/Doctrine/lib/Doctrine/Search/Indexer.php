@@ -65,7 +65,7 @@ class Doctrine_Search_Indexer
         foreach ($files as $file) {
             $coll[]->url = $file;
         }
-        
+
         $coll->save();
     }
 }

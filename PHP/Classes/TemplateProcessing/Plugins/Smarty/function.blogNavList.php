@@ -3,21 +3,21 @@
  * smarty_function_blogNavList Function Definition File
  *
  * This file contains the definition for the smarty_function_blogNavList function.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author Keith Buel
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -46,12 +46,12 @@ function smarty_function_blogNavList($params, &$smarty)
 		$templateEngine->assign( 'fullBlogMonth', getMonth($params[ 'fullBlogDateCreated' ]) );
 	}
 
-   
+
 	//get list of blogs
     $daoFunction = 'getBlogList';
 	$inputValues = array();
     $inputValues[ 'profileID' ] = $params['profileID'];
- 
+
     $daoFactory = AbstractDAOFactory::getInstance();
 	$genericPLFunctionDAO = $daoFactory->getGenericPLFunctionDAO();
 
@@ -60,52 +60,52 @@ function smarty_function_blogNavList($params, &$smarty)
 
 	$blogListArray = null;
 	foreach( $blogDTOArray as $blogDTO ) {
-				
+
 	$date = $blogDTO->get_dateblogcreated();
 	$currentYear = getYear( $date );
 	$currentMonth = getMonth( $date );
-			
+
 	if( $blogListArray[ $currentYear ] === null ) {
 		$blogListArray[ $currentYear ] = array();
 	}
-				
+
 	$yearArray = $blogListArray[ $currentYear ];
-				
+
 	if( $blogListArray[$currentYear][ $currentMonth ] === null ) {
 		$blogListArray[$currentYear][ $currentMonth ] = array();
 	}
-				
+
 	$monthArray = $blogListArray[ $currentYear][ $currentMonth];
-				
+
 	$blogListArray[$currentYear][ $currentMonth ][ $blogDTO->get_blog_id() ] = $blogDTO->get_blogtitle();
-				
-			
+
+
 	}
-			
-	
-	
-	
+
+
+
+
 	$templateEngine->assign( 'blogListArray', $blogListArray );
 	$templateEngine->assign( 'eas_ViewingProfileID', $params[ 'profileID' ] );
 	$templateEngine->assign( 'eas_MainProfileID', $_SESSION['MAIN_PROFILE_ID'] );
-		
+
 	return $templateEngine->fetch( "Core/eGloo/XHTML/Blog/Lists/BlogNavList.tpl" );
-	
+
 }
 
 
 function getDay( $date ){
 	return substr($date, 8, 2);
 }
-    
+
 function getYear( $date ){
 	return substr($date, 0, 4);
 }
-	    
+
 function getMonth( $date ){
 	$monthNum = substr($date, 5, 2);
 	$monthString = "";
-	
+
 	if( $monthNum === '01' ) $monthString = "January";
 	if( $monthNum === '02' ) $monthString = "February";
 	if( $monthNum === '03' ) $monthString = "March";
@@ -118,7 +118,7 @@ function getMonth( $date ){
 	if( $monthNum === '10' ) $monthString = "October";
 	if( $monthNum === '11' ) $monthString = "November";
 	if( $monthNum === '12' ) $monthString = "December";
-	
+
 	return $monthString;
 }
 

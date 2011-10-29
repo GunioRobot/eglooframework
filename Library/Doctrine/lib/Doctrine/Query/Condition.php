@@ -42,9 +42,9 @@ abstract class Doctrine_Query_Condition extends Doctrine_Query_Part
     public function parse($str)
     {
         $tmp = trim($str);
-        
+
         $parts = $this->_tokenizer->bracketExplode($str, array(' OR '), '(', ')');
-        
+
         if (count($parts) > 1) {
             $ret = array();
             foreach ($parts as $part) {
@@ -69,7 +69,7 @@ abstract class Doctrine_Query_Condition extends Doctrine_Query_Part
                     $tmp[] = $parts[$i];
                 }
             }
-            
+
             $parts = $tmp;
             unset($tmp);
 
@@ -94,7 +94,7 @@ abstract class Doctrine_Query_Condition extends Doctrine_Query_Part
                 }
             }
         }
-        
+
         return '(' . $r . ')';
     }
 

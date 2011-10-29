@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1244_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1244_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -60,6 +60,6 @@ class Ticket_1244_Test extends Doctrine_Record
 {
     public function setTableDefinition()
     {
-        $this->hasColumn('test', 'integer', 4, array('range' => array(5, 10))); 
+        $this->hasColumn('test', 'integer', 4, array('range' => array(5, 10)));
     }
 }

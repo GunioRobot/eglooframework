@@ -50,7 +50,7 @@ function addslashes_ex($string)
 /**
  *  Haanga_Generator_PHP class
  *
- *  This class takes the generated AST structure (arrays), 
+ *  This class takes the generated AST structure (arrays),
  *  and generated the PHP represantion.
  *
  *
@@ -66,7 +66,7 @@ class Haanga_Generator_PHP
      *  and return the equivalent PHP code.
      *
      *  @param array $op_code
-     *  
+     *
      *  @return string
      */
     final function getCode($op_code)
@@ -103,7 +103,7 @@ class Haanga_Generator_PHP
                 /* Code optimization
                 **
                 **  If a variable declaration, or append variable is followed
-                **  by several append_var, then merge everything into a 
+                **  by several append_var, then merge everything into a
                 **  single STMT.
                 **
                 */
@@ -159,7 +159,7 @@ class Haanga_Generator_PHP
 
     // php_else() {{{
     /**
-     *  Return code for "else" 
+     *  Return code for "else"
      *
      *  @return string
      */
@@ -174,7 +174,7 @@ class Haanga_Generator_PHP
 
     // php_comment() {{{
     /**
-     *  Return code for "comments" 
+     *  Return code for "comments"
      *
      *  @return string
      */
@@ -185,7 +185,7 @@ class Haanga_Generator_PHP
     // }}}
 
     // php_function(array $op) {{{
-    /** 
+    /**
      *  Return the function declaration of the class, for now
      *  it has fixed params, this should change soon to generate
      *  any sort of functions
@@ -236,7 +236,7 @@ class Haanga_Generator_PHP
     protected function php_end_block()
     {
         $this->ident--;
-        return $this->ident()."}";    
+        return $this->ident()."}";
     }
     // }}}
 
@@ -314,7 +314,7 @@ class Haanga_Generator_PHP
 
     // php_exec($op) {{{
     /**
-     *  Return code for a function calling. 
+     *  Return code for a function calling.
      *
      *  @return string
      */
@@ -346,7 +346,7 @@ class Haanga_Generator_PHP
     // php_generate_expr($op) {{{
     /**
      *  Return an expression
-     *  
+     *
      *  @return string
      */
     protected function php_generate_expr($expr)
@@ -388,7 +388,7 @@ class Haanga_Generator_PHP
 
     // php_generate_list(array ($array) {{{
     /**
-     *  Return a list of expressions for parameters 
+     *  Return a list of expressions for parameters
      *  of a function
      *
      *  @return string
@@ -422,7 +422,7 @@ class Haanga_Generator_PHP
                 throw new Haanga_Compiler_Exception("Malformed declaration ".print_r($op, TRUE));
             }
             $key   = key($op[$i]);
-            $value = current($op[$i]); 
+            $value = current($op[$i]);
             switch ($key) {
             case 'array':
                 $code .= "Array(";
@@ -537,7 +537,7 @@ class Haanga_Generator_PHP
     /**
      *  Return a variable declaration
      *
-     *  @return string  
+     *  @return string
      */
     protected function php_declare($op, $assign=' =')
     {

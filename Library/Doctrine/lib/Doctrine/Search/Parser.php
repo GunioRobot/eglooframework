@@ -35,7 +35,7 @@ class Doctrine_Search_Parser
     public function parse($file)
     {
         $contents = file_get_contents($file);
-        
+
         return array('url' => $file, 'contents' => $contents);
     }
 }

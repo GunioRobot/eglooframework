@@ -57,7 +57,7 @@ class Doctrine_Validator_Timestamp extends Doctrine_Validator_Driver
 
         if ( ! $timeValidator->validate($time)) {
             return false;
-        } 
+        }
 
         return true;
     }

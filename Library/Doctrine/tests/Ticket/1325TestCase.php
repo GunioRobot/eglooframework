@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1325_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1325_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -44,7 +44,7 @@ class Doctrine_Ticket_1325_TestCase extends Doctrine_UnitTestCase
         $elem = new Ticket_1325_TableName_NoAlias();
         $elem->id = 1;
         $elem->save();
-        
+
         $res = Doctrine_Query::create()
             ->from('Ticket_1325_TableName_NoAlias')
             ->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
@@ -59,7 +59,7 @@ class Doctrine_Ticket_1325_TestCase extends Doctrine_UnitTestCase
         $elem = new Ticket_1325_TableName_Aliased();
         $elem->id = 1;
         $elem->save();
-        
+
         $res = Doctrine_Query::create()
             ->from('Ticket_1325_TableName_Aliased')
             ->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);

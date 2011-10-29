@@ -1,11 +1,11 @@
 <?php
 class Doctrine_Db_Profiler_TestCase extends Doctrine_UnitTestCase {
     protected $dbh;
-    
+
     protected $profiler;
     public function prepareTables() {}
-    public function prepareData() {} 
-    
+    public function prepareData() {}
+
     public function testQuery() {
         $this->dbh = Doctrine_Db2::getConnection('sqlite::memory:');
 
@@ -14,12 +14,12 @@ class Doctrine_Db_Profiler_TestCase extends Doctrine_UnitTestCase {
         $this->dbh->setListener($this->profiler);
 
         $this->dbh->query('CREATE TABLE test (id INT)');
-        
+
         $this->assertEqual($this->profiler->lastEvent()->getQuery(), 'CREATE TABLE test (id INT)');
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getType(), Doctrine_Db_Event::QUERY);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         $this->assertEqual($this->dbh->count(), 1);
     }
     public function testPrepareAndExecute() {
@@ -96,7 +96,7 @@ class Doctrine_Db_Profiler_TestCase extends Doctrine_UnitTestCase {
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getType(), Doctrine_Db_Event::BEGIN);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         try {
             $this->dbh->rollback();
             $this->pass();
@@ -120,7 +120,7 @@ class Doctrine_Db_Profiler_TestCase extends Doctrine_UnitTestCase {
         $this->assertTrue($this->profiler->lastEvent()->hasEnded());
         $this->assertEqual($this->profiler->lastEvent()->getType(), Doctrine_Db_Event::BEGIN);
         $this->assertTrue(is_numeric($this->profiler->lastEvent()->getElapsedSecs()));
-        
+
         try {
             $this->dbh->commit();
             $this->pass();

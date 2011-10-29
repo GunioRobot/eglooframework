@@ -365,7 +365,7 @@ class Doctrine_DataDict_Pgsql extends Doctrine_DataDict
 
         // Postgres enum type by name containing enum
         if (strpos($field['type'], 'enum') !== false){
-            $field['type'] = 'enum';            
+            $field['type'] = 'enum';
         }
 
         switch ($field['type']) {
@@ -415,7 +415,7 @@ class Doctrine_DataDict_Pgsql extends Doctrine_DataDict
 				return 'INET';
             case 'bit':
             case 'varbit':
-                return 'VARBIT';		
+                return 'VARBIT';
             case 'boolean':
                 return 'BOOLEAN';
             case 'date':

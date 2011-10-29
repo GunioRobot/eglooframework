@@ -46,7 +46,7 @@ class Haanga_Extension_Filter extends Haanga_Extension
     {
         static $cache = array();
         $filter = strtolower($filter);
-        
+
         if (!isset($cache[$filter])) {
             $class_name = $this->getClassName($filter);
             if (class_exists($class_name)) {

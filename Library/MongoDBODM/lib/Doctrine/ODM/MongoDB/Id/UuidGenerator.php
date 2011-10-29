@@ -34,14 +34,14 @@ class UuidGenerator extends AbstractIdGenerator
 {
     /**
      * A unique environment value to salt each GUID with.
-     * 
+     *
      * @var string
      */
     protected $salt = null;
 
     /**
      * Used to set the salt that will be applied to each id
-     * 
+     *
      * @param string $salt The sale to use
      */
     public function setSalt($salt)
@@ -51,7 +51,7 @@ class UuidGenerator extends AbstractIdGenerator
 
     /**
      * Returns the current salt value
-     * 
+     *
      * @return string $salt The current salt
      */
     public function getSalt()
@@ -61,7 +61,7 @@ class UuidGenerator extends AbstractIdGenerator
 
     /**
      * Checks that a given string is a valid uuid.
-     * 
+     *
      * @param string $uuid The string to check.
      * @return boolean
      */
@@ -72,7 +72,7 @@ class UuidGenerator extends AbstractIdGenerator
 
     /**
      * Generates a new GUID
-     * 
+     *
      * @return string
      */
     public function generate(DocumentManager $dm, $document)
@@ -87,7 +87,7 @@ class UuidGenerator extends AbstractIdGenerator
 
     /**
      * Generates a v4 GUID
-     * 
+     *
      * @return string
      */
     public function generateV4()
@@ -114,7 +114,7 @@ class UuidGenerator extends AbstractIdGenerator
 
     /**
      * Generates a v5 GUID
-     * 
+     *
      * @param string $namespace The GUID to seed with
      * @param string $salt The string to salt this new UUID with
      * @return string

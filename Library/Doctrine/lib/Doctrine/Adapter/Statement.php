@@ -35,8 +35,8 @@ abstract class Doctrine_Adapter_Statement
     /**
      * bindValue
      *
-     * @param string $no 
-     * @param string $value 
+     * @param string $no
+     * @param string $value
      * @return void
      */
     public function bindValue($no, $value)
@@ -50,10 +50,10 @@ abstract class Doctrine_Adapter_Statement
      *                                      This value must be one of the Doctrine_Core::FETCH_* constants,
      *                                      defaulting to Doctrine_Core::FETCH_BOTH
      *
-     * @param integer $cursorOrientation    For a PDOStatement object representing a scrollable cursor, 
-     *                                      this value determines which row will be returned to the caller. 
+     * @param integer $cursorOrientation    For a PDOStatement object representing a scrollable cursor,
+     *                                      this value determines which row will be returned to the caller.
      *                                      This value must be one of the Doctrine_Core::FETCH_ORI_* constants, defaulting to
-     *                                      Doctrine_Core::FETCH_ORI_NEXT. To request a scrollable cursor for your 
+     *                                      Doctrine_Core::FETCH_ORI_NEXT. To request a scrollable cursor for your
      *                                      Doctrine_Adapter_Statement_Interface object,
      *                                      you must set the Doctrine_Core::ATTR_CURSOR attribute to Doctrine_Core::CURSOR_SCROLL when you
      *                                      prepare the SQL statement with Doctrine_Adapter_Interface->prepare().
@@ -61,10 +61,10 @@ abstract class Doctrine_Adapter_Statement
      * @param integer $cursorOffset         For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for which the
      *                                      $cursorOrientation parameter is set to Doctrine_Core::FETCH_ORI_ABS, this value specifies
      *                                      the absolute number of the row in the result set that shall be fetched.
-     *                                      
-     *                                      For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for 
-     *                                      which the $cursorOrientation parameter is set to Doctrine_Core::FETCH_ORI_REL, this value 
-     *                                      specifies the row to fetch relative to the cursor position before 
+     *
+     *                                      For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for
+     *                                      which the $cursorOrientation parameter is set to Doctrine_Core::FETCH_ORI_REL, this value
+     *                                      specifies the row to fetch relative to the cursor position before
      *                                      Doctrine_Adapter_Statement_Interface->fetch() was called.
      *
      * @return mixed
@@ -115,7 +115,7 @@ abstract class Doctrine_Adapter_Statement
     /**
      * setFetchMode
      *
-     * @param string $mode 
+     * @param string $mode
      * @return void
      */
     public function setFetchMode($mode)

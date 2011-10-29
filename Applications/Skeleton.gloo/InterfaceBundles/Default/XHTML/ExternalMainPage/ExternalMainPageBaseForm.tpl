@@ -2,18 +2,18 @@
      * @Author: George Cooper (george.cooper@egloo.com)
      *
      * @Description: This template represents the default structural format for the
-     * eGloo external main page base form.  It is meant to be a stand-alone template 
+     * eGloo external main page base form.  It is meant to be a stand-alone template
      * structure and links in external CSS and Javascript for styling, screen positioning,
-     * and dynamic functionality. Effort is made to make this file XHTML compliant for 
+     * and dynamic functionality. Effort is made to make this file XHTML compliant for
      * at least XHTML version 1.0 Transitional.
      *
      * @Standalone: Yes
      * @Provides: Structural Markup, Unique Page Elements, CSS Links, Javascript Links
      * @Caching: Yes
      * @Compatibility: XHTML 1.0 Transitional (Tested)
-     *}-->     
+     *}-->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>

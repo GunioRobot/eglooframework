@@ -3,21 +3,21 @@
  * RFCEmailTextFormFieldValidator Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -60,14 +60,14 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 
 	/**
 	 * Following two methods adapted from RFC 822/2822/5322 Email Parser
-	 * 
+	 *
 	 * By Cal Henderson <cal@iamcal.com>
-	 * 
+	 *
 	 * This section of code is dual licensed:
 	 * CC Attribution-ShareAlike 2.5 - http://creativecommons.org/licenses/by-sa/2.5/
 	 * GPLv3 - http://www.gnu.org/copyleft/gpl.html
 	 *
-	 * Remainder of this class remains Copyright eGloo LLC and is released under the terms of the Apache 
+	 * Remainder of this class remains Copyright eGloo LLC and is released under the terms of the Apache
 	 * License, Version 2.0, with the interpretation that this inclusion is compatible under the
 	 * CC Attribution-ShareAlike 2.5 licensing of Cal Henderson's email validator.	No assignment or interpretation
 	 * of licensing for any other part of the eGloo Framework nor its included 3rd-party libraries shall be taken
@@ -87,7 +87,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 		$opts = array();
 		foreach ($defaults as $k => $v) $opts[$k] = isset($options[$k]) ? $options[$k] : $v;
 		$options = $opts;
-		
+
 
 
 		####################################################################################
@@ -243,7 +243,7 @@ class RFCEmailTextFormFieldValidator extends TextFormFieldValidator {
 		# domain-literal  =		  [CFWS] "[" *([FWS] dcontent) [FWS] "]" [CFWS]
 		# dcontent		  =		  dtext / quoted-pair
 		# dtext			  =		  NO-WS-CTL /	  ; Non white space controls
-		# 
+		#
 		#						  %d33-90 /		  ; The rest of the US-ASCII
 		#						  %d94-126		  ;	 characters not including "[",
 		#										  ;	 "]", or "\"

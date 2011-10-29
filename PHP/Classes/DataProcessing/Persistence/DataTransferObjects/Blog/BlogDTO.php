@@ -3,21 +3,21 @@
  * AccountDTO Class File
  *
  * Needs to be commented
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author Keith Buel
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -29,7 +29,7 @@
 
 /**
  * AccountDTO
- * 
+ *
  * Needs to be commented
  *
  * @category DataProcessing
@@ -73,15 +73,15 @@ class BlogDTO extends DataTransferObject {
     public function getPermissions() {
         return $this->_permissions;
     }
-    
+
     public function getTags() {
         return $this->_tags;
     }
-    
+
     public function getRank() {
         return $this->_rank;
     }
-    
+
     public function getOwner() {
         return $this->_owner;
     }
@@ -94,8 +94,8 @@ class BlogDTO extends DataTransferObject {
         $this->_content = $content;
     }
 
-    public function setTitle( $title ) { 
-        $this->_title = $title; 
+    public function setTitle( $title ) {
+        $this->_title = $title;
     }
 
     public function setCreationDate( $creationDate ) {
@@ -109,15 +109,15 @@ class BlogDTO extends DataTransferObject {
     public function setPermissions( $permissions ) {
         $this->_permissions = $permissions;
     }
-    
+
     public function setTags( $tags ) {
         $this->_tags = $tags;
     }
-    
+
     public function setRank( $rank ) {
         $this->_rank = $rank;
     }
-    
+
     public function setOwner( $owner ) {
         $this->_owner = $owner;
     }
@@ -125,7 +125,7 @@ class BlogDTO extends DataTransferObject {
     public function getCreateBlogEntryError() {
         return $this->_error;
     }
-    
+
     public function setCreateBlogEntryError( $error ) {
         $this->_error = $error;
     }

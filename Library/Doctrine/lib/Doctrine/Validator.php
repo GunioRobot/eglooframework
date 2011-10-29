@@ -104,7 +104,7 @@ class Doctrine_Validator extends Doctrine_Locator_Injectable
             $e = explode($decimalPoint, $value);
 
             $length = strlen($e[0]);
-            
+
             if (isset($e[1])) {
                 $length = $length + strlen($e[1]);
             }
@@ -122,7 +122,7 @@ class Doctrine_Validator extends Doctrine_Locator_Injectable
     /**
      * Get length of passed string. Will use multibyte character functions if they exist
      *
-     * @param string $string 
+     * @param string $string
      * @return integer $length
      */
     public static function getStringLength($string)

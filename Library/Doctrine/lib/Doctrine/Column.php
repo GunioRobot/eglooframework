@@ -52,7 +52,7 @@ class Doctrine_Column extends Doctrine_Access implements IteratorAggregate, Coun
     /**
      * Returns the definition of the column.
      *
-     * Keys can be: 
+     * Keys can be:
      *     string type,
      *     integer length,
      *     array values (only for enum fields, maps integer indexes to mixed values),
@@ -68,7 +68,7 @@ class Doctrine_Column extends Doctrine_Access implements IteratorAggregate, Coun
      *
      * @return boolean
      */
-    public function contains($name) 
+    public function contains($name)
     {
         return isset($this->_definition[$name]);
     }
@@ -84,7 +84,7 @@ class Doctrine_Column extends Doctrine_Access implements IteratorAggregate, Coun
         if ( ! isset($this->_definition[$name])) {
             return null;
         }
-        
+
         return $this->_definition[$name];
     }
 
@@ -156,7 +156,7 @@ class Doctrine_Column extends Doctrine_Access implements IteratorAggregate, Coun
      *
      * @return ArrayIterator
      */
-    public function getIterator() 
+    public function getIterator()
     {
         return new ArrayIterator($this->_definition);
     }

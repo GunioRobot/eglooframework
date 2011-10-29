@@ -4,8 +4,8 @@ class Haanga_Extension_Filter_Dictsort
 {
     /**
      *  Sorted a nested array by '$sort_by'
-     *  property on each sub-array. This 
-     *  filter is included at rendering time, if you want 
+     *  property on each sub-array. This
+     *  filter is included at rendering time, if you want
      *  to see the generated version see tags/dictsort.php
      */
     static function main($array, $sort_by)

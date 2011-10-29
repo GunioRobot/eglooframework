@@ -30,9 +30,9 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Record_SerializeUnserialize_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Record_SerializeUnserialize_TestCase extends Doctrine_UnitTestCase
 {
-    
+
     public function prepareTables()
     {
         $this->tables[] = 'SerializeTest';
@@ -40,7 +40,7 @@ class Doctrine_Record_SerializeUnserialize_TestCase extends Doctrine_UnitTestCas
 
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     { }
 
@@ -60,13 +60,13 @@ class Doctrine_Record_SerializeUnserialize_TestCase extends Doctrine_UnitTestCas
         $object->timestamptest = '2007-08-07 11:55:00';
         $object->timetest = '11:55:00';
         $object->datetest = '2007-08-07';
-        
+
         $object->save();
-        
+
         $object_before = clone($object);
         $serialized = serialize($object);
         $object_after = unserialize($serialized);
-        
+
         $this->assertIdentical($object_before->booltest, $object_after->booltest);
         $this->assertIdentical($object_before->integertest, $object_after->integertest);
         $this->assertIdentical($object_before->floattest, $object_after->floattest);
@@ -80,38 +80,38 @@ class Doctrine_Record_SerializeUnserialize_TestCase extends Doctrine_UnitTestCas
         $this->assertIdentical($object_before->timestamptest, $object_after->timestamptest);
         $this->assertIdentical($object_before->timetest, $object_after->timetest);
         $this->assertIdentical($object_before->datetest, $object_after->datetest);
-        
+
     }
-    
+
     public function testSerializeUnserializeRecord()
     {
         $test = new TestRecord();
         $test->save();
-        
+
         $object = new SerializeTest();
         $object->objecttest = $test;
-         
+
         $object->save();
-        
+
         $object_before = clone($object);
-       
+
         $serialized = serialize($object);
         $object_after = unserialize($serialized);
-        
+
         $this->assertIdentical(get_class($object_after->objecttest), 'TestRecord');
     }
-    
+
 }
 
 class TestObject
 {
-    
+
     private $test_field;
-    
+
     public function __construct($value)
     {
         $this->test_field = $value;
     }
-        
+
 }
 

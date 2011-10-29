@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Proxy\ProxyFactory,
     Doctrine\ODM\MongoDB\SchemaManager,
     Doctrine\MongoDB\Collection,
     Doctrine\MongoDB\Database;
-    
+
 class DocumentManagerMock extends \Doctrine\ODM\MongoDB\DocumentManager
 {
     private $uowMock;
@@ -109,6 +109,6 @@ class DocumentManagerMock extends \Doctrine\ODM\MongoDB\DocumentManager
         if (is_null($eventManager)) {
             $eventManager = new \Doctrine\Common\EventManager();
         }
-        return new DocumentManagerMock($conn, $config, $eventManager);   
+        return new DocumentManagerMock($conn, $config, $eventManager);
     }
 }

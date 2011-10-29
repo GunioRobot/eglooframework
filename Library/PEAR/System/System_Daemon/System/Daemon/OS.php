@@ -298,7 +298,7 @@ class System_Daemon_OS
 
         return $path;
     }
-    
+
     /**
      * A 'better' is_writable. Taken from PHP.NET comments:
      * http://nl.php.net/manual/en/function.is-writable.php#73596
@@ -308,7 +308,7 @@ class System_Daemon_OS
      * see http://bugs.php.net/bug.php?id=30931
      *
      * @param string $path Path to test
-     * 
+     *
      * @return boolean
      */
     public static function isWritable($path)
@@ -481,7 +481,7 @@ class System_Daemon_OS
         $required_props = array(
             "appName",
             "appExecutable",
-            "appDescription", 
+            "appDescription",
             "appDir",
             "authorName",
             "authorEmail"

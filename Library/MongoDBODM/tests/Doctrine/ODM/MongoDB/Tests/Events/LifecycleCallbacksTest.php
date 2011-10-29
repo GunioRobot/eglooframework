@@ -153,7 +153,7 @@ class LifecycleCallbacksTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $user = $this->dm->find(__NAMESPACE__.'\User', $user->id);
         $profile = $user->profile->profile;
         $profile->name = '2nd level changed again';
-        
+
         $profile2 = new Profile();
         $profile2->name = 'test';
         $user->profiles[] = $profile2;

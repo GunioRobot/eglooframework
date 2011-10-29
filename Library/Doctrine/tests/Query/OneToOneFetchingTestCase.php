@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareData()
     { }
@@ -43,10 +43,10 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
         $this->tables[] = 'QueryTest_Rank';
         parent::prepareTables();
     }
-    public function testInitializeData() 
+    public function testInitializeData()
     {
         $query = new Doctrine_Query($this->connection);
-        
+
         $cat = new QueryTest_Category();
 
         $cat->rootCategoryId = 0;
@@ -54,32 +54,32 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
         $cat->name = "Testcat";
         $cat->position = 0;
         $cat->save();
-        
+
         $board = new QueryTest_Board();
         $board->name = "Testboard";
         $board->categoryId = $cat->id;
         $board->position = 0;
         $board->save();
-        
+
         $author = new QueryTest_User();
         $author->username = "romanbb";
         $author->save();
-        
+
         $lastEntry = new QueryTest_Entry();
         $lastEntry->authorId = $author->id;
         $lastEntry->date = 1234;
         $lastEntry->save();
-        
+
         // Set the last entry
         $board->lastEntry = $lastEntry;
         $board->save();
-        
+
         $visibleRank = new QueryTest_Rank();
         $visibleRank->title = "Freak";
         $visibleRank->color = "red";
         $visibleRank->icon = "freak.png";
         $visibleRank->save();
-        
+
         // grant him a rank
         $author->visibleRank = $visibleRank;
         $author->save();
@@ -89,10 +89,10 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
     /**
      * Tests that one-one relations are correctly loaded with array fetching
      * when the related records EXIST.
-     * 
+     *
      * !!! Currently it produces a notice with:
-     * !!! Array to string conversion in Doctrine\Hydrate.php on line 937 
-     * 
+     * !!! Array to string conversion in Doctrine\Hydrate.php on line 937
+     *
      * !!! And shortly after exits with a fatal error:
      * !!! Fatal error:  Cannot create references to/from string offsets nor overloaded objects
      * !!! in Doctrine\Hydrate.php on line 939
@@ -110,17 +110,17 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
                     ->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
 
             // --> currently quits here with a fatal error! <--
-                    
+
             // check boards/categories
             $this->assertEqual(1, count($categories));
             $this->assertTrue(isset($categories[0]['boards']));
             $this->assertEqual(1, count($categories[0]['boards']));
-            
+
             // get the baord for inspection
             $board = $categories[0]['boards'][0];
-            
+
             $this->assertTrue(isset($board['lastEntry']));
-            
+
             // lastentry should've 2 fields. one regular field, one relation.
             //$this->assertEqual(2, count($board['lastEntry']));
             $this->assertEqual(1234, (int)$board['lastEntry']['date']);
@@ -136,9 +136,9 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
             $this->assertEqual('Freak', $board['lastEntry']['author']['visibleRank']['title']);
             $this->assertEqual('red', $board['lastEntry']['author']['visibleRank']['color']);
             $this->assertEqual('freak.png', $board['lastEntry']['author']['visibleRank']['icon']);
-                    
+
         } catch (Doctrine_Exception $e) {
-            $this->fail();                                    
+            $this->fail();
         }
     }
 
@@ -153,7 +153,7 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
         $lastEntryId = $board->lastEntryId;
         $board->lastEntryId = 0;
         $board->save();
-        
+
         $query = new Doctrine_Query($this->connection);
         try {
             $categories = $query->select("c.*, b.*, le.*, a.username, vr.title, vr.color, vr.icon")
@@ -169,16 +169,16 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
             $this->assertEqual(1, count($categories));
             $this->assertTrue(isset($categories[0]['boards']));
             $this->assertEqual(1, count($categories[0]['boards']));
-            
+
             // get the board for inspection
             $tmpBoard = $categories[0]['boards'][0];
-            
+
             $this->assertTrue( ! isset($tmpBoard['lastEntry']));
-                    
+
         } catch (Doctrine_Exception $e) {
-            $this->fail();                                    
+            $this->fail();
         }
-        
+
         $board->lastEntryId = $lastEntryId;
         $board->save();
     }
@@ -196,26 +196,26 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
                     ->leftJoin("le.author a")
                     ->leftJoin("a.visibleRank vr")
                     ->execute();
- 
+
             // check boards/categories
             $this->assertEqual(1, count($categories));
             $this->assertEqual(1, count($categories[0]['boards']));
-            
+
             // get the baord for inspection
             $board = $categories[0]['boards'][0];
 
             $this->assertEqual(1234, (int)$board['lastEntry']['date']);
             $this->assertTrue(isset($board['lastEntry']['author']));
-            
+
             $this->assertEqual('romanbb', $board['lastEntry']['author']['username']);
             $this->assertTrue(isset($board['lastEntry']['author']['visibleRank']));
-            
+
             $this->assertEqual('Freak', $board['lastEntry']['author']['visibleRank']['title']);
             $this->assertEqual('red', $board['lastEntry']['author']['visibleRank']['color']);
             $this->assertEqual('freak.png', $board['lastEntry']['author']['visibleRank']['icon']);
-                    
+
         } catch (Doctrine_Exception $e) {
-            $this->fail();                                    
+            $this->fail();
         }
     }
 
@@ -231,7 +231,7 @@ class Doctrine_Query_OneToOneFetching_TestCase extends Doctrine_UnitTestCase
         $board->lastEntryId = null;
         $board->lastEntry = null;
         $board->save();
-        
+
         $query = new Doctrine_Query($this->connection);
         try {
             $categories = $query->select("c.*, b.*, le.*, a.username, vr.title, vr.color, vr.icon")

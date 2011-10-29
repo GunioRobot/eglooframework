@@ -14,7 +14,7 @@
 
 class Doctrine_Ticket_638_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
 
     public function prepareTables()
@@ -115,7 +115,7 @@ class T638_Student extends Doctrine_Record
     $this->hasColumn('s_g_id as group_id', 'varchar', 30, array ('notnull'=>true));
     $this->hasColumn('s_name as name', 'varchar', 50, array ('notnull'=>true));
   }
-  
+
   public function setUp()
   {
   }
@@ -130,7 +130,7 @@ class T638_Course extends Doctrine_Record
     $this->hasColumn('c_id as id', 'varchar', 20, array (  'primary' => true,));
     $this->hasColumn('c_name as name', 'varchar', 50, array ('notnull'=>true));
   }
-  
+
   public function setUp()
   {
   }
@@ -151,7 +151,7 @@ class T638_StudentCourse extends Doctrine_Record
     $this->hasColumn('sc_course_id as course_id', 'varchar', 20, array (  'primary' => true,));
     $this->hasColumn('sc_remark  as remark', 'varchar', 500, array ('notnull'=>true));
   }
-  
+
   public function setUp()
   {
     $this->hasOne('T638_Student as Student', array('local' => 'sc_student_id', 'foreign' => 's_id'));

@@ -5,6 +5,6 @@ class ConservativeModelLoadingUser extends BaseConservativeModelLoadingUser
 {
     public function setTableDefinition()
     {
-        
+
     }
 }

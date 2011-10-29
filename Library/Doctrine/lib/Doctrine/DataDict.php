@@ -35,7 +35,7 @@ class Doctrine_DataDict extends Doctrine_Connection_Module
 {
     /**
      * parseBoolean
-     * parses a literal boolean value and returns 
+     * parses a literal boolean value and returns
      * proper sql equivalent
      *
      * @param string $value     boolean value to be parsed

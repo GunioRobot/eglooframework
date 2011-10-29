@@ -21,7 +21,7 @@
 
 /**
  * Doctrine_Migration_Base_TestCase
- * 
+ *
  * @package     Doctrine
  * @author      Dan Bettles <danbettles@yahoo.co.uk>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Migration_Base_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Migration_Base_TestCase extends Doctrine_UnitTestCase
 {
     public function setUp() {}
 

@@ -6,7 +6,7 @@ A single transaction might require several queries, each reading and/or writing 
 
 A simple transaction is usually issued to the database system in a language like SQL in this form:
 
-Begin the transaction 
-Execute several queries (although any updates to the database aren't actually visible to the outside world yet) 
-Commit the transaction (updates become visible if the transaction is successful) 
+Begin the transaction
+Execute several queries (although any updates to the database aren't actually visible to the outside world yet)
+Commit the transaction (updates become visible if the transaction is successful)
 If one of the queries fails the database system may rollback either the entire transaction or just the failed query. This behaviour is dependent on the DBMS in use and how it is set up. The transaction can also be rolled back manually at any time before the commit.

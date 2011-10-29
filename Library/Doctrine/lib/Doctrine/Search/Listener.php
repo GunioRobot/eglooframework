@@ -30,7 +30,7 @@
  * @link        www.doctrine-project.org
  * @since       1.0
  */
-class Doctrine_Search_Listener extends Doctrine_Record_Listener 
+class Doctrine_Search_Listener extends Doctrine_Record_Listener
 {
     protected $_search;
 
@@ -45,15 +45,15 @@ class Doctrine_Search_Listener extends Doctrine_Record_Listener
 
     public function postUpdate(Doctrine_Event $event)
     {
-        $record = $event->getInvoker(); 
+        $record = $event->getInvoker();
 
-        $this->_search->updateIndex($record->toArray()); 
+        $this->_search->updateIndex($record->toArray());
     }
 
     public function postInsert(Doctrine_Event $event)
     {
         $record = $event->getInvoker();
-        
+
         $this->_search->updateIndex($record->toArray());
     }
 }

@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Plugin_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Plugin_TestCase extends Doctrine_UnitTestCase
 {
 
     public function prepareData()
@@ -70,7 +70,7 @@ class Doctrine_Plugin_TestCase extends Doctrine_UnitTestCase
 
         $fi->title = 'Micheal Jordan';
         $fi->save();
-        
+
         $this->assertEqual($fi->version, 2);
     }
 
@@ -79,7 +79,7 @@ class Doctrine_Plugin_TestCase extends Doctrine_UnitTestCase
     	$this->conn->clear();
 
         $wiki = Doctrine_Query::create()->from('Wiki w')->where('w.id = 1')->fetchOne();
-        
+
         $wiki->save();
 
         $this->assertEqual($wiki->Translation['FI']->version, 2);

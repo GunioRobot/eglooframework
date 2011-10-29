@@ -128,7 +128,7 @@ abstract class Type
     /**
      * Get a Type instance based on the type of the passed php variable.
      *
-     * @param mixed $variable 
+     * @param mixed $variable
      * @return Doctrine\ODM\MongoDB\Mapping\Types\Type $type
      * @throws InvalidArgumentException
      */

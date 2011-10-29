@@ -36,11 +36,11 @@ class Doctrine_Task_GenerateMigrationsModels extends Doctrine_Task
            $requiredArguments    =   array('migrations_path' => 'Specify the path to your migration classes folder.',
                                            'models_path'     => 'Specify the path to your doctrine models folder.'),
            $optionalArguments    =   array();
-    
+
     public function execute()
-    {   
+    {
         Doctrine_Core::generateMigrationsFromModels($this->getArgument('migrations_path'), $this->getArgument('models_path'));
-        
+
         $this->notify('Generated migration classes successfully from models');
     }
 }

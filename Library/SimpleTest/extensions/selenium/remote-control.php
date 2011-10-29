@@ -24,8 +24,8 @@ class SimpleSeleniumRemoteControl
 
 	private $_commandMap = array(
 		'bool' => array(
-			'verify', 
-			'verifyTextPresent', 
+			'verify',
+			'verifyTextPresent',
 			'verifyTextNotPresent',
 			'verifyValue'
 		),
@@ -45,7 +45,7 @@ class SimpleSeleniumRemoteControl
 	public function sessionIdParser($response) {
 		return substr($response, 3);
 	}
-	
+
 	public function start() {
 		$response = $this->cmd('getNewBrowserSession', array($this->_browser, $this->_browserUrl));
 		$this->_sessionId = $this->sessionIdParser($response);
@@ -58,7 +58,7 @@ class SimpleSeleniumRemoteControl
 
 	public function __call($method, $arguments) {
 		$response = $this->cmd($method, $arguments);
-		
+
 		foreach ($this->_commandMap as $type => $commands) {
 			if (!in_array($method, $commands)) {
 				continue;
@@ -77,7 +77,7 @@ class SimpleSeleniumRemoteControl
 				return $response;
 		}
 	}
-	
+
 	private function _server() {
 		return "http://{$this->_host}:{$this->_port}/selenium-server/driver/";
 	}
@@ -106,7 +106,7 @@ class SimpleSeleniumRemoteControl
 	public function isUp() {
         return (bool)@fsockopen($this->_host, $this->_port, $errno, $errstr, 30);
 	}
-	
+
 	private function _initCurl($url) {
         if (!function_exists('curl_init')) {
             throw new Exception('this code currently requires the curl extension');
@@ -116,9 +116,9 @@ class SimpleSeleniumRemoteControl
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, floor($this->_timeout));
-		return $ch;	
+		return $ch;
 	}
-	
+
 	private function _sendRequest($url) {
         $ch = $this->_initCurl($url);
         $result = curl_exec($ch);

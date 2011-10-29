@@ -43,7 +43,7 @@ class DriverChainTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $classMetadata = new \Doctrine\ODM\MongoDB\Mapping\ClassMetadata($className);
 
         $chain = new DriverChain();
-        
+
         $this->setExpectedException('Doctrine\ODM\MongoDB\MongoDBException');
         $chain->loadMetadataForClass($className, $classMetadata);
     }
@@ -78,7 +78,7 @@ class DriverChainTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
     {
         $reader = new \Doctrine\Common\Annotations\AnnotationReader(new \Doctrine\Common\Cache\ArrayCache());
         $reader->setDefaultAnnotationNamespace('Doctrine\ODM\MongoDB\Mapping\\');
-        
+
         $chain = new DriverChain();
         $chain->addDriver(new \Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver($reader, array()), 'Documents');
 
@@ -89,5 +89,5 @@ class DriverChainTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
 
 class DriverChainEntity
 {
-    
+
 }

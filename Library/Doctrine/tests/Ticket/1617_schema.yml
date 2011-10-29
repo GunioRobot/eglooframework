@@ -6,10 +6,10 @@ term:
   columns:
     name: string(255)
     type: string(255)
-    language: 
+    language:
       name: lang as language
       type: string(2)
- 
+
 alternativeTerm:
   inheritance:
     type: column_aggregation

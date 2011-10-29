@@ -1,13 +1,13 @@
 <?php
 class Cms_CategoryLanguages extends Doctrine_Record
 {
-	public function setUp() 
+	public function setUp()
     {
 		$this->setAttribute(Doctrine_Core::ATTR_COLL_KEY, 'language_id');
 		$this->hasOne('Cms_Category as category', array('local' => 'category_id', 'foreign' => 'id', 'onDelete' => 'CASCADE'));
 	}
- 
-	public function setTableDefinition() 
+
+	public function setTableDefinition()
 	{
 		$this->hasColumn('name', 'string',256);
 		$this->hasColumn('category_id', 'integer',11);

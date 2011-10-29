@@ -30,12 +30,12 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_DC709_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_DC709_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
         $dbh = new Doctrine_Adapter_Mock('mysql');
-        
+
         $conn = Doctrine_Manager::getInstance()->connection($dbh, 'mysql', false);
 
         $sql = $conn->export->createTableSql('mytable', array(

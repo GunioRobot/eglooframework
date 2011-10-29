@@ -28,9 +28,9 @@
  * @category    Object Relational Mapping
  * @link        www.doctrine-project.org
  * @since       1.1
- * @version     $Revision$ 
+ * @version     $Revision$
  */
-class Doctrine_Ticket_1621_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1621_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -43,40 +43,40 @@ class Doctrine_Ticket_1621_TestCase extends Doctrine_UnitTestCase
         $this->tables[] = 'Ticket_1621_GroupUser';
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     {
 
     }
 
     public function testRelationAliases() {
-        // this should go to $this->prepareData(), but i need 
+        // this should go to $this->prepareData(), but i need
         // it to fail in a test()-method
         try {
             $group = new Ticket_1621_Group();
             $group->name = 'group1';
             $group->save();
-            
+
             $group2 = new Ticket_1621_Group();
             $group2->name = 'group2';
             $group2->save();
-            
+
             $user = new Ticket_1621_User();
             $user->name = "floriank";
             $user->groups[] = $group;
             $user->emailAddresses[0]->address = "floriank@localhost";
             $user->save();
-            
+
             $user2 = new Ticket_1621_User();
             $user2->name = "test2";
             $user2->emailAddresses[0]->address = "test2@localhost";
             $user2->save();
-            
+
             $user3 = new Ticket_1621_User();
             $user3->name = "test3";
             $user3->emailAddresses[0]->address = "test3@localhost";
             $user3->save();
-    
+
             $user4 = new Ticket_1621_User();
             $user4->name = "test";
             $user4->groups[] = $group2;
@@ -87,29 +87,29 @@ class Doctrine_Ticket_1621_TestCase extends Doctrine_UnitTestCase
         } catch (Exception $e) {
             $this->fail($e);
         }
-        
-        
-        
+
+
+
         //here is the testcode
         try {
             $user = Doctrine_Core::getTable('Ticket_1621_User')->findOneByName('floriank');
             $newChild = Doctrine_Core::getTable('Ticket_1621_User')->findOneByName('test');
             $newFriend = Doctrine_Core::getTable('Ticket_1621_User')->findOneByName('test2');
             $newGroup = Doctrine_Core::getTable('Ticket_1621_Group')->findOneByName('group2');
-            
+
             $user->children[] = $newChild;
             $user->groups[] = $newGroup;
             $user->friends[] = $newFriend;
-    
+
             $user->save();
-            
+
             $this->assertEqual(count($user->children), 1);
         } catch (Exception $e) {
             $this->fail($e);
         }
     }
 }
-    
+
 class Ticket_1621_User extends Doctrine_Record
 {
     public function setTableDefinition()
@@ -120,33 +120,33 @@ class Ticket_1621_User extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasMany('Ticket_1621_User as parents', 
+        $this->hasMany('Ticket_1621_User as parents',
                                                 array('local'    => 'parentId',
-                                                'refClass' => 'Ticket_1621_UserReference', 
+                                                'refClass' => 'Ticket_1621_UserReference',
                                                 'foreign'  => 'childId',
                                                 'refClassRelationAlias' => 'childrenLinks'
                                                 ));
 
-        $this->hasMany('Ticket_1621_User as children', 
+        $this->hasMany('Ticket_1621_User as children',
                                                  array('local'    => 'childId',
                                                  'foreign'  => 'parentId',
                                                  'refClass' => 'Ticket_1621_UserReference',
                                                  'refClassRelationAlias' => 'parentLinks'
                                                  ));
-                                                 
-        $this->hasMany('Ticket_1621_User as friends', 
+
+        $this->hasMany('Ticket_1621_User as friends',
                                                  array('local'    => 'leftId',
                                                  'foreign'  => 'rightId',
-                                                 'equal' => 'true', 
+                                                 'equal' => 'true',
                                                  'refClass' => 'Ticket_1621_UserReferenceFriends',
                                                  'refClassRelationAlias' => 'friendLinks'
                                                  ));
-                                                 
+
         $this->hasMany('Ticket_1621_EmailAdresses as emailAddresses', array('local' => 'id', 'foreign' => 'userId'));
 
-        $this->hasMany('Ticket_1621_Group as groups', array('local' => 'userId',    
-                                     'foreign' => 'groupId',     
-                                     'refClass' => 'Ticket_1621_GroupUser')); 
+        $this->hasMany('Ticket_1621_Group as groups', array('local' => 'userId',
+                                     'foreign' => 'groupId',
+                                     'refClass' => 'Ticket_1621_GroupUser'));
     }
 }
 
@@ -174,15 +174,15 @@ class Ticket_1621_EmailAdresses extends Doctrine_Record
     {
         $this->hasColumn('user_id as userId', 'integer', null);
         $this->hasColumn('address', 'string', 30);
-        
+
         $this->option('type', 'INNODB');
         $this->option('collate', 'utf8_unicode_ci');
         $this->option('charset', 'utf8');
     }
-    
+
     public function setUp()
     {
-        $this->hasOne('Ticket_1621_User as user', array('local' => 'userId', 'foreign' => 'id')); 
+        $this->hasOne('Ticket_1621_User as user', array('local' => 'userId', 'foreign' => 'id'));
     }
 }
 
@@ -195,9 +195,9 @@ class Ticket_1621_Group extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasMany('Ticket_1621_User as users', array('local' => 'groupId',    
-                                     'foreign' => 'userId',     
-                                     'refClass' => 'Ticket_1621_GroupUser')); 
+        $this->hasMany('Ticket_1621_User as users', array('local' => 'groupId',
+                                     'foreign' => 'userId',
+                                     'refClass' => 'Ticket_1621_GroupUser'));
 
         $this->setTableName('my_group');
     }

@@ -3,21 +3,21 @@
  * DataProcessingTracingDecorator Class File
  *
  * Contains the class definition for the DataProcessingTracingDecorator
- * 
+ *
  * Copyright 2011 eGloo LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -76,7 +76,7 @@ class DataProcessingTracingDecorator extends RequestProcessorDecorator {
 					$output .= '<h4>Begin Unprepared Populated Query #' . $queryCount . '</h4><br />';
 					$output .= '<pre>' . print_r( $queryPopulated['unpreparedQueryString'], true) . '</pre><br />';
 					$output .= '<h4>End Unprepared Populated Query #' . $queryCount . '</h4><br />';
-					
+
 					$output .= '<h4>Begin Parameters for Populated Query #' . $queryCount . '</h4><br />';
 					$output .= '<pre>' . print_r( $queryPopulated['parameters'], true) . '</pre><br />';
 					$output .= '<h4>End Parameters for Populated Query #' . $queryCount . '</h4><br />';
@@ -102,7 +102,7 @@ class DataProcessingTracingDecorator extends RequestProcessorDecorator {
 					$output .= '<h4>Begin Executed Query #' . $queryCount . '</h4><br />';
 					$output .= '<pre>' . print_r( $queryExecuted['executedQuery'], true) . '</pre><br />';
 					$output .= '<h4>End Executed Query #' . $queryCount . '</h4><br />';
-					
+
 					// $output .= '<h4>Begin Result for Executed Query #' . $queryCount . '</h4><br />';
 					// $output .= '<pre>' . print_r( $queryExecuted['executedQueryResult'], true) . '</pre><br />';
 					// $output .= '<h4>End Result for Executed Query #' . $queryCount . '</h4><br />';

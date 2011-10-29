@@ -1,5 +1,5 @@
 <?php
-class PolicyAsset extends Doctrine_Record 
+class PolicyAsset extends Doctrine_Record
 {
     public function setTableDefinition()
     {
@@ -9,7 +9,7 @@ class PolicyAsset extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasOne('Policy', array('foreign' => 'policy_number', 
+        $this->hasOne('Policy', array('foreign' => 'policy_number',
                                       'local' => 'policy_number'));
         $this->index('policy_number_index', array('fields' => array('policy_number')));
     }

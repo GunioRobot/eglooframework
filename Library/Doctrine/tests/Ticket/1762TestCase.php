@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1762_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1762_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
@@ -63,7 +63,7 @@ class User2 extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasMany('Role2 as Roles', array('refClass' => 'UserRole2', 
+        $this->hasMany('Role2 as Roles', array('refClass' => 'UserRole2',
                                                           'local'    => 'user_id',
                                                           'foreign'  => 'role_id'));
     }
@@ -78,7 +78,7 @@ class Role2 extends Doctrine_Record
 
     public function setUp()
     {
-        $this->hasMany('User2 as Users', array('refClass' => 'UserRole2', 
+        $this->hasMany('User2 as Users', array('refClass' => 'UserRole2',
                                                           'local'    => 'role_id',
                                                           'foreign'  => 'User_id'));
     }

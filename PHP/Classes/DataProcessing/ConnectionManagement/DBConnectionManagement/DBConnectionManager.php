@@ -4,21 +4,21 @@
  *
  * Contains the class definition for the DBConnectionManager, a final class for
  * database connection management.
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *		  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *	
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -28,13 +28,13 @@
 
 /**
  * DBConnectionManager
- * 
+ *
  * This class gives out connections to the database.
- * 
+ *
  * This class can now interface with PGPOOL (postgresql pool) a connection
  * pool daemon, but simply specifying the port of the PGPOOL daemon.
- * This obviously needs to be different than 5432 (postgresql port) 
- * 
+ * This obviously needs to be different than 5432 (postgresql port)
+ *
  * @package Database
  * @subpackage Management
  */
@@ -139,11 +139,11 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function getActiveRecordConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getCassandraConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	public static function getCustomConnectionWithOptions( $connection_name, $engine_mode, $connection_options = null ) {
@@ -263,7 +263,7 @@ final class DBConnectionManager extends ConnectionManager {
 
 			$manager = Doctrine_Manager::getInstance();
 			$conn = $manager->connection($dsn, $connection_info['name']);
-			
+
 			self::$connections['Doctrine'][$connection_name] = new DoctrineDBConnection($conn);
 
 			$retVal = self::$connections['Doctrine'][$connection_name];
@@ -273,11 +273,11 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function geteGlooDBConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getMongoDBConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getMySQLConnection( $connection_name = 'egPrimary' ) {
@@ -301,7 +301,7 @@ final class DBConnectionManager extends ConnectionManager {
 
 				throw new Exception($exception_message);
 			} else {
-			
+
 			}
 
 			mysql_select_db($dbname, $mysql_conn);
@@ -380,28 +380,28 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function getOracleDBConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getOutletConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getPDOConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getPostgreSQLConnection( $connection_name = 'egPrimary' ) {
 		$connection_info = eGlooConfiguration::getDatabaseConnectionInfo($connection_name);
 
-		$connection_string = 'host=' . $connection_info['host'] . 
-							' user=' . $connection_info['user'] . 
-							' password=' . $connection_info['password'] . 
+		$connection_string = 'host=' . $connection_info['host'] .
+							' user=' . $connection_info['user'] .
+							' password=' . $connection_info['password'] .
 							' dbname=' . $connection_info['database'] .
 							' port=' . $connection_info['port'];
 
 		$db_handle = pg_connect( $connection_string );
-		
+
 		if (!$db_handle) {
 			$exception_message = 'DBConnectionManager: Cannot connect to PostgreSQL server via getPostgreSQLConnection.  Error: ' . pg_last_error($db_handle);
 
@@ -415,11 +415,11 @@ final class DBConnectionManager extends ConnectionManager {
 	}
 
 	private static function getPropelConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
 	private static function getRedBeanConnection( $connection_name = 'egPrimary' ) {
-		
+
 	}
 
     public static function resetConnections() {

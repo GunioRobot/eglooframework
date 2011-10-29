@@ -86,17 +86,17 @@ class Doctrine_Connection_Mssql extends Doctrine_Connection_Common
         if ($checkOption && ! $this->getAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER)) {
             return $identifier;
         }
-        
-        if (strpos($identifier, '.') !== false) { 
-            $parts = explode('.', $identifier); 
-            $quotedParts = array(); 
-            foreach ($parts as $p) { 
-                $quotedParts[] = $this->quoteIdentifier($p); 
+
+        if (strpos($identifier, '.') !== false) {
+            $parts = explode('.', $identifier);
+            $quotedParts = array();
+            foreach ($parts as $p) {
+                $quotedParts[] = $this->quoteIdentifier($p);
             }
-            
-            return implode('.', $quotedParts); 
+
+            return implode('.', $quotedParts);
         }
-        
+
         return '[' . str_replace(']', ']]', $identifier) . ']';
     }
 
@@ -108,21 +108,21 @@ class Doctrine_Connection_Mssql extends Doctrine_Connection_Common
      *
      * Copyright (c) 2005-2008, Zend Technologies USA, Inc.
      * All rights reserved.
-     * 
+     *
      * Redistribution and use in source and binary forms, with or without modification,
      * are permitted provided that the following conditions are met:
-     * 
+     *
      *     * Redistributions of source code must retain the above copyright notice,
      *       this list of conditions and the following disclaimer.
-     * 
+     *
      *     * Redistributions in binary form must reproduce the above copyright notice,
      *       this list of conditions and the following disclaimer in the documentation
      *       and/or other materials provided with the distribution.
-     * 
+     *
      *     * Neither the name of Zend Technologies USA, Inc. nor the names of its
      *       contributors may be used to endorse or promote products derived from this
      *       software without specific prior written permission.
-     * 
+     *
      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -202,14 +202,14 @@ class Doctrine_Connection_Mssql extends Doctrine_Connection_Common
             }
 
             if ($orderby !== false) {
-                $query .= ' ORDER BY '; 
+                $query .= ' ORDER BY ';
 
-                for ($i = 0, $l = count($orders); $i < $l; $i++) { 
-                    if ($i > 0) { // not first order clause 
-                        $query .= ', '; 
-                    } 
+                for ($i = 0, $l = count($orders); $i < $l; $i++) {
+                    if ($i > 0) { // not first order clause
+                        $query .= ', ';
+                    }
 
-                    $query .= $this->quoteIdentifier('inner_tbl') . '.' . $aliases[$i] . ' '; 
+                    $query .= $this->quoteIdentifier('inner_tbl') . '.' . $aliases[$i] . ' ';
                     $query .= (stripos($sorts[$i], 'asc') !== false) ? 'DESC' : 'ASC';
                 }
             }
@@ -244,7 +244,7 @@ class Doctrine_Connection_Mssql extends Doctrine_Connection_Common
     {
         return $this->modifyLimitQuery($query, $limit, $offset, $isManip, true);
     }
-    
+
     /**
      * return version information about the server
      *

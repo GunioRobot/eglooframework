@@ -14,12 +14,12 @@
 class Doctrine_Ticket_428_TestCase extends Doctrine_UnitTestCase
 {
     private $_albums;
-    
+
     public function prepareData()
     {
     }
 
-    public function testInitData() 
+    public function testInitData()
     {
         // Since the tests do a $this->objTable()->clear() before each method call
         // using the User model is not recommended for this test
@@ -35,12 +35,12 @@ class Doctrine_Ticket_428_TestCase extends Doctrine_UnitTestCase
         $this->_albums = $albums;
     }
 
-    public function testAggregateValueMappingSupportsLeftJoins() 
+    public function testAggregateValueMappingSupportsLeftJoins()
     {
         foreach ($this->_albums as $album) {
             $album->clearRelated();
         }
-        
+
         $q = new Doctrine_Query();
 
         $q->select('a.name, COUNT(s.id) count')->from('Album a')->leftJoin('a.Song s')->groupby('a.id');

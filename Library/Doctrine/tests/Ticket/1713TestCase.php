@@ -11,7 +11,7 @@ class Doctrine_Ticket_1713_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-    public function prepareData() 
+    public function prepareData()
     {
         $record = new Child1713A();
         $record['title'] = 'Child1713A';
@@ -21,7 +21,7 @@ class Doctrine_Ticket_1713_TestCase extends Doctrine_UnitTestCase
     public function testInheritanceSubclasses()
     {
         $records = Doctrine_Query::create()->query('FROM Parent1713 m');
-   	
+
    	    foreach ($records as $rec) {
         	$this->assertEqual(get_class($rec), $rec['title']);
         }
@@ -49,11 +49,11 @@ class Parent1713 extends Doctrine_Record
 
   public function setUp()
   {
-  
+
   }
 }
 
 class Child1713A extends Parent1713
 {
- 
+
 }

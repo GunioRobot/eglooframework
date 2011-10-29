@@ -55,7 +55,7 @@ class PersistingTest extends \Doctrine\ODM\MongoDB\Tests\BaseTest
         $this->dm->clear();
 
         $user = $this->dm->find('Documents\User', $user->getId());
-        
+
         $this->assertNotNull($user);
         $user->setUsername('w00t');
         $this->dm->flush();

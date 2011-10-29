@@ -14,5 +14,5 @@ class App_User extends Doctrine_Record {
             'local' => 'id',
             'foreign' => 'user_id'
         ));
-    }    
+    }
 }

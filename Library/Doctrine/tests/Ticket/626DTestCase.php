@@ -14,7 +14,7 @@
 
 class Doctrine_Ticket_626D_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareData() 
+    public function prepareData()
     { }
 
     public function prepareTables()

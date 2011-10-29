@@ -52,7 +52,7 @@ class Doctrine_Sequence_Mssql extends Doctrine_Sequence
         } else {
             $query = 'INSERT INTO ' . $sequenceName . ' (' . $seqcolName . ') VALUES (0)';
         }
-        
+
         try {
             $this->conn->exec($query);
         } catch(Doctrine_Connection_Exception $e) {
@@ -65,7 +65,7 @@ class Doctrine_Sequence_Mssql extends Doctrine_Sequence
                 } catch(Doctrine_Exception $e) {
                     throw new Doctrine_Sequence_Exception('on demand sequence ' . $seqName . ' could not be created');
                 }
-                
+
                 /**
                  * This could actually be a table that starts at 18.. oh well..
                  * we will keep the fallback to return 1 in case we skip this.. which
@@ -74,24 +74,24 @@ class Doctrine_Sequence_Mssql extends Doctrine_Sequence
                 if ($this->checkSequence($seqName)) {
                     return $this->lastInsertId($seqName);
                 }
-                
+
                 return 1;
             }
-            
+
             throw $e;
         }
-        
+
         $value = $this->lastInsertId($sequenceName);
 
         if (is_numeric($value)) {
             $query = 'DELETE FROM ' . $sequenceName . ' WHERE ' . $seqcolName . ' < ' . $value;
-            
+
             try {
                 $this->conn->exec($query);
             } catch (Doctrine_Connection_Exception $e) {
                 throw new Doctrine_Sequence_Exception(
-                    'Could not delete previous sequence from ' . 
-                    $sequenceName . ' at ' . __FILE__ . ' in ' . 
+                    'Could not delete previous sequence from ' .
+                    $sequenceName . ' at ' . __FILE__ . ' in ' .
                     __FUNCTION__ . ' with the message: ' . $e->getMessage()
                 );
             }

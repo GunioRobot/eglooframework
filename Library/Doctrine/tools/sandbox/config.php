@@ -23,7 +23,7 @@
  * Doctrine Configuration File
  *
  * This is a sample implementation of Doctrine
- * 
+ *
  * @package     Doctrine
  * @subpackage  Config
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL

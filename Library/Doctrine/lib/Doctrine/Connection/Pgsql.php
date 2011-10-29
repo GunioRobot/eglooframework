@@ -210,9 +210,9 @@ class Doctrine_Connection_Pgsql extends Doctrine_Connection_Common
         $cols = array();
         // the query VALUES will contain either expresions (eg 'NOW()') or ?
         $a = array();
-        
+
         foreach ($fields as $fieldName => $value) {
-        	if ($table->isIdentifier($fieldName) 
+        	if ($table->isIdentifier($fieldName)
         	           && $table->isIdentifierAutoincrement()
         	           && $value == null) {
         		// Autoincrement fields should not be added to the insert statement
@@ -228,12 +228,12 @@ class Doctrine_Connection_Pgsql extends Doctrine_Connection_Common
                 $a[] = '?';
             }
         }
-        
+
         if (count($fields) == 0) {
-        	// Real fix #1786 and #2327 (default values when table is just 'id' as PK)        	
+        	// Real fix #1786 and #2327 (default values when table is just 'id' as PK)
             return $this->exec('INSERT INTO ' . $this->quoteIdentifier($tableName)
                               . ' '
-                              . ' VALUES (DEFAULT)');        	
+                              . ' VALUES (DEFAULT)');
         }
 
         // build the statement
@@ -242,5 +242,5 @@ class Doctrine_Connection_Pgsql extends Doctrine_Connection_Common
                 . ' VALUES (' . implode(', ', $a) . ')';
 
         return $this->exec($query, array_values($fields));
-    }    
+    }
 }

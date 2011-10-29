@@ -30,14 +30,14 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_DC86_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_DC86_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
         $this->tables[] = 'Ticket_DC86_Test';
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     {
     	$r = new Ticket_DC86_Test();

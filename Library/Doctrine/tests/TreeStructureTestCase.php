@@ -32,19 +32,19 @@
  */
 class Doctrine_TreeStructure_TestCase extends Doctrine_UnitTestCase
 {
-    public function prepareTables() 
-    { 
+    public function prepareTables()
+    {
         // we don't need the standard tables here
         $this->tables = array('TreeLeaf');
         parent::prepareTables();
     }
-    
+
     public function prepareData()
     {
 
     }
 
-    public function testSelfReferentialRelationship() 
+    public function testSelfReferentialRelationship()
     {
         $component = new TreeLeaf();
 
@@ -69,7 +69,7 @@ class Doctrine_TreeStructure_TestCase extends Doctrine_UnitTestCase
         $this->assertEqual($rel->getForeign(), 'parent_id');
     }
 
-    public function testTreeLeafRelationships() 
+    public function testTreeLeafRelationships()
     {
         /* structure:
          *
@@ -107,7 +107,7 @@ class Doctrine_TreeStructure_TestCase extends Doctrine_UnitTestCase
         $this->assertTrue(isset($o2->Parent));
         $this->assertTrue($o2->Parent === $o1);
         $this->assertFalse(isset($o4->Parent));
-      
+
         $this->assertTrue(count($o1->Children) == 2);
         $this->assertTrue(count($o1->get('Children')) == 2);
 

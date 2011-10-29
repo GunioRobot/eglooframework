@@ -15,10 +15,10 @@ class Haanga_Extension_Tag_Spaceless
      *
      *  This static function contains the definition of spaceless
      *  tag, it is important not to refence to $compiler since it
-     *  will copied and paste in the generated PHP code from the 
+     *  will copied and paste in the generated PHP code from the
      *  template as a static function.
      *
-     *  It is also important to put the start and the end of the 
+     *  It is also important to put the start and the end of the
      *  static function in new lines.
      *
      *
@@ -35,7 +35,7 @@ class Haanga_Extension_Tag_Spaceless
     } }}} */
 
     /**
-     *  spaceless now uses generated code instead of 
+     *  spaceless now uses generated code instead of
      *  calling Spaceless_Tag::main() at everytime.
      *
      */
@@ -46,6 +46,6 @@ class Haanga_Extension_Tag_Spaceless
 
         return hexec('preg_replace', $regex, $repl, $args[0]);
     }
-    
+
 
 }

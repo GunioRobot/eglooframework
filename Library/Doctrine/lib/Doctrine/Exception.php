@@ -31,7 +31,7 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  */
 class Doctrine_Exception extends Exception
-{ 
+{
     /**
      * @var array $_errorMessages       an array of error messages
      */

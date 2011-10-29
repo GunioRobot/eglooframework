@@ -10,7 +10,7 @@ class TestOfLiveCssSelectors extends DomTestCase {
     function setUp() {
         $this->addHeader('User-Agent: SimpleTest ' . SimpleTest::getVersion());
     }
-    
+
     function testGet() {
         $url = 'http://simpletest.org/';
         $this->assertTrue($this->get($url));

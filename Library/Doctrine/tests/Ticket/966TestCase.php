@@ -49,8 +49,8 @@ class Doctrine_Ticket_966_TestCase extends Doctrine_UnitTestCase
       ->leftJoin('c.Weekdays cw');
 
     $semesters = $query->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
-    $semester = $semesters[0];    
-    
+    $semester = $semesters[0];
+
     $this->assertAllWeekdaysArePopulated($semester);
   }
 
@@ -62,7 +62,7 @@ class Doctrine_Ticket_966_TestCase extends Doctrine_UnitTestCase
       ->leftJoin('c.Weekdays cw');
 
     $semester = $query->execute()->getFirst();
-    
+
     $weekdayOids = array();
     foreach ($semester->Courses as $course) {
         foreach ($course->Weekdays as $weekday) {
@@ -75,7 +75,7 @@ class Doctrine_Ticket_966_TestCase extends Doctrine_UnitTestCase
     }
     // should be only 3 weekday objects in total
     $this->assertEqual(3, count($weekdayOids));
-    
+
     $queryCountBefore = $this->conn->count();
     $this->assertAllWeekdaysArePopulated($semester);
     $this->assertEqual($queryCountBefore, $this->conn->count());
@@ -144,7 +144,7 @@ class Weekday extends Doctrine_Record
       // need to make the many-many bidirectional in order for the lazy-loading test to work.
       // lazy-loading the weekdays ($course['Weekdays']) doesnt work when the relation is
       // set up unidirectional. this is true for all many-many relations.
-      $this->hasMany('Course as courses', 
+      $this->hasMany('Course as courses',
         array('refClass'=>'CourseWeekday', 'local'=>'weekday_id', 'foreign'=>'course_id'));
   }
 }
@@ -166,7 +166,7 @@ class Course extends Doctrine_Record
     $this->hasOne('Semester', array('local' => 'semester_id',
                                     'foreign' => 'id',
                                     'onDelete' => 'CASCADE'));
-    $this->hasMany('Weekday as Weekdays', 
+    $this->hasMany('Weekday as Weekdays',
       array('refClass'=>'CourseWeekday', 'local'=>'course_id', 'foreign'=>'weekday_id'));
   }
 

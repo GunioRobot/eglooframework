@@ -3,21 +3,21 @@
  * XHTMLSmarty2TemplateEngine Class File
  *
  * $file_block_description
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -43,8 +43,8 @@ class XHTMLSmarty2TemplateEngine extends Smarty2TemplateEngine implements Templa
 
     public function __construct( $interfacebundle, $local = 'US', $language = 'en' ) {
 		parent::__construct( $interfacebundle, $local = 'US', $language = 'en' );
-		// $this->left_delimiter = '<!--{'; 
-		// $this->right_delimiter = '}-->'; 
+		// $this->left_delimiter = '<!--{';
+		// $this->right_delimiter = '}-->';
 
 		$this->error_reporting = E_ALL | E_STRICT;
 		$this->error_unassigned = true;
@@ -52,10 +52,10 @@ class XHTMLSmarty2TemplateEngine extends Smarty2TemplateEngine implements Templa
         $this->plugins_dir = $this->plugins_dir + array( 'PHP/Classes/components' );
 
         // Get the template paths for the application and the framework
-		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+		$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 			eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . eGlooConfiguration::getUIBundleName();
 
-		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+		$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 			eGlooConfiguration::getApplicationPath() . '/Templates/';
 
 		$framework_template_path = 'Templates';
@@ -112,7 +112,7 @@ class XHTMLSmarty2TemplateEngine extends Smarty2TemplateEngine implements Templa
 			unset($this->templateRoots['Application']);
 			$this->config_dir = $this->templateRoots;
 		} else {
-			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/InterfaceBundles/' . $interfaceBundle . '/' . $this->packagePrefix . '/';
 			$this->templateRoots['Application'] = $application_template_path;
 			$this->template_dir = $this->templateRoots;
@@ -124,7 +124,7 @@ class XHTMLSmarty2TemplateEngine extends Smarty2TemplateEngine implements Templa
 			unset($this->templateRoots['ApplicationCommon']);
 			$this->config_dir = $this->templateRoots;
 		} else {
-			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' . 
+			$application_common_template_path = eGlooConfiguration::getApplicationsPath() . '/' .
 				eGlooConfiguration::getApplicationPath() . '/Templates/';
 			$this->templateRoots['ApplicationCommon'] = $application_common_template_path;
 			$this->template_dir = $this->templateRoots;

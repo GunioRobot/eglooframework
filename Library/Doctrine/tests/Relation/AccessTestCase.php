@@ -75,7 +75,7 @@ class Doctrine_Relation_Access_TestCase extends Doctrine_UnitTestCase {
             "MyOneThing",
             "MyUserOneThing",
             "MyOtherThing",
-            "MyUserOtherThing"); 
+            "MyUserOtherThing");
         parent::prepareTables();
     }
 

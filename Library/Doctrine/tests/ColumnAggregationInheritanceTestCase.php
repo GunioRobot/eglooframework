@@ -24,14 +24,14 @@
  *
  * @package     Doctrine
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
- * @author      Bjarte Stien Karlsen <bjartka@pvv.ntnu.no> 
+ * @author      Bjarte Stien Karlsen <bjartka@pvv.ntnu.no>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @category    Object Relational Mapping
  * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_ColumnAggregationInheritance_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_ColumnAggregationInheritance_TestCase extends Doctrine_UnitTestCase
 {
     protected $otherEntity = null;
 
@@ -41,7 +41,7 @@ class Doctrine_ColumnAggregationInheritance_TestCase extends Doctrine_UnitTestCa
         //we create a test entity that is not a user and not a group
         $entity = new Entity();
         $entity->name='Other Entity';
-        $entity->type = 2; 
+        $entity->type = 2;
         $entity->save();
         $this->otherEntity = $entity;
     }

@@ -16,7 +16,7 @@ class ExtensionsTests extends TestSuite {
 		foreach(new RecursiveIteratorIterator($nodes) as $node) {
 			if (preg_match('/test\.php$/', $node->getFilename())) {
 		        $this->addFile($node->getPathname());
-			}        	
+			}
         }
     }
 }

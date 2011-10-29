@@ -21,7 +21,7 @@ class Doctrine_Ticket_876_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-    public function prepareData() 
+    public function prepareData()
     {
     }
 
@@ -57,16 +57,16 @@ class Doctrine_Ticket_876_TestCase extends Doctrine_UnitTestCase
       return $profile;
     }
 
-    public function testBug() 
+    public function testBug()
     {
       $person = $this->newPerson('Fixe');
       $profile = $this->newProfile('Work', $person);
 
       $guardUser = $person->get('sfGuardUser');
       $id = $guardUser->get('id');
-      
+
       $guardUser->free();
-      
+
       $query = new Doctrine_Query();
 
       $query->select('s.*, p.*, ps.*');
@@ -77,7 +77,7 @@ class Doctrine_Ticket_876_TestCase extends Doctrine_UnitTestCase
 
       $user = $query->fetchOne();
       $array = $user->toArray(true);
-      
+
       $this->assertEqual($array['id'], 1);
       $this->assertEqual($array['name'], 'Fixe');
       $this->assertTrue(isset($array['Person']['Profiles'][0]));

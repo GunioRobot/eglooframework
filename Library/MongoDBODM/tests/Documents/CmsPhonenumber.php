@@ -18,7 +18,7 @@ class CmsPhonenumber
     public function setUser(CmsUser $user) {
         $this->user = $user;
     }
-    
+
     public function getUser() {
         return $this->user;
     }

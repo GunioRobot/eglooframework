@@ -74,7 +74,7 @@ final class Haanga_Compiler_Runtime extends Haanga_Compiler
     // {% base "" %} {{{
     function expr_call_base_template()
     {
-        return hexec('Haanga::Load', $this->subtemplate, 
+        return hexec('Haanga::Load', $this->subtemplate,
             hvar('vars'), TRUE, hvar('blocks'));
     }
     // }}}
@@ -88,7 +88,7 @@ final class Haanga_Compiler_Runtime extends Haanga_Compiler
 
     // Override get_Custom_tag {{{
     /**
-     *  
+     *
      *
      */
     function get_custom_tag($name)
@@ -123,7 +123,7 @@ final class Haanga_Compiler_Runtime extends Haanga_Compiler
         return $filter->getClassName($name)."::main";
     }
     // }}}
-    
+
 }
 
 /*

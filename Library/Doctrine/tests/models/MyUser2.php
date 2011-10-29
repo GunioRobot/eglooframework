@@ -1,6 +1,6 @@
 <?php
 class MyUser2 extends Doctrine_Record
-{  
+{
     public function setTableDefinition()
     {
         $this->setTableName('my_user');
@@ -19,5 +19,5 @@ class MyUser2 extends Doctrine_Record
     public function setUp()
     {
         $this->hasMany('MyGroup as groups', array('refClass' => 'MyUserGroup', 'local' => 'user_id', 'foreign' => 'group_id'));
-    }  
+    }
 }

@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase
 {
     public function prepareTables()
     {
@@ -39,7 +39,7 @@ class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase
         parent::prepareTables();
     }
 
-    public function prepareData() 
+    public function prepareData()
     {
 	    Doctrine_Manager::getInstance()->getCurrentConnection()->beginTransaction();
 
@@ -53,7 +53,7 @@ class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase
 		    $x->category = $cats[$i % 2];
 		    $x->set('created_at', strftime("%Y-%m-%d %H:%M:%S", $age));
 	        $x->save();
-        
+
 	        for ($j = 0; $j < 10; $j++) {
 		        $y = new RelY();
 		        $y->name = "y ".($i * 10 + $j);
@@ -61,7 +61,7 @@ class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase
 		        $y->save();
 		    }
 	    }
-        
+
         Doctrine_Manager::getInstance()->getCurrentConnection()->commit();
     }
 
@@ -78,10 +78,10 @@ class Doctrine_Ticket_1254_TestCase extends Doctrine_UnitTestCase
 
         $xs = $q->execute();
 
-        // Doctrine_Ticket_1254_TestCase : method testSubqueryExtractionUsesWrongAliases failed on line 76 
+        // Doctrine_Ticket_1254_TestCase : method testSubqueryExtractionUsesWrongAliases failed on line 76
         // This fails sometimes at
         $this->assertEqual(2, count($xs));
-        
+
     }
 
 }

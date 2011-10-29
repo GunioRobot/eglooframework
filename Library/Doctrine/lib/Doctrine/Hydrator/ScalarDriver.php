@@ -55,7 +55,7 @@ class Doctrine_Hydrator_ScalarDriver extends Doctrine_Hydrator_Abstract
                 }
                 // cache general information like the column name <-> field name mapping
                 $e = explode('__', $key);
-                $columnName = strtolower(array_pop($e)); 
+                $columnName = strtolower(array_pop($e));
                 $cache[$key]['dqlAlias'] = $this->_tableAliases[strtolower(implode('__', $e))];
                 $table = $this->_queryComponents[$cache[$key]['dqlAlias']]['table'];
                 // check whether it's an aggregate value or a regular field
@@ -84,7 +84,7 @@ class Doctrine_Hydrator_ScalarDriver extends Doctrine_Hydrator_Abstract
             $fieldName = $cache[$key]['fieldName'];
 
             $rowDataKey = $aliasPrefix ? $dqlAlias . '_' . $fieldName:$fieldName;
-            
+
             if ($cache[$key]['isSimpleType'] || $cache[$key]['isAgg']) {
                 $rowData[$rowDataKey] = $value;
             } else {

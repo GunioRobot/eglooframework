@@ -14,7 +14,7 @@ class I18nRelationTest extends Doctrine_Record
     }
 }
 
-class I18nAuthorTest extends Doctrine_Record 
+class I18nAuthorTest extends Doctrine_Record
 {
     public function setTableDefinition()
     {

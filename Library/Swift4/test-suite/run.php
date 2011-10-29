@@ -46,7 +46,7 @@ if (!empty($argv[1]) && !preg_match('~!?/.*?/~', $argv[1]))
 {
   $testName = $argv[1];
   $format = !empty($argv[2]) ? $argv[2] : Sweety_Runner::REPORT_TEXT;
-  
+
   $runner->runTestCase($testName, $format);
 }
 else

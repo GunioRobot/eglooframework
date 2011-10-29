@@ -18,7 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
  */
-                 
+
 /**
  * Doctrine_Tree
  *
@@ -41,7 +41,7 @@ class Doctrine_Tree
      * @param array $options
      */
     protected $options = array();
-    
+
     protected $_baseComponent;
 
     /**
@@ -87,7 +87,7 @@ class Doctrine_Tree
     /**
      * Factory method to create a Tree.
      *
-     * This is a factory method that returns a tree instance based upon 
+     * This is a factory method that returns a tree instance based upon
      * chosen implementation.
      *
      * @param object $table                     instance of Doctrine_Table
@@ -107,8 +107,8 @@ class Doctrine_Tree
 
     /**
      * gets tree attribute value
-     *        
-     */     
+     *
+     */
     public function getAttribute($name)
     {
       return isset($this->options[$name]) ? $this->options[$name] : null;
@@ -117,7 +117,7 @@ class Doctrine_Tree
     /**
      * sets tree attribute value
      *
-     * @param mixed            
+     * @param mixed
      */
     public function setAttribute($name, $value)
     {

@@ -3,21 +3,21 @@
  * SetUserProfileDataRequestProcessor Class File
  *
  * Needs to be commented
- * 
+ *
  * Copyright 2011 eGloo, LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  
+ *
  * @author George Cooper
  * @copyright 2011 eGloo, LLC
  * @license http://www.apache.org/licenses/LICENSE-2.0
@@ -27,26 +27,26 @@
 
 /**
  * SetUserProfileDataRequestProcessor
- * 
+ *
  * Needs to be commented
- * 
+ *
  * @package RequestProcessing
  * @subpackage RequestProcessors
  */
 class SetUserProfileDataRequestProcessor extends RequestProcessor {
 
     private static $_template = '../Templates/Applications/eGloo/InterfaceBundles/Default/XHTML/InternalMainPage/InternalMainPageContainer.tpl';
-    
-    public function processRequest() {        
+
+    public function processRequest() {
         $profileID = $this->requestInfoBean->getGET( 'profileID' );
 
 		//TODO:check profileID matches session profileid
-		
+
 
         $daoFactory = AbstractDAOFactory::getInstance();
         $userProfileDAO = $daoFactory->getUserProfileDAO();
         $userProfileDTO = new UserProfileDTO();
-        
+
         // Retrieve the required POST elements
         $userProfileDTO->setSex( $this->requestInfoBean->getPOST( 'gender' ) );
 
@@ -68,37 +68,37 @@ class SetUserProfileDataRequestProcessor extends RequestProcessor {
         } else {
             $userProfileDTO->setLookingForFriendship( false );
         }
-        
+
         if ( $this->requestInfoBean->issetPOST( 'lookingForRelationship' ) ) {
             $userProfileDTO->setLookingForRelationship( true );
         } else {
             $userProfileDTO->setLookingForRelationship( false );
-        } 
-        
+        }
+
         if ( $this->requestInfoBean->issetPOST( 'lookingForRandomPlay' ) ) {
             $userProfileDTO->setLookingForRandomPlay( true );
         } else {
             $userProfileDTO->setLookingForRandomPlay( false );
-        } 
-        
+        }
+
         if ( $this->requestInfoBean->issetPOST( 'lookingForDating' ) ) {
             $userProfileDTO->setLookingForDating( true );
         } else {
             $userProfileDTO->setLookingForDating( false );
-        } 
-        
+        }
+
         if ( $this->requestInfoBean->issetPOST( 'lookingForWhateverICanGet' ) ) {
             $userProfileDTO->setLookingForWhateverICanGet( true );
         } else {
             $userProfileDTO->setLookingForWhateverICanGet( false );
         }
-        
+
         if ( $this->requestInfoBean->issetPOST( 'interestedInMen' ) ) {
             $userProfileDTO->setInterestedInMen( true );
         } else {
             $userProfileDTO->setInterestedInMen( false );
         }
-        
+
         if ( $this->requestInfoBean->issetPOST( 'interestedInWomen' ) ) {
             $userProfileDTO->setInterestedInWomen( true );
         } else {
